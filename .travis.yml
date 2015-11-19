@@ -1,0 +1,20 @@
+language: java
+jdk:
+  - oraclejdk7
+
+sudo: false
+env:
+  - TERM=dumb
+
+before_install:
+  - chmod +x gradlew
+
+install:
+  - ./gradlew assemble
+
+script:
+  - ./gradlew check
+
+cache:
+   directories:
+   - $HOME/.gradle/caches/

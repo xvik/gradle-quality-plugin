@@ -1,0 +1,143 @@
+plugins {
+    id 'groovy'
+    id 'maven-publish'
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.9.1'
+    id 'com.jfrog.bintray' version '1.4'
+    id 'net.researchgate.release' version '2.3.4'
+}
+
+group = 'ru.vyarus'
+description = 'Static code analysis for Java and Groovy projects'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+wrapper {
+    gradleVersion = 2.8
+}
+
+repositories { jcenter() }
+dependencies {
+    testCompile gradleTestKit()
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
+        exclude module: 'groovy-all'
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle quality plugin',
+                'Implementation-Version': project.version,
+                'Built-By': System.getProperty('user.name'),
+                'Built-Date': new Date(),
+                'Built-JDK': System.getProperty('java.version'),
+                'Built-Gradle': gradle.gradleVersion,
+                'Target-JDK': project.targetCompatibility
+    }
+}
+
+task groovydocJar(type: Jar, dependsOn: groovydoc, group: 'build') {
+    from groovydoc.destinationDir
+    classifier = 'groovydoc'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes, group: 'build') {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+def pomConfig = {
+    name 'Gradle quality plugin'
+    url 'https://github.com/xvik/gradle-quality-plugin'
+    licenses {
+        license {
+            name 'The MIT License'
+            url "https://raw.githubusercontent.com/xvik/gradle-quality-plugin/master/LICENSE"
+            distribution 'repo'
+        }
+    }
+    scm {
+        url 'https://github.com/xvik/gradle-quality-plugin.git'
+        connection 'scm:git@github.com:xvik/gradle-quality-plugin.git'
+        developerConnection 'scm:git@github.com:xvik/gradle-quality-plugin.git'
+    }
+    developers {
+        developer {
+            id 'xvik'
+            name 'Vyacheslav Rusakov'
+            email "vyarus@gmail.com"
+        }
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact groovydocJar
+            artifact sourcesJar
+
+            pom.withXml {
+                asNode().appendNode('description', project.description)
+                asNode().children().last() + pomConfig
+            }
+        }
+    }
+}
+
+task install(dependsOn: 'publishMavenPublicationToMavenLocal', group: 'publishing') << {
+    logger.warn "INSTALLED $project.group:$project.name:$project.version"
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? bintrayUser : 'USER'
+    key = project.hasProperty('bintrayKey') ? bintrayKey : 'KEY'
+    publications = ['maven']
+    pkg {
+        repo = 'xvik'
+        name = project.name
+        desc = project.description
+        websiteUrl = 'https://github.com/xvik/gradle-quality-plugin'
+        issueTrackerUrl = 'https://github.com/xvik/gradle-quality-plugin/issues'
+        vcsUrl = 'https://github.com/xvik/gradle-quality-plugin.git'
+        licenses = ['MIT']
+        labels = ['gradle', 'java', 'groovy', 'quality', 'checkstyle', 'pmd', 'findbugs', 'codenarc']
+        publicDownloadNumbers = true
+        version {
+            name = project.version
+            gpg {
+                sign = true
+                passphrase = project.hasProperty('gpgPassphrase') ? gpgPassphrase : ''
+            }
+            mavenCentralSync {
+                sync = false
+            }
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/xvik/gradle-quality-plugin'
+    vcsUrl = 'https://github.com/xvik/gradle-quality-plugin'
+    description = project.description
+    tags = ['java', 'groovy', 'quality', 'checkstyle', 'pmd', 'findbugs', 'codenarc']
+
+    plugins {
+        qualityPlugin {
+            id = 'ru.vyarus.quality'
+            displayName = 'Gradle quality plugin'
+        }
+    }
+
+    mavenCoordinates {
+        groupId = project.group
+        artifactId = project.name
+    }
+}
+
+publishPlugins.mustRunAfter bintrayUpload
+afterReleaseBuild.dependsOn publishPlugins
+afterReleaseBuild.doLast {
+    logger.warn "RELEASED $project.group:$project.name:$project.version"
+}

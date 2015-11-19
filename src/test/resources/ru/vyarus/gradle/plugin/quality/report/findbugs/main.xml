@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="3.0.1" sequence="0" timestamp="1447839577584" analysisTimestamp="1447839577619" release="">
+  <Project projectName="">
+    <Jar>C:\Users\xvik\AppData\Local\Temp\junit1006517273776660000\build\classes\main\sample\Sample.class</Jar>
+    <Jar>C:\Users\xvik\AppData\Local\Temp\junit1006517273776660000\build\classes\main\sample\Sample2.class</Jar>
+    <SrcDir>C:\Users\xvik\AppData\Local\Temp\junit1006517273776660000\src\main\java\sample\Sample.java</SrcDir>
+    <SrcDir>C:\Users\xvik\AppData\Local\Temp\junit1006517273776660000\src\main\java\sample\Sample2.java</SrcDir>
+  </Project>
+  <BugInstance type="URF_UNREAD_FIELD" priority="2" rank="18" abbrev="UrF" category="PERFORMANCE" instanceHash="d9109f00300f1d923bdd3c348e1b1b97" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Unread field</ShortMessage>
+    <LongMessage>Unread field: sample.Sample.sample</LongMessage>
+    <Class classname="sample.Sample" primary="true">
+      <SourceLine classname="sample.Sample" start="7" end="13" sourcefile="Sample.java" sourcepath="sample/Sample.java">
+        <Message>At Sample.java:[lines 7-13]</Message>
+      </SourceLine>
+      <Message>In class sample.Sample</Message>
+    </Class>
+    <Field classname="sample.Sample" name="sample" signature="Ljava/lang/String;" isStatic="false" primary="true">
+      <SourceLine classname="sample.Sample" sourcefile="Sample.java" sourcepath="sample/Sample.java">
+        <Message>In Sample.java</Message>
+      </SourceLine>
+      <Message>Field sample.Sample.sample</Message>
+    </Field>
+    <SourceLine classname="sample.Sample" primary="true" start="8" end="8" startBytecode="6" endBytecode="6" sourcefile="Sample.java" sourcepath="sample/Sample.java">
+      <Message>At Sample.java:[line 8]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="URF_UNREAD_FIELD" priority="2" rank="18" abbrev="UrF" category="PERFORMANCE" instanceHash="ee5c8c405df22f91e7fc5f0fb853049c" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Unread field</ShortMessage>
+    <LongMessage>Unread field: sample.Sample2.sample</LongMessage>
+    <Class classname="sample.Sample2" primary="true">
+      <SourceLine classname="sample.Sample2" start="7" end="13" sourcefile="Sample2.java" sourcepath="sample/Sample2.java">
+        <Message>At Sample2.java:[lines 7-13]</Message>
+      </SourceLine>
+      <Message>In class sample.Sample2</Message>
+    </Class>
+    <Field classname="sample.Sample2" name="sample" signature="Ljava/lang/String;" isStatic="false" primary="true">
+      <SourceLine classname="sample.Sample2" sourcefile="Sample2.java" sourcepath="sample/Sample2.java">
+        <Message>In Sample2.java</Message>
+      </SourceLine>
+      <Message>Field sample.Sample2.sample</Message>
+    </Field>
+    <SourceLine classname="sample.Sample2" primary="true" start="8" end="8" startBytecode="6" endBytecode="6" sourcefile="Sample2.java" sourcepath="sample/Sample2.java">
+      <Message>At Sample2.java:[line 8]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugCategory category="PERFORMANCE">
+    <Description>Performance</Description>
+  </BugCategory>
+  <BugPattern type="URF_UNREAD_FIELD" abbrev="UrF" category="PERFORMANCE">
+    <ShortDescription>Unread field</ShortDescription>
+    <Details><![CDATA[
+
+  <p> This field is never read.&nbsp; Consider removing it from the class.</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugCode abbrev="UrF">
+    <Description>Unread field</Description>
+  </BugCode>
+  <Errors errors="0" missingClasses="0"></Errors>
+  <FindBugsSummary timestamp="Wed, 18 Nov 2015 15:39:37 +0600" total_classes="2" referenced_classes="11" total_bugs="2" total_size="16" num_packages="1" java_version="1.8.0_65" vm_version="25.65-b01" cpu_seconds="4.93" clock_seconds="1.12" peak_mbytes="108.20" alloc_mbytes="1796.00" gc_seconds="0.02" priority_2="2">
+    <FileStats path="sample/Sample.java" bugCount="1" size="8" bugHash="1168e000f0a2e07f54f92984dd3cbc9b"/>
+    <FileStats path="sample/Sample2.java" bugCount="1" size="8" bugHash="ccac4de0873381e7b761f368a9370af5"/>
+    <PackageStats package="sample" total_bugs="2" total_types="2" total_size="16" priority_2="2">
+      <ClassStats class="sample.Sample" sourceFile="Sample.java" interface="false" size="8" bugs="1" priority_2="1"/>
+      <ClassStats class="sample.Sample2" sourceFile="Sample2.java" interface="false" size="8" bugs="1" priority_2="1"/>
+    </PackageStats>
+    <FindBugsProfile>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassInfoAnalysisEngine" totalMilliseconds="229" invocations="302" avgMicrosecondsPerInvocation="758" maxMicrosecondsPerInvocation="21426" standardDeviationMircosecondsPerInvocation="1956"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FieldItemSummary" totalMilliseconds="57" invocations="11" avgMicrosecondsPerInvocation="5254" maxMicrosecondsPerInvocation="20849" standardDeviationMircosecondsPerInvocation="6714"/>
+      <ClassProfile name="edu.umd.cs.findbugs.OpcodeStack$JumpInfoFactory" totalMilliseconds="49" invocations="61" avgMicrosecondsPerInvocation="810" maxMicrosecondsPerInvocation="4777" standardDeviationMircosecondsPerInvocation="832"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.MethodGenFactory" totalMilliseconds="40" invocations="4" avgMicrosecondsPerInvocation="10246" maxMicrosecondsPerInvocation="40571" standardDeviationMircosecondsPerInvocation="17508"/>
+      <ClassProfile name="edu.umd.cs.findbugs.util.TopologicalSort" totalMilliseconds="40" invocations="270" avgMicrosecondsPerInvocation="148" maxMicrosecondsPerInvocation="1816" standardDeviationMircosecondsPerInvocation="283"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.JavaClassAnalysisEngine" totalMilliseconds="32" invocations="24" avgMicrosecondsPerInvocation="1366" maxMicrosecondsPerInvocation="19614" standardDeviationMircosecondsPerInvocation="3940"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNoSideEffectMethods" totalMilliseconds="30" invocations="11" avgMicrosecondsPerInvocation="2732" maxMicrosecondsPerInvocation="13720" standardDeviationMircosecondsPerInvocation="3887"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassDataAnalysisEngine" totalMilliseconds="22" invocations="303" avgMicrosecondsPerInvocation="73" maxMicrosecondsPerInvocation="1442" standardDeviationMircosecondsPerInvocation="92"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FunctionsThatMightBeMistakenForProcedures" totalMilliseconds="19" invocations="11" avgMicrosecondsPerInvocation="1756" maxMicrosecondsPerInvocation="8855" standardDeviationMircosecondsPerInvocation="2679"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.NoteDirectlyRelevantTypeQualifiers" totalMilliseconds="18" invocations="11" avgMicrosecondsPerInvocation="1675" maxMicrosecondsPerInvocation="7795" standardDeviationMircosecondsPerInvocation="2298"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.OverridingEqualsNotSymmetrical" totalMilliseconds="18" invocations="11" avgMicrosecondsPerInvocation="1641" maxMicrosecondsPerInvocation="10200" standardDeviationMircosecondsPerInvocation="2860"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.CFGFactory" totalMilliseconds="17" invocations="4" avgMicrosecondsPerInvocation="4329" maxMicrosecondsPerInvocation="16659" standardDeviationMircosecondsPerInvocation="7119"/>
+    </FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>
