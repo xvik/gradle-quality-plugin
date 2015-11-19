@@ -2,10 +2,10 @@
 
 <BugCollection version="3.0.1" sequence="0" timestamp="1447839577584" analysisTimestamp="1447839577619" release="">
   <Project projectName="">
-    <Jar>C:\Users\xvik\AppData\Local\Temp\junit1006517273776660000\build\classes\main\sample\Sample.class</Jar>
-    <Jar>C:\Users\xvik\AppData\Local\Temp\junit1006517273776660000\build\classes\main\sample\Sample2.class</Jar>
-    <SrcDir>C:\Users\xvik\AppData\Local\Temp\junit1006517273776660000\src\main\java\sample\Sample.java</SrcDir>
-    <SrcDir>C:\Users\xvik\AppData\Local\Temp\junit1006517273776660000\src\main\java\sample\Sample2.java</SrcDir>
+    <Jar>.\build\classes\main\sample\Sample.class</Jar>
+    <Jar>.\build\classes\main\sample\Sample2.class</Jar>
+    <SrcDir>.\src\main\java\sample\Sample.java</SrcDir>
+    <SrcDir>.\src\main\java\sample\Sample2.java</SrcDir>
   </Project>
   <BugInstance type="URF_UNREAD_FIELD" priority="2" rank="18" abbrev="UrF" category="PERFORMANCE" instanceHash="d9109f00300f1d923bdd3c348e1b1b97" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
     <ShortMessage>Unread field</ShortMessage>

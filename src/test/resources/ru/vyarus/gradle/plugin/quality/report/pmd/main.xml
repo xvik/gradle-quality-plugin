@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd version="5.4.0" timestamp="2015-11-18T15:39:39.518">
-<file name="C:\Users\xvik\AppData\Local\Temp\junit1006517273776660000\src\main\java\sample\Sample.java">
+<file name="${srcRoot}\sample\Sample.java">
 <violation beginline="5" endline="5" begincolumn="20" endcolumn="25" rule="UnusedPrivateField" ruleset="Unused Code" package="sample" class="Sample" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'sample'.
 </violation>
@@ -26,7 +26,7 @@ Document empty method body
 Parameter 'args' is not assigned and could be declared final
 </violation>
 </file>
-<file name="C:\Users\xvik\AppData\Local\Temp\junit1006517273776660000\src\main\java\sample\Sample2.java">
+<file name="${srcRoot}\sample\Sample2.java">
 <violation beginline="5" endline="5" begincolumn="20" endcolumn="25" rule="UnusedPrivateField" ruleset="Unused Code" package="sample" class="Sample2" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'sample'.
 </violation>

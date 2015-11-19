@@ -28,7 +28,7 @@ class ReportUtils {
             }
         }
         name = name[0..name.lastIndexOf('.') - 1] // remove extension
-        name.replaceAll('\\\\', '.')
+        name.replaceAll('\\\\|/', '.')
     }
 
     /**

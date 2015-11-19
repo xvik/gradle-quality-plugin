@@ -25,7 +25,11 @@ class PmdReporterTest extends AbstractKitTest {
             }
         """)
         file('src/main/java').mkdirs()
-        fileFromClasspath('build/reports/pmd/main.xml', '/ru/vyarus/gradle/plugin/quality/report/pmd/main.xml')
+        String report = getClass().getResourceAsStream('/ru/vyarus/gradle/plugin/quality/report/pmd/main.xml').text
+                .replaceAll('\\$\\{srcRoot\\}', file('src/main/java').canonicalPath.replaceAll('\\\\', '\\\\\\\\'))
+        File target = file('build/reports/pmd/main.xml')
+        target.parentFile.mkdirs()
+        target << report
 
         when: "call reporter"
         BuildResult result = run('testReport')

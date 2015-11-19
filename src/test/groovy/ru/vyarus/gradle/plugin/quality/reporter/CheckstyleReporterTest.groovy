@@ -20,14 +20,17 @@ class CheckstyleReporterTest extends AbstractKitTest {
             }
 
             task testReport() << {
-                sourceSets.main.java.srcDir 'C:/Users/xvik/AppData/Local/Temp/junit1006517273776660000/src/main/java/'
                 new ru.vyarus.gradle.plugin.quality.report.CheckstyleReporter(
                     new ru.vyarus.gradle.plugin.quality.ConfigLoader(project)
                 ).report(project, 'main')
             }
         """)
         file('src/main/java').mkdirs()
-        fileFromClasspath('build/reports/checkstyle/main.xml', '/ru/vyarus/gradle/plugin/quality/report/checkstyle/main.xml')
+        String report = getClass().getResourceAsStream('/ru/vyarus/gradle/plugin/quality/report/checkstyle/main.xml').text
+                .replaceAll('\\$\\{srcRoot\\}', file('src/main/java').canonicalPath.replaceAll('\\\\', '\\\\\\\\'))
+        File target = file('build/reports/checkstyle/main.xml')
+        target.parentFile.mkdirs()
+        target << report
 
         when: "call reporter"
         BuildResult result = run('testReport')
