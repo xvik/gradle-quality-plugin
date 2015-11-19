@@ -152,7 +152,7 @@ To suppress violations you can use [filter file](http://findbugs.sourceforge.net
 In this case you need to override default filter file (see below).
 
 Or you can use annotations. FindBugs use custom annotations and so you need to add 
-'com.google.code.findbugs:annotations:3.0.0' dependency (with provided scope if possible) and use:
+`com.google.code.findbugs:annotations:3.0.0` dependency (with provided scope if possible) and use:
 
 ```java
 @SuppressFBWarnings("URF_UNREAD_FIELD")
@@ -161,7 +161,7 @@ Or you can use annotations. FindBugs use custom annotations and so you need to a
 ###### Annotations
 
 You may use [jsr305 annotations](http://findbugs.sourceforge.net/manual/annotations.html) to guide findbugs.
-Add 'com.google.code.findbugs:jsr305:3.0.0' dependency (with provided scope if possible).
+Add `com.google.code.findbugs:jsr305:3.0.0` dependency (with provided scope if possible).
 
 In some cases you will have to use it.
 For example, you may face issues with guava functions or predicates:
