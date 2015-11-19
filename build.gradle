@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'ru.vyarus'
-description = 'Static code analysis for Java and Groovy projects'
+description = 'Gradle quality plugin for Java and Groovy'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6

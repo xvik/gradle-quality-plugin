@@ -30,7 +30,7 @@ buildscript {
         classpath 'ru.vyarus:gradle-quality-plugin:1.0.0'
     }
 }
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'ru.vyarus.quality'
 ```
 
 OR
