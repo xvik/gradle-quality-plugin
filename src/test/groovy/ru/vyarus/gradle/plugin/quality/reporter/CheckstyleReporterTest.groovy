@@ -20,6 +20,7 @@ class CheckstyleReporterTest extends AbstractKitTest {
             }
 
             task testReport() << {
+                sourceSets.main.java.srcDir 'C:/Users/xvik/AppData/Local/Temp/junit1006517273776660000/src/main/java/'
                 new ru.vyarus.gradle.plugin.quality.report.CheckstyleReporter(
                     new ru.vyarus.gradle.plugin.quality.ConfigLoader(project)
                 ).report(project, 'main')
@@ -37,31 +38,31 @@ class CheckstyleReporterTest extends AbstractKitTest {
        error.replaceAll("\r", "") == """
 6 Checkstyle rule violations were found in 2 files
 
-[Misc | NewlineAtEndOfFile] C:.Users.xvik.AppData.Local.Temp.junit1006517273776660000.src.main.java.sample.Sample:0
+[Misc | NewlineAtEndOfFile] sample.Sample:0
   File does not end with a newline.
   http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
 
-[Javadoc | JavadocType] C:.Users.xvik.AppData.Local.Temp.junit1006517273776660000.src.main.java.sample.Sample:3
+[Javadoc | JavadocType] sample.Sample:3
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 
-[Misc | UncommentedMain] C:.Users.xvik.AppData.Local.Temp.junit1006517273776660000.src.main.java.sample.Sample:11
+[Misc | UncommentedMain] sample.Sample:11
   Uncommented main method found.
   http://checkstyle.sourceforge.net/config_misc.html#UncommentedMain
 
-[Misc | NewlineAtEndOfFile] C:.Users.xvik.AppData.Local.Temp.junit1006517273776660000.src.main.java.sample.Sample2:0
+[Misc | NewlineAtEndOfFile] sample.Sample2:0
   File does not end with a newline.
   http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
 
-[Javadoc | JavadocType] C:.Users.xvik.AppData.Local.Temp.junit1006517273776660000.src.main.java.sample.Sample2:3
+[Javadoc | JavadocType] sample.Sample2:3
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 
-[Misc | UncommentedMain] C:.Users.xvik.AppData.Local.Temp.junit1006517273776660000.src.main.java.sample.Sample2:11
+[Misc | UncommentedMain] sample.Sample2:11
   Uncommented main method found.
   http://checkstyle.sourceforge.net/config_misc.html#UncommentedMain
 
-Checkstyle HTML report: file:///C:/Users/xvik/AppData/Local/Temp/${projectName()}/build/reports/checkstyle/main.html
+Checkstyle HTML report: file:///${testProjectDir.root.canonicalPath.replaceAll('\\\\', '/')}/build/reports/checkstyle/main.html
 """ as String
     }
 }

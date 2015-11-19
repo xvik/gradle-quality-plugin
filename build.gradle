@@ -141,3 +141,10 @@ afterReleaseBuild.dependsOn publishPlugins
 afterReleaseBuild.doLast {
     logger.warn "RELEASED $project.group:$project.name:$project.version"
 }
+
+test {
+    testLogging {
+        events "skipped", "failed", "standardError"
+        exceptionFormat "full"
+    }
+}

@@ -45,7 +45,7 @@ class FindbugsReporterTest extends AbstractKitTest {
 \t>> Unread field: sample.Sample2.sample
   This field is never read. Consider removing it from the class.
 
-Findbugs HTML report: file:///C:/Users/xvik/AppData/Local/Temp/${projectName()}/build/reports/findbugs/main.html
+Findbugs HTML report: file:///${testProjectDir.root.canonicalPath.replaceAll('\\\\', '/')}/build/reports/findbugs/main.html
 """ as String
     }
 }
