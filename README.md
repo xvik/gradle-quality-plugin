@@ -18,6 +18,7 @@ Features:
 ### Setup
 
 Releases are published to [bintray jcenter](https://bintray.com/bintray/jcenter) and [gradle plugins portal](https://plugins.gradle.org).
+
 [![JCenter](https://img.shields.io/bintray/v/vyarus/xvik/gradle-quality-plugin.svg?label=jcenter)](https://bintray.com/vyarus/xvik/gradle-quality-plugin/_latestVersion)
 
 ```groovy
