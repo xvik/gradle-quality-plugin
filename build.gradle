@@ -94,6 +94,8 @@ bintray {
     user = project.hasProperty('bintrayUser') ? bintrayUser : 'USER'
     key = project.hasProperty('bintrayKey') ? bintrayKey : 'KEY'
     publications = ['maven']
+    dryRun = false
+    publish = true
     pkg {
         repo = 'xvik'
         name = project.name
@@ -105,7 +107,6 @@ bintray {
         labels = ['gradle', 'java', 'groovy', 'quality', 'checkstyle', 'pmd', 'findbugs', 'codenarc']
         publicDownloadNumbers = true
         version {
-            name = project.version
             gpg {
                 sign = true
                 passphrase = project.hasProperty('gpgPassphrase') ? gpgPassphrase : ''
@@ -137,7 +138,7 @@ pluginBundle {
 }
 
 publishPlugins.mustRunAfter bintrayUpload
-afterReleaseBuild.dependsOn publishPlugins
+afterReleaseBuild.dependsOn = [bintrayUpload, publishPlugins]
 afterReleaseBuild.doLast {
     logger.warn "RELEASED $project.group:$project.name:$project.version"
 }
