@@ -20,7 +20,6 @@ class PmdReporterTest extends AbstractKitTest {
             }
 
             task testReport() << {
-                sourceSets.main.java.srcDir 'C:/Users/xvik/AppData/Local/Temp/junit1006517273776660000/src/main/java/'
                 new ru.vyarus.gradle.plugin.quality.report.PmdReporter().report(project, 'main')
             }
         """)
