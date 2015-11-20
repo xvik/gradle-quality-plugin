@@ -6,7 +6,7 @@
     <!-- Properties (http://checkstyle.sourceforge.net/config.html#Properties#Checker) -->
     <property name="fileExtensions" value="java, properties, xml"/>
 
-    <!-- Filters http://checkstyle.sourceforge.net/config_filters.html -->
+    <!-- Filters (http://checkstyle.sourceforge.net/config_filters.html) -->
     <module name="SuppressionCommentFilter"/>
     <module name="SuppressWarningsFilter"/>
 

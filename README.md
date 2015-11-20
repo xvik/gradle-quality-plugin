@@ -301,8 +301,8 @@ $ gradlew initQualityConfig
 It will copy all configs into configured (`quality.configDir`) folder (will not override existing configs).
 
 ```
-quality\
-    configs\
+gradle\
+    config\
         checkstyle\
             checkstyle.xml		
             html-report-style.xsl	

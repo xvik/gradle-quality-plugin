@@ -137,7 +137,6 @@ pluginBundle {
     }
 }
 
-publishPlugins.mustRunAfter bintrayUpload
 afterReleaseBuild.dependsOn = [bintrayUpload, publishPlugins]
 afterReleaseBuild.doLast {
     logger.warn "RELEASED $project.group:$project.name:$project.version"
