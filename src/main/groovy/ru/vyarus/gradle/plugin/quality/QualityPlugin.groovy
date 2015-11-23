@@ -140,22 +140,25 @@ class QualityPlugin implements Plugin<Project> {
         }
         // apply only if groovy enabled
         project.plugins.withType(GroovyPlugin) {
-            project.plugins.apply(CodeNarcPlugin)
-            project.configure(project) {
-                codenarc {
-                    toolVersion = extension.codenarcVersion
-                    ignoreFailures = !extension.strict
-                    configFile = configLoader.codenarcConfig
-                    sourceSets = extension.sourceSets
-                }
-                tasks.withType(CodeNarc) {
-                    reports {
-                        xml.enabled = true
-                        html.enabled = true
+            boolean hasGroovySources = extension.sourceSets.find { it.groovy.srcDirs.find { it.exists() } }
+            if (hasGroovySources) {
+                project.plugins.apply(CodeNarcPlugin)
+                project.configure(project) {
+                    codenarc {
+                        toolVersion = extension.codenarcVersion
+                        ignoreFailures = !extension.strict
+                        configFile = configLoader.codenarcConfig
+                        sourceSets = extension.sourceSets
+                    }
+                    tasks.withType(CodeNarc) {
+                        reports {
+                            xml.enabled = true
+                            html.enabled = true
+                        }
                     }
                 }
+                applyReporter(project, 'codenarc', new CodeNarcReporter())
             }
-            applyReporter(project, 'codenarc', new CodeNarcReporter())
         }
     }
 

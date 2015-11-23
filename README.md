@@ -33,7 +33,7 @@ buildscript {
 apply plugin: 'ru.vyarus.quality'
 ```
 
-OR
+OR (waiting for approve)
 
 ```groovy
 plugins {
@@ -49,7 +49,10 @@ Plugin will activate [Checkstyle](https://docs.gradle.org/current/userguide/chec
 [PMD](https://docs.gradle.org/current/userguide/pmd_plugin.html) and 
 [FindBugs](https://docs.gradle.org/current/userguide/findbugs_plugin.html) plugins for java project. Java is detected by enabled java plugin
 and physical presence of java sources. This is required because groovy plugin is also java plugin and these tools are not required for groovy.
-If groovy plugin available, [CodeNarc](https://docs.gradle.org/current/userguide/codenarc_plugin.html) will be enabled.
+If groovy plugin available and groovy sources exists, [CodeNarc](https://docs.gradle.org/current/userguide/codenarc_plugin.html) will be enabled.
+
+For example, if groovy plugin active and there is no directory 'src/main/groovy' - CodeNarc will not be registered (suppose default plugins sources config to main only). 
+This is common when groovy used only for tests.
 
 If you have both java and groovy sources, then FindBugs, Checkstyle and PMD will check java sources and CodeNarc will be used for groovy.
 
