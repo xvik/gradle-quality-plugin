@@ -25,7 +25,7 @@ class CodeNarcReporterTest extends AbstractKitTest {
                 new ru.vyarus.gradle.plugin.quality.report.CodeNarcReporter().report(project, 'main')
             }
         """)
-        file('src/main/java').mkdirs()
+        file('src/main/groovy').mkdirs()
         fileFromClasspath('build/reports/codenarc/main.xml', '/ru/vyarus/gradle/plugin/quality/report/codenarc/main.xml')
 
         when: "call reporter"
