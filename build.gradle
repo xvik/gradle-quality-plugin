@@ -139,8 +139,8 @@ pluginBundle {
     }
 }
 // HOTFIX: plugin-publish don't see properties in global gradle.properties
-System.setProperty('gradle.publish.key', project.properties['gradle.publish.key'])
-System.setProperty('gradle.publish.secret', project.properties['gradle.publish.secret'])
+System.setProperty('gradle.publish.key', project.properties['gradle.publish.key'] ?: '')
+System.setProperty('gradle.publish.secret', project.properties['gradle.publish.secret'] ?: '')
 
 afterReleaseBuild.dependsOn = [bintrayUpload, publishPlugins]
 afterReleaseBuild.doLast {
