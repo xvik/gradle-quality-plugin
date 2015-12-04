@@ -9,7 +9,7 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
  * By default, does not override existing files.
  * Registered as 'initQualityConfig'.
  *
- * @author Vyacheslav Rusakov 
+ * @author Vyacheslav Rusakov
  * @since 12.11.2015
  * @see ru.vyarus.gradle.plugin.quality.QualityPlugin for registration
  */

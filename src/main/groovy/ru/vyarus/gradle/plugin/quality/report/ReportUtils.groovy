@@ -5,7 +5,7 @@ import org.gradle.api.Project
 /**
  * Reporting utils.
  *
- * @author Vyacheslav Rusakov 
+ * @author Vyacheslav Rusakov
  * @since 16.11.2015
  */
 @SuppressWarnings('DuplicateStringLiteral')

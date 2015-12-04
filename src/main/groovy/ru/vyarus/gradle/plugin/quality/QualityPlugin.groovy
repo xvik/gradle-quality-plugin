@@ -29,7 +29,7 @@ import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
  * with 'initQualityConfig' task (into quality.configDir directory). These custom configs will be used in
  * priority with fallback to default config if config not found.
  *
- * @author Vyacheslav Rusakov 
+ * @author Vyacheslav Rusakov
  * @since 12.11.2015
  * @see CodeNarcPlugin
  * @see CheckstylePlugin

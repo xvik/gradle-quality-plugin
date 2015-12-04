@@ -6,7 +6,7 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
 /**
  * Prints checkstyle errors (from xml report) into console and generates html report using custom xsl.
  *
- * @author Vyacheslav Rusakov 
+ * @author Vyacheslav Rusakov
  * @since 12.11.2015
  */
 @SuppressWarnings('DuplicateStringLiteral')

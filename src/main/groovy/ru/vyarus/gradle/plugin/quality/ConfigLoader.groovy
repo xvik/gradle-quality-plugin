@@ -6,7 +6,7 @@ import org.gradle.api.Project
  * Loads configuration files either from custom configs directory (quality.configDir) or from classpath.
  * When loading from classpath all files are copied (and cached) in build/quality-configs/.
  *
- * @author Vyacheslav Rusakov 
+ * @author Vyacheslav Rusakov
  * @since 12.11.2015
  */
 class ConfigLoader {

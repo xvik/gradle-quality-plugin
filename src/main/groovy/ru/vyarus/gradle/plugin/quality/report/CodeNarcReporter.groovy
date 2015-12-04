@@ -7,7 +7,7 @@ import java.util.zip.ZipFile
 /**
  * Prints codenarc errors (from xml report) into console.
  *
- * @author Vyacheslav Rusakov 
+ * @author Vyacheslav Rusakov
  * @since 13.11.2015
  */
 class CodeNarcReporter implements Reporter {

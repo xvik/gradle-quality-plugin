@@ -5,7 +5,7 @@ import org.gradle.api.Project
 /**
  * Prints pmd errors (from xml report) into console.
  *
- * @author Vyacheslav Rusakov 
+ * @author Vyacheslav Rusakov
  * @since 12.11.2015
  */
 class PmdReporter implements Reporter {

@@ -6,7 +6,7 @@ import org.gradle.api.tasks.SourceSet
 /**
  * Quality plugin configuration. Available as 'quality' closure.
  *
- * @author Vyacheslav Rusakov 
+ * @author Vyacheslav Rusakov
  * @since 12.11.2015
  * @see ru.vyarus.gradle.plugin.quality.QualityPlugin for registration
  */

@@ -5,7 +5,7 @@ import org.gradle.api.Project
 /**
  * Reporter is responsible for printing violations into console and possible html report generation.
  *
- * @author Vyacheslav Rusakov 
+ * @author Vyacheslav Rusakov
  * @since 12.11.2015
  */
 interface Reporter {
