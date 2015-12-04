@@ -39,7 +39,7 @@ jar {
 
 task groovydocJar(type: Jar, dependsOn: groovydoc, group: 'build') {
     from groovydoc.destinationDir
-    classifier = 'groovydoc'
+    classifier = 'javadoc'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes, group: 'build') {
@@ -48,7 +48,7 @@ task sourcesJar(type: Jar, dependsOn: classes, group: 'build') {
 }
 
 def pomConfig = {
-    name 'Gradle quality plugin'
+    name project.name
     url 'https://github.com/xvik/gradle-quality-plugin'
     licenses {
         license {
