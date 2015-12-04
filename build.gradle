@@ -112,7 +112,7 @@ bintray {
                 passphrase = project.hasProperty('gpgPassphrase') ? gpgPassphrase : ''
             }
             mavenCentralSync {
-                sync = false
+                sync = true
             }
         }
     }
