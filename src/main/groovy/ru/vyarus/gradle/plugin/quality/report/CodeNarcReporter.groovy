@@ -32,7 +32,7 @@ class CodeNarcReporter implements Reporter {
 
                 Map<String, String> desc = [:]
                 result.Rules.Rule.each {
-                    desc[it.@name] = it.Description.text()
+                    desc[it.@name] = ReportUtils.unescapeHtml(it.Description.text())
                 }
 
                 Properties props = loadCodenarcProperties(project)
@@ -49,10 +49,11 @@ class CodeNarcReporter implements Reporter {
 
                             String priority = it.@priority
                             String srcLine = ReportUtils.unescapeHtml(it.SourceLine.text())
+                            String message = ReportUtils.unescapeHtml(it.Message.text())
                             logger.error "\n[${group.capitalize()} | ${rule}] ${pkg}.$src:${it.@lineNumber}  " +
                                     "(priority ${priority})" +
                                     "\n\t>> ${srcLine}" +
-                                    "\n  ${it.Message.text()}" +
+                                    "\n  ${message}" +
                                     "\n  ${desc[rule]}" +
                                     "\n  http://codenarc.sourceforge.net/codenarc-rules-${group}.html#$rule"
                         }
