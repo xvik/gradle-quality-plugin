@@ -45,10 +45,10 @@ class QualityPlugin implements Plugin<Project> {
             QualityExtension extension = project.extensions.create('quality', QualityExtension, project)
             addInitConfigTask(project)
 
-            ConfigLoader configLoader = new ConfigLoader(project)
-            boolean hasJavaSources = extension.sourceSets.find { it.java.srcDirs.find { it.exists() } }
-
             project.afterEvaluate {
+                ConfigLoader configLoader = new ConfigLoader(project)
+                boolean hasJavaSources = extension.sourceSets.find { it.java.srcDirs.find { it.exists() } }
+
                 // activate java plugins only when java sources exists
                 if (hasJavaSources) {
                     configureJavac(project, extension)
