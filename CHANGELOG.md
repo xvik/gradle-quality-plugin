@@ -1,4 +1,8 @@
+### 1.0.2 (2015-12-06)
+
 * Unescape CodeNarc messages
+* Update checkstyle 6.12.1 -> 6.13
+* Update pmd 5.4.0 -> 5.4.1
 
 ### 1.0.1 (2015-12-04)
 
