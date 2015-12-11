@@ -1,3 +1,5 @@
+* Delay default configs copying to actual task execution to avoid problems with clean task
+
 ### 1.0.2 (2015-12-06)
 
 * Unescape CodeNarc messages

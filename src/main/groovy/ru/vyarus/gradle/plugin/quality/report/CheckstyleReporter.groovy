@@ -47,7 +47,7 @@ class CheckstyleReporter implements Reporter {
 
                 String htmlReportPath = "${extensions.checkstyle.reportsDir}/${type}.html"
                 ant.xslt(in: reportFile,
-                        style: configLoader.checkstyleXsl,
+                        style: configLoader.resolveCheckstyleXsl(),
                         out: htmlReportPath
                 )
                 String htmlReportUrl = ReportUtils.toConsoleLink(file(htmlReportPath))

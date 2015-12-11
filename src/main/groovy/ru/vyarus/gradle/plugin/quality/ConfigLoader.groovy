@@ -5,6 +5,9 @@ import org.gradle.api.Project
 /**
  * Loads configuration files either from custom configs directory (quality.configDir) or from classpath.
  * When loading from classpath all files are copied (and cached) in build/quality-configs/.
+ * <p>
+ * To avoid problems with clean task, default configs are copied only before actual task run. All config file
+ * getters contains optional parameter copyDefaultConfig to prevent actual file copying on configuration phase.
  *
  * @author Vyacheslav Rusakov
  * @since 12.11.2015
@@ -25,28 +28,28 @@ class ConfigLoader {
         this.project = project
     }
 
-    File getCheckstyleConfig() {
-        resolve(checkstyle)
+    File resolveCheckstyleConfig(boolean copyDefaultFile = true) {
+        resolve(checkstyle, copyDefaultFile)
     }
 
-    File getCheckstyleXsl() {
-        resolve(checkstyleXsl)
+    File resolveCheckstyleXsl(boolean copyDefaultFile = true) {
+        resolve(checkstyleXsl, copyDefaultFile)
     }
 
-    File getPmdConfig() {
-        resolve(pmd)
+    File resolvePmdConfig(boolean copyDefaultFile = true) {
+        resolve(pmd, copyDefaultFile)
     }
 
-    File getFindbugsExclude() {
-        resolve(findbugsExclude)
+    File resolveFindbugsExclude(boolean copyDefaultFile = true) {
+        resolve(findbugsExclude, copyDefaultFile)
     }
 
-    File getFindbugsXsl() {
-        resolve(findbugsXsl)
+    File resolveFindbugsXsl(boolean copyDefaultFile = true) {
+        resolve(findbugsXsl, copyDefaultFile)
     }
 
-    File getCodenarcConfig() {
-        resolve(codenarc)
+    File resolveCodenarcConfig(boolean copyDefaultFile = true) {
+        resolve(codenarc, copyDefaultFile)
     }
 
     /**
@@ -61,12 +64,12 @@ class ConfigLoader {
         }
     }
 
-    private File resolve(String path) {
+    private File resolve(String path, boolean copyDefaultFile) {
         init()
         // look custom user file first
         File target = new File(configDir, path)
         return target.exists() ?
-                target : copyConfig(tmpConfigDir, path, false)
+                target : (copyDefaultFile ? copyConfig(tmpConfigDir, path, false) : new File(tmpConfigDir, path))
     }
 
     private void init() {

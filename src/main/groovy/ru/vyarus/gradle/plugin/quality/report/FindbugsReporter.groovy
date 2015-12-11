@@ -51,7 +51,7 @@ class FindbugsReporter implements Reporter {
                 // html report
                 String htmlReportPath = "${extensions.findbugs.reportsDir}/${type}.html"
                 ant.xslt(in: reportFile,
-                        style: configLoader.findbugsXsl,
+                        style: configLoader.resolveFindbugsXsl(),
                         out: htmlReportPath
                 )
                 String htmlReportUrl = ReportUtils.toConsoleLink(file(htmlReportPath))

@@ -25,7 +25,7 @@ import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
  * <p>
  * Plugin may be configured with 'quality' closure. See {@link QualityExtension} for configuration options.
  * <p>
- * By default plugin use bundled quality plugins configurations. These plugins could be copied into project
+ * By default plugin use bundled quality plugins configurations. These configs could be copied into project
  * with 'initQualityConfig' task (into quality.configDir directory). These custom configs will be used in
  * priority with fallback to default config if config not found.
  *
@@ -84,8 +84,13 @@ class QualityPlugin implements Plugin<Project> {
                 showViolations = false
                 toolVersion = extension.checkstyleVersion
                 ignoreFailures = !extension.strict
-                configFile = configLoader.checkstyleConfig
+                configFile = configLoader.resolveCheckstyleConfig(false)
                 sourceSets = extension.sourceSets
+            }
+            tasks.withType(Checkstyle) {
+                doFirst {
+                    configLoader.resolveCheckstyleConfig()
+                }
             }
         }
         applyReporter(project, 'checkstyle', new CheckstyleReporter(configLoader))
@@ -100,8 +105,13 @@ class QualityPlugin implements Plugin<Project> {
             pmd {
                 toolVersion = extension.pmdVersion
                 ignoreFailures = !extension.strict
-                ruleSetFiles = files(configLoader.pmdConfig.absolutePath)
+                ruleSetFiles = files(configLoader.resolvePmdConfig(false).absolutePath)
                 sourceSets = extension.sourceSets
+            }
+            tasks.withType(Pmd) {
+                doFirst {
+                    configLoader.resolvePmdConfig()
+                }
             }
         }
         applyReporter(project, 'pmd', new PmdReporter())
@@ -118,11 +128,14 @@ class QualityPlugin implements Plugin<Project> {
                 ignoreFailures = !extension.strict
                 effort = extension.findbugsEffort
                 reportLevel = extension.findbugsLevel
-                excludeFilter = configLoader.findbugsExclude
+                excludeFilter = configLoader.resolveFindbugsExclude(false)
                 sourceSets = extension.sourceSets
             }
 
             tasks.withType(FindBugs) {
+                doFirst {
+                    configLoader.resolveFindbugsExclude()
+                }
                 reports {
                     xml {
                         enabled true
@@ -147,10 +160,13 @@ class QualityPlugin implements Plugin<Project> {
                     codenarc {
                         toolVersion = extension.codenarcVersion
                         ignoreFailures = !extension.strict
-                        configFile = configLoader.codenarcConfig
+                        configFile = configLoader.resolveCodenarcConfig(false)
                         sourceSets = extension.sourceSets
                     }
                     tasks.withType(CodeNarc) {
+                        doFirst {
+                            configLoader.resolveCodenarcConfig()
+                        }
                         reports {
                             xml.enabled = true
                             html.enabled = true
