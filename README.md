@@ -30,7 +30,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:1.0.3'
+        classpath 'ru.vyarus:gradle-quality-plugin:1.1.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -40,7 +40,7 @@ OR
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '1.0.3'
+    id 'ru.vyarus.quality' version '1.1.0'
 }
 ```
 
@@ -164,6 +164,44 @@ Or you can use annotations. FindBugs use custom annotations and so you need to a
 @SuppressFBWarnings("URF_UNREAD_FIELD")
 ```
 
+###### Plugins
+
+You may add additional findbugs checks by declaring findbugs plugins in `findbugsPlugins` dependency configuration.
+But, as findbugs plugin applied after configuration read, there are two options:
+
+Either use afterEvaluate:
+
+```groovy
+afterEvaluate {
+    dependencies {
+        findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.4.1'
+    }
+}
+```
+
+Or declare findbugs plugin manually (it will be configured by quality plugin):
+
+```groovy
+plugins {
+    id 'findbugs'
+}
+dependencies {
+    findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.4.1'
+}
+```
+
+[Find Security Bugs](http://find-sec-bugs.github.io/)
+
+```groovy
+findbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.4.4'
+```
+
+[fb-contrib: A FindBugs auxiliary detector plugin](http://fb-contrib.sourceforge.net/)
+
+```groovy
+findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.4.1'
+```
+
 ###### Annotations
 
 You may use [jsr305 annotations](http://findbugs.sourceforge.net/manual/annotations.html) to guide findbugs.
@@ -205,6 +243,19 @@ To [suppress violation](http://codenarc.sourceforge.net/codenarc-configuring-rul
 @SuppressWarnings("ClassJavadoc")
 ```
 
+#### AnimalSniffer
+
+If [ru.vyarus.animalsniffer](https://github.com/xvik/gradle-animalsniffer-plugin) applied then 
+it will be configured the same way as other quality plugins:
+
+```groovy
+animalsniffer {
+    toolVersion = extension.animalsnifferVersion
+    ignoreFailures = !extension.strict
+    sourceSets = extension.sourceSets    
+}
+```
+
 ### Configuration
 
 Use `quality` closure to configure plugin.
@@ -219,6 +270,7 @@ quality {
     pmdVersion = '5.4.1'
     findbugsVersion = '3.0.1'
     codenarcVersion = '0.24.1'
+    animalsnifferVersion
 
     // Enable/disable tools
      

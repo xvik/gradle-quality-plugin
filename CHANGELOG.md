@@ -1,4 +1,7 @@
+### 1.1.0 (2015-12-21)
+
 * Add [ru.vyarus.animalsniffer](https://github.com/xvik/gradle-animalsniffer-plugin) plugin configuration support
+* Improve FindBugs console output
 
 ### 1.0.3 (2015-12-11)
 
