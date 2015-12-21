@@ -66,12 +66,12 @@ class FindbugsReporter implements Reporter {
             desc[pattern.@type] = pattern.Details.text()
             //remove html tags
                     .replaceAll('<(.|\n)*?>', '')
-            // remove empty lines after tags remove (only one separator lne remain)
-                    .replaceAll('( *\n){3,}', '\n\n')
+            // remove empty lines after tags remove (only one separator line remain)
+                    .replaceAll('([ \t]*\n){3,}', '\n\n')
             // reduce left indents
-                    .replaceAll(' {2,}', '  ')
+                    .replaceAll('\n\t+', '\n  ').replaceAll(' {2,}', '  ')
             // indent all not indented lines
-                    .replaceAll('\n([^ ])', '\n  $1').trim()
+                    .replaceAll('\n([^\\s])', '\n  $1').trim()
         }
         return desc
     }
