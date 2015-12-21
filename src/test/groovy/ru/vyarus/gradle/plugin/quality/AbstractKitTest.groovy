@@ -10,12 +10,19 @@ import spock.lang.Specification
  * @author Vyacheslav Rusakov 
  * @since 18.11.2015
  */
-abstract class AbstractKitTest extends Specification{
+abstract class AbstractKitTest extends Specification {
 
     @Rule final TemporaryFolder testProjectDir = new TemporaryFolder()
     File buildFile
 
+    List<File> pluginClasspath
+
     def setup() {
+        def pluginClasspathResource = getClass().classLoader.findResource("plugin-classpath.txt")
+        if (pluginClasspathResource == null) {
+            throw new IllegalStateException("Did not find plugin classpath resource, run `testClasses` build task.")
+        }
+        pluginClasspath = pluginClasspathResource.readLines().collect { new File(it) }
         buildFile = testProjectDir.newFile('build.gradle')
     }
 
@@ -41,7 +48,7 @@ abstract class AbstractKitTest extends Specification{
         GradleRunner.create()
                 .withProjectDir(testProjectDir.root)
                 .withArguments((commands + ['--stacktrace']) as String[])
-                .withPluginClasspath([new File('build/classes/main'), new File('build/resources/main')])
+                .withPluginClasspath(pluginClasspath)
     }
 
     BuildResult run(String... commands) {

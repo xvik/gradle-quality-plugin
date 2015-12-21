@@ -1,3 +1,5 @@
+* Add [ru.vyarus.animalsniffer](https://github.com/xvik/gradle-animalsniffer-plugin) plugin configuration support
+
 ### 1.0.3 (2015-12-11)
 
 * Delay default configs copying to actual task execution to avoid problems with clean task

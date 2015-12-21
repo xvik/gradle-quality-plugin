@@ -55,6 +55,7 @@ class QualityPlugin implements Plugin<Project> {
                     applyCheckstyle(project, extension, configLoader)
                     applyPMD(project, extension, configLoader)
                     applyFindbugs(project, extension, configLoader)
+                    configureAnimalSniffer(project, extension)
                 }
                 applyCodeNarc(project, extension, configLoader)
             }
@@ -174,6 +175,18 @@ class QualityPlugin implements Plugin<Project> {
                     }
                 }
                 applyReporter(project, 'codenarc', new CodeNarcReporter())
+            }
+        }
+    }
+
+    private void configureAnimalSniffer(Project project, QualityExtension extension) {
+        project.plugins.withId('ru.vyarus.animalsniffer') {
+            project.configure(project) {
+                animalsniffer {
+                    toolVersion = extension.animalsnifferVersion
+                    ignoreFailures = !extension.strict
+                    sourceSets = extension.sourceSets
+                }
             }
         }
     }

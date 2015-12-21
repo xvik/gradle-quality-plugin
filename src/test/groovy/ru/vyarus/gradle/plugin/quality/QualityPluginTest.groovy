@@ -5,17 +5,12 @@ import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.plugins.quality.FindBugsPlugin
 import org.gradle.api.plugins.quality.PmdPlugin
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 
 /**
  * @author Vyacheslav Rusakov 
  * @since 12.11.2015
  */
 class QualityPluginTest extends AbstractTest {
-
-    @Rule
-    final TemporaryFolder testProjectDir = new TemporaryFolder()
 
     def "Check plugins registration"() {
 
