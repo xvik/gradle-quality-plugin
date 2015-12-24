@@ -1,3 +1,5 @@
+* Fix AnimalSniffer version configuration
+
 ### 1.1.0 (2015-12-21)
 
 * Add [ru.vyarus.animalsniffer](https://github.com/xvik/gradle-animalsniffer-plugin) plugin configuration support

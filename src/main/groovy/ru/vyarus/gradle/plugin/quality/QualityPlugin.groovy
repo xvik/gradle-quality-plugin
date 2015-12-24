@@ -183,9 +183,11 @@ class QualityPlugin implements Plugin<Project> {
         project.plugins.withId('ru.vyarus.animalsniffer') {
             project.configure(project) {
                 animalsniffer {
-                    toolVersion = extension.animalsnifferVersion
                     ignoreFailures = !extension.strict
                     sourceSets = extension.sourceSets
+                }
+                if (extension.animalsnifferVersion) {
+                    animalsniffer.toolVersion = extension.animalsnifferVersion
                 }
             }
         }
