@@ -1,3 +1,5 @@
+### 1.1.1 (2015-12-24)
+
 * Fix AnimalSniffer version configuration
 
 ### 1.1.0 (2015-12-21)
