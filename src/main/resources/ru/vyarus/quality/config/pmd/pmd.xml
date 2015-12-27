@@ -49,6 +49,7 @@
     <!-- Controversial (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/controversial.html) -->
     <rule ref="rulesets/java/controversial.xml">
         <exclude name="AtLeastOneConstructor"/>
+        <exclude name="AvoidFinalLocalVariable"/>
         <exclude name="UseConcurrentHashMap"/>
         <exclude name="DataflowAnomalyAnalysis"/>
         <exclude name="CallSuperInConstructor"/>
@@ -68,7 +69,7 @@
     </rule>
     <rule ref="rulesets/java/design.xml/AvoidDeeplyNestedIfStmts">
         <properties>
-            <property name="problemDepth" value="5"/>
+            <property name="problemDepth" value="4"/>
         </properties>
     </rule>
 
