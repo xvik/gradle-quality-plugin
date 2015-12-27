@@ -14,7 +14,7 @@ sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
 wrapper {
-    gradleVersion = 2.8
+    gradleVersion = 2.9
 }
 
 task createClasspathManifest {

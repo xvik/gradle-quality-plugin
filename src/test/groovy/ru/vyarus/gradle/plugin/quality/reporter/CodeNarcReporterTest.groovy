@@ -30,11 +30,11 @@ class CodeNarcReporterTest extends AbstractKitTest {
 
         when: "call reporter"
         BuildResult result = run('testReport')
-        def error = result.standardError
+        def error = result.output
 
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
-        error.replaceAll("\r", "") == """
+        error.replaceAll("\r", "").contains """
 24 (0 / 10 / 14) CodeNarc violations were found in 2 files
 
 [Formatting | ClassJavadoc] sample.GSample:3  (priority 2)

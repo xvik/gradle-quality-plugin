@@ -38,7 +38,7 @@ class FindbugsPluginsKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.standardOutput.contains('FindBugs rule violations were found')
+        result.output.contains('FindBugs rule violations were found')
     }
 
     def "Check findbugs plugins 2"() {
@@ -71,6 +71,6 @@ class FindbugsPluginsKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.standardOutput.contains('FindBugs rule violations were found')
+        result.output.contains('FindBugs rule violations were found')
     }
 }

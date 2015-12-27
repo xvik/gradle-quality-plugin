@@ -30,11 +30,11 @@ class FindbugsReporterTest extends AbstractKitTest {
 
         when: "call reporter"
         BuildResult result = run('testReport')
-        def error = result.standardError
+        def error = result.output
 
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
-        error.replaceAll("\r", "") == """
+        error.replaceAll("\r", "").contains """
 2 (0 / 2 / 0) FindBugs violations were found in 2 files
 
 [Performance | URF_UNREAD_FIELD] sample.Sample:8  (priority 2)

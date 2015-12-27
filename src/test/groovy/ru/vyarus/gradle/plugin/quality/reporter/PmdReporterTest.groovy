@@ -32,11 +32,11 @@ class PmdReporterTest extends AbstractKitTest {
 
         when: "call reporter"
         BuildResult result = run('testReport')
-        def error = result.standardError
+        def error = result.output
 
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
-        error.replaceAll("\r", "") == """
+        error.replaceAll("\r", "").contains """
 15 PMD rule violations were found in 2 files
 
 [Unused Code | UnusedPrivateField] sample.Sample:5

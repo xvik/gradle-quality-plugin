@@ -34,11 +34,11 @@ class CheckstyleReporterTest extends AbstractKitTest {
 
         when: "call reporter"
         BuildResult result = run('testReport')
-        def error = result.standardError
+        def error = result.output
 
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
-       error.replaceAll("\r", "") == """
+       error.replaceAll("\r", "").contains """
 6 Checkstyle rule violations were found in 2 files
 
 [Misc | NewlineAtEndOfFile] sample.Sample:0
