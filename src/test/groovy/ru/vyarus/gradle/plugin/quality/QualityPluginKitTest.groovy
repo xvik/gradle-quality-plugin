@@ -55,7 +55,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         result.output.contains('PMD rule violations were found')
 
         where:
-        gradleVersion << ['2.8', '2.9', '2.10']
+        gradleVersion << GRADLE_VERSIONS
     }
 
     @Unroll
@@ -101,7 +101,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         result.output.contains('CodeNarc rule violations were found')
 
         where:
-        gradleVersion << ['2.8', '2.9', '2.10']
+        gradleVersion << GRADLE_VERSIONS
     }
 
     def "Check java and groovy checks"() {
