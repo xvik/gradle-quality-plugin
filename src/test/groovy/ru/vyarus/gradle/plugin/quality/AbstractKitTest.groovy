@@ -12,9 +12,8 @@ import spock.lang.Specification
  */
 abstract class AbstractKitTest extends Specification {
 
-    static def GRADLE_VERSIONS = ['2.8', '2.10']
-
-    @Rule final TemporaryFolder testProjectDir = new TemporaryFolder()
+    @Rule
+    final TemporaryFolder testProjectDir = new TemporaryFolder()
     File buildFile
 
     List<File> pluginClasspath

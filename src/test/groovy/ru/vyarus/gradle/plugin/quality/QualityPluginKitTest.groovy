@@ -2,7 +2,6 @@ package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
-import spock.lang.Unroll
 
 /**
  * @author Vyacheslav Rusakov 
@@ -10,8 +9,7 @@ import spock.lang.Unroll
  */
 class QualityPluginKitTest extends AbstractKitTest {
 
-    @Unroll
-    def "Check java checks in gradle #gradleVersion"() {
+    def "Check java checks"() {
         setup:
         build("""
             plugins {
@@ -32,7 +30,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         fileFromClasspath('src/main/java/sample/Sample2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample2.java')
 
         when: "run check task with java sources"
-        BuildResult result = runVer(gradleVersion, 'check')
+        BuildResult result = run('check')
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
@@ -46,20 +44,16 @@ class QualityPluginKitTest extends AbstractKitTest {
         file('build/reports/pmd/main.html').exists()
 
         when: "run one more time"
-        result = runVer(gradleVersion, 'check', '--rerun-tasks')
+        result = run('check', '--rerun-tasks')
 
         then: "ok"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('Checkstyle rule violations were found')
         result.output.contains('FindBugs rule violations were found')
         result.output.contains('PMD rule violations were found')
-
-        where:
-        gradleVersion << GRADLE_VERSIONS
     }
 
-    @Unroll
-    def "Check groovy checks in gradle #gradleVersion"() {
+    def "Check groovy checks"() {
         setup:
         build("""
             plugins {
@@ -84,7 +78,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         fileFromClasspath('src/main/groovy/sample/GSample2.groovy', '/ru/vyarus/gradle/plugin/quality/groovy/sample/GSample2.groovy')
 
         when: "run check task with groovy sources"
-        BuildResult result = runVer(gradleVersion, 'check')
+        BuildResult result = run('check')
 
         then: "plugin detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
@@ -94,14 +88,11 @@ class QualityPluginKitTest extends AbstractKitTest {
         file('build/reports/codenarc/main.html').exists()
 
         when: "run one more time"
-        result = runVer(gradleVersion, 'check', '--rerun-tasks')
+        result = run('check', '--rerun-tasks')
 
         then: "ok"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('CodeNarc rule violations were found')
-
-        where:
-        gradleVersion << GRADLE_VERSIONS
     }
 
     def "Check java and groovy checks"() {
