@@ -30,7 +30,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:1.1.1'
+        classpath 'ru.vyarus:gradle-quality-plugin:1.2.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -40,7 +40,7 @@ OR
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '1.1.1'
+    id 'ru.vyarus.quality' version '1.2.0'
 }
 ```
 
