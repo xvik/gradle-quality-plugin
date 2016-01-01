@@ -266,7 +266,7 @@ quality {
     
     // Tools versions
     
-    checkstyleVersion = '6.13'
+    checkstyleVersion = '6.14.1'
     pmdVersion = '5.4.1'
     findbugsVersion = '3.0.1'
     codenarcVersion = '0.24.1'
