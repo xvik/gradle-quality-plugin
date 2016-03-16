@@ -160,7 +160,7 @@
         <module name="OuterTypeFilename"/>
         <!--<module name="TodoComment"/>-->
         <module name="TrailingComment"/>
-        <module name="UncommentedMain"/>
+        <!--<module name="UncommentedMain"/>-->
         <module name="UpperEll"/>
 
 

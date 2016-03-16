@@ -1,3 +1,8 @@
+* Update checkstyle 6.14.1 -> 6.16.1
+* Update codenarc 0.24.1 -> 0.25.1 
+* Update default checkstyle config:
+    - Disable [Misc/UncommentedMain](http://checkstyle.sourceforge.net/config_misc.html#UncommentedMain)
+
 ### 1.2.0 (2016-01-01)
 * Update default configs: 
     - Disable [Pmd/Controversial/AvoidFinalLocalVariable](https://pmd.github.io/pmd-5.4.1/pmd-java/rules/java/controversial.html#AvoidFinalLocalVariable)

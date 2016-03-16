@@ -1,17 +1,16 @@
 plugins {
     id 'groovy'
     id 'java-gradle-plugin'
-    id 'com.gradle.plugin-publish' version '0.9.2'
-    id 'com.jfrog.bintray' version '1.5'
-    id 'net.researchgate.release' version '2.3.4'
-    id 'ru.vyarus.quality' version '1.1.1'
+    id 'com.gradle.plugin-publish' version '0.9.4'
+    id 'com.jfrog.bintray' version '1.6'
+    id 'net.researchgate.release' version '2.3.5'
+    id 'ru.vyarus.quality' version '1.2.0'
     id 'ru.vyarus.java-lib' version '1.0.1'
     id 'ru.vyarus.github-info' version '1.0.0'
-    id "com.github.ben-manes.versions" version "0.11.3"
+    id "com.github.ben-manes.versions" version "0.12.0"
 }
 
 sourceCompatibility = 1.6
-targetCompatibility = 1.6
 
 wrapper {
     gradleVersion = 2.9
@@ -99,9 +98,6 @@ pluginBundle {
         artifactId = project.name
     }
 }
-// HOTFIX: plugin-publish don't see properties in global gradle.properties
-System.setProperty('gradle.publish.key', project.properties['gradle.publish.key'] ?: '')
-System.setProperty('gradle.publish.secret', project.properties['gradle.publish.secret'] ?: '')
 
 afterReleaseBuild {
     dependsOn = [bintrayUpload, publishPlugins]

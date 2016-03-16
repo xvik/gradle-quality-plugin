@@ -16,10 +16,10 @@ class QualityExtension {
         sourceSets = [project.sourceSets.main] as Collection<SourceSet>
     }
 
-    String checkstyleVersion = '6.14.1'
+    String checkstyleVersion = '6.16.1'
     String pmdVersion = '5.4.1'
     String findbugsVersion = '3.0.1'
-    String codenarcVersion = '0.24.1'
+    String codenarcVersion = '0.25.1'
     /**
      * Sets AnimalSniffer version.
      * Works only when 'ru.vyarus.animalsniffer' plugin applied.
