@@ -1,4 +1,4 @@
-* Update checkstyle 6.14.1 -> 6.16.1
+* Update checkstyle 6.14.1 -> 6.17
 * Update codenarc 0.24.1 -> 0.25.1 
 * Update default checkstyle config:
     - Disable [Misc/UncommentedMain](http://checkstyle.sourceforge.net/config_misc.html#UncommentedMain)
