@@ -7,13 +7,13 @@ plugins {
     id 'ru.vyarus.quality' version '1.2.0'
     id 'ru.vyarus.java-lib' version '1.0.1'
     id 'ru.vyarus.github-info' version '1.0.0'
-    id "com.github.ben-manes.versions" version "0.12.0"
+    id "com.github.ben-manes.versions" version '0.12.0'
 }
 
 sourceCompatibility = 1.6
 
 wrapper {
-    gradleVersion = 2.9
+    gradleVersion = 2.12
 }
 
 task createClasspathManifest {
