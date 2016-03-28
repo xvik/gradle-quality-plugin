@@ -169,4 +169,44 @@ class QualityPluginKitTest extends AbstractKitTest {
         !result.output.contains('FindBugs rule violations were found')
         !result.output.contains('PMD rule violations were found')
     }
+
+    def "Check checkstyle html report for gradle 2.9"() {
+        /* Gradle 2.10 adds html report for checkstyle, which is disabled to use custom report generation */
+        setup:
+        build("""
+            plugins {
+                id 'java'
+                id 'ru.vyarus.quality'
+            }
+
+            quality {
+                pmd false
+                findbugs false
+                strict false
+            }
+
+            repositories {
+                jcenter() //required for testKit run
+            }
+        """)
+
+        fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
+
+        when: "run check task with java sources"
+        BuildResult result = runVer('2.9', 'check')
+
+        then: "checkstyle successful"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('Checkstyle rule violations were found')
+
+        then: "checkstyle html report generated"
+        file('build/reports/checkstyle/main.html').exists()
+
+        when: "run one more time"
+        result = runVer('2.9', 'check', '--rerun-tasks')
+
+        then: "ok"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('Checkstyle rule violations were found')
+    }
 }

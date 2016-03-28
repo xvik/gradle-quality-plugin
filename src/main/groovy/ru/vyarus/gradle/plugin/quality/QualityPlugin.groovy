@@ -20,7 +20,8 @@ import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
  * If groovy plugin enabled, CodeNarc plugin activated.
  * <p>
  * All plugins are configured to produce xml and html reports. For checkstyle and findbugs html reports
- * generated manually. All plugins violations are printed into console in unified format which makes console
+ * generated manually (gradle 2.10 added checkstyle html report by default, plugin have to disable it to grant
+ * consistent behaviour). All plugins violations are printed into console in unified format which makes console
  * output good enough for fixing violations.
  * <p>
  * Plugin may be configured with 'quality' closure. See {@link QualityExtension} for configuration options.
@@ -91,6 +92,10 @@ class QualityPlugin implements Plugin<Project> {
             tasks.withType(Checkstyle) {
                 doFirst {
                     configLoader.resolveCheckstyleConfig()
+                }
+                // disable default html report (supported from gradle 2.10)
+                if (reports.enabledReportNames.contains('html')) {
+                    reports.html.enabled = false
                 }
             }
         }

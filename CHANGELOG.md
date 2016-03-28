@@ -1,5 +1,6 @@
 * Update checkstyle 6.14.1 -> 6.17
 * Update codenarc 0.24.1 -> 0.25.1 
+* Disable default checkstyle html report (enabled in gradle >=2.10) to avoid duplicate report generation
 * Update default checkstyle config:
     - Disable [Misc/UncommentedMain](http://checkstyle.sourceforge.net/config_misc.html#UncommentedMain)
 
