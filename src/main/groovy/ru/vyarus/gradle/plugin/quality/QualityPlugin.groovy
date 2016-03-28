@@ -7,6 +7,7 @@ import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.*
 import org.gradle.api.tasks.TaskState
+import org.gradle.reporting.DurationFormatter
 import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 
@@ -38,6 +39,8 @@ import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
  * @see FindBugsPlugin
  */
 class QualityPlugin implements Plugin<Project> {
+
+    private static final DurationFormatter DURATION_FORMAT = new DurationFormatter()
 
     @Override
     void apply(Project project) {
@@ -201,7 +204,12 @@ class QualityPlugin implements Plugin<Project> {
     private void applyReporter(Project project, String type, Reporter reporter) {
         project.gradle.taskGraph.afterTask { Task task, TaskState state ->
             if (task.name.startsWith(type)) {
+                long start = System.currentTimeMillis()
+
                 reporter.report(project, task.name[type.length()..-1].toLowerCase())
+
+                String duration = DURATION_FORMAT.format(System.currentTimeMillis() - start)
+                project.logger.info("[plugin:quality] reporting executed in $duration")
             }
         }
     }
