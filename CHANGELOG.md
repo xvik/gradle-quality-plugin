@@ -1,7 +1,8 @@
+### 1.3.0 (2016-03-30)
 * Update checkstyle 6.14.1 -> 6.17
 * Update codenarc 0.24.1 -> 0.25.1 
 * Disable default checkstyle html report (enabled in gradle >=2.10) to avoid duplicate report generation
-* Add reporting execution time logging (visible with --info)
+* Add reporting execution time logging (visible with --info option)
 * Update default checkstyle config:
     - Disable [Misc/UncommentedMain](http://checkstyle.sourceforge.net/config_misc.html#UncommentedMain)
 

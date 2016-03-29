@@ -30,7 +30,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:1.2.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:1.3.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -40,7 +40,7 @@ OR
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '1.2.0'
+    id 'ru.vyarus.quality' version '1.3.0'
 }
 ```
 
@@ -199,7 +199,7 @@ findbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.4.4'
 [fb-contrib: A FindBugs auxiliary detector plugin](http://fb-contrib.sourceforge.net/)
 
 ```groovy
-findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.4.1'
+findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.6.0'
 ```
 
 ###### Annotations
@@ -266,10 +266,10 @@ quality {
     
     // Tools versions
     
-    checkstyleVersion = '6.14.1'
+    checkstyleVersion = '6.17'
     pmdVersion = '5.4.1'
     findbugsVersion = '3.0.1'
-    codenarcVersion = '0.24.1'
+    codenarcVersion = '0.25.1'
     animalsnifferVersion
 
     // Enable/disable tools
@@ -377,3 +377,12 @@ Task copies all configs, but you may remove all files you don't want to customiz
 File names are important: if you rename files plugin will not find them and use defaults.
 
 Configuration files contain all possible rules. Not used rules are commented.
+
+### Profiling
+
+Gradle profile report (`--profile` [option](https://docs.gradle.org/current/userguide/gradle_command_line.html)) 
+shows quality tools tasks time (checkstyleMain, pmdMain etc), 
+which includes both tool execution time and console reporting (performed by quality plugin). 
+
+If you need to know exact console reporting time use `--info` option. Plugin writes reporting execution time as info log 
+(see log messages starting with `[plugin:quality]` just after quality tools logs).
