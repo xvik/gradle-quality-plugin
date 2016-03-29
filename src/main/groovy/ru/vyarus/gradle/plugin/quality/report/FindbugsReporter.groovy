@@ -55,7 +55,7 @@ class FindbugsReporter implements Reporter {
                 if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
                     ant.xslt(in: reportFile,
                             style: configLoader.resolveFindbugsXsl(),
-                            out: htmlReportPath
+                            out: htmlReportPath,
                     )
                 }
 

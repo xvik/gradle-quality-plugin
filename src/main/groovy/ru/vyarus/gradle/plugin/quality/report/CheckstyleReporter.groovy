@@ -51,7 +51,7 @@ class CheckstyleReporter implements Reporter {
                 if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
                     ant.xslt(in: reportFile,
                             style: configLoader.resolveCheckstyleXsl(),
-                            out: htmlReportPath
+                            out: htmlReportPath,
                     )
                 }
 
