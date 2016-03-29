@@ -46,11 +46,16 @@ class CheckstyleReporter implements Reporter {
                 }
 
                 String htmlReportPath = "${extensions.checkstyle.reportsDir}/${type}.html"
-                ant.xslt(in: reportFile,
-                        style: configLoader.resolveCheckstyleXsl(),
-                        out: htmlReportPath
-                )
-                String htmlReportUrl = ReportUtils.toConsoleLink(file(htmlReportPath))
+                File htmlReportFile = file(htmlReportPath)
+                // avoid redundant re-generation
+                if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
+                    ant.xslt(in: reportFile,
+                            style: configLoader.resolveCheckstyleXsl(),
+                            out: htmlReportPath
+                    )
+                }
+
+                String htmlReportUrl = ReportUtils.toConsoleLink(htmlReportFile)
                 logger.error "\nCheckstyle HTML report: $htmlReportUrl"
             }
         }
