@@ -26,7 +26,7 @@ class FindbugsPluginsKitTest extends AbstractKitTest {
 
             repositories { mavenCentral() }
             dependencies {
-                findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.4.1'
+                findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.6.0'
             }
         """)
 
@@ -58,7 +58,7 @@ class FindbugsPluginsKitTest extends AbstractKitTest {
             repositories { mavenCentral() }
             afterEvaluate {
                 dependencies {
-                    findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.4.1'
+                    findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.6.0'
                 }
             }
         """)
