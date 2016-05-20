@@ -386,3 +386,14 @@ which includes both tool execution time and console reporting (performed by qual
 
 If you need to know exact console reporting time use `--info` option. Plugin writes reporting execution time as info log 
 (see log messages starting with `[plugin:quality]` just after quality tools logs).
+
+### Might also like
+
+* [pom-plugin](https://github.com/xvik/gradle-pom-plugin) - improves pom generation
+* [java-lib-plugin](https://github.com/xvik/gradle-java-lib-plugin) - avoid boilerplate for java or groovy library project
+* [github-info-plugin](https://github.com/xvik/gradle-github-info-plugin) - pre-configure common plugins with github related info
+* [animalsniffer-plugin](https://github.com/xvik/gradle-animalsniffer-plugin) - java compatibility checks
+* [java-library generator](https://github.com/xvik/generator-lib-java) - java library project generator
+
+-
+[![gradle plugin generator](http://img.shields.io/badge/Powered%20by-%20Gradle%20plugin%20generator-green.svg?style=flat-square)](https://github.com/xvik/generator-gradle-plugin)
