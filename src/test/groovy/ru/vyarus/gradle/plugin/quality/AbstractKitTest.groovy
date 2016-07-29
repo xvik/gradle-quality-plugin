@@ -16,14 +16,7 @@ abstract class AbstractKitTest extends Specification {
     final TemporaryFolder testProjectDir = new TemporaryFolder()
     File buildFile
 
-    List<File> pluginClasspath
-
     def setup() {
-        def pluginClasspathResource = getClass().classLoader.findResource("plugin-classpath.txt")
-        if (pluginClasspathResource == null) {
-            throw new IllegalStateException("Did not find plugin classpath resource, run `testClasses` build task.")
-        }
-        pluginClasspath = pluginClasspathResource.readLines().collect { new File(it) }
         buildFile = testProjectDir.newFile('build.gradle')
     }
 
@@ -41,6 +34,10 @@ abstract class AbstractKitTest extends Specification {
         target << getClass().getResourceAsStream(source).text
     }
 
+    def debug() {
+        file('gradle.properties') << "org.gradle.jvmargs=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"
+    }
+
     String projectName() {
         return testProjectDir.root.getName()
     }
@@ -49,7 +46,7 @@ abstract class AbstractKitTest extends Specification {
         GradleRunner.create()
                 .withProjectDir(testProjectDir.root)
                 .withArguments((commands + ['--stacktrace']) as String[])
-                .withPluginClasspath(pluginClasspath)
+                .withPluginClasspath()
                 .forwardOutput()
     }
 
