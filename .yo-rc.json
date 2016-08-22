@@ -9,7 +9,7 @@
     "projectVersion": "0.1.0",
     "projectDesc": "Gradle quality plugin for Java and Groovy",
     "pluginPortalDesc": "Static code analysis for Java and Groovy projects",
-    "targetJava": "1.6",
+    "targetJava": "1.8",
     "pluginPortalTags": "java, groovy, quality, checkstyle, pmd, findbugs, codenarc",
     "mirrorToJcenter": true,
     "pluginPortalUseCustomGroup": true,

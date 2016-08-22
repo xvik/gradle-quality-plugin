@@ -1,3 +1,10 @@
+* (breaking) Require jdk 8 (drop jdk 6,7 compatibility because of new pmd and checkstyle versions)
+* Update checkstyle 6.17 -> 7.1
+* Update checkstyle config:
+    - Add [SingleSpaceSeparator](http://checkstyle.sourceforge.net/config_whitespace.html#SingleSpaceSeparator) check (since 6.19)
+* Update pmd 5.4.1 -> 5.5.1
+* Update codenarc 0.25.1 -> 0.25.2
+
 ### 1.3.0 (2016-03-30)
 * Update checkstyle 6.14.1 -> 6.17
 * Update codenarc 0.24.1 -> 0.25.1 
