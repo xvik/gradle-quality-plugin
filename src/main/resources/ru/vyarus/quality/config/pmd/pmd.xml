@@ -162,7 +162,9 @@
     </rule>
 
     <!-- Unnecessary (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unnecessary.html) -->
-    <rule ref="rulesets/java/unnecessary.xml"/>
+    <rule ref="rulesets/java/unnecessary.xml">
+        <exclude name="UselessParentheses"/>
+    </rule>
 
     <!-- Unused Code (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unusedcode.html) -->
     <rule ref="rulesets/java/unusedcode.xml"/>
