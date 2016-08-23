@@ -98,7 +98,10 @@
         <module name="PackageDeclaration"/>
         <module name="ParameterAssignment"/>  <!-- more strict version is FinalParameters -->
         <!--<module name="RequireThis"/>-->
-        <!--<module name="ReturnCount"/>-->
+        <module name="ReturnCount">
+            <property name="max" value="2"/>
+            <property name="maxForVoid" value="1"/>
+        </module>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
         <module name="StringLiteralEquality"/>

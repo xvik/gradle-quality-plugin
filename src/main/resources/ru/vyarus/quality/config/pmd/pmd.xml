@@ -53,6 +53,7 @@
         <exclude name="UseConcurrentHashMap"/>
         <exclude name="DataflowAnomalyAnalysis"/>
         <exclude name="CallSuperInConstructor"/>
+        <exclude name="OnlyOneReturn"/> <!-- disabled in favour of checkstyle ReturnCount check -->
     </rule>
 
     <!-- Coupling (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/coupling.html) -->
