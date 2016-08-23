@@ -2,6 +2,7 @@
 * Update checkstyle 6.17 -> 7.1
 * Update checkstyle config:
     - Add [SingleSpaceSeparator](http://checkstyle.sourceforge.net/config_whitespace.html#SingleSpaceSeparator) check (since 6.19)
+    - Disable [FileLength](http://checkstyle.sourceforge.net/config_sizes.html#FileLength) check in favour of more correct PMD ExcessiveClassLength check (which checks actual class length not file)
 * Update pmd 5.4.1 -> 5.5.1
 * Update codenarc 0.25.1 -> 0.25.2
 
