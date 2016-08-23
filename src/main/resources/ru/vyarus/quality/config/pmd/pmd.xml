@@ -46,7 +46,7 @@
         <exclude name="CommentSize"/>
     </rule>
 
-    <!-- Controversial (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/controversial.html) -->
+    <!-- Controversial (https://pmd.github.io/latest/pmd-java/rules/java/controversial.html) -->
     <rule ref="rulesets/java/controversial.xml">
         <exclude name="AtLeastOneConstructor"/>
         <exclude name="AvoidFinalLocalVariable"/>
@@ -56,13 +56,13 @@
         <exclude name="OnlyOneReturn"/> <!-- disabled in favour of checkstyle ReturnCount check -->
     </rule>
 
-    <!-- Coupling (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/coupling.html) -->
+    <!-- Coupling (https://pmd.github.io/latest/pmd-java/rules/java/coupling.html) -->
     <rule ref="rulesets/java/coupling.xml">
         <exclude name="LoosePackageCoupling"/>
         <exclude name="LawOfDemeter"/>
     </rule>
 
-    <!-- Design (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html) -->
+    <!-- Design (https://pmd.github.io/latest/pmd-java/rules/java/design.html) -->
     <rule ref="rulesets/java/design.xml">
         <exclude name="ConfusingTernary"/>
         <exclude name="UseLocaleWithCaseConversions"/>
@@ -74,31 +74,31 @@
         </properties>
     </rule>
 
-    <!-- Empty Code (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/empty.html) -->
+    <!-- Empty Code (https://pmd.github.io/latest/pmd-java/rules/java/empty.html) -->
     <rule ref="rulesets/java/empty.xml"/>
 
-    <!-- Finalizer (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/finalizers.html) -->
+    <!-- Finalizer (https://pmd.github.io/latest/pmd-java/rules/java/finalizers.html) -->
     <rule ref="rulesets/java/finalizers.xml">
         <exclude name="EmptyFinalizer"/>
         <exclude name="FinalizeOnlyCallsSuperFinalize"/>
         <exclude name="FinalizeDoesNotCallSuperFinalize"/>
     </rule>
 
-    <!-- Import Statements (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/imports.html) -->
+    <!-- Import Statements (https://pmd.github.io/latest/pmd-java/rules/java/imports.html) -->
     <rule ref="rulesets/java/imports.xml">
         <exclude name="TooManyStaticImports"/>
     </rule>
 
-    <!-- J2EE (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/j2ee.html) -->
+    <!-- J2EE (https://pmd.github.io/latest/pmd-java/rules/java/j2ee.html) -->
     <!--<rule ref="rulesets/java/j2ee.xml"/>-->
 
-    <!-- JavaBeans (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/javabeans.html) -->
+    <!-- JavaBeans (https://pmd.github.io/latest/pmd-java/rules/java/javabeans.html) -->
     <rule ref="rulesets/java/javabeans.xml">
         <exclude name="BeanMembersShouldSerialize"/>
         <exclude name="MissingSerialVersionUID"/>
     </rule>
 
-    <!-- JUnit (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/junt.html) -->
+    <!-- JUnit (https://pmd.github.io/latest/pmd-java/rules/java/junt.html) -->
     <rule ref="rulesets/java/junit.xml">
         <exclude name="JUnitStaticSuite"/>
         <exclude name="JUnitSpelling"/>
@@ -106,24 +106,24 @@
         <exclude name="JUnitTestsShouldIncludeAssert"/>
     </rule>
 
-    <!-- Jakarta Commons Logging (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/logging-jakarta-commons.html) -->
+    <!-- Jakarta Commons Logging (https://pmd.github.io/latest/pmd-java/rules/java/logging-jakarta-commons.html) -->
     <rule ref="rulesets/java/logging-jakarta-commons.xml">
         <exclude name="UseCorrectExceptionLogging"/>
         <exclude name="GuardDebugLogging"/>
         <exclude name="GuardLogStatement"/>
     </rule>
 
-    <!-- Java Logging (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/logging-java.html) -->
+    <!-- Java Logging (https://pmd.github.io/latest/pmd-java/rules/java/logging-java.html) -->
     <rule ref="rulesets/java/logging-java.xml">
         <exclude name="LoggerIsNotStaticFinal"/>
     </rule>
 
-    <!-- Migration (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/migrating.html) -->
+    <!-- Migration (https://pmd.github.io/latest/pmd-java/rules/java/migrating.html) -->
     <rule ref="rulesets/java/migrating.xml">
         <exclude name="JUnit4SuitesShouldUseSuiteAnnotation"/>
     </rule>
 
-    <!-- Naming (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/naming.html) -->
+    <!-- Naming (https://pmd.github.io/latest/pmd-java/rules/java/naming.html) -->
     <rule ref="rulesets/java/naming.xml">
         <exclude name="ShortClassName"/>
         <exclude name="ShortVariable"/>
@@ -132,19 +132,19 @@
         <exclude name="AbstractNaming"/>
     </rule>
 
-    <!-- Optimization (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html) -->
+    <!-- Optimization (https://pmd.github.io/latest/pmd-java/rules/java/optimizations.html) -->
     <rule ref="rulesets/java/optimizations.xml">
         <exclude name="LocalVariableCouldBeFinal"/>
     </rule>
 
-    <!-- Strict Exceptions (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/strictexception.html) -->
+    <!-- Strict Exceptions (https://pmd.github.io/latest/pmd-java/rules/java/strictexception.html) -->
     <rule ref="rulesets/java/strictexception.xml">
         <exclude name="SignatureDeclareThrowsException"/>
         <exclude name="AvoidCatchingGenericException"/>
         <exclude name="AvoidCatchingThrowable"/>
     </rule>
 
-    <!-- String and StringBuffer (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/strings.html) -->
+    <!-- String and StringBuffer (https://pmd.github.io/latest/pmd-java/rules/java/strings.html) -->
     <rule ref="rulesets/java/strings.xml"/>
     <rule ref="rulesets/java/strings.xml/AvoidDuplicateLiterals">
         <properties>
@@ -152,22 +152,22 @@
         </properties>
     </rule>
 
-    <!-- Security Code Guidelines (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/sunsecure.html) -->
+    <!-- Security Code Guidelines (https://pmd.github.io/latest/pmd-java/rules/java/sunsecure.html) -->
     <rule ref="rulesets/java/sunsecure.xml">
         <exclude name="ArrayIsStoredDirectly"/>
     </rule>
 
-    <!-- Type Resolution (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/typeresolution.html) -->
+    <!-- Type Resolution (https://pmd.github.io/latest/pmd-java/rules/java/typeresolution.html) -->
     <rule ref="rulesets/java/typeresolution.xml">
         <exclude name="SignatureDeclareThrowsException"/>
     </rule>
 
-    <!-- Unnecessary (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unnecessary.html) -->
+    <!-- Unnecessary (https://pmd.github.io/latest/pmd-java/rules/java/unnecessary.html) -->
     <rule ref="rulesets/java/unnecessary.xml">
         <exclude name="UselessParentheses"/>
     </rule>
 
-    <!-- Unused Code (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unusedcode.html) -->
+    <!-- Unused Code (https://pmd.github.io/latest/pmd-java/rules/java/unusedcode.html) -->
     <rule ref="rulesets/java/unusedcode.xml"/>
 
 </ruleset>
