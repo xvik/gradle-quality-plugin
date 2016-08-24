@@ -10,6 +10,7 @@
     - Disable [OnlyOneReturn](https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/controversial.html#OnlyOneReturn) in favour of checkstyle ReturnCount
 * Update codenarc 0.25.1 -> 0.25.2
 * lintOptions configuration now applies to all JavaCompile tasks (not only compileJava as before) 
+* Fix multi-module projects reporting (remove duplicate reports)
 
 ### 1.3.0 (2016-03-30)
 * Update checkstyle 6.14.1 -> 6.17

@@ -203,14 +203,15 @@ class QualityPlugin implements Plugin<Project> {
     }
 
     private void applyReporter(Project project, String type, Reporter reporter) {
+        // in multi-project reporter registered for each project, but all gets called on task execution in any module
         project.gradle.taskGraph.afterTask { Task task, TaskState state ->
-            if (task.name.startsWith(type)) {
+            if (task.name.startsWith(type) && project == task.project) {
                 long start = System.currentTimeMillis()
 
-                reporter.report(project, task.name[type.length()..-1].toLowerCase())
+                reporter.report(task.project, task.name[type.length()..-1].toLowerCase())
 
                 String duration = DURATION_FORMAT.format(System.currentTimeMillis() - start)
-                project.logger.info("[plugin:quality] reporting executed in $duration")
+                task.project.logger.info("[plugin:quality] $type reporting executed in $duration")
             }
         }
     }
