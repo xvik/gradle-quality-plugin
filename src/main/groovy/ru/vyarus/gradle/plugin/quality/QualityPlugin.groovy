@@ -7,6 +7,7 @@ import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.*
 import org.gradle.api.tasks.TaskState
+import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.reporting.DurationFormatter
 import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
@@ -74,8 +75,8 @@ class QualityPlugin implements Plugin<Project> {
         if (!extension.lintOptions) {
             return
         }
-        extension.lintOptions.each {
-            project.tasks.compileJava.options.compilerArgs << "-Xlint:$it"
+        project.tasks.withType(JavaCompile) {
+            it.options.compilerArgs.addAll(extension.lintOptions.collect { "-Xlint:$it" })
         }
     }
 

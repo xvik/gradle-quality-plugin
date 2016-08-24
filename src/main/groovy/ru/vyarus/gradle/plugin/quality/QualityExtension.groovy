@@ -62,7 +62,7 @@ class QualityExtension {
 
     /**
      * Javac lint options to show compiler warnings, not visible by default.
-     * By default enables deprecation and unchecked options.
+     * By default enables deprecation and unchecked options. Applies to all JavaCompile tasks.
      * Full list of options: http://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCJCABJ
      */
     List<String> lintOptions = ['deprecation', 'unchecked']
