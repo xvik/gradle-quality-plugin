@@ -1,6 +1,7 @@
 package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
+import ru.vyarus.gradle.plugin.quality.report.ReportUtils
 
 /**
  * @author Vyacheslav Rusakov
@@ -85,6 +86,6 @@ Checkstyle HTML report: file:///tmp/junit6300057182805361069/mod2/build/reports/
 :mod2:test UP-TO-DATE
 :mod2:check
 
-BUILD SUCCESSFUL""".replaceAll("tmp/junit6300057182805361069", testProjectDir.root.canonicalPath.replaceAll("\\\\", "/"))
+BUILD SUCCESSFUL""".replaceAll("tmp/junit6300057182805361069", ReportUtils.noRootFilePath(testProjectDir.root))
     }
 }

@@ -11,6 +11,11 @@ import org.gradle.api.Project
 interface Reporter {
 
     /**
+     * New line symbol
+     */
+    String NL = String.format('%n')
+
+    /**
      * Called after quality tool task to report violations.
      *
      * @param project project instance

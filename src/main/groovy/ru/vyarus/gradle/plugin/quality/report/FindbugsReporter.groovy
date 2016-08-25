@@ -33,7 +33,7 @@ class FindbugsReporter implements Reporter {
                 int p1 = summary.@priority_1 == null ? 0 : summary.@priority_1 as Integer
                 int p2 = summary.@priority_2 == null ? 0 : summary.@priority_2 as Integer
                 int p3 = summary.@priority_3 == null ? 0 : summary.@priority_3 as Integer
-                logger.error "\n$cnt ($p1 / $p2 / $p3) FindBugs violations were found in ${fileCnt} files"
+                logger.error "$NL$cnt ($p1 / $p2 / $p3) FindBugs violations were found in ${fileCnt} files"
 
                 Map<String, String> desc = buildDescription(result)
                 Map<String, String> cat = buildCategories(result)
@@ -42,10 +42,10 @@ class FindbugsReporter implements Reporter {
                     Node src = bug.SourceLine[0]
                     String description = ReportUtils.unescapeHtml(desc[bug.@type])
                     String srcPosition = src.@start == src.@end ? src.@start : "${src.@start}-${src.@end}"
-                    logger.error "\n[${cat[bug.@category]} | ${bug.@type}] ${src.@classname}:${srcPosition}  " +
+                    logger.error "$NL[${cat[bug.@category]} | ${bug.@type}] ${src.@classname}:${srcPosition}  " +
                             "(priority ${bug.@priority})" +
-                            "\n\t>> ${msg.text()}" +
-                            "\n  ${description}"
+                            "$NL\t>> ${msg.text()}" +
+                            "$NL  ${description}"
                 }
 
                 // html report
@@ -60,7 +60,7 @@ class FindbugsReporter implements Reporter {
                 }
 
                 String htmlReportUrl = ReportUtils.toConsoleLink(htmlReportFile)
-                logger.error "\nFindbugs HTML report: $htmlReportUrl"
+                logger.error "${NL}Findbugs HTML report: $htmlReportUrl"
             }
         }
     }
@@ -72,11 +72,11 @@ class FindbugsReporter implements Reporter {
             //remove html tags
                     .replaceAll('<(.|\n)*?>', '')
             // remove empty lines after tags remove (only one separator line remain)
-                    .replaceAll('([ \t]*\n){3,}', '\n\n')
+                    .replaceAll('([ \t]*\n){3,}', "$NL$NL")
             // reduce left indents
-                    .replaceAll('\n\t+', '\n  ').replaceAll(' {2,}', '  ')
+                    .replaceAll('\n\t+', "$NL  ").replaceAll(' {2,}', '  ')
             // indent all not indented lines
-                    .replaceAll('\n([^\\s])', '\n  $1').trim()
+                    .replaceAll('\n([^\\s])', "$NL  \$1").trim()
         }
         return desc
     }

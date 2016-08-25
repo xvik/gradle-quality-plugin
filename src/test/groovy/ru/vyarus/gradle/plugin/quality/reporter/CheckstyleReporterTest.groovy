@@ -3,6 +3,7 @@ package ru.vyarus.gradle.plugin.quality.reporter
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
+import ru.vyarus.gradle.plugin.quality.report.ReportUtils
 
 /**
  * @author Vyacheslav Rusakov 
@@ -65,7 +66,7 @@ class CheckstyleReporterTest extends AbstractKitTest {
   Uncommented main method found.
   http://checkstyle.sourceforge.net/config_misc.html#UncommentedMain
 
-Checkstyle HTML report: file:///${testProjectDir.root.canonicalPath.replaceAll('\\\\', '/')}/build/reports/checkstyle/main.html
+Checkstyle HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir.root)}/build/reports/checkstyle/main.html
 """ as String
     }
 }

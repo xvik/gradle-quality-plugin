@@ -43,12 +43,19 @@ class ReportUtils {
     }
 
     /**
+     * @param file file to resolve path
+     * @return canonical file path with '/' as separator and without leading slash for linux
+     */
+    static String noRootFilePath(File file) {
+        String path = file.canonicalPath.replaceAll('\\\\', '/')
+        path.startsWith('/') ? path[1..-1] : path
+    }
+
+    /**
      * @param file file
      * @return file link to use in console output
      */
     static String toConsoleLink(File file) {
-        String path = file.canonicalPath.replaceAll('\\\\', '/')
-        // remove trailing slash for linux
-        return "file:///${path.startsWith('/') ? path[1..-1] : path}"
+        return "file:///${noRootFilePath(file)}"
     }
 }

@@ -3,6 +3,7 @@ package ru.vyarus.gradle.plugin.quality.reporter
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
+import ru.vyarus.gradle.plugin.quality.report.ReportUtils
 
 /**
  * @author Vyacheslav Rusakov 
@@ -45,7 +46,7 @@ class FindbugsReporterTest extends AbstractKitTest {
 \t>> Unread field: sample.Sample2.sample
   This field is never read. Consider removing it from the class.
 
-Findbugs HTML report: file:///${testProjectDir.root.canonicalPath.replaceAll('\\\\', '/')}/build/reports/findbugs/main.html
+Findbugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir.root)}/build/reports/findbugs/main.html
 """ as String
     }
 }

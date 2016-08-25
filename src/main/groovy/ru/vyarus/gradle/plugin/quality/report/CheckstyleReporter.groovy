@@ -30,7 +30,7 @@ class CheckstyleReporter implements Reporter {
             int cnt = result.file.error.size()
             if (cnt > 0) {
                 int filesCnt = result.file.findAll { it.error.size() > 0 }.size()
-                logger.error "\n$cnt Checkstyle rule violations were found in $filesCnt files"
+                logger.error "$NL$cnt Checkstyle rule violations were found in $filesCnt files"
 
                 result.file.each { file ->
                     String name = ReportUtils.extractJavaClass(project, type, file.@name)
@@ -39,9 +39,9 @@ class CheckstyleReporter implements Reporter {
                         String check = extractCheckName(it.@source)
                         String group = extractGroupName(it.@source)
                         String srcPointer = it.@column ? "(${it.@line}:${it.@column})" : it.@line
-                        logger.error "\n[${group.capitalize()} | $check] $name:$srcPointer" +
-                                "\n  ${it.@message}" +
-                                "\n  http://checkstyle.sourceforge.net/config_${group}.html#$check"
+                        logger.error "$NL[${group.capitalize()} | $check] $name:$srcPointer" +
+                                "$NL  ${it.@message}" +
+                                "$NL  http://checkstyle.sourceforge.net/config_${group}.html#$check"
                     }
                 }
 
@@ -56,7 +56,7 @@ class CheckstyleReporter implements Reporter {
                 }
 
                 String htmlReportUrl = ReportUtils.toConsoleLink(htmlReportFile)
-                logger.error "\nCheckstyle HTML report: $htmlReportUrl"
+                logger.error "${NL}Checkstyle HTML report: $htmlReportUrl"
             }
         }
     }

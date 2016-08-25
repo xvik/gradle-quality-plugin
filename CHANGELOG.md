@@ -12,6 +12,7 @@
 * lintOptions configuration now applies to all JavaCompile tasks (not only compileJava as before) 
 * Fix multi-module projects reporting (remove duplicate reports)
 * Fix generated html reports links (redundant slash on linux)
+* Fix newline in reporters (use platform specific)
 
 ### 1.3.0 (2016-03-30)
 * Update checkstyle 6.14.1 -> 6.17
