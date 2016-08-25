@@ -11,6 +11,7 @@
 * Update codenarc 0.25.1 -> 0.25.2
 * lintOptions configuration now applies to all JavaCompile tasks (not only compileJava as before) 
 * Fix multi-module projects reporting (remove duplicate reports)
+* Fix generated html reports links (redundant slash on linux)
 
 ### 1.3.0 (2016-03-30)
 * Update checkstyle 6.14.1 -> 6.17
