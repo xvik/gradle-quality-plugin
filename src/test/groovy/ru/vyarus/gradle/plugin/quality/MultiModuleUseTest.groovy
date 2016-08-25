@@ -49,11 +49,11 @@ Checkstyle rule violations were found. See the report at: file:///tmp/junit63000
 
 2 Checkstyle rule violations were found in 1 files
 
-[Misc | NewlineAtEndOfFile] sample.Sample:0
+[Misc | NewlineAtEndOfFile] sample.(Sample.java:0)
   File does not end with a newline.
   http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
 
-[Javadoc | JavadocType] sample.Sample:3
+[Javadoc | JavadocType] sample.(Sample.java:3)
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 
@@ -71,11 +71,11 @@ Checkstyle rule violations were found. See the report at: file:///tmp/junit63000
 
 2 Checkstyle rule violations were found in 1 files
 
-[Misc | NewlineAtEndOfFile] sample.Sample:0
+[Misc | NewlineAtEndOfFile] sample.(Sample.java:0)
   File does not end with a newline.
   http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
 
-[Javadoc | JavadocType] sample.Sample:3
+[Javadoc | JavadocType] sample.(Sample.java:3)
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 

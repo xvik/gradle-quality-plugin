@@ -39,63 +39,63 @@ class PmdReporterTest extends AbstractKitTest {
         error.replaceAll("\r", "").contains """
 15 PMD rule violations were found in 2 files
 
-[Unused Code | UnusedPrivateField] sample.Sample:5
+[Unused Code | UnusedPrivateField] sample.(Sample.java:5)
   Avoid unused private fields such as 'sample'.
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unusedcode.html#UnusedPrivateField
 
-[Naming | AvoidFieldNameMatchingTypeName] sample.Sample:5
+[Naming | AvoidFieldNameMatchingTypeName] sample.(Sample.java:5)
   It is somewhat confusing to have a field name matching the declaring class name
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/naming.html#AvoidFieldNameMatchingTypeName
 
-[Design | SingularField] sample.Sample:5
+[Design | SingularField] sample.(Sample.java:5)
   Perhaps 'sample' could be replaced by a local variable.
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#SingularField
 
-[Design | ImmutableField] sample.Sample:5
+[Design | ImmutableField] sample.(Sample.java:5)
   Private field 'sample' could be made final; it is only initialized in the declaration or constructor.
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#ImmutableField
 
-[Optimization | MethodArgumentCouldBeFinal] sample.Sample:7
+[Optimization | MethodArgumentCouldBeFinal] sample.(Sample.java:7)
   Parameter 'sample' is not assigned and could be declared final
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal
 
-[Design | UseVarargs] sample.Sample:11
+[Design | UseVarargs] sample.(Sample.java:11)
   Consider using varargs for methods or constructors which take an array the last parameter.
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UseVarargs
 
-[Design | UncommentedEmptyMethodBody] sample.Sample:11-13
+[Design | UncommentedEmptyMethodBody] sample.(Sample.java:11)
   Document empty method body
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UncommentedEmptyMethodBody
 
-[Optimization | MethodArgumentCouldBeFinal] sample.Sample:11
+[Optimization | MethodArgumentCouldBeFinal] sample.(Sample.java:11)
   Parameter 'args' is not assigned and could be declared final
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal
 
-[Unused Code | UnusedPrivateField] sample.Sample2:5
+[Unused Code | UnusedPrivateField] sample.(Sample2.java:5)
   Avoid unused private fields such as 'sample'.
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unusedcode.html#UnusedPrivateField
 
-[Design | SingularField] sample.Sample2:5
+[Design | SingularField] sample.(Sample2.java:5)
   Perhaps 'sample' could be replaced by a local variable.
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#SingularField
 
-[Design | ImmutableField] sample.Sample2:5
+[Design | ImmutableField] sample.(Sample2.java:5)
   Private field 'sample' could be made final; it is only initialized in the declaration or constructor.
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#ImmutableField
 
-[Optimization | MethodArgumentCouldBeFinal] sample.Sample2:7
+[Optimization | MethodArgumentCouldBeFinal] sample.(Sample2.java:7)
   Parameter 'sample' is not assigned and could be declared final
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal
 
-[Design | UseVarargs] sample.Sample2:11
+[Design | UseVarargs] sample.(Sample2.java:11)
   Consider using varargs for methods or constructors which take an array the last parameter.
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UseVarargs
 
-[Design | UncommentedEmptyMethodBody] sample.Sample2:11-13
+[Design | UncommentedEmptyMethodBody] sample.(Sample2.java:11)
   Document empty method body
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UncommentedEmptyMethodBody
 
-[Optimization | MethodArgumentCouldBeFinal] sample.Sample2:11
+[Optimization | MethodArgumentCouldBeFinal] sample.(Sample2.java:11)
   Parameter 'args' is not assigned and could be declared final
   https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal
 """ as String

@@ -40,18 +40,17 @@ class CodeNarcReporter implements Reporter {
                 result.Package.each {
                     String pkg = it.@path.replaceAll('/', '.')
                     it.File.each {
-                        String src = it.@name.split('\\.')[0]
+                        String src = it.@name
                         it.Violation.each {
                             String rule = it.@ruleName
-
                             String[] path = props[rule].split('\\.')
                             String group = path[path.length - 2]
-
                             String priority = it.@priority
                             String srcLine = ReportUtils.unescapeHtml(it.SourceLine.text())
                             String message = ReportUtils.unescapeHtml(it.Message.text())
-                            logger.error "$NL[${group.capitalize()} | ${rule}] ${pkg}.$src:${it.@lineNumber}  " +
-                                    "(priority ${priority})" +
+                            // part in braces recognized by intellij IDEA and shown as link
+                            logger.error "$NL[${group.capitalize()} | ${rule}] ${pkg}.($src:${it.@lineNumber})  " +
+                                    "[priority ${priority}]" +
                                     "$NL\t>> ${srcLine}" +
                                     "$NL  ${message}" +
                                     "$NL  ${desc[rule]}" +

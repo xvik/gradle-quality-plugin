@@ -12,15 +12,15 @@ import org.gradle.api.Project
 class ReportUtils {
 
     /**
-     * Converts java source file absolute path into class reference.
+     * Resolve java package from provided absolute source path.
      * Use configured java source roots to properly detect class package.
      *
      * @param project project instance
      * @param type execution type (main or test)
-     * @param file absolute path to java source file
-     * @return java class reference
+     * @param file absolute path to source file
+     * @return package for provided java class path
      */
-    static String extractJavaClass(Project project, String type, String file) {
+    static String extractJavaPackage(Project project, String type, String file) {
         String name = new File(file).canonicalPath
         project.sourceSets[type].java.srcDirs.each {
             if (name.startsWith(it.canonicalPath)) {
@@ -28,7 +28,18 @@ class ReportUtils {
             }
         }
         name = name[0..name.lastIndexOf('.') - 1] // remove extension
-        name.replaceAll('\\\\|/', '.')
+        name = name.replaceAll('\\\\|/', '.')
+        name[0..name.lastIndexOf('.') - 1] // remove class name
+
+    }
+
+    /**
+     * @param path absolute path to source file
+     * @return file name without path
+     */
+    static String extractFile(String path) {
+        int idx = path.replaceAll('\\\\', '/').lastIndexOf('/')
+        path[idx + 1..-1]
     }
 
     /**

@@ -38,11 +38,11 @@ class FindbugsReporterTest extends AbstractKitTest {
         error.replaceAll("\r", "").contains """
 2 (0 / 2 / 0) FindBugs violations were found in 2 files
 
-[Performance | URF_UNREAD_FIELD] sample.Sample:8  (priority 2)
+[Performance | URF_UNREAD_FIELD] sample.(Sample.java:8)  [priority 2]
 \t>> Unread field: sample.Sample.sample
   This field is never read. Consider removing it from the class.
 
-[Performance | URF_UNREAD_FIELD] sample.Sample2:8  (priority 2)
+[Performance | URF_UNREAD_FIELD] sample.(Sample2.java:8)  [priority 2]
 \t>> Unread field: sample.Sample2.sample
   This field is never read. Consider removing it from the class.
 

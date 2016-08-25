@@ -24,7 +24,6 @@ class FindbugsReporter implements Reporter {
             if (!reportFile.exists()) {
                 return
             }
-
             Node result = new XmlParser().parse(reportFile)
             int cnt = result.BugInstance.size()
             if (cnt > 0) {
@@ -41,13 +40,17 @@ class FindbugsReporter implements Reporter {
                     Node msg = bug.LongMessage[0]
                     Node src = bug.SourceLine[0]
                     String description = ReportUtils.unescapeHtml(desc[bug.@type])
-                    String srcPosition = src.@start == src.@end ? src.@start : "${src.@start}-${src.@end}"
-                    logger.error "$NL[${cat[bug.@category]} | ${bug.@type}] ${src.@classname}:${srcPosition}  " +
-                            "(priority ${bug.@priority})" +
+                    String srcPosition = src.@start
+                    String classname = src.@classname
+                    int idx = classname.lastIndexOf('.')
+                    String pkg = classname[0..idx]
+                    String cls = classname[idx + 1..-1]
+                    // part in braces recognized by intellij IDEA and shown as link
+                    logger.error "$NL[${cat[bug.@category]} | ${bug.@type}] $pkg(${cls}.java:${srcPosition})  " +
+                            "[priority ${bug.@priority}]" +
                             "$NL\t>> ${msg.text()}" +
                             "$NL  ${description}"
                 }
-
                 // html report
                 String htmlReportPath = "${extensions.findbugs.reportsDir}/${type}.html"
                 File htmlReportFile = file(htmlReportPath)

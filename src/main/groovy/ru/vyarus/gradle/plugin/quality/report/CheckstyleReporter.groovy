@@ -33,13 +33,16 @@ class CheckstyleReporter implements Reporter {
                 logger.error "$NL$cnt Checkstyle rule violations were found in $filesCnt files"
 
                 result.file.each { file ->
-                    String name = ReportUtils.extractJavaClass(project, type, file.@name)
+                    String filePath = file.@name
+                    String sourceFile = ReportUtils.extractFile(filePath)
+                    String name = ReportUtils.extractJavaPackage(project, type, filePath)
 
                     file.error.each {
                         String check = extractCheckName(it.@source)
                         String group = extractGroupName(it.@source)
-                        String srcPointer = it.@column ? "(${it.@line}:${it.@column})" : it.@line
-                        logger.error "$NL[${group.capitalize()} | $check] $name:$srcPointer" +
+                        String srcPointer = it.@line
+                        // part in braces recognized by intellij IDEA and shown as link
+                        logger.error "$NL[${group.capitalize()} | $check] $name.($sourceFile:$srcPointer)" +
                                 "$NL  ${it.@message}" +
                                 "$NL  http://checkstyle.sourceforge.net/config_${group}.html#$check"
                     }

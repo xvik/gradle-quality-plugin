@@ -24,11 +24,13 @@ class PmdReporter implements Reporter {
                 logger.error "$NL$cnt PMD rule violations were found in ${result.file.size()} files"
 
                 result.file.each { file ->
-                    String name = ReportUtils.extractJavaClass(project, type, file.@name)
+                    String filePath = file.@name
+                    String sourceFile = ReportUtils.extractFile(filePath)
+                    String name = ReportUtils.extractJavaPackage(project, type, file.@name)
                     file.violation.each { violation ->
-                        String srcPos = violation.@beginline == violation.@endline ?
-                                violation.@beginline : "${violation.@beginline}-${violation.@endline}"
-                        logger.error "$NL[${violation.@ruleset} | ${violation.@rule}] ${name}:${srcPos}" +
+                        String srcPos = violation.@beginline
+                        // part in braces recognized by intellij IDEA and shown as link
+                        logger.error "$NL[${violation.@ruleset} | ${violation.@rule}] $name.($sourceFile:${srcPos})" +
                                 "$NL  ${violation.text().trim()}" +
                                 "$NL  ${violation.@externalInfoUrl}"
                     }
