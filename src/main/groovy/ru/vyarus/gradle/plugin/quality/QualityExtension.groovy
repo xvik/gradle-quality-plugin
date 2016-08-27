@@ -28,21 +28,25 @@ class QualityExtension {
 
     /**
      * Enable Checkstyle plugin. True by default.
+     * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
      */
     boolean checkstyle = true
 
     /**
      * Enable PMD plugin. True by default.
+     * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
      */
     boolean pmd = true
 
     /**
      * Enable FindBugs plugin. True by default.
+     * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
      */
     boolean findbugs = true
 
     /**
      * Enable CodeNarc plugin. Ignored if groovy plugin is not applied). True by default.
+     * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
      */
     boolean codenarc = true
 

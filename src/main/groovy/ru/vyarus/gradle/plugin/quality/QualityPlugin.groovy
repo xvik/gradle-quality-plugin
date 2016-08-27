@@ -51,18 +51,15 @@ class QualityPlugin implements Plugin<Project> {
             addInitConfigTask(project)
 
             project.afterEvaluate {
+                Context context = createContext(project, extension)
                 ConfigLoader configLoader = new ConfigLoader(project)
-                boolean hasJavaSources = extension.sourceSets.find { it.java.srcDirs.find { it.exists() } }
 
-                // activate java plugins only when java sources exists
-                if (hasJavaSources) {
-                    configureJavac(project, extension)
-                    applyCheckstyle(project, extension, configLoader)
-                    applyPMD(project, extension, configLoader)
-                    applyFindbugs(project, extension, configLoader)
-                    configureAnimalSniffer(project, extension)
-                }
-                applyCodeNarc(project, extension, configLoader)
+                configureJavac(project, extension)
+                applyCheckstyle(project, extension, configLoader, context.registerJavaPlugins)
+                applyPMD(project, extension, configLoader, context.registerJavaPlugins)
+                applyFindbugs(project, extension, configLoader, context.registerJavaPlugins)
+                configureAnimalSniffer(project, extension)
+                applyCodeNarc(project, extension, configLoader, context.registerGroovyPlugins)
             }
         }
     }
@@ -80,112 +77,118 @@ class QualityPlugin implements Plugin<Project> {
         }
     }
 
-    private void applyCheckstyle(Project project, QualityExtension extension, ConfigLoader configLoader) {
-        if (!extension.checkstyle) {
-            return
-        }
-        project.plugins.apply(CheckstylePlugin)
-        project.configure(project) {
-            checkstyle {
-                showViolations = false
-                toolVersion = extension.checkstyleVersion
-                ignoreFailures = !extension.strict
-                configFile = configLoader.resolveCheckstyleConfig(false)
-                sourceSets = extension.sourceSets
-            }
-            tasks.withType(Checkstyle) {
-                doFirst {
-                    configLoader.resolveCheckstyleConfig()
-                }
-                // disable default html report (supported from gradle 2.10)
-                if (reports.enabledReportNames.contains('html')) {
-                    reports.html.enabled = false
-                }
-            }
-        }
-        applyReporter(project, 'checkstyle', new CheckstyleReporter(configLoader))
-    }
-
-    private void applyPMD(Project project, QualityExtension extension, ConfigLoader configLoader) {
-        if (!extension.pmd) {
-            return
-        }
-        project.plugins.apply(PmdPlugin)
-        project.configure(project) {
-            pmd {
-                toolVersion = extension.pmdVersion
-                ignoreFailures = !extension.strict
-                ruleSetFiles = files(configLoader.resolvePmdConfig(false).absolutePath)
-                sourceSets = extension.sourceSets
-            }
-            tasks.withType(Pmd) {
-                doFirst {
-                    configLoader.resolvePmdConfig()
-                }
-            }
-        }
-        applyReporter(project, 'pmd', new PmdReporter())
-    }
-
-    private void applyFindbugs(Project project, QualityExtension extension, ConfigLoader configLoader) {
-        if (!extension.findbugs) {
-            return
-        }
-        project.plugins.apply(FindBugsPlugin)
-        project.configure(project) {
-            findbugs {
-                toolVersion = extension.findbugsVersion
-                ignoreFailures = !extension.strict
-                effort = extension.findbugsEffort
-                reportLevel = extension.findbugsLevel
-                excludeFilter = configLoader.resolveFindbugsExclude(false)
-                sourceSets = extension.sourceSets
-            }
-
-            tasks.withType(FindBugs) {
-                doFirst {
-                    configLoader.resolveFindbugsExclude()
-                }
-                reports {
-                    xml {
-                        enabled true
-                        withMessages true
-                    }
-                }
-            }
-        }
-        applyReporter(project, 'findbugs', new FindbugsReporter(configLoader))
-    }
-
-    private void applyCodeNarc(Project project, QualityExtension extension, ConfigLoader configLoader) {
-        if (!extension.codenarc) {
-            return
-        }
-        // apply only if groovy enabled
-        project.plugins.withType(GroovyPlugin) {
-            boolean hasGroovySources = extension.sourceSets.find { it.groovy.srcDirs.find { it.exists() } }
-            if (hasGroovySources) {
-                project.plugins.apply(CodeNarcPlugin)
-                project.configure(project) {
-                    codenarc {
-                        toolVersion = extension.codenarcVersion
-                        ignoreFailures = !extension.strict
-                        configFile = configLoader.resolveCodenarcConfig(false)
-                        sourceSets = extension.sourceSets
-                    }
-                    tasks.withType(CodeNarc) {
-                        doFirst {
-                            configLoader.resolveCodenarcConfig()
+    private void applyCheckstyle(Project project, QualityExtension extension, ConfigLoader configLoader,
+                                 boolean register) {
+        configurePlugin(project,
+                extension.checkstyle,
+                register,
+                CheckstylePlugin,
+                {
+                    project.configure(project) {
+                        checkstyle {
+                            showViolations = false
+                            toolVersion = extension.checkstyleVersion
+                            ignoreFailures = !extension.strict
+                            configFile = configLoader.resolveCheckstyleConfig(false)
+                            sourceSets = extension.sourceSets
                         }
-                        reports {
-                            xml.enabled = true
-                            html.enabled = true
+                        tasks.withType(Checkstyle) {
+                            doFirst {
+                                configLoader.resolveCheckstyleConfig()
+                            }
+                            // disable default html report (supported from gradle 2.10)
+                            if (reports.enabledReportNames.contains('html')) {
+                                reports.html.enabled = false
+                            }
                         }
                     }
-                }
-                applyReporter(project, 'codenarc', new CodeNarcReporter())
-            }
-        }
+                    applyReporter(project, 'checkstyle', new CheckstyleReporter(configLoader))
+                })
+    }
+
+    private void applyPMD(Project project, QualityExtension extension, ConfigLoader configLoader,
+                          boolean register) {
+        configurePlugin(project,
+                extension.pmd,
+                register,
+                PmdPlugin,
+                {
+                    project.configure(project) {
+                        pmd {
+                            toolVersion = extension.pmdVersion
+                            ignoreFailures = !extension.strict
+                            ruleSetFiles = files(configLoader.resolvePmdConfig(false).absolutePath)
+                            sourceSets = extension.sourceSets
+                        }
+                        tasks.withType(Pmd) {
+                            doFirst {
+                                configLoader.resolvePmdConfig()
+                            }
+                        }
+                    }
+                    applyReporter(project, 'pmd', new PmdReporter())
+                })
+    }
+
+    private void applyFindbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
+                               boolean register) {
+        configurePlugin(project,
+                extension.findbugs,
+                register,
+                FindBugsPlugin,
+                {
+                    project.configure(project) {
+                        findbugs {
+                            toolVersion = extension.findbugsVersion
+                            ignoreFailures = !extension.strict
+                            effort = extension.findbugsEffort
+                            reportLevel = extension.findbugsLevel
+                            excludeFilter = configLoader.resolveFindbugsExclude(false)
+                            sourceSets = extension.sourceSets
+                        }
+
+                        tasks.withType(FindBugs) {
+                            doFirst {
+                                configLoader.resolveFindbugsExclude()
+                            }
+                            reports {
+                                xml {
+                                    enabled true
+                                    withMessages true
+                                }
+                            }
+                        }
+                    }
+                    applyReporter(project, 'findbugs', new FindbugsReporter(configLoader))
+                })
+    }
+
+    private void applyCodeNarc(Project project, QualityExtension extension, ConfigLoader configLoader,
+                               boolean register) {
+        configurePlugin(project,
+                extension.codenarc,
+                register,
+                CodeNarcPlugin,
+                {
+                    project.configure(project) {
+                        codenarc {
+                            toolVersion = extension.codenarcVersion
+                            ignoreFailures = !extension.strict
+                            configFile = configLoader.resolveCodenarcConfig(false)
+                            sourceSets = extension.sourceSets
+                        }
+                        tasks.withType(CodeNarc) {
+                            doFirst {
+                                configLoader.resolveCodenarcConfig()
+                            }
+                            reports {
+                                xml.enabled = true
+                                html.enabled = true
+                            }
+                        }
+                    }
+                    applyReporter(project, 'codenarc', new CodeNarcReporter())
+                })
     }
 
     private void configureAnimalSniffer(Project project, QualityExtension extension) {
@@ -214,5 +217,48 @@ class QualityPlugin implements Plugin<Project> {
                 task.project.logger.info("[plugin:quality] $type reporting executed in $duration")
             }
         }
+    }
+
+    private Context createContext(Project project, QualityExtension extension) {
+        Context context = new Context()
+        context.registerJavaPlugins = (extension.sourceSets.find { it.java.srcDirs.find { it.exists() } }) != null
+        if (project.plugins.findPlugin(GroovyPlugin)) {
+            context.registerGroovyPlugins =
+                    (extension.sourceSets.find { it.groovy.srcDirs.find { it.exists() } }) != null
+        }
+        context
+    }
+
+    /**
+     * Plugins may be registered manually and in this case plugin will also will be configured, but only
+     * when plugin support not disabled by quality configuration. If plugin not registered and
+     * sources auto detection allow registration - it will be registered and then configured.
+     *
+     * @param project project instance
+     * @param enabled true if quality plugin support enabled for plugin
+     * @param register true to automatically register plugin
+     * @param plugin plugin class
+     * @param config plugin configuration closure
+     */
+    private void configurePlugin(Project project, boolean enabled, boolean register, Class plugin, Closure config) {
+        if (!enabled) {
+            // do not configure even if manually registered
+            return
+        } else if (register) {
+            // register plugin automatically
+            project.plugins.apply(plugin)
+        }
+        // configure plugin if registered (manually or automatic)
+        project.plugins.withType(plugin) {
+            config.call()
+        }
+    }
+
+    /**
+     * Internal configuration context.
+     */
+    static class Context {
+        boolean registerJavaPlugins
+        boolean registerGroovyPlugins
     }
 }
