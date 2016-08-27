@@ -82,28 +82,27 @@ class QualityPlugin implements Plugin<Project> {
         configurePlugin(project,
                 extension.checkstyle,
                 register,
-                CheckstylePlugin,
-                {
-                    project.configure(project) {
-                        checkstyle {
-                            showViolations = false
-                            toolVersion = extension.checkstyleVersion
-                            ignoreFailures = !extension.strict
-                            configFile = configLoader.resolveCheckstyleConfig(false)
-                            sourceSets = extension.sourceSets
-                        }
-                        tasks.withType(Checkstyle) {
-                            doFirst {
-                                configLoader.resolveCheckstyleConfig()
-                            }
-                            // disable default html report (supported from gradle 2.10)
-                            if (reports.enabledReportNames.contains('html')) {
-                                reports.html.enabled = false
-                            }
-                        }
+                CheckstylePlugin) {
+            project.configure(project) {
+                checkstyle {
+                    showViolations = false
+                    toolVersion = extension.checkstyleVersion
+                    ignoreFailures = !extension.strict
+                    configFile = configLoader.resolveCheckstyleConfig(false)
+                    sourceSets = extension.sourceSets
+                }
+                tasks.withType(Checkstyle) {
+                    doFirst {
+                        configLoader.resolveCheckstyleConfig()
                     }
-                    applyReporter(project, 'checkstyle', new CheckstyleReporter(configLoader))
-                })
+                    // disable default html report (supported from gradle 2.10)
+                    if (reports.enabledReportNames.contains('html')) {
+                        reports.html.enabled = false
+                    }
+                }
+            }
+            applyReporter(project, 'checkstyle', new CheckstyleReporter(configLoader))
+        }
     }
 
     private void applyPMD(Project project, QualityExtension extension, ConfigLoader configLoader,
@@ -111,23 +110,22 @@ class QualityPlugin implements Plugin<Project> {
         configurePlugin(project,
                 extension.pmd,
                 register,
-                PmdPlugin,
-                {
-                    project.configure(project) {
-                        pmd {
-                            toolVersion = extension.pmdVersion
-                            ignoreFailures = !extension.strict
-                            ruleSetFiles = files(configLoader.resolvePmdConfig(false).absolutePath)
-                            sourceSets = extension.sourceSets
-                        }
-                        tasks.withType(Pmd) {
-                            doFirst {
-                                configLoader.resolvePmdConfig()
-                            }
-                        }
+                PmdPlugin) {
+            project.configure(project) {
+                pmd {
+                    toolVersion = extension.pmdVersion
+                    ignoreFailures = !extension.strict
+                    ruleSetFiles = files(configLoader.resolvePmdConfig(false).absolutePath)
+                    sourceSets = extension.sourceSets
+                }
+                tasks.withType(Pmd) {
+                    doFirst {
+                        configLoader.resolvePmdConfig()
                     }
-                    applyReporter(project, 'pmd', new PmdReporter())
-                })
+                }
+            }
+            applyReporter(project, 'pmd', new PmdReporter())
+        }
     }
 
     private void applyFindbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
@@ -135,32 +133,31 @@ class QualityPlugin implements Plugin<Project> {
         configurePlugin(project,
                 extension.findbugs,
                 register,
-                FindBugsPlugin,
-                {
-                    project.configure(project) {
-                        findbugs {
-                            toolVersion = extension.findbugsVersion
-                            ignoreFailures = !extension.strict
-                            effort = extension.findbugsEffort
-                            reportLevel = extension.findbugsLevel
-                            excludeFilter = configLoader.resolveFindbugsExclude(false)
-                            sourceSets = extension.sourceSets
-                        }
+                FindBugsPlugin) {
+            project.configure(project) {
+                findbugs {
+                    toolVersion = extension.findbugsVersion
+                    ignoreFailures = !extension.strict
+                    effort = extension.findbugsEffort
+                    reportLevel = extension.findbugsLevel
+                    excludeFilter = configLoader.resolveFindbugsExclude(false)
+                    sourceSets = extension.sourceSets
+                }
 
-                        tasks.withType(FindBugs) {
-                            doFirst {
-                                configLoader.resolveFindbugsExclude()
-                            }
-                            reports {
-                                xml {
-                                    enabled true
-                                    withMessages true
-                                }
-                            }
+                tasks.withType(FindBugs) {
+                    doFirst {
+                        configLoader.resolveFindbugsExclude()
+                    }
+                    reports {
+                        xml {
+                            enabled true
+                            withMessages true
                         }
                     }
-                    applyReporter(project, 'findbugs', new FindbugsReporter(configLoader))
-                })
+                }
+            }
+            applyReporter(project, 'findbugs', new FindbugsReporter(configLoader))
+        }
     }
 
     private void applyCodeNarc(Project project, QualityExtension extension, ConfigLoader configLoader,
@@ -168,27 +165,26 @@ class QualityPlugin implements Plugin<Project> {
         configurePlugin(project,
                 extension.codenarc,
                 register,
-                CodeNarcPlugin,
-                {
-                    project.configure(project) {
-                        codenarc {
-                            toolVersion = extension.codenarcVersion
-                            ignoreFailures = !extension.strict
-                            configFile = configLoader.resolveCodenarcConfig(false)
-                            sourceSets = extension.sourceSets
-                        }
-                        tasks.withType(CodeNarc) {
-                            doFirst {
-                                configLoader.resolveCodenarcConfig()
-                            }
-                            reports {
-                                xml.enabled = true
-                                html.enabled = true
-                            }
-                        }
+                CodeNarcPlugin) {
+            project.configure(project) {
+                codenarc {
+                    toolVersion = extension.codenarcVersion
+                    ignoreFailures = !extension.strict
+                    configFile = configLoader.resolveCodenarcConfig(false)
+                    sourceSets = extension.sourceSets
+                }
+                tasks.withType(CodeNarc) {
+                    doFirst {
+                        configLoader.resolveCodenarcConfig()
                     }
-                    applyReporter(project, 'codenarc', new CodeNarcReporter())
-                })
+                    reports {
+                        xml.enabled = true
+                        html.enabled = true
+                    }
+                }
+            }
+            applyReporter(project, 'codenarc', new CodeNarcReporter())
+        }
     }
 
     private void configureAnimalSniffer(Project project, QualityExtension extension) {
