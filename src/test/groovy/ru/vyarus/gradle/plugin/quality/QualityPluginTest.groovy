@@ -104,4 +104,26 @@ class QualityPluginTest extends AbstractTest {
         then: "codenarc registered"
         project.plugins.findPlugin(CodeNarcPlugin)
     }
+
+    def "Check manual mode"() {
+
+        when: "apply plugin"
+        file('src/main/java').mkdirs()
+
+        Project project = project {
+            apply plugin: 'java'
+            apply plugin: 'ru.vyarus.quality'
+            apply plugin: 'checkstyle'
+
+            quality {
+                autoRegistration = false
+            }
+        }
+
+        then: "plugins registered"
+        project.plugins.findPlugin(CheckstylePlugin)
+        !project.plugins.findPlugin(PmdPlugin)
+        !project.plugins.findPlugin(FindBugsPlugin)
+        !project.plugins.findPlugin(CodeNarcPlugin)
+    }
 }

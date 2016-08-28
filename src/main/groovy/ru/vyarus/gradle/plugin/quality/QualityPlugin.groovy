@@ -217,10 +217,12 @@ class QualityPlugin implements Plugin<Project> {
 
     private Context createContext(Project project, QualityExtension extension) {
         Context context = new Context()
-        context.registerJavaPlugins = (extension.sourceSets.find { it.java.srcDirs.find { it.exists() } }) != null
-        if (project.plugins.findPlugin(GroovyPlugin)) {
-            context.registerGroovyPlugins =
-                    (extension.sourceSets.find { it.groovy.srcDirs.find { it.exists() } }) != null
+        if (extension.autoRegistration) {
+            context.registerJavaPlugins = (extension.sourceSets.find { it.java.srcDirs.find { it.exists() } }) != null
+            if (project.plugins.findPlugin(GroovyPlugin)) {
+                context.registerGroovyPlugins =
+                        (extension.sourceSets.find { it.groovy.srcDirs.find { it.exists() } }) != null
+            }
         }
         context
     }

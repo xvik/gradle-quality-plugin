@@ -27,6 +27,17 @@ class QualityExtension {
     String animalsnifferVersion
 
     /**
+     * Automatically register quality plugins, based on configured (affected) sources ({@link #sourceSets}).
+     * For example, if configured sources contain only java sources then only pmd, checkstyle and findbugs plugins
+     * will be activated; if only groovy sources - then codenarc only.
+     * <p>
+     * When disabled, quality plugins must be registered manually. Only registered plugins will be configured
+     * if configuration is not disabled with plugin flags ({@link #pmd}, {@link #checkstyle} etc.).
+     * True by default
+     */
+    boolean autoRegistration = true
+
+    /**
      * Enable Checkstyle plugin. True by default.
      * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
      */
