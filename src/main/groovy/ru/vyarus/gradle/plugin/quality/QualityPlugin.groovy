@@ -102,6 +102,7 @@ class QualityPlugin implements Plugin<Project> {
                 }
             }
             applyReporter(project, 'checkstyle', new CheckstyleReporter(configLoader))
+            applyEnabledState(project, extension, Checkstyle)
         }
     }
 
@@ -125,6 +126,7 @@ class QualityPlugin implements Plugin<Project> {
                 }
             }
             applyReporter(project, 'pmd', new PmdReporter())
+            applyEnabledState(project, extension, Pmd)
         }
     }
 
@@ -157,6 +159,7 @@ class QualityPlugin implements Plugin<Project> {
                 }
             }
             applyReporter(project, 'findbugs', new FindbugsReporter(configLoader))
+            applyEnabledState(project, extension, FindBugs)
         }
     }
 
@@ -184,6 +187,7 @@ class QualityPlugin implements Plugin<Project> {
                 }
             }
             applyReporter(project, 'codenarc', new CodeNarcReporter())
+            applyEnabledState(project, extension, CodeNarc)
         }
     }
 
@@ -198,6 +202,8 @@ class QualityPlugin implements Plugin<Project> {
                     animalsniffer.toolVersion = extension.animalsnifferVersion
                 }
             }
+            applyEnabledState(project, extension,
+                    it.class.classLoader.loadClass('ru.vyarus.gradle.plugin.animalsniffer.AnimalSniffer'))
         }
     }
 
@@ -249,6 +255,18 @@ class QualityPlugin implements Plugin<Project> {
         // configure plugin if registered (manually or automatic)
         project.plugins.withType(plugin) {
             config.call()
+        }
+    }
+
+    private void applyEnabledState(Project project, QualityExtension extension, Class task) {
+        if (!extension.enabled) {
+            project.gradle.taskGraph.whenReady {
+                Task called = project.gradle.taskGraph.allTasks.last()
+                project.tasks.withType(task).each {
+                    // enable task only if it's called directly
+                    it.enabled = called == it
+                }
+            }
         }
     }
 

@@ -90,6 +90,13 @@ class QualityExtension {
     boolean strict = true
 
     /**
+     * When false, disables quality tasks execution. Allows disabling tasks without removing plugins.
+     * Quality tasks are still registered, but skip execution, except case when task called directly.
+     * True by default.
+     */
+    boolean enabled = true
+
+    /**
      * Source sets to apply checks on.
      * Default is [sourceSets.main] to apply only for project sources, excluding tests.
      */

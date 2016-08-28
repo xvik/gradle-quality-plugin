@@ -14,7 +14,7 @@ class AnimalSnifferIntegrationKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'java'
-                id 'ru.vyarus.animalsniffer' version '1.1.0'
+                id 'ru.vyarus.animalsniffer' version '1.2.0'
                 id 'ru.vyarus.quality'
             }
 
@@ -35,5 +35,33 @@ class AnimalSnifferIntegrationKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
+    }
+
+    def "Check animalsniffer disable"() {
+        setup:
+        build("""
+            plugins {
+                id 'java'
+                id 'ru.vyarus.animalsniffer' version '1.2.0'
+                id 'ru.vyarus.quality'
+            }
+
+            quality {
+                enabled = false
+            }
+
+            repositories {
+                jcenter() //required for testKit run
+            }
+        """)
+
+        fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
+
+        when: "run check task with java sources"
+        BuildResult result = run('check')
+
+        then: "all plugins detect violations"
+        result.task(":check").outcome == TaskOutcome.UP_TO_DATE
+        result.task(":animalsnifferMain").outcome == TaskOutcome.SKIPPED
     }
 }
