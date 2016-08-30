@@ -1,10 +1,9 @@
-* (breaking) Require jdk 8 (drop jdk 6,7 compatibility because of new pmd and checkstyle versions)
-* Update checkstyle 6.17 -> 7.1
+* Update checkstyle 6.17 -> 7.1 (requires min jdk 8)
 * Update checkstyle config:
     - Add [SingleSpaceSeparator](http://checkstyle.sourceforge.net/config_whitespace.html#SingleSpaceSeparator) check (since 6.19)
     - Disable [FileLength](http://checkstyle.sourceforge.net/config_sizes.html#FileLength) check in favour of more correct PMD ExcessiveClassLength check (which checks actual class length not file)
     - Enable [ReturnCount](http://checkstyle.sourceforge.net/config_coding.html#ReturnCount) to replace pmd OnlyOneReturn check
-* Update pmd 5.4.1 -> 5.5.1
+* Update pmd 5.4.1 -> 5.5.1 (requires min jdk 7)
 * Update pmd config:
     - Disable [UselessParentheses](https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/unnecessary.html#UselessParentheses) because of too many false positives
     - Disable [OnlyOneReturn](https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/controversial.html#OnlyOneReturn) in favour of checkstyle ReturnCount
