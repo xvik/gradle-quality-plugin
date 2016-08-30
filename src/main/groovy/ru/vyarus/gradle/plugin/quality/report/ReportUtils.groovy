@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.report
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
 
 /**
@@ -9,6 +11,7 @@ import org.gradle.api.Project
  * @since 16.11.2015
  */
 @SuppressWarnings('DuplicateStringLiteral')
+@CompileStatic
 class ReportUtils {
 
     /**
@@ -20,6 +23,7 @@ class ReportUtils {
      * @param file absolute path to source file
      * @return package for provided java class path
      */
+    @CompileStatic(TypeCheckingMode.SKIP)
     static String extractJavaPackage(Project project, String type, String file) {
         String name = new File(file).canonicalPath
         project.sourceSets[type].java.srcDirs.each {

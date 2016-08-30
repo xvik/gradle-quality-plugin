@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.report
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
 
 import java.util.zip.ZipFile
@@ -10,10 +12,12 @@ import java.util.zip.ZipFile
  * @author Vyacheslav Rusakov
  * @since 13.11.2015
  */
+@CompileStatic
 class CodeNarcReporter implements Reporter {
 
     @Override
     @SuppressWarnings('DuplicateStringLiteral')
+    @CompileStatic(TypeCheckingMode.SKIP)
     void report(Project project, String type) {
         project.with {
             File reportFile = file("${extensions.codenarc.reportsDir}/${type}.xml")

@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 
@@ -10,8 +12,10 @@ import org.gradle.api.tasks.SourceSet
  * @since 12.11.2015
  * @see ru.vyarus.gradle.plugin.quality.QualityPlugin for registration
  */
+@CompileStatic
 class QualityExtension {
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     QualityExtension(Project project) {
         sourceSets = [project.sourceSets.main] as Collection<SourceSet>
     }

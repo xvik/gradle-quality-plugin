@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.report
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
 
@@ -9,6 +11,7 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
  * @author Vyacheslav Rusakov
  * @since 12.11.2015
  */
+@CompileStatic
 class FindbugsReporter implements Reporter {
 
     ConfigLoader configLoader
@@ -18,6 +21,7 @@ class FindbugsReporter implements Reporter {
     }
 
     @Override
+    @CompileStatic(TypeCheckingMode.SKIP)
     void report(Project project, String type) {
         project.with {
             File reportFile = file("${extensions.findbugs.reportsDir}/${type}.xml")
@@ -51,23 +55,29 @@ class FindbugsReporter implements Reporter {
                             "$NL\t>> ${msg.text()}" +
                             "$NL  ${description}"
                 }
-                // html report
-                String htmlReportPath = "${extensions.findbugs.reportsDir}/${type}.html"
-                File htmlReportFile = file(htmlReportPath)
-                // avoid redundant re-generation
-                if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
-                    ant.xslt(in: reportFile,
-                            style: configLoader.resolveFindbugsXsl(),
-                            out: htmlReportPath,
-                    )
-                }
-
-                String htmlReportUrl = ReportUtils.toConsoleLink(htmlReportFile)
-                logger.error "${NL}Findbugs HTML report: $htmlReportUrl"
+                renderHtmlReport(project, type, reportFile)
             }
         }
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
+    private void renderHtmlReport(Project project, String type, File reportFile) {
+        // html report
+        String htmlReportPath = "${project.extensions.findbugs.reportsDir}/${type}.html"
+        File htmlReportFile = project.file(htmlReportPath)
+        // avoid redundant re-generation
+        if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
+            project.ant.xslt(in: reportFile,
+                    style: configLoader.resolveFindbugsXsl(),
+                    out: htmlReportPath,
+            )
+        }
+
+        String htmlReportUrl = ReportUtils.toConsoleLink(htmlReportFile)
+        project.logger.error "${NL}Findbugs HTML report: $htmlReportUrl"
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
     private Map<String, String> buildDescription(Node result) {
         Map<String, String> desc = [:]
         result.BugPattern.each { pattern ->
@@ -84,6 +94,7 @@ class FindbugsReporter implements Reporter {
         return desc
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     private Map<String, String> buildCategories(Node result) {
         Map<String, String> cat = [:]
         result.BugCategory.each { category ->

@@ -1,5 +1,6 @@
 package ru.vyarus.gradle.plugin.quality.report
 
+import groovy.transform.CompileStatic
 import org.gradle.api.Project
 
 /**
@@ -8,6 +9,7 @@ import org.gradle.api.Project
  * @author Vyacheslav Rusakov
  * @since 12.11.2015
  */
+@CompileStatic
 interface Reporter {
 
     /**

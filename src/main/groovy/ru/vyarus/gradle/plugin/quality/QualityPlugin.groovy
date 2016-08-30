@@ -1,11 +1,14 @@
 package ru.vyarus.gradle.plugin.quality
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.*
+import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.reporting.DurationFormatter
@@ -39,6 +42,7 @@ import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
  * @see PmdPlugin
  * @see FindBugsPlugin
  */
+@CompileStatic
 class QualityPlugin implements Plugin<Project> {
 
     private static final DurationFormatter DURATION_FORMAT = new DurationFormatter()
@@ -72,11 +76,12 @@ class QualityPlugin implements Plugin<Project> {
         if (!extension.lintOptions) {
             return
         }
-        project.tasks.withType(JavaCompile) {
-            it.options.compilerArgs.addAll(extension.lintOptions.collect { "-Xlint:$it" })
+        project.tasks.withType(JavaCompile) { JavaCompile t ->
+            t.options.compilerArgs.addAll(extension.lintOptions.collect { "-Xlint:$it" as String })
         }
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     private void applyCheckstyle(Project project, QualityExtension extension, ConfigLoader configLoader,
                                  boolean register) {
         configurePlugin(project,
@@ -106,6 +111,7 @@ class QualityPlugin implements Plugin<Project> {
         }
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     private void applyPMD(Project project, QualityExtension extension, ConfigLoader configLoader,
                           boolean register) {
         configurePlugin(project,
@@ -130,6 +136,7 @@ class QualityPlugin implements Plugin<Project> {
         }
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     private void applyFindbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
                                boolean register) {
         configurePlugin(project,
@@ -163,6 +170,7 @@ class QualityPlugin implements Plugin<Project> {
         }
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     private void applyCodeNarc(Project project, QualityExtension extension, ConfigLoader configLoader,
                                boolean register) {
         configurePlugin(project,
@@ -191,6 +199,7 @@ class QualityPlugin implements Plugin<Project> {
         }
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     private void configureAnimalSniffer(Project project, QualityExtension extension) {
         project.plugins.withId('ru.vyarus.animalsniffer') {
             project.configure(project) {
@@ -221,6 +230,7 @@ class QualityPlugin implements Plugin<Project> {
         }
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     private Context createContext(Project project, QualityExtension extension) {
         Context context = new Context()
         if (extension.autoRegistration) {
@@ -262,9 +272,9 @@ class QualityPlugin implements Plugin<Project> {
         if (!extension.enabled) {
             project.gradle.taskGraph.whenReady {
                 Task called = project.gradle.taskGraph.allTasks.last()
-                project.tasks.withType(task).each {
+                (project.tasks.withType(task) as TaskCollection<Task>).each { t ->
                     // enable task only if it's called directly
-                    it.enabled = called == it
+                    t.enabled = called == t
                 }
             }
         }

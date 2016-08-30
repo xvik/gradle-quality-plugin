@@ -1,5 +1,6 @@
 package ru.vyarus.gradle.plugin.quality
 
+import groovy.transform.CompileStatic
 import org.gradle.api.Project
 
 /**
@@ -12,6 +13,7 @@ import org.gradle.api.Project
  * @author Vyacheslav Rusakov
  * @since 12.11.2015
  */
+@CompileStatic
 class ConfigLoader {
     private final String checkstyle = 'checkstyle/checkstyle.xml'
     private final String checkstyleXsl = 'checkstyle/html-report-style.xsl'
@@ -69,7 +71,8 @@ class ConfigLoader {
         // look custom user file first
         File target = new File(configDir, path)
         return target.exists() ?
-                target : (copyDefaultFile ? copyConfig(tmpConfigDir, path, false) : new File(tmpConfigDir, path))
+                target
+                : (copyDefaultFile ? copyConfig(tmpConfigDir, path, false) : new File(tmpConfigDir, path)) as File
     }
 
     private void init() {

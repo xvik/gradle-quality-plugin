@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.report
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
 
@@ -10,6 +12,7 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
  * @since 12.11.2015
  */
 @SuppressWarnings('DuplicateStringLiteral')
+@CompileStatic
 class CheckstyleReporter implements Reporter {
 
     ConfigLoader configLoader
@@ -19,6 +22,7 @@ class CheckstyleReporter implements Reporter {
     }
 
     @Override
+    @CompileStatic(TypeCheckingMode.SKIP)
     void report(Project project, String type) {
         project.with {
             File reportFile = file("${extensions.checkstyle.reportsDir}/${type}.xml")
@@ -47,21 +51,25 @@ class CheckstyleReporter implements Reporter {
                                 "$NL  http://checkstyle.sourceforge.net/config_${group}.html#$check"
                     }
                 }
-
-                String htmlReportPath = "${extensions.checkstyle.reportsDir}/${type}.html"
-                File htmlReportFile = file(htmlReportPath)
-                // avoid redundant re-generation
-                if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
-                    ant.xslt(in: reportFile,
-                            style: configLoader.resolveCheckstyleXsl(),
-                            out: htmlReportPath,
-                    )
-                }
-
-                String htmlReportUrl = ReportUtils.toConsoleLink(htmlReportFile)
-                logger.error "${NL}Checkstyle HTML report: $htmlReportUrl"
+                renderHtmlReport(project, type, reportFile)
             }
         }
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    private void renderHtmlReport(Project project, String type, File reportFile) {
+        String htmlReportPath = "${project.extensions.checkstyle.reportsDir}/${type}.html"
+        File htmlReportFile = project.file(htmlReportPath)
+        // avoid redundant re-generation
+        if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
+            project.ant.xslt(in: reportFile,
+                    style: configLoader.resolveCheckstyleXsl(),
+                    out: htmlReportPath,
+            )
+        }
+
+        String htmlReportUrl = ReportUtils.toConsoleLink(htmlReportFile)
+        project.logger.error "${NL}Checkstyle HTML report: $htmlReportUrl"
     }
 
     private String extractCheckName(String source) {

@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.report
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
 
 /**
@@ -8,9 +10,11 @@ import org.gradle.api.Project
  * @author Vyacheslav Rusakov
  * @since 12.11.2015
  */
+@CompileStatic
 class PmdReporter implements Reporter {
 
     @Override
+    @CompileStatic(TypeCheckingMode.SKIP)
     void report(Project project, String type) {
         project.with {
             File reportFile = file("${extensions.pmd.reportsDir}/${type}.xml")

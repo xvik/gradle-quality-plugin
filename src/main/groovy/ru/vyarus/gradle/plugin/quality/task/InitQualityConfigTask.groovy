@@ -1,5 +1,6 @@
 package ru.vyarus.gradle.plugin.quality.task
 
+import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
@@ -13,13 +14,14 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
  * @since 12.11.2015
  * @see ru.vyarus.gradle.plugin.quality.QualityPlugin for registration
  */
+@CompileStatic
 class InitQualityConfigTask extends DefaultTask {
 
     boolean override
 
     InitQualityConfigTask() {
-        group 'build setup'
-        description 'Copies default quality plugin configuration files for customization'
+        group  = 'build setup'
+        description = 'Copies default quality plugin configuration files for customization'
     }
 
     @TaskAction
