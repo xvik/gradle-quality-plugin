@@ -65,8 +65,6 @@ class CheckstyleReporterTest extends AbstractKitTest {
 [Misc | UncommentedMain] sample.(Sample2.java:11)
   Uncommented main method found.
   http://checkstyle.sourceforge.net/config_misc.html#UncommentedMain
-
-Checkstyle HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir.root)}/build/reports/checkstyle/main.html
 """ as String
     }
 }

@@ -36,7 +36,7 @@ class FindbugsReporter implements Reporter {
                 int p1 = summary.@priority_1 == null ? 0 : summary.@priority_1 as Integer
                 int p2 = summary.@priority_2 == null ? 0 : summary.@priority_2 as Integer
                 int p3 = summary.@priority_3 == null ? 0 : summary.@priority_3 as Integer
-                logger.error "$NL$cnt ($p1 / $p2 / $p3) FindBugs violations were found in ${fileCnt} files"
+                logger.error "$NL$cnt ($p1 / $p2 / $p3) FindBugs violations were found in ${fileCnt} files$NL"
 
                 Map<String, String> desc = buildDescription(result)
                 Map<String, String> cat = buildCategories(result)
@@ -50,10 +50,10 @@ class FindbugsReporter implements Reporter {
                     String pkg = classname[0..idx]
                     String cls = classname[idx + 1..-1]
                     // part in braces recognized by intellij IDEA and shown as link
-                    logger.error "$NL[${cat[bug.@category]} | ${bug.@type}] $pkg(${cls}.java:${srcPosition})  " +
+                    logger.error "[${cat[bug.@category]} | ${bug.@type}] $pkg(${cls}.java:${srcPosition})  " +
                             "[priority ${bug.@priority}]" +
                             "$NL\t>> ${msg.text()}" +
-                            "$NL  ${description}"
+                            "$NL  ${description}$NL"
                 }
                 renderHtmlReport(project, type, reportFile)
             }
@@ -74,7 +74,7 @@ class FindbugsReporter implements Reporter {
         }
 
         String htmlReportUrl = ReportUtils.toConsoleLink(htmlReportFile)
-        project.logger.error "${NL}Findbugs HTML report: $htmlReportUrl"
+        project.logger.error "Findbugs HTML report: $htmlReportUrl"
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)

@@ -45,7 +45,7 @@ class MultiModuleUseTest extends AbstractKitTest {
 :mod1:processResources UP-TO-DATE
 :mod1:classes
 :mod1:checkstyleMain
-Checkstyle rule violations were found. See the report at: file:///tmp/junit6300057182805361069/mod1/build/reports/checkstyle/main.xml
+Checkstyle rule violations were found. See the report at: file:///tmp/junit6300057182805361069/mod1/build/reports/checkstyle/main.html
 
 2 Checkstyle rule violations were found in 1 files
 
@@ -57,7 +57,6 @@ Checkstyle rule violations were found. See the report at: file:///tmp/junit63000
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 
-Checkstyle HTML report: file:///tmp/junit6300057182805361069/mod1/build/reports/checkstyle/main.html
 :mod1:compileTestJava UP-TO-DATE
 :mod1:processTestResources UP-TO-DATE
 :mod1:testClasses UP-TO-DATE
@@ -67,7 +66,7 @@ Checkstyle HTML report: file:///tmp/junit6300057182805361069/mod1/build/reports/
 :mod2:processResources UP-TO-DATE
 :mod2:classes
 :mod2:checkstyleMain
-Checkstyle rule violations were found. See the report at: file:///tmp/junit6300057182805361069/mod2/build/reports/checkstyle/main.xml
+Checkstyle rule violations were found. See the report at: file:///tmp/junit6300057182805361069/mod2/build/reports/checkstyle/main.html
 
 2 Checkstyle rule violations were found in 1 files
 
@@ -79,7 +78,6 @@ Checkstyle rule violations were found. See the report at: file:///tmp/junit63000
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 
-Checkstyle HTML report: file:///tmp/junit6300057182805361069/mod2/build/reports/checkstyle/main.html
 :mod2:compileTestJava UP-TO-DATE
 :mod2:processTestResources UP-TO-DATE
 :mod2:testClasses UP-TO-DATE

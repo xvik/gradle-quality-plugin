@@ -29,7 +29,6 @@ class InitQualityConfigTaskKitTest extends AbstractKitTest {
         then: "configs copied"
         result.task(':initQualityConfig').outcome == TaskOutcome.SUCCESS
         file('config/checkstyle/checkstyle.xml').exists()
-        file('config/checkstyle/html-report-style.xsl').exists()
         file('config/codenarc/codenarc.xml').exists()
         file('config/findbugs/exclude.xml').exists()
         file('config/findbugs/html-report-style.xsl').exists()

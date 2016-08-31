@@ -16,6 +16,7 @@
 * (breaking) configure manually registered plugins, even if plugin not supposed to be used due to sources auto detection. Configuration may be disabled using quality configuration flags.
 * Add ability to disable automatic plugins registration: quality.autoRegistration = false. Only manually registered plugins will be configured.
 * Add ability to disable quality tasks with configuration property: quality.enabled = false. Quality tasks will still work if called directly.
+* (breaking) Remove checkstyle html report generation: gradle can generate html report since 2.10 and when gradle generates html report, it puts link to it into main error message
 
 ### 1.3.0 (2016-03-30)
 * Update checkstyle 6.14.1 -> 6.17

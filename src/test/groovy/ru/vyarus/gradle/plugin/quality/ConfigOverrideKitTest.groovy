@@ -36,7 +36,6 @@ class ConfigOverrideKitTest extends AbstractKitTest {
         then: "custom config used"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         !file('build/quality-configs/checkstyle/checkstyle.xml').exists()
-        file('build/quality-configs/checkstyle/html-report-style.xsl').exists()
 
     }
 }

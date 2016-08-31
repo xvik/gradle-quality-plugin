@@ -16,7 +16,6 @@ import org.gradle.api.Project
 @CompileStatic
 class ConfigLoader {
     private final String checkstyle = 'checkstyle/checkstyle.xml'
-    private final String checkstyleXsl = 'checkstyle/html-report-style.xsl'
     private final String pmd = 'pmd/pmd.xml'
     private final String findbugsExclude = 'findbugs/exclude.xml'
     private final String findbugsXsl = 'findbugs/html-report-style.xsl'
@@ -32,10 +31,6 @@ class ConfigLoader {
 
     File resolveCheckstyleConfig(boolean copyDefaultFile = true) {
         resolve(checkstyle, copyDefaultFile)
-    }
-
-    File resolveCheckstyleXsl(boolean copyDefaultFile = true) {
-        resolve(checkstyleXsl, copyDefaultFile)
     }
 
     File resolvePmdConfig(boolean copyDefaultFile = true) {
@@ -61,7 +56,7 @@ class ConfigLoader {
      */
     void initUserConfigs(boolean override) {
         init()
-        [checkstyle, checkstyleXsl, pmd, findbugsExclude, findbugsXsl, codenarc].each {
+        [checkstyle, pmd, findbugsExclude, findbugsXsl, codenarc].each {
             copyConfig(configDir, it, override)
         }
     }

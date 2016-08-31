@@ -25,7 +25,7 @@ class PmdReporter implements Reporter {
             Node result = new XmlParser().parse(reportFile)
             int cnt = result.file.violation.size()
             if (cnt > 0) {
-                logger.error "$NL$cnt PMD rule violations were found in ${result.file.size()} files"
+                logger.error "$NL$cnt PMD rule violations were found in ${result.file.size()} files$NL"
 
                 result.file.each { file ->
                     String filePath = file.@name
@@ -34,9 +34,9 @@ class PmdReporter implements Reporter {
                     file.violation.each { violation ->
                         String srcPos = violation.@beginline
                         // part in braces recognized by intellij IDEA and shown as link
-                        logger.error "$NL[${violation.@ruleset} | ${violation.@rule}] $name.($sourceFile:${srcPos})" +
+                        logger.error "[${violation.@ruleset} | ${violation.@rule}] $name.($sourceFile:${srcPos})" +
                                 "$NL  ${violation.text().trim()}" +
-                                "$NL  ${violation.@externalInfoUrl}"
+                                "$NL  ${violation.@externalInfoUrl}$NL"
                     }
                 }
             }

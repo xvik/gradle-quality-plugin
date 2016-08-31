@@ -34,7 +34,7 @@ class CheckstyleReporter implements Reporter {
             int cnt = result.file.error.size()
             if (cnt > 0) {
                 int filesCnt = result.file.findAll { it.error.size() > 0 }.size()
-                logger.error "$NL$cnt Checkstyle rule violations were found in $filesCnt files"
+                logger.error "$NL$cnt Checkstyle rule violations were found in $filesCnt files$NL"
 
                 result.file.each { file ->
                     String filePath = file.@name
@@ -46,30 +46,13 @@ class CheckstyleReporter implements Reporter {
                         String group = extractGroupName(it.@source)
                         String srcPointer = it.@line
                         // part in braces recognized by intellij IDEA and shown as link
-                        logger.error "$NL[${group.capitalize()} | $check] $name.($sourceFile:$srcPointer)" +
+                        logger.error "[${group.capitalize()} | $check] $name.($sourceFile:$srcPointer)" +
                                 "$NL  ${it.@message}" +
-                                "$NL  http://checkstyle.sourceforge.net/config_${group}.html#$check"
+                                "$NL  http://checkstyle.sourceforge.net/config_${group}.html#$check$NL"
                     }
                 }
-                renderHtmlReport(project, type, reportFile)
             }
         }
-    }
-
-    @CompileStatic(TypeCheckingMode.SKIP)
-    private void renderHtmlReport(Project project, String type, File reportFile) {
-        String htmlReportPath = "${project.extensions.checkstyle.reportsDir}/${type}.html"
-        File htmlReportFile = project.file(htmlReportPath)
-        // avoid redundant re-generation
-        if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
-            project.ant.xslt(in: reportFile,
-                    style: configLoader.resolveCheckstyleXsl(),
-                    out: htmlReportPath,
-            )
-        }
-
-        String htmlReportUrl = ReportUtils.toConsoleLink(htmlReportFile)
-        project.logger.error "${NL}Checkstyle HTML report: $htmlReportUrl"
     }
 
     private String extractCheckName(String source) {

@@ -100,10 +100,6 @@ class QualityPlugin implements Plugin<Project> {
                     doFirst {
                         configLoader.resolveCheckstyleConfig()
                     }
-                    // disable default html report (supported from gradle 2.10)
-                    if (reports.enabledReportNames.contains('html')) {
-                        reports.html.enabled = false
-                    }
                 }
             }
             applyReporter(project, 'checkstyle', new CheckstyleReporter(configLoader))

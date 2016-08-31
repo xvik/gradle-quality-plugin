@@ -32,7 +32,7 @@ class CodeNarcReporter implements Reporter {
                 Integer p2 = summary.@priority2 as Integer
                 Integer p3 = summary.@priority3 as Integer
                 Integer count = p1 + p2 + p3
-                logger.error "$NL$count ($p1 / $p2 / $p3) CodeNarc violations were found in ${fileCnt} files"
+                logger.error "$NL$count ($p1 / $p2 / $p3) CodeNarc violations were found in ${fileCnt} files$NL"
 
                 Map<String, String> desc = [:]
                 result.Rules.Rule.each {
@@ -53,12 +53,12 @@ class CodeNarcReporter implements Reporter {
                             String srcLine = ReportUtils.unescapeHtml(it.SourceLine.text())
                             String message = ReportUtils.unescapeHtml(it.Message.text())
                             // part in braces recognized by intellij IDEA and shown as link
-                            logger.error "$NL[${group.capitalize()} | ${rule}] ${pkg}.($src:${it.@lineNumber})  " +
+                            logger.error "[${group.capitalize()} | ${rule}] ${pkg}.($src:${it.@lineNumber})  " +
                                     "[priority ${priority}]" +
                                     "$NL\t>> ${srcLine}" +
                                     "$NL  ${message}" +
                                     "$NL  ${desc[rule]}" +
-                                    "$NL  http://codenarc.sourceforge.net/codenarc-rules-${group}.html#$rule"
+                                    "$NL  http://codenarc.sourceforge.net/codenarc-rules-${group}.html#$rule$NL"
                         }
                     }
                 }
