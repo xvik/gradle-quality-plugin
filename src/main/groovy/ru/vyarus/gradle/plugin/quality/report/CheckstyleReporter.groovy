@@ -6,7 +6,7 @@ import org.gradle.api.Project
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
 
 /**
- * Prints checkstyle errors (from xml report) into console and generates html report using custom xsl.
+ * Prints checkstyle errors (from xml report) into console.
  *
  * @author Vyacheslav Rusakov
  * @since 12.11.2015

@@ -37,7 +37,7 @@ class QualityExtension {
      * <p>
      * When disabled, quality plugins must be registered manually. Only registered plugins will be configured
      * if configuration is not disabled with plugin flags ({@link #pmd}, {@link #checkstyle} etc.).
-     * True by default
+     * True by default.
      */
     boolean autoRegistration = true
 
@@ -88,7 +88,7 @@ class QualityExtension {
 
     /**
      * Strict quality leads to build fail on any violation found. If disabled, all violation
-     * are just printed to console.
+     * are just printed to console (if console reporting enabled).
      * True by default.
      */
     boolean strict = true
@@ -99,6 +99,15 @@ class QualityExtension {
      * True by default.
      */
     boolean enabled = true
+
+    /**
+     * When false, disables reporting quality issues to console. Only gradle general error messages will
+     * remain in logs. This may be useful in cases when project contains too many warnings.
+     * Also, console reporting require xml reports parsing, which could be time consuming in case of too
+     * many errors (large xml reports).
+     * True by default.
+     */
+    boolean consoleReporting = true
 
     /**
      * Source sets to apply checks on.

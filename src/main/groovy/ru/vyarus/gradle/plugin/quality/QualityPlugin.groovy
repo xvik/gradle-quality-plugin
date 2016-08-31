@@ -102,7 +102,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                 }
             }
-            applyReporter(project, 'checkstyle', new CheckstyleReporter(configLoader))
+            applyReporter(project, 'checkstyle', new CheckstyleReporter(configLoader), extension.consoleReporting)
             applyEnabledState(project, extension, Checkstyle)
         }
     }
@@ -127,7 +127,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                 }
             }
-            applyReporter(project, 'pmd', new PmdReporter())
+            applyReporter(project, 'pmd', new PmdReporter(), extension.consoleReporting)
             applyEnabledState(project, extension, Pmd)
         }
     }
@@ -161,7 +161,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                 }
             }
-            applyReporter(project, 'findbugs', new FindbugsReporter(configLoader))
+            applyReporter(project, 'findbugs', new FindbugsReporter(configLoader), extension.consoleReporting)
             applyEnabledState(project, extension, FindBugs)
         }
     }
@@ -190,7 +190,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                 }
             }
-            applyReporter(project, 'codenarc', new CodeNarcReporter())
+            applyReporter(project, 'codenarc', new CodeNarcReporter(), extension.consoleReporting)
             applyEnabledState(project, extension, CodeNarc)
         }
     }
@@ -212,16 +212,26 @@ class QualityPlugin implements Plugin<Project> {
         }
     }
 
-    private void applyReporter(Project project, String type, Reporter reporter) {
+    private void applyReporter(Project project, String type, Reporter reporter, boolean consoleReport) {
+        boolean generatesHtmlReport = HtmlReportGenerator.isAssignableFrom(reporter.class)
+        if (!consoleReport && !generatesHtmlReport) {
+            // nothing to do at all
+            return
+        }
         // in multi-project reporter registered for each project, but all gets called on task execution in any module
         project.gradle.taskGraph.afterTask { Task task, TaskState state ->
             if (task.name.startsWith(type) && project == task.project) {
-                long start = System.currentTimeMillis()
 
-                reporter.report(task.project, task.name[type.length()..-1].toLowerCase())
-
-                String duration = DURATION_FORMAT.format(System.currentTimeMillis() - start)
-                task.project.logger.info("[plugin:quality] $type reporting executed in $duration")
+                String taskType = task.name[type.length()..-1].toLowerCase()
+                if (generatesHtmlReport) {
+                    (reporter as HtmlReportGenerator).generateHtmlReport(project, taskType)
+                }
+                if (consoleReport) {
+                    long start = System.currentTimeMillis()
+                    reporter.report(task.project, taskType)
+                    String duration = DURATION_FORMAT.format(System.currentTimeMillis() - start)
+                    task.project.logger.info("[plugin:quality] $type reporting executed in $duration")
+                }
             }
         }
     }

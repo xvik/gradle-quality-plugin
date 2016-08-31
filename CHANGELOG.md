@@ -8,7 +8,7 @@
     - Disable [UselessParentheses](https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/unnecessary.html#UselessParentheses) because of too many false positives
     - Disable [OnlyOneReturn](https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/controversial.html#OnlyOneReturn) in favour of checkstyle ReturnCount
 * Update codenarc 0.25.1 -> 0.25.2
-* lintOptions configuration now applies to all JavaCompile tasks (not only compileJava as before) 
+* quality.lintOptions configuration now applies to all JavaCompile tasks (not only compileJava as before) 
 * Fix multi-module projects reporting (remove duplicate reports)
 * Fix generated html reports links (redundant slash on linux)
 * Fix newline in reporters (use platform specific)
@@ -17,6 +17,8 @@
 * Add ability to disable automatic plugins registration: quality.autoRegistration = false. Only manually registered plugins will be configured.
 * Add ability to disable quality tasks with configuration property: quality.enabled = false. Quality tasks will still work if called directly.
 * (breaking) Remove checkstyle html report generation: gradle can generate html report since 2.10 and when gradle generates html report, it puts link to it into main error message
+* Findbugs html report is always generated (not only when errors found like before)
+* Add ability to disable console reporting with configuration property: quality.consoleReporting = false
 
 ### 1.3.0 (2016-03-30)
 * Update checkstyle 6.14.1 -> 6.17

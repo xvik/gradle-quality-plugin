@@ -7,12 +7,14 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
 
 /**
  * Prints findbugs errors (from xml report) into console and generates html report using custom xsl.
+ * Gradle findbugs plugin support html report generation too, but it can't generate both xml and html at the same
+ * time (so we have to generate html separately, because xml report is required for console reporting).
  *
  * @author Vyacheslav Rusakov
  * @since 12.11.2015
  */
 @CompileStatic
-class FindbugsReporter implements Reporter {
+class FindbugsReporter implements Reporter, HtmlReportGenerator {
 
     ConfigLoader configLoader
 
@@ -55,13 +57,21 @@ class FindbugsReporter implements Reporter {
                             "$NL\t>> ${msg.text()}" +
                             "$NL  ${description}$NL"
                 }
-                renderHtmlReport(project, type, reportFile)
+                // html report will be generated before console reporting
+                String htmlReportUrl = ReportUtils.toConsoleLink(project
+                        .file("${project.extensions.findbugs.reportsDir}/${type}.html"))
+                project.logger.error "Findbugs HTML report: $htmlReportUrl"
             }
         }
     }
 
+    @Override
     @CompileStatic(TypeCheckingMode.SKIP)
-    private void renderHtmlReport(Project project, String type, File reportFile) {
+    void generateHtmlReport(Project project, String type) {
+        File reportFile = project.file("${project.extensions.findbugs.reportsDir}/${type}.xml")
+        if (!reportFile.exists()) {
+            return
+        }
         // html report
         String htmlReportPath = "${project.extensions.findbugs.reportsDir}/${type}.html"
         File htmlReportFile = project.file(htmlReportPath)
@@ -72,9 +82,6 @@ class FindbugsReporter implements Reporter {
                     out: htmlReportPath,
             )
         }
-
-        String htmlReportUrl = ReportUtils.toConsoleLink(htmlReportFile)
-        project.logger.error "Findbugs HTML report: $htmlReportUrl"
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
