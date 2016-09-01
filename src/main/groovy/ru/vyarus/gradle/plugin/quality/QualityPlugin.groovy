@@ -8,6 +8,7 @@ import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.*
+import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
@@ -20,20 +21,27 @@ import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
  * Plugin must be registered after java or groovy plugins, otherwise wil do nothing.
  * <p>
  * Java project is detected by presence of java sources. In this case Checkstyle, PMD and FindBugs plugins are
- * activated. Also, additional javac lint options are activated to show more warnings during compilation.
+ * activated. If quality plugins applied manually, they would be configured too (even if auto detection didn't
+ * recognize related sources). Also, additional javac lint options are activated to show more warnings
+ * during compilation.
  * <p>
  * If groovy plugin enabled, CodeNarc plugin activated.
  * <p>
- * All plugins are configured to produce xml and html reports. For checkstyle and findbugs html reports
- * generated manually (gradle 2.10 added checkstyle html report by default, plugin have to disable it to grant
- * consistent behaviour). All plugins violations are printed into console in unified format which makes console
+ * All plugins are configured to produce xml and html reports. For findbugs html report
+ * generated manually. All plugins violations are printed into console in unified format which makes console
  * output good enough for fixing violations.
  * <p>
  * Plugin may be configured with 'quality' closure. See {@link QualityExtension} for configuration options.
  * <p>
- * By default plugin use bundled quality plugins configurations. These configs could be copied into project
+ * By default, plugin use bundled quality plugins configurations. These configs could be copied into project
  * with 'initQualityConfig' task (into quality.configDir directory). These custom configs will be used in
  * priority with fallback to default config if config not found.
+ * <p>
+ * Special tasks registered for each source set: checkQualityMain, checkQualityTest etc.
+ * Tasks group registered quality plugins tasks for specific source set. This allows running quality plugins
+ * directly without tests (comparing to using 'check' task). Also, allows running quality plugins on source sets
+ * not enabled for main 'check' (example case: run quality checks for tests (time to time)). These tasks may be
+ * used even when quality tasks are disabled ({@code quality.enabled = false}).
  *
  * @author Vyacheslav Rusakov
  * @since 12.11.2015
@@ -46,6 +54,7 @@ import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 class QualityPlugin implements Plugin<Project> {
 
     private static final DurationFormatter DURATION_FORMAT = new DurationFormatter()
+    private static final String QUALITY_TASK = 'checkQuality'
 
     @Override
     void apply(Project project) {
@@ -55,6 +64,8 @@ class QualityPlugin implements Plugin<Project> {
             addInitConfigTask(project)
 
             project.afterEvaluate {
+                configureGroupingTasks(project)
+
                 Context context = createContext(project, extension)
                 ConfigLoader configLoader = new ConfigLoader(project)
 
@@ -70,6 +81,19 @@ class QualityPlugin implements Plugin<Project> {
 
     private void addInitConfigTask(Project project) {
         project.tasks.create('initQualityConfig', InitQualityConfigTask)
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    private void configureGroupingTasks(Project project) {
+        // create checkQualityMain, checkQualityTest (quality tasks for all source sets)
+        // using all source sets and not just declared in extension to be able to run quality plugins
+        // on source sets which are not included in check task run (e.g. run quality on tests time to time)
+        project.sourceSets.each { SourceSet set ->
+            project.tasks.create(set.getTaskName(QUALITY_TASK, null)).with {
+                group = 'verification'
+                description = "Run quality plugins for $it.name source set"
+            }
+        }
     }
 
     private void configureJavac(Project project, QualityExtension extension) {
@@ -102,8 +126,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                 }
             }
-            applyReporter(project, 'checkstyle', new CheckstyleReporter(configLoader), extension.consoleReporting)
-            applyEnabledState(project, extension, Checkstyle)
+            configurePluginTasks(project, extension, Checkstyle, 'checkstyle', new CheckstyleReporter(configLoader))
         }
     }
 
@@ -127,8 +150,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                 }
             }
-            applyReporter(project, 'pmd', new PmdReporter(), extension.consoleReporting)
-            applyEnabledState(project, extension, Pmd)
+            configurePluginTasks(project, extension, Pmd, 'pmd', new PmdReporter())
         }
     }
 
@@ -161,8 +183,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                 }
             }
-            applyReporter(project, 'findbugs', new FindbugsReporter(configLoader), extension.consoleReporting)
-            applyEnabledState(project, extension, FindBugs)
+            configurePluginTasks(project, extension, FindBugs, 'findbugs', new FindbugsReporter(configLoader))
         }
     }
 
@@ -190,8 +211,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                 }
             }
-            applyReporter(project, 'codenarc', new CodeNarcReporter(), extension.consoleReporting)
-            applyEnabledState(project, extension, CodeNarc)
+            configurePluginTasks(project, extension, CodeNarc, 'codenarc', new CodeNarcReporter())
         }
     }
 
@@ -209,6 +229,7 @@ class QualityPlugin implements Plugin<Project> {
             }
             applyEnabledState(project, extension,
                     it.class.classLoader.loadClass('ru.vyarus.gradle.plugin.animalsniffer.AnimalSniffer'))
+            groupQualityTasks(project, 'animalsniffer')
         }
     }
 
@@ -236,6 +257,15 @@ class QualityPlugin implements Plugin<Project> {
         }
     }
 
+    /**
+     * Detects available source folders in configured source sets to understand
+     * what sources are available: groovy, java or both. Based on that knowledge
+     * appropriate plugins could be registered.
+     *
+     * @param project
+     * @param extension
+     * @return
+     */
     @CompileStatic(TypeCheckingMode.SKIP)
     private Context createContext(Project project, QualityExtension extension) {
         Context context = new Context()
@@ -274,14 +304,63 @@ class QualityPlugin implements Plugin<Project> {
         }
     }
 
+    /**
+     * Applies reporter, enabled state control and checkQuality* grouping tasks.
+     *
+     * @param project project instance
+     * @param extension extension instance
+     * @param taskType task class
+     * @param task task base name
+     * @param reporter plugin specific reporter instance
+     */
+    private void configurePluginTasks(Project project, QualityExtension extension,
+                                      Class taskType, String task, Reporter reporter) {
+        applyReporter(project, task, reporter, extension.consoleReporting)
+        applyEnabledState(project, extension, taskType)
+        groupQualityTasks(project, task)
+    }
+
+    /**
+     * If quality tasks are disabled in configuration ({@code quality.enabled = false})
+     * then disabling tasks. Anyway, task must not be disabled if called directly
+     * or through grouping quality task (e.g. checkQualityMain).
+     * NOTE: if, for example, checkQualityMain is called after some other task
+     * (e.g. someTask.dependsOn checkQualityMain) then quality tasks will be disabled!
+     * Motivation is: plugins are disabled for a reason and could be enabled only when called
+     * directly (because obviously user wants quality task(s) to run).
+     *
+     * @param project project instance
+     * @param extension extension instance
+     * @param task quality plugin task class
+     */
     private void applyEnabledState(Project project, QualityExtension extension, Class task) {
         if (!extension.enabled) {
             project.gradle.taskGraph.whenReady {
                 Task called = project.gradle.taskGraph.allTasks.last()
                 (project.tasks.withType(task) as TaskCollection<Task>).each { t ->
-                    // enable task only if it's called directly
-                    t.enabled = called == t
+                    // enable task only if it's called directly or through grouping task
+                    t.enabled = called == t || called.name.startsWith(QUALITY_TASK)
                 }
+            }
+        }
+    }
+
+    /**
+     * Quality plugins register tasks for each source set. Declared affected source sets
+     * only affects which tasks will 'check' depend on.
+     * Grouping tasks allow to call quality tasks, not included to 'check'.
+     *
+     * @param project project instance
+     * @param task task base name
+     */
+    @CompileStatic(TypeCheckingMode.SKIP)
+    private void groupQualityTasks(Project project, String task) {
+        // each quality plugin generate separate tasks for each source set
+        // assign plugin tasks to source set grouping quality task
+        project.sourceSets.each {
+            Task pluginTask = project.tasks.findByName(it.getTaskName(task, null))
+            if (pluginTask) {
+                project.tasks.getByName(it.getTaskName(QUALITY_TASK, null)).dependsOn << pluginTask
             }
         }
     }

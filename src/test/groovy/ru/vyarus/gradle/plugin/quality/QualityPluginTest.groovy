@@ -28,8 +28,10 @@ class QualityPluginTest extends AbstractTest {
         project.plugins.findPlugin(FindBugsPlugin)
         !project.plugins.findPlugin(CodeNarcPlugin)
 
-        then: "task installed"
+        then: "tasks installed"
         project.tasks.initQualityConfig
+        project.tasks.checkQualityMain
+        project.tasks.checkQualityTest
     }
 
     def "Check plugins registration fo groovy"() {

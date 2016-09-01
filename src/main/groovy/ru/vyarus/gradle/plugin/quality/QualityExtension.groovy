@@ -95,7 +95,8 @@ class QualityExtension {
 
     /**
      * When false, disables quality tasks execution. Allows disabling tasks without removing plugins.
-     * Quality tasks are still registered, but skip execution, except case when task called directly.
+     * Quality tasks are still registered, but skip execution, except when task called directly or through
+     * checkQualityMain (or other source set) grouping task.
      * True by default.
      */
     boolean enabled = true
@@ -111,7 +112,7 @@ class QualityExtension {
 
     /**
      * Source sets to apply checks on.
-     * Default is [sourceSets.main] to apply only for project sources, excluding tests.
+     * Default is [project.sourceSets.main] to apply only for project sources, excluding tests.
      */
     Collection<SourceSet> sourceSets
 

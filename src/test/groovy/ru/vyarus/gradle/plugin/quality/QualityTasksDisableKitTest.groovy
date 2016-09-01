@@ -36,7 +36,7 @@ class QualityTasksDisableKitTest extends AbstractKitTest {
         when: "run check task with both sources"
         BuildResult result = run('check')
 
-        then: "all plugins detect violations"
+        then: "all plugins disabled"
         result.task(":check").outcome == TaskOutcome.UP_TO_DATE
         !result.output.contains('CodeNarc rule violations were found')
         !result.output.contains('Checkstyle rule violations were found')
@@ -67,10 +67,41 @@ class QualityTasksDisableKitTest extends AbstractKitTest {
 
         fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
 
-        when: "run check task with both sources"
+        when: "run checkstyle task directly"
         BuildResult result = runFailed('checkstyleMain')
 
-        then: "all plugins detect violations"
+        then: "direct call performed check"
+        result.task(":checkstyleMain").outcome == TaskOutcome.FAILED
+        result.output.contains('Checkstyle rule violations were found')
+    }
+
+    def "Check task call through grouping task"() {
+        setup:
+        build("""
+            plugins {
+                id 'groovy'
+                id 'ru.vyarus.quality'
+            }
+
+            quality {
+                enabled = false
+            }
+
+            repositories {
+                jcenter() //required for testKit run
+            }
+
+            dependencies {
+                compile localGroovy()
+            }
+        """)
+
+        fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
+
+        when: "run grouping task"
+        BuildResult result = runFailed('checkQualityMain')
+
+        then: "direct quality task executed"
         result.task(":checkstyleMain").outcome == TaskOutcome.FAILED
         result.output.contains('Checkstyle rule violations were found')
     }

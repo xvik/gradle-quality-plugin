@@ -7,7 +7,7 @@ import ru.vyarus.gradle.plugin.quality.report.ReportUtils
  * @author Vyacheslav Rusakov
  * @since 24.08.2016
  */
-class MultiModuleUseTest extends AbstractKitTest {
+class MultiModuleUseKitTest extends AbstractKitTest {
 
     def "Check java checks"() {
         setup:

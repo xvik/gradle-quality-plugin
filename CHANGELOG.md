@@ -15,10 +15,11 @@
 * Change reporting format so intelliJ IDEA can recognize class reference and show link (eclipse will probably too). Reference line ranges are not shown anymore (pmd, findbugs and column in checkstyle) - always exact line.
 * (breaking) configure manually registered plugins, even if plugin not supposed to be used due to sources auto detection. Configuration may be disabled using quality configuration flags.
 * Add ability to disable automatic plugins registration: quality.autoRegistration = false. Only manually registered plugins will be configured.
-* Add ability to disable quality tasks with configuration property: quality.enabled = false. Quality tasks will still work if called directly.
+* Add ability to disable quality tasks with configuration property: quality.enabled = false. Quality tasks will still work if called directly or through grouping task (e.g. checkQualityMain).
 * (breaking) Remove checkstyle html report generation: gradle can generate html report since 2.10 and when gradle generates html report, it puts link to it into main error message
 * Findbugs html report is always generated (not only when errors found like before)
 * Add ability to disable console reporting with configuration property: quality.consoleReporting = false
+* Add grouping tasks for registered quality plugins: checkQualityMain, checkQualityTest (per source set). Allows running quality tasks for exact source set or run quality tasks not enabled for 'check' task.
 
 ### 1.3.0 (2016-03-30)
 * Update checkstyle 6.14.1 -> 6.17
