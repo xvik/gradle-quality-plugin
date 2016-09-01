@@ -13,9 +13,9 @@ import org.gradle.api.Project
 interface Reporter {
 
     /**
-     * New line symbol wrapped with invisible whitespace to avoid truncation.
+     * New line symbol.
      */
-    String NL = String.format('\u200B%n\u200B')
+    String NL = String.format('%n')
 
     /**
      * Called after quality tool task to report violations.
