@@ -116,6 +116,7 @@
     <!-- Java Logging (https://pmd.github.io/latest/pmd-java/rules/java/logging-java.html) -->
     <rule ref="rulesets/java/logging-java.xml">
         <exclude name="LoggerIsNotStaticFinal"/>
+        <exclude name="InvalidSlf4jMessageFormat"/>
     </rule>
 
     <!-- Migration (https://pmd.github.io/latest/pmd-java/rules/java/migrating.html) -->

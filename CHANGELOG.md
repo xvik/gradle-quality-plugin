@@ -7,6 +7,7 @@
 * Update pmd config:
     - Disable [UselessParentheses](https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/unnecessary.html#UselessParentheses) because of too many false positives
     - Disable [OnlyOneReturn](https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/controversial.html#OnlyOneReturn) in favour of checkstyle ReturnCount
+    - Disable [InvalidSlf4jMessageFormat](https://pmd.github.io/latest/pmd-java/rules/java/logging-java.html#InvalidSlf4jMessageFormat) due to [known bug](https://sourceforge.net/p/pmd/bugs/1509)
 * Update codenarc 0.25.1 -> 0.25.2
 * quality.lintOptions configuration now applies to all JavaCompile tasks (not only compileJava as before) 
 * Fix multi-module projects reporting (remove duplicate reports)
