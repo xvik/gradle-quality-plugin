@@ -26,10 +26,13 @@ class ReportUtils {
     @CompileStatic(TypeCheckingMode.SKIP)
     static String extractJavaPackage(Project project, String type, String file) {
         String name = new File(file).canonicalPath
-        project.sourceSets[type].java.srcDirs.each {
-            if (name.startsWith(it.canonicalPath)) {
-                name = name[it.canonicalPath.length() + 1..-1] // remove sources dir prefix
-            }
+        Closure search = { Iterable<File> files ->
+            files*.canonicalPath.find { String s -> name.startsWith(s) }
+        }
+        // try looking in java and then in groovy sources (mixed mode)
+        String root = search(project.sourceSets[type].java.srcDirs) ?: search(project.sourceSets[type].groovy.srcDirs)
+        if (root) {
+            name = name[root.length() + 1..-1] // remove sources dir prefix
         }
         name = name[0..name.lastIndexOf('.') - 1] // remove extension
         name = name.replaceAll('\\\\|/', '.')
