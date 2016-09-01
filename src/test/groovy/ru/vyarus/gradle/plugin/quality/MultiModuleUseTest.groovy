@@ -41,7 +41,7 @@ class MultiModuleUseTest extends AbstractKitTest {
         BuildResult result = run('check')
 
         then: "violations detected in module only"
-        result.output.replaceAll("Total time: .*", "").replaceAll("\r", "").trim() == """:mod1:compileJava
+        result.output.replaceAll("Total time: .*", "").replaceAll("[\r\\u200B]", '').trim() == """:mod1:compileJava
 :mod1:processResources UP-TO-DATE
 :mod1:classes
 :mod1:checkstyleMain

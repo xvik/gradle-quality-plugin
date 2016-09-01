@@ -35,7 +35,7 @@ class FindbugsReporterTest extends AbstractKitTest {
 
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
-        error.replaceAll("\r", "").contains """
+        error.replaceAll("[\r\\u200B]", '').contains """
 2 (0 / 2 / 0) FindBugs violations were found in 2 files
 
 [Performance | URF_UNREAD_FIELD] sample.(Sample.java:8)  [priority 2]

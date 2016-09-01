@@ -39,7 +39,7 @@ class CheckstyleReporterTest extends AbstractKitTest {
 
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
-       error.replaceAll("\r", "").contains """
+       error.replaceAll("[\r\\u200B]", '').contains """
 6 Checkstyle rule violations were found in 2 files
 
 [Misc | NewlineAtEndOfFile] sample.(Sample.java:0)

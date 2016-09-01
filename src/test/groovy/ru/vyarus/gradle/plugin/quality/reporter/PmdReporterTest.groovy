@@ -36,7 +36,7 @@ class PmdReporterTest extends AbstractKitTest {
 
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
-        error.replaceAll("\r", "").contains """
+        error.replaceAll("[\r\\u200B]", '').contains """
 15 PMD rule violations were found in 2 files
 
 [Unused Code | UnusedPrivateField] sample.(Sample.java:5)
