@@ -1,3 +1,4 @@
+### 2.0.0 (2016-09-03)
 * Update checkstyle 6.17 -> 7.1 (requires min jdk 8)
 * Update checkstyle config:
     - Add [SingleSpaceSeparator](http://checkstyle.sourceforge.net/config_whitespace.html#SingleSpaceSeparator) check (since 6.19)
@@ -10,7 +11,7 @@
     - Disable [InvalidSlf4jMessageFormat](https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/logging-java.html#InvalidSlf4jMessageFormat) due to [known bug](https://sourceforge.net/p/pmd/bugs/1509)
     - Disable [CyclomaticComplexity](https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/codesize.html#CyclomaticComplexity) and [StdCyclomaticComplexity](https://pmd.github.io/pmd-5.5.0/pmd-java/rules/java/codesize.html#StdCyclomaticComplexity) as duplicate rules for ModifiedCyclomaticComplexity
 * Update codenarc 0.25.1 -> 0.25.2
-* quality.lintOptions configuration now applies to all JavaCompile tasks (not only compileJava as before) 
+* (breaking) quality.lintOptions configuration now applies to all JavaCompile tasks (not only to compileJava as before) 
 * Fix multi-module projects reporting (remove duplicate reports)
 * Fix generated html reports links (redundant slash on linux)
 * Fix newline in reporters (use platform specific)
