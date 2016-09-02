@@ -13,7 +13,11 @@
     <rule ref="rulesets/java/clone.xml"/>
 
     <!-- Code Size (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/codesize.html) -->
-    <rule ref="rulesets/java/codesize.xml"/>
+    <rule ref="rulesets/java/codesize.xml">
+        <!-- using ModifiedCyclomaticComplexity and disabling two other duplicate rules-->
+        <exclude name="CyclomaticComplexity"/>
+        <exclude name="StdCyclomaticComplexity"/>
+    </rule>
     <rule ref="rulesets/java/codesize.xml/ExcessiveMethodLength" message="Avoid methods longer than 50 lines">
         <properties>
             <property name="minimum" value="50"/>
@@ -29,7 +33,7 @@
             <property name="maxmethods" value="20"/>
         </properties>
     </rule>
-    <rule ref="rulesets/java/codesize.xml/CyclomaticComplexity">
+    <rule ref="rulesets/java/codesize.xml/ModifiedCyclomaticComplexity">
         <properties>
             <property name="reportLevel" value="11"/>
         </properties>
