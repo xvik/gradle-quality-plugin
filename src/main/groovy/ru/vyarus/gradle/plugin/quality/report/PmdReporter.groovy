@@ -30,7 +30,7 @@ class PmdReporter implements Reporter {
                 result.file.each { file ->
                     String filePath = file.@name
                     String sourceFile = ReportUtils.extractFile(filePath)
-                    String name = ReportUtils.extractJavaPackage(project, type, file.@name)
+                    String name = ReportUtils.extractJavaPackage(project, type, filePath)
                     file.violation.each { violation ->
                         String srcPos = violation.@beginline
                         // part in braces recognized by intellij IDEA and shown as link

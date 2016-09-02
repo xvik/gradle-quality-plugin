@@ -48,11 +48,10 @@ class FindbugsReporter implements Reporter, HtmlReportGenerator {
                     String description = ReportUtils.unescapeHtml(desc[bug.@type])
                     String srcPosition = src.@start
                     String classname = src.@classname
-                    int idx = classname.lastIndexOf('.')
-                    String pkg = classname[0..idx]
-                    String cls = classname[idx + 1..-1]
+                    String pkg = classname[0..classname.lastIndexOf('.')]
+                    String cls = src.@sourcefile
                     // part in braces recognized by intellij IDEA and shown as link
-                    logger.error "[${cat[bug.@category]} | ${bug.@type}] $pkg(${cls}.java:${srcPosition})  " +
+                    logger.error "[${cat[bug.@category]} | ${bug.@type}] $pkg(${cls}:${srcPosition})  " +
                             "[priority ${bug.@priority}]" +
                             "$NL\t>> ${msg.text()}" +
                             "$NL  ${description}$NL"
