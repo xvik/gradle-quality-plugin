@@ -2,6 +2,7 @@ package ru.vyarus.gradle.plugin.quality.task
 
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
 
@@ -17,6 +18,7 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
 @CompileStatic
 class InitQualityConfigTask extends DefaultTask {
 
+    @Input
     boolean override
 
     InitQualityConfigTask() {
