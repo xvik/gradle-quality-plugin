@@ -1,6 +1,7 @@
+### 2.1.0 (2017-01-24)
 * Update checkstyle 7.1 -> 7.4
 * Update pmd 5.5.1 -> 5.5.2
-* Update codenarc 0.25.2 -> 0.26
+* Update codenarc 0.25.2 -> 0.26.0
 * Update pmd config:
     - Disable junit4 migration rules which cause false positives for non test code:
     [JUnit4TestShouldUseBeforeAnnotation](https://pmd.github.io/latest/pmd-java/rules/java/migrating.html#JUnit4TestShouldUseBeforeAnnotation),
