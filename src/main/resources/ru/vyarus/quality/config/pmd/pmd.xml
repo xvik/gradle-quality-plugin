@@ -58,6 +58,7 @@
         <exclude name="DataflowAnomalyAnalysis"/>
         <exclude name="CallSuperInConstructor"/>
         <exclude name="OnlyOneReturn"/> <!-- disabled in favour of checkstyle ReturnCount check -->
+        <exclude name="NullAssignment"/> <!-- disabled due to false positive for initialization with ternary operator -->
     </rule>
 
     <!-- Coupling (https://pmd.github.io/latest/pmd-java/rules/java/coupling.html) -->

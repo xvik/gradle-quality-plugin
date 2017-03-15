@@ -1,3 +1,7 @@
+* Update pmd config:
+    - Disable [NullAssignment](https://pmd.github.io/latest/pmd-java/rules/java/controversial.html#NullAssignment)
+    check due to false positives
+
 ### 2.1.0 (2017-01-24)
 * Update checkstyle 7.1 -> 7.4
 * Update pmd 5.5.1 -> 5.5.2
