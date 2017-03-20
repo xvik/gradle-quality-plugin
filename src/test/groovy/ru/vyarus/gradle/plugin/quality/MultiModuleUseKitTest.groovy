@@ -53,7 +53,7 @@ Checkstyle rule violations were found. See the report at: file:///tmp/junit63000
   File does not end with a newline.
   http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
 
-[Javadoc | JavadocType] sample.(Sample.java:3)
+[Javadoc | JavadocType] sample.(Sample.java:6)
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 
@@ -74,7 +74,7 @@ Checkstyle rule violations were found. See the report at: file:///tmp/junit63000
   File does not end with a newline.
   http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
 
-[Javadoc | JavadocType] sample.(Sample.java:3)
+[Javadoc | JavadocType] sample.(Sample.java:6)
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 

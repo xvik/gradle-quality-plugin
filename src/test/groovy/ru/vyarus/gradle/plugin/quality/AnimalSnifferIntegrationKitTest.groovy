@@ -20,10 +20,16 @@ class AnimalSnifferIntegrationKitTest extends AbstractKitTest {
 
             quality {
                 strict false
+                findbugs false
+                pmd false
+                checkstyle false
             }
 
-            repositories {
-                jcenter() //required for testKit run
+            repositories {            
+                jcenter(); mavenCentral();
+            }
+            dependencies {
+                signature 'org.codehaus.mojo.signature:java15:1.0@signature'
             }
         """)
 
@@ -35,6 +41,7 @@ class AnimalSnifferIntegrationKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('4 AnimalSniffer violations were found in 2 files')
     }
 
     def "Check animalsniffer disable"() {

@@ -117,6 +117,22 @@ class QualityExtension {
     Collection<SourceSet> sourceSets
 
     /**
+     * Path patterns in enabled source sets to exclude. Simply set provided excludes to all quality tasks
+     * except animalsniffer (see quality tasks documentation for usage).
+     * <p>
+     * Animalsniffer is not affected because
+     * it's a different kind of check (and, also, it operates on classes so source patterns may not comply).
+     * <p>
+     * Findbugs does not support exclusion directly, but plugin will convert patterns to regexps and apply
+     * them to xml exclude file (default one or provided by user).
+     * <p>
+     * By default nothing is excluded.
+     *
+     * @see org.gradle.api.tasks.SourceTask#exclude(java.lang.Iterable) (base class for all quality tasks)
+     */
+    Collection<String> exclude
+
+    /**
      * Configuration files directory. It may contain custom plugin configurations (not required).
      * By default its gradle/config/.
      */

@@ -3,6 +3,9 @@
 * Update pmd config:
     - Disable [NullAssignment](https://pmd.github.io/latest/pmd-java/rules/java/controversial.html#NullAssignment)
     check due to false positives
+* Add unified exclusions configuration: exclude extension property accepting glob values (#2)
+    - Does not affect animalsniffer because it's a different type of check
+    - Findbugs did not support direct exclusions, so plugin converts blobs to regexps and adds them to exclusion xml (default or user defined)
 
 ### 2.1.0 (2017-01-24)
 * Update checkstyle 7.1 -> 7.4

@@ -9,12 +9,14 @@ import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.*
 import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.reporting.DurationFormatter
 import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
+import ru.vyarus.gradle.plugin.quality.util.FindbugsUtils
 
 /**
  * Quality plugin enables and configures quality plugins for java and groovy projects.
@@ -174,6 +176,11 @@ class QualityPlugin implements Plugin<Project> {
                 tasks.withType(FindBugs) {
                     doFirst {
                         configLoader.resolveFindbugsExclude()
+                        // findbugs does not support exclude of SourceTask, so
+                        // appending exclusion patterns to xml exclude filter
+                        if (extension.exclude) {
+                            excludeFilter = FindbugsUtils.mergeExcludes(extension.exclude, excludeFilter, logger)
+                        }
                     }
                     reports {
                         xml {
@@ -317,6 +324,7 @@ class QualityPlugin implements Plugin<Project> {
                                       Class taskType, String task, Reporter reporter) {
         applyReporter(project, task, reporter, extension.consoleReporting)
         applyEnabledState(project, extension, taskType)
+        applyExcludes(project, extension, taskType)
         groupQualityTasks(project, task)
     }
 
@@ -341,6 +349,22 @@ class QualityPlugin implements Plugin<Project> {
                     // enable task only if it's called directly or through grouping task
                     t.enabled = called == t || called.name.startsWith(QUALITY_TASK)
                 }
+            }
+        }
+    }
+
+    /**
+     * Applies exclude path patterns to quality tasks.
+     * Note: this does not apply to animalsniffer. For findbugs this appliance is useless, see custom support above.
+     *
+     * @param project project instance
+     * @param extension extension instance
+     * @param task quality plugin task class
+     */
+    private void applyExcludes(Project project, QualityExtension extension, Class task) {
+        if (extension.exclude) {
+            (project.tasks.withType(task) as TaskCollection<SourceTask>).each {
+                it.exclude extension.exclude
             }
         }
     }
