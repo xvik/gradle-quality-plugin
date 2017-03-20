@@ -1,5 +1,6 @@
 * Update checkstyle 7.4 -> 7.6
 * Update pmd 5.5.2 -> 5.5.4
+* Update codenarc 0.26.0 -> 0.27.0
 * Update pmd config:
     - Disable [NullAssignment](https://pmd.github.io/latest/pmd-java/rules/java/controversial.html#NullAssignment)
     check due to false positives

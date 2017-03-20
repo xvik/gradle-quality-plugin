@@ -23,7 +23,7 @@ class QualityExtension {
     String checkstyleVersion = '7.6'
     String pmdVersion = '5.5.4'
     String findbugsVersion = '3.0.1'
-    String codenarcVersion = '0.26.0'
+    String codenarcVersion = '0.27.0'
     /**
      * Sets AnimalSniffer version.
      * Works only when 'ru.vyarus.animalsniffer' plugin applied.
