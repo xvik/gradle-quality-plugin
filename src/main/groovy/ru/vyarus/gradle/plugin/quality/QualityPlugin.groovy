@@ -180,8 +180,8 @@ class QualityPlugin implements Plugin<Project> {
                         configLoader.resolveFindbugsExclude()
                         // findbugs does not support exclude of SourceTask, so appending excluded classes to
                         // xml exclude filter
-                        if (extension.exclude) {
-                            FindbugsUtils.replaceExcludeFilter(it, extension.exclude, extension.sourceSets, logger)
+                        if (extension.exclude || extension.excludeSources) {
+                            FindbugsUtils.replaceExcludeFilter(it, extension, logger)
                         }
                     }
                     reports {
@@ -363,7 +363,12 @@ class QualityPlugin implements Plugin<Project> {
      * @param extension extension instance
      */
     private void applyExcludes(SourceTask task, QualityExtension extension) {
+        if (extension.excludeSources) {
+            // directly excluded sources
+            task.source = task.source - extension.excludeSources
+        }
         if (extension.exclude) {
+            // exclude by patterns (relative to source roots)
             task.exclude extension.exclude
         }
     }

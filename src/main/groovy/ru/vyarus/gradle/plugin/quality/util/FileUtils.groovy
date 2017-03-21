@@ -31,7 +31,7 @@ class FileUtils {
      * @return set of excluded files
      */
     static Set<File> resolveIgnoredFiles(FileTree files, Collection<String> excludes) {
-        excludes ? files.matching { include excludes }.files : Collections.emptyList()
+        excludes ? files.matching { include excludes }.files : []
     }
 
     /**

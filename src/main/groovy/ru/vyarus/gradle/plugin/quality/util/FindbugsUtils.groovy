@@ -4,6 +4,7 @@ import groovy.xml.XmlUtil
 import org.gradle.api.plugins.quality.FindBugs
 import org.gradle.api.tasks.SourceSet
 import org.slf4j.Logger
+import ru.vyarus.gradle.plugin.quality.QualityExtension
 
 /**
  * Findbugs helper utils.
@@ -17,20 +18,23 @@ class FindbugsUtils {
      * Replace exclusion file with extended one when exclusions are required.
      *
      * @param task findbugs task
-     * @param excludes exclusion patterns
-     * @param sets all source sets, covered with quality
+     * @param extension extension instance
+     * @param logger project logger for error messages
      */
-    static void replaceExcludeFilter(FindBugs task, Collection<String> excludes, Collection<SourceSet> sets,
-                                     Logger logger) {
-        Set<File> ignored = FileUtils.resolveIgnoredFiles(task.source, excludes)
+    static void replaceExcludeFilter(FindBugs task, QualityExtension extension, Logger logger) {
+        Set<File> ignored = FileUtils.resolveIgnoredFiles(task.source, extension.exclude)
+        if (extension.excludeSources) {
+            // add directly excluded files
+            ignored.addAll(extension.excludeSources.asFileTree.matching { include '**/*.java' }.files)
+        }
         if (!ignored) {
             // no excluded files
             return
         }
-        SourceSet set = FileUtils.findMatchingSet('findbugs', task.name, sets)
+        SourceSet set = FileUtils.findMatchingSet('findbugs', task.name, extension.sourceSets)
         if (!set) {
             logger.error("[Findbugs] Failed to find source set for task ${task.name}: exclusions " +
-                    "(${excludes}) will not be applied")
+                    ' will not be applied')
             return
         }
         task.excludeFilter = mergeExcludes(task.excludeFilter, ignored, set.allJava.srcDirs)

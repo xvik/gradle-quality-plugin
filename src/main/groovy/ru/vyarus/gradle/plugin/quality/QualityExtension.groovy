@@ -3,6 +3,7 @@ package ru.vyarus.gradle.plugin.quality
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
+import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.SourceSet
 
 /**
@@ -117,7 +118,7 @@ class QualityExtension {
     Collection<SourceSet> sourceSets
 
     /**
-     * Source patterns to exclude from checks. Simply sets exclusions to quality tasks.
+     * Source patterns (relative to source dir) to exclude from checks. Simply sets exclusions to quality tasks.
      * <p>
      * Animalsniffer is not affected because
      * it's a different kind of check (and, also, it operates on classes so source patterns may not comply).
@@ -126,10 +127,27 @@ class QualityExtension {
      * them to xml exclude file (default one or provided by user).
      * <p>
      * By default nothing is excluded.
+     * <p>
+     * IMPORTANT: Patterns are checked relatively to source set dirs (not including them). So you can only
+     * match source files and packages, but not absolute file path (this is gradle specific, not plugin).
      *
      * @see org.gradle.api.tasks.SourceTask#exclude(java.lang.Iterable) (base class for all quality tasks)
      */
     Collection<String> exclude
+
+    /**
+     * Direct sources to exclude from checks (except animalsniffer).
+     * This is useful as last resort, when extension or package is not enough for filtering.
+     * Use {@link Project#files(java.lang.Object)} or {@link Project#fileTree(java.lang.Object)}
+     * to create initial collections and apply filter on it (using
+     * {@link org.gradle.api.file.FileTree#matching(groovy.lang.Closure)}).
+     * <p>
+     * Plugin will include files into findbugs exclusion filter xml (default one or provided by user).
+     * <p>
+     * Note: this must be used when excluded classes can't be extracted to different source set and
+     * filter by package and filename is not sufficient.
+     */
+    FileCollection excludeSources
 
     /**
      * Configuration files directory. It may contain custom plugin configurations (not required).
