@@ -125,6 +125,7 @@ class QualityPlugin implements Plugin<Project> {
                 tasks.withType(Checkstyle) {
                     doFirst {
                         configLoader.resolveCheckstyleConfig()
+                        applyExcludes(it, extension)
                     }
                 }
             }
@@ -149,6 +150,7 @@ class QualityPlugin implements Plugin<Project> {
                 tasks.withType(Pmd) {
                     doFirst {
                         configLoader.resolvePmdConfig()
+                        applyExcludes(it, extension)
                     }
                 }
             }
@@ -176,10 +178,10 @@ class QualityPlugin implements Plugin<Project> {
                 tasks.withType(FindBugs) {
                     doFirst {
                         configLoader.resolveFindbugsExclude()
-                        // findbugs does not support exclude of SourceTask, so
-                        // appending exclusion patterns to xml exclude filter
+                        // findbugs does not support exclude of SourceTask, so appending excluded classes to
+                        // xml exclude filter
                         if (extension.exclude) {
-                            excludeFilter = FindbugsUtils.mergeExcludes(extension.exclude, excludeFilter, logger)
+                            FindbugsUtils.replaceExcludeFilter(it, extension.exclude, extension.sourceSets, logger)
                         }
                     }
                     reports {
@@ -211,6 +213,7 @@ class QualityPlugin implements Plugin<Project> {
                 tasks.withType(CodeNarc) {
                     doFirst {
                         configLoader.resolveCodenarcConfig()
+                        applyExcludes(it, extension)
                     }
                     reports {
                         xml.enabled = true
@@ -324,7 +327,6 @@ class QualityPlugin implements Plugin<Project> {
                                       Class taskType, String task, Reporter reporter) {
         applyReporter(project, task, reporter, extension.consoleReporting)
         applyEnabledState(project, extension, taskType)
-        applyExcludes(project, extension, taskType)
         groupQualityTasks(project, task)
     }
 
@@ -355,17 +357,14 @@ class QualityPlugin implements Plugin<Project> {
 
     /**
      * Applies exclude path patterns to quality tasks.
-     * Note: this does not apply to animalsniffer. For findbugs this appliance is useless, see custom support above.
+     * Note: this does not apply to animalsniffer; for findbugs this appliance is useless, see custom support above.
      *
-     * @param project project instance
+     * @param task quality task
      * @param extension extension instance
-     * @param task quality plugin task class
      */
-    private void applyExcludes(Project project, QualityExtension extension, Class task) {
+    private void applyExcludes(SourceTask task, QualityExtension extension) {
         if (extension.exclude) {
-            (project.tasks.withType(task) as TaskCollection<SourceTask>).each {
-                it.exclude extension.exclude
-            }
+            task.exclude extension.exclude
         }
     }
 

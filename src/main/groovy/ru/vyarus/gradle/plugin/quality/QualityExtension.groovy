@@ -117,13 +117,12 @@ class QualityExtension {
     Collection<SourceSet> sourceSets
 
     /**
-     * Path patterns in enabled source sets to exclude. Simply set provided excludes to all quality tasks
-     * except animalsniffer (see quality tasks documentation for usage).
+     * Source patterns to exclude from checks. Simply sets exclusions to quality tasks.
      * <p>
      * Animalsniffer is not affected because
      * it's a different kind of check (and, also, it operates on classes so source patterns may not comply).
      * <p>
-     * Findbugs does not support exclusion directly, but plugin will convert patterns to regexps and apply
+     * Findbugs does not support exclusion directly, but plugin will resolve excluded classes and apply
      * them to xml exclude file (default one or provided by user).
      * <p>
      * By default nothing is excluded.

@@ -19,7 +19,7 @@ class ExcludeKitTest extends AbstractKitTest {
 
             quality {
                 strict = false
-                exclude = ['**/*/Sample2.java', '**/GSample2.groovy']
+                exclude = ['**/Sample2.java', '**/GSample2.groovy']
             }
 
             repositories {
