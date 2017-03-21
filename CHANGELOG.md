@@ -1,3 +1,4 @@
+### 2.2.0 (2017-03-21)
 * Update checkstyle 7.4 -> 7.6
 * Update pmd 5.5.2 -> 5.5.4
 * Update codenarc 0.26.0 -> 0.27.0
@@ -9,8 +10,7 @@
     - Findbugs did not support direct exclusions, so plugin resolves excluded classes and adds them to exclusion xml (default or user defined)
 * Add configuration to directly exclude source files from check (for exceptional cases when pattern exclusion cant help): excludeSources
     - Does not affect animalsniffer
-    - For findbugs excluded classes will be added to exclusions xml filter
-    
+    - For findbugs excluded classes will be added to exclusions xml filter   
 
 ### 2.1.0 (2017-01-24)
 * Update checkstyle 7.1 -> 7.4
@@ -20,8 +20,7 @@
     - Disable junit4 migration rules which cause false positives for non test code:
     [JUnit4TestShouldUseBeforeAnnotation](https://pmd.github.io/latest/pmd-java/rules/java/migrating.html#JUnit4TestShouldUseBeforeAnnotation),
     [JUnit4TestShouldUseAfterAnnotation](https://pmd.github.io/latest/pmd-java/rules/java/migrating.html#JUnit4TestShouldUseAfterAnnotation),
-    [JUnit4TestShouldUseTestAnnotation](https://pmd.github.io/latest/pmd-java/rules/java/migrating.html#JUnit4TestShouldUseTestAnnotation)
-    
+    [JUnit4TestShouldUseTestAnnotation](https://pmd.github.io/latest/pmd-java/rules/java/migrating.html#JUnit4TestShouldUseTestAnnotation)    
 
 ### 2.0.0 (2016-09-03)
 * Update checkstyle 6.17 -> 7.1 (requires min jdk 8)
