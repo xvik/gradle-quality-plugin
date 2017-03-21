@@ -18,8 +18,9 @@ class ExcludeKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict = false
-                exclude = ['**/Sample2.java', '**/GSample2.groovy']
+                strict false
+                exclude '**/Sample2.java', 
+                        '**/GSample2.groovy'
             }
 
             repositories {
@@ -64,7 +65,7 @@ class ExcludeKitTest extends AbstractKitTest {
                 pmd false
                 checkstyle false
                 // animalsniffer operates on sources so use universal pattern which might affect
-                exclude = ['**/sample/*']
+                exclude '**/sample/*'
             }
 
             repositories {

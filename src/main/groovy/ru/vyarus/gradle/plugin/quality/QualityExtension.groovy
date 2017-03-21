@@ -133,7 +133,7 @@ class QualityExtension {
      *
      * @see org.gradle.api.tasks.SourceTask#exclude(java.lang.Iterable) (base class for all quality tasks)
      */
-    Collection<String> exclude
+    Collection<String> exclude = []
 
     /**
      * Direct sources to exclude from checks (except animalsniffer).
@@ -154,4 +154,14 @@ class QualityExtension {
      * By default its gradle/config/.
      */
     String configDir = 'gradle/config/'
+
+    /**
+     * Shortcut for {@link #exclude}
+     *
+     * @param patterns exclusion patterns (relative to source root)
+     */
+    @SuppressWarnings('ConfusingMethodName')
+    void exclude(String... patterns) {
+        exclude.addAll(patterns)
+    }
 }
