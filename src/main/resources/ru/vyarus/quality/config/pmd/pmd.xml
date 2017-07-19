@@ -3,6 +3,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
 
+    <description>
+        General Java quality rules.
+    </description>
+
     <!-- Basic (https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/basic.html) -->
     <rule ref="rulesets/java/basic.xml"/>
 
@@ -72,6 +76,9 @@
         <exclude name="ConfusingTernary"/>
         <exclude name="UseLocaleWithCaseConversions"/>
         <exclude name="AbstractClassWithoutAbstractMethod"/>
+        <!-- disabled as it's important for android and doesn't matter for general java (also fixes will
+             conflict with checkstyle's VisibilityModifier check -->
+        <exclude name="AccessorMethodGeneration"/>
     </rule>
     <rule ref="rulesets/java/design.xml/AvoidDeeplyNestedIfStmts">
         <properties>
