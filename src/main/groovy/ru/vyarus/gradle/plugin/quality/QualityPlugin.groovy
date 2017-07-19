@@ -93,7 +93,7 @@ class QualityPlugin implements Plugin<Project> {
         project.sourceSets.each { SourceSet set ->
             project.tasks.create(set.getTaskName(QUALITY_TASK, null)).with {
                 group = 'verification'
-                description = "Run quality plugins for $it.name source set"
+                description = "Run quality plugins for $set.name source set"
             }
         }
     }
