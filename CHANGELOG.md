@@ -1,3 +1,6 @@
+* Update checkstyle 7.6 -> 8.0
+* Update pmd 5.5.4 -> 5.8.1
+
 ### 2.2.0 (2017-03-21)
 * Update checkstyle 7.4 -> 7.6
 * Update pmd 5.5.2 -> 5.5.4
