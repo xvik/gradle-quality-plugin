@@ -4,8 +4,7 @@
     - Add description to avoid [warning](https://github.com/pmd/pmd/issues/470)
     - Disable [AccessorMethodGeneration](https://pmd.github.io/latest/pmd-java/rules/java/design.html#AccessorMethodGeneration)
     check as it makes sense for android projects and not so important for java. 
-    Moreover, possible fixes will contradict with checkstyle's [VisibilityModifier](http://checkstyle.sourceforge.net/config_design.html#VisibilityModifier)
-* Set maxHeapSize for findbugs tasks to 512m (if not set) to avoid OOMs    
+    Moreover, possible fixes will contradict with checkstyle's [VisibilityModifier](http://checkstyle.sourceforge.net/config_design.html#VisibilityModifier)   
 
 ### 2.2.0 (2017-03-21)
 * Update checkstyle 7.4 -> 7.6
