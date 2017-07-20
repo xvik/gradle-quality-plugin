@@ -177,6 +177,9 @@ class QualityPlugin implements Plugin<Project> {
 
                 tasks.withType(FindBugs) {
                     doFirst {
+                        // extend findbugs max memory to avoid OOMs
+                        it.maxHeapSize = it.maxHeapSize ?: '512m'
+
                         configLoader.resolveFindbugsExclude()
                         // findbugs does not support exclude of SourceTask, so appending excluded classes to
                         // xml exclude filter
