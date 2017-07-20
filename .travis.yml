@@ -10,10 +10,10 @@ before_install:
   - chmod +x gradlew
 
 install:
-  - ./gradlew assemble
+  - ./gradlew assemble --no-daemon
 
 script:
-  - travis_wait 20 ./gradlew check
+  - travis_wait 20 ./gradlew check --no-daemon
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
