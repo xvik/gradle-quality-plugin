@@ -1,3 +1,5 @@
+package ru.vyarus.gradle.plugin.quality
+
 import org.gradle.api.Project
 import ru.vyarus.gradle.plugin.quality.AbstractTest
 import ru.vyarus.gradle.plugin.quality.QualityExtension

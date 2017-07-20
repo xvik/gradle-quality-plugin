@@ -41,8 +41,8 @@ class MultiModuleUseKitTest extends AbstractKitTest {
         BuildResult result = run('check')
 
         then: "violations detected in module only"
-        result.output.replaceAll("Total time: .*", "").replaceAll("\r", '').trim() == """:mod1:compileJava
-:mod1:processResources UP-TO-DATE
+        result.output.replaceAll("Total time: .*", "").replaceAll("\r", '').trim().startsWith(""":mod1:compileJava
+:mod1:processResources NO-SOURCE
 :mod1:classes
 :mod1:checkstyleMain
 Checkstyle rule violations were found. See the report at: file:///tmp/junit6300057182805361069/mod1/build/reports/checkstyle/main.html
@@ -57,13 +57,13 @@ Checkstyle rule violations were found. See the report at: file:///tmp/junit63000
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 
-:mod1:compileTestJava UP-TO-DATE
-:mod1:processTestResources UP-TO-DATE
+:mod1:compileTestJava NO-SOURCE
+:mod1:processTestResources NO-SOURCE
 :mod1:testClasses UP-TO-DATE
-:mod1:test UP-TO-DATE
+:mod1:test NO-SOURCE
 :mod1:check
 :mod2:compileJava
-:mod2:processResources UP-TO-DATE
+:mod2:processResources NO-SOURCE
 :mod2:classes
 :mod2:checkstyleMain
 Checkstyle rule violations were found. See the report at: file:///tmp/junit6300057182805361069/mod2/build/reports/checkstyle/main.html
@@ -78,12 +78,12 @@ Checkstyle rule violations were found. See the report at: file:///tmp/junit63000
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 
-:mod2:compileTestJava UP-TO-DATE
-:mod2:processTestResources UP-TO-DATE
+:mod2:compileTestJava NO-SOURCE
+:mod2:processTestResources NO-SOURCE
 :mod2:testClasses UP-TO-DATE
-:mod2:test UP-TO-DATE
+:mod2:test NO-SOURCE
 :mod2:check
 
-BUILD SUCCESSFUL""".replaceAll("tmp/junit6300057182805361069", ReportUtils.noRootFilePath(testProjectDir.root))
+BUILD SUCCESSFUL""".replaceAll("tmp/junit6300057182805361069", ReportUtils.noRootFilePath(testProjectDir.root)))
     }
 }
