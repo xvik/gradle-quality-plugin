@@ -3,8 +3,8 @@ jdk: oraclejdk8
 sudo: false
 before_install: chmod +x gradlew
 
-install: ./gradlew assemble --no-daemon
-script: travis_wait 20 ./gradlew check --no-daemon
+install: ./gradlew assemble
+script: travis_wait 20 ./gradlew check 
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
