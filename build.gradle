@@ -97,7 +97,7 @@ test {
         events 'skipped', 'failed', 'standard_error'
         exceptionFormat 'full'
     }
-    maxHeapSize = '512m'
+    maxHeapSize = '1g'
 }
 
 dependencyUpdates {
