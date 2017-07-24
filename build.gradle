@@ -13,7 +13,7 @@ plugins {
 sourceCompatibility = 1.6
 
 wrapper {
-    gradleVersion = '4.0.1'
+    gradleVersion = '3.5.1'
 }
 
 repositories { jcenter() }
@@ -105,9 +105,4 @@ dependencyUpdates {
         project.group = 'foo'
     }
     revision = 'release'
-}
-
-// travis fix
-tasks.withType(JavaForkOptions) {
-    minHeapSize = '128m'
 }
