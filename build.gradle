@@ -13,7 +13,7 @@ plugins {
 sourceCompatibility = 1.6
 
 wrapper {
-    gradleVersion = '3.5.1'
+    gradleVersion = '4.0.1'
 }
 
 repositories { jcenter() }
@@ -97,7 +97,8 @@ test {
         events 'skipped', 'failed', 'standard_error'
         exceptionFormat 'full'
     }
-    maxHeapSize = '512m'
+    maxHeapSize = '1g'
+    forkEvery = 10
 }
 
 dependencyUpdates {
