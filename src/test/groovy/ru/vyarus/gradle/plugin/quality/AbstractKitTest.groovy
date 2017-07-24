@@ -21,7 +21,14 @@ abstract class AbstractKitTest extends Specification {
     }
 
     def build(String file) {
-        buildFile << file
+        buildFile << (file + """
+            // reduce memory usage for travis
+            afterEvaluate {
+                tasks.withType(JavaForkOptions) {
+                    minHeapSize = '128m'
+                }
+            }
+""")
     }
 
     File file(String path) {
