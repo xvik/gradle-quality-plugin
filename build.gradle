@@ -106,3 +106,8 @@ dependencyUpdates {
     }
     revision = 'release'
 }
+
+// travis fix
+tasks.withType(JavaForkOptions) {
+    minHeapSize = '128m'
+}
