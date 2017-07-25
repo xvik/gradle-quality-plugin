@@ -98,7 +98,7 @@ test {
         exceptionFormat 'full'
     }
     maxHeapSize = '1g'
-    forkEvery = 20
+    forkEvery = 10
 }
 
 dependencyUpdates {
