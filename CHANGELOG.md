@@ -1,3 +1,7 @@
+* Update checkstyle 8.0 -> 8.1
+* Update checkstyle config:
+    - Move SuppressionCommentFilter inside TreeWalker (8.1 breaking change)
+
 ### 2.3.0 (2017-07-24)
 * Update checkstyle 7.6 -> 8.0
 * Update pmd 5.5.4 -> 5.8.1

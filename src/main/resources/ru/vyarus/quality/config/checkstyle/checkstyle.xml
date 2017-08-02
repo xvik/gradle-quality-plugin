@@ -7,7 +7,6 @@
     <property name="fileExtensions" value="java, properties, xml"/>
 
     <!-- Filters (http://checkstyle.sourceforge.net/config_filters.html) -->
-    <module name="SuppressionCommentFilter"/>
     <module name="SuppressWarningsFilter"/>
 
     <module name="NewlineAtEndOfFile">
@@ -22,6 +21,8 @@
     <module name="UniqueProperties"/>
 
     <module name="TreeWalker">
+        <!-- http://checkstyle.sourceforge.net/config_filters.html#SuppressionCommentFilter -->
+        <module name="SuppressionCommentFilter"/>
 
         <!-- Annotations (http://checkstyle.sourceforge.net/config_annotation.html) -->
         <!--<module name="AnnotationLocation"/>-->
