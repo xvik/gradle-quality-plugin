@@ -78,7 +78,7 @@ class ConfigLoader {
         }
     }
 
-    private copyConfig(File parent, String path, boolean override) {
+    private File copyConfig(File parent, String path, boolean override) {
         File target = new File(parent, path)
         if (target.exists() && !override) {
             return target
