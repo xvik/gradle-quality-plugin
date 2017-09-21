@@ -3,7 +3,7 @@ plugins {
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '0.9.7'
     id 'net.researchgate.release' version '2.6.0'
-    id 'ru.vyarus.quality' version '2.3.0'
+//    id 'ru.vyarus.quality' version '2.3.0'
     id 'com.jfrog.bintray' version '1.7.3'
     id 'ru.vyarus.java-lib' version '1.0.5'
     id 'ru.vyarus.github-info' version '1.1.0'
@@ -13,7 +13,7 @@ plugins {
 sourceCompatibility = 1.6
 
 wrapper {
-    gradleVersion = '4.1'
+    gradleVersion = '4.2'
 }
 
 repositories { jcenter() }

@@ -13,9 +13,9 @@ import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.reporting.DurationFormatter
 import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
+import ru.vyarus.gradle.plugin.quality.util.DurationFormatter
 import ru.vyarus.gradle.plugin.quality.util.FindbugsUtils
 
 /**
@@ -55,7 +55,6 @@ import ru.vyarus.gradle.plugin.quality.util.FindbugsUtils
 @CompileStatic
 class QualityPlugin implements Plugin<Project> {
 
-    private static final DurationFormatter DURATION_FORMAT = new DurationFormatter()
     private static final String QUALITY_TASK = 'checkQuality'
 
     @Override
@@ -260,7 +259,7 @@ class QualityPlugin implements Plugin<Project> {
                 if (consoleReport) {
                     long start = System.currentTimeMillis()
                     reporter.report(task.project, taskType)
-                    String duration = DURATION_FORMAT.format(System.currentTimeMillis() - start)
+                    String duration = DurationFormatter.format(System.currentTimeMillis() - start)
                     task.project.logger.info("[plugin:quality] $type reporting executed in $duration")
                 }
             }

@@ -1,6 +1,7 @@
 * Update checkstyle 8.0 -> 8.1
 * Update checkstyle config:
     - Move SuppressionCommentFilter inside TreeWalker (8.1 breaking change)
+* Support gradle 4.2 (#3)    
 
 ### 2.3.0 (2017-07-24)
 * Update checkstyle 7.6 -> 8.0
