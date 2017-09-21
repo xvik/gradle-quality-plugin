@@ -26,6 +26,7 @@
 
         <!-- Annotations (http://checkstyle.sourceforge.net/config_annotation.html) -->
         <!--<module name="AnnotationLocation"/>-->
+        <!--<module name="AnnotationOnSameLine">-->
         <module name="AnnotationUseStyle"/>
         <module name="MissingDeprecated"/>
         <module name="MissingOverride"/>
@@ -159,7 +160,6 @@
         <!--<module name="AvoidEscapedUnicodeCharacters"/>-->
         <module name="CommentsIndentation"/>
         <module name="DescendantToken"/>
-        <module name="FileContentsHolder"/>
         <!--<module name="FinalParameters"/>-->  <!-- DISABLED in favor of less restricted ParameterAssignment -->
         <module name="Indentation"/>
         <module name="OuterTypeFilename"/>

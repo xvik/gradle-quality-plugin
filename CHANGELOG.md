@@ -1,6 +1,9 @@
-* Update checkstyle 8.0 -> 8.1
+* Update checkstyle 8.0 -> 8.2
+* Update codenarc 0.27.0 -> 1.0
 * Update checkstyle config:
     - Move SuppressionCommentFilter inside TreeWalker (8.1 breaking change)
+    - Remove FileContentsHolder (8.2 breaking change) 
+    - New check [AnnotationOnSameLine](http://checkstyle.sourceforge.net/config_annotation.html#AnnotationOnSameLine) (added in 8.2) added to config, but disabled
 * Support gradle 4.2 (#3)    
 
 ### 2.3.0 (2017-07-24)
