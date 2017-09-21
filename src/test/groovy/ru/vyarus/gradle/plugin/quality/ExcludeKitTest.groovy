@@ -55,7 +55,7 @@ class ExcludeKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'groovy'
-                id 'ru.vyarus.animalsniffer' version '1.3.0'
+                id 'ru.vyarus.animalsniffer' version '1.4.2'
                 id 'ru.vyarus.quality'
             }
 

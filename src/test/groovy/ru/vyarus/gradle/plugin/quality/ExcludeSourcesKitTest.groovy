@@ -114,7 +114,7 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'java'
-                id 'ru.vyarus.animalsniffer' version '1.3.0'
+                id 'ru.vyarus.animalsniffer' version '1.4.2'
                 id 'ru.vyarus.quality'
             }
 
