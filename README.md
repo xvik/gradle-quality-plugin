@@ -31,7 +31,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:2.3.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:2.4.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -41,7 +41,7 @@ OR
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '2.3.0'
+    id 'ru.vyarus.quality' version '2.4.0'
 }
 ```
 
@@ -418,10 +418,10 @@ quality {
     
     // Tools versions
     
-    checkstyleVersion = '8.0'
+    checkstyleVersion = '8.2'
     pmdVersion = '5.8.1'
     findbugsVersion = '3.0.1'
-    codenarcVersion = '0.27.0'
+    codenarcVersion = '1.0'
     animalsnifferVersion
 
     /**
