@@ -46,7 +46,7 @@ class ExcludeKitTest extends AbstractKitTest {
         output.contains "2 Checkstyle rule violations were found in 1 files"
         output.contains "1 (0 / 1 / 0) FindBugs violations were found in 1 files"
         output.contains "7 PMD rule violations were found in 1 files"
-        output.contains "12 (0 / 5 / 7) CodeNarc violations were found in 1 files"
+        output.contains "14 (0 / 5 / 9) CodeNarc violations were found in 1 files"
     }
 
     def "Check animalsniffer exclusion ignore"() {

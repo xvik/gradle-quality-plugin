@@ -1,3 +1,6 @@
+* Update codenarc 1.0 -> 1.1
+* Update checkstyle 8.2 -> 8.7
+
 ### 2.4.0 (2017-09-21)
 * Support gradle 4.2 (#3)    
 * Update checkstyle 8.0 -> 8.2
