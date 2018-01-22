@@ -1,5 +1,8 @@
 * Update codenarc 1.0 -> 1.1
 * Update checkstyle 8.2 -> 8.7
+* Update pmd 5.8.1 -> 6.0.1
+* Update pmd config:
+    - All rules reordered according to [new groups](https://pmd.github.io/pmd-6.0.0/pmd_release_notes.html#rule-categories)
 
 ### 2.4.0 (2017-09-21)
 * Support gradle 4.2 (#3)    
