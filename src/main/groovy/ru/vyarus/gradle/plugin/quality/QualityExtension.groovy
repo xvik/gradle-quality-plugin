@@ -21,7 +21,7 @@ class QualityExtension {
         sourceSets = [project.sourceSets.main] as Collection<SourceSet>
     }
 
-    String checkstyleVersion = '8.7'
+    String checkstyleVersion = '8.8'
     String pmdVersion = '6.0.1'
     String findbugsVersion = '3.0.1'
     String codenarcVersion = '1.1'
