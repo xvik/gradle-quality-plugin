@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality
 
+import com.github.spotbugs.SpotBugsPlugin
+import com.github.spotbugs.SpotBugsTask
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Plugin
@@ -17,21 +19,25 @@ import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.util.DurationFormatter
 import ru.vyarus.gradle.plugin.quality.util.FindbugsUtils
+import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
 
 /**
  * Quality plugin enables and configures quality plugins for java and groovy projects.
  * Plugin must be registered after java or groovy plugins, otherwise wil do nothing.
  * <p>
- * Java project is detected by presence of java sources. In this case Checkstyle, PMD and FindBugs plugins are
+ * Java project is detected by presence of java sources. In this case Checkstyle, PMD and Spotbugs plugins are
  * activated. If quality plugins applied manually, they would be configured too (even if auto detection didn't
  * recognize related sources). Also, additional javac lint options are activated to show more warnings
  * during compilation.
  * <p>
  * If groovy plugin enabled, CodeNarc plugin activated.
  * <p>
- * All plugins are configured to produce xml and html reports. For findbugs html report
+ * All plugins are configured to produce xml and html reports. For spotbugs html report
  * generated manually. All plugins violations are printed into console in unified format which makes console
  * output good enough for fixing violations.
+ * <p>
+ * Spotbugs is activated instead of findbugs, but it still possible to disable spotbugs and use findbugs instead
+ * (findbugs support is marked as deprecated now and will be removed someday to avoid confusion).
  * <p>
  * Plugin may be configured with 'quality' closure. See {@link QualityExtension} for configuration options.
  * <p>
@@ -50,7 +56,7 @@ import ru.vyarus.gradle.plugin.quality.util.FindbugsUtils
  * @see CodeNarcPlugin
  * @see CheckstylePlugin
  * @see PmdPlugin
- * @see FindBugsPlugin
+ * @see com.github.spotbugs.SpotBugsPlugin
  */
 @CompileStatic
 class QualityPlugin implements Plugin<Project> {
@@ -73,7 +79,12 @@ class QualityPlugin implements Plugin<Project> {
                 configureJavac(project, extension)
                 applyCheckstyle(project, extension, configLoader, context.registerJavaPlugins)
                 applyPMD(project, extension, configLoader, context.registerJavaPlugins)
-                applyFindbugs(project, extension, configLoader, context.registerJavaPlugins)
+                // enable only if findbugs wasn't registered manually
+                applySpotbugs(project, extension, configLoader,
+                        context.registerJavaPlugins && !project.plugins.hasPlugin(FindBugsPlugin))
+                // enable only if spotbugs wasn't registered neither automatically nor manually
+                applyFindbugs(project, extension, configLoader,
+                        context.registerJavaPlugins && !SpotbugsUtils.isPluginEnabled(project))
                 configureAnimalSniffer(project, extension)
                 applyCodeNarc(project, extension, configLoader, context.registerGroovyPlugins)
             }
@@ -158,10 +169,50 @@ class QualityPlugin implements Plugin<Project> {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
+    private void applySpotbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
+                               boolean register) {
+        configurePlugin(project,
+                extension.spotbugs,
+                register,
+                SpotBugsPlugin) {
+            project.configure(project) {
+                spotbugs {
+                    toolVersion = extension.spotbugsVersion
+                    ignoreFailures = !extension.strict
+                    effort = extension.spotbugsEffort
+                    reportLevel = extension.spotbugsLevel
+                    excludeFilter = configLoader.resolveSpotbugsExclude(false)
+                    sourceSets = extension.sourceSets
+                }
+
+                tasks.withType(SpotBugsTask) {
+                    doFirst {
+                        configLoader.resolveSpotbugsExclude()
+                        // spotbugs does not support exclude of SourceTask, so appending excluded classes to
+                        // xml exclude filter
+                        if (extension.exclude || extension.excludeSources) {
+                            SpotbugsUtils.replaceExcludeFilter(it, extension, logger)
+                        }
+                    }
+                    reports {
+                        xml {
+                            enabled true
+                            withMessages true
+                        }
+                    }
+                }
+            }
+            configurePluginTasks(project, extension, SpotBugsTask, 'spotbugs', new SpotbugsReporter(configLoader))
+        }
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    @Deprecated
     private void applyFindbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
                                boolean register) {
         configurePlugin(project,
-                extension.findbugs,
+                // ignored if spotbugs enabled
+                extension.findbugs && !extension.spotbugs,
                 register,
                 FindBugsPlugin) {
             project.configure(project) {

@@ -24,6 +24,7 @@ class MultiModuleUseKitTest extends AbstractKitTest {
                     strict false
                     findbugs = false
                     pmd = false
+                    spotbugs = false
                 }
 
                 repositories {

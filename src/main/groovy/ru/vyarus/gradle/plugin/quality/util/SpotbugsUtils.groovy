@@ -1,28 +1,28 @@
 package ru.vyarus.gradle.plugin.quality.util
 
+import com.github.spotbugs.SpotBugsTask
 import groovy.xml.XmlUtil
-import org.gradle.api.plugins.quality.FindBugs
+import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.slf4j.Logger
 import ru.vyarus.gradle.plugin.quality.QualityExtension
 
 /**
- * Findbugs helper utils.
+ * Spotbugs helper utils.
  *
  * @author Vyacheslav Rusakov
- * @since 17.03.2017
+ * @since 28.01.2018
  */
-@Deprecated
-class FindbugsUtils {
+class SpotbugsUtils {
 
     /**
      * Replace exclusion file with extended one when exclusions are required.
      *
-     * @param task findbugs task
+     * @param task spotbugs task
      * @param extension extension instance
      * @param logger project logger for error messages
      */
-    static void replaceExcludeFilter(FindBugs task, QualityExtension extension, Logger logger) {
+    static void replaceExcludeFilter(SpotBugsTask task, QualityExtension extension, Logger logger) {
         Set<File> ignored = FileUtils.resolveIgnoredFiles(task.source, extension.exclude)
         if (extension.excludeSources) {
             // add directly excluded files
@@ -32,9 +32,9 @@ class FindbugsUtils {
             // no excluded files
             return
         }
-        SourceSet set = FileUtils.findMatchingSet('findbugs', task.name, extension.sourceSets)
+        SourceSet set = FileUtils.findMatchingSet('spotbugs', task.name, extension.sourceSets)
         if (!set) {
-            logger.error("[Findbugs] Failed to find source set for task ${task.name}: exclusions " +
+            logger.error("[SpotBugs] Failed to find source set for task ${task.name}: exclusions " +
                     ' will not be applied')
             return
         }
@@ -42,8 +42,8 @@ class FindbugsUtils {
     }
 
     /**
-     * Findbugs task is a {@link org.gradle.api.tasks.SourceTask}, but does not properly support exclusions.
-     * To overcome this limitation, source exclusions could be added to findbugs exclusions filter xml file.
+     * Spotbugs task is a {@link org.gradle.api.tasks.SourceTask}, but does not properly support exclusions.
+     * To overcome this limitation, source exclusions could be added to spotbugs exclusions filter xml file.
      *
      * @param src original excludes file (default of user defined)
      * @param exclude files to exclude
@@ -61,9 +61,17 @@ class FindbugsUtils {
             }
         }
 
-        File tmp = File.createTempFile('findbugs-extended-exclude', '.xml')
+        File tmp = File.createTempFile('spotbugs-extended-exclude', '.xml')
         tmp.deleteOnExit()
         tmp.withWriter { XmlUtil.serialize(xml, it) }
         return tmp
+    }
+
+    /**
+     * @param project gradle project
+     * @return true if spotbugs plugin enabled, false otherwise
+     */
+    static boolean isPluginEnabled(Project project) {
+        return project.plugins.hasPlugin('com.github.spotbugs')
     }
 }

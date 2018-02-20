@@ -6,20 +6,17 @@ import org.gradle.api.Project
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
 
 /**
- * Prints findbugs errors (from xml report) into console and generates html report using custom xsl.
- * Gradle findbugs plugin support html report generation too, but it can't generate both xml and html at the same
+ * Prints spotbugs errors (from xml report) into console and generates html report using custom xsl.
+ * Gradle spotbugs plugin support html report generation too, but it can't generate both xml and html at the same
  * time (so we have to generate html separately, because xml report is required for console reporting).
  *
  * @author Vyacheslav Rusakov
- * @since 12.11.2015
+ * @since 28.01.2018
  */
-@CompileStatic
-@Deprecated
-class FindbugsReporter implements Reporter, HtmlReportGenerator {
-
+class SpotbugsReporter implements Reporter, HtmlReportGenerator {
     ConfigLoader configLoader
 
-    FindbugsReporter(ConfigLoader configLoader) {
+    SpotbugsReporter(ConfigLoader configLoader) {
         this.configLoader = configLoader
     }
 
@@ -27,7 +24,7 @@ class FindbugsReporter implements Reporter, HtmlReportGenerator {
     @CompileStatic(TypeCheckingMode.SKIP)
     void report(Project project, String type) {
         project.with {
-            File reportFile = file("${extensions.findbugs.reportsDir}/${type}.xml")
+            File reportFile = file("${extensions.spotbugs.reportsDir}/${type}.xml")
             if (!reportFile.exists()) {
                 return
             }
@@ -39,7 +36,7 @@ class FindbugsReporter implements Reporter, HtmlReportGenerator {
                 int p1 = summary.@priority_1 == null ? 0 : summary.@priority_1 as Integer
                 int p2 = summary.@priority_2 == null ? 0 : summary.@priority_2 as Integer
                 int p3 = summary.@priority_3 == null ? 0 : summary.@priority_3 as Integer
-                logger.error "$NL$cnt ($p1 / $p2 / $p3) FindBugs violations were found in ${fileCnt} files$NL"
+                logger.error "$NL$cnt ($p1 / $p2 / $p3) SpotBugs violations were found in ${fileCnt} files$NL"
 
                 Map<String, String> desc = buildDescription(result)
                 Map<String, String> cat = buildCategories(result)
@@ -59,8 +56,8 @@ class FindbugsReporter implements Reporter, HtmlReportGenerator {
                 }
                 // html report will be generated before console reporting
                 String htmlReportUrl = ReportUtils.toConsoleLink(project
-                        .file("${project.extensions.findbugs.reportsDir}/${type}.html"))
-                project.logger.error "Findbugs HTML report: $htmlReportUrl"
+                        .file("${project.extensions.spotbugs.reportsDir}/${type}.html"))
+                project.logger.error "SpotBugs HTML report: $htmlReportUrl"
             }
         }
     }
@@ -68,17 +65,17 @@ class FindbugsReporter implements Reporter, HtmlReportGenerator {
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     void generateHtmlReport(Project project, String type) {
-        File reportFile = project.file("${project.extensions.findbugs.reportsDir}/${type}.xml")
+        File reportFile = project.file("${project.extensions.spotbugs.reportsDir}/${type}.xml")
         if (!reportFile.exists()) {
             return
         }
         // html report
-        String htmlReportPath = "${project.extensions.findbugs.reportsDir}/${type}.html"
+        String htmlReportPath = "${project.extensions.spotbugs.reportsDir}/${type}.html"
         File htmlReportFile = project.file(htmlReportPath)
         // avoid redundant re-generation
         if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
             project.ant.xslt(in: reportFile,
-                    style: configLoader.resolveFindbugsXsl(),
+                    style: configLoader.resolveSpotbugsXsl(),
                     out: htmlReportPath,
             )
         }

@@ -35,12 +35,12 @@ class QualityPluginKitTest extends AbstractKitTest {
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('FindBugs rule violations were found')
+        result.output.contains('SpotBugs rule violations were found')
         result.output.contains('PMD rule violations were found')
 
         then: "all html reports generated"
         file('build/reports/checkstyle/main.html').exists()
-        file('build/reports/findbugs/main.html').exists()
+        file('build/reports/spotbugs/main.html').exists()
         file('build/reports/pmd/main.html').exists()
 
         when: "run one more time"
@@ -49,7 +49,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         then: "ok"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('FindBugs rule violations were found')
+        result.output.contains('SpotBugs rule violations were found')
         result.output.contains('PMD rule violations were found')
     }
 
@@ -128,7 +128,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('CodeNarc rule violations were found')
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('FindBugs rule violations were found')
+        result.output.contains('SpotBugs rule violations were found')
         result.output.contains('PMD rule violations were found')
     }
 
@@ -151,7 +151,7 @@ class QualityPluginKitTest extends AbstractKitTest {
                 pmd {
                     sourceSets = []
                 }
-                findbugs {
+                spotbugs {
                     sourceSets = []
                 }
             }
@@ -167,6 +167,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         result.task(":check").outcome == TaskOutcome.UP_TO_DATE
         !result.output.contains('Checkstyle rule violations were found')
         !result.output.contains('FindBugs rule violations were found')
+        !result.output.contains('SpotBugs rule violations were found')
         !result.output.contains('PMD rule violations were found')
     }
 }

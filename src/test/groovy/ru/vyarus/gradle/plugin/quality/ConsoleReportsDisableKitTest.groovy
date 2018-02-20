@@ -41,7 +41,7 @@ class ConsoleReportsDisableKitTest extends AbstractKitTest {
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('CodeNarc rule violations were found')
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('FindBugs rule violations were found')
+        result.output.contains('SpotBugs rule violations were found')
         result.output.contains('PMD rule violations were found')
 
         then: "no console reporting performed"
@@ -50,8 +50,8 @@ class ConsoleReportsDisableKitTest extends AbstractKitTest {
         !result.output.contains('[Performance | URF_UNREAD_FIELD] sample.(Sample.java:8)  [priority 2]') // findbugs
         !result.output.contains('[Unused Code | UnusedPrivateField] sample.(Sample.java:5)') // pmd
 
-        then: "findbugs html report generated"
-        file('build/reports/findbugs/main.html').exists()
+        then: "spotbugs html report generated"
+        file('build/reports/spotbugs/main.html').exists()
     }
 
 }

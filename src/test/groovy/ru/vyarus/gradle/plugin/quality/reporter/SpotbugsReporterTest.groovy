@@ -6,12 +6,12 @@ import ru.vyarus.gradle.plugin.quality.AbstractKitTest
 import ru.vyarus.gradle.plugin.quality.report.ReportUtils
 
 /**
- * @author Vyacheslav Rusakov 
- * @since 18.11.2015
+ * @author Vyacheslav Rusakov
+ * @since 20.02.2018
  */
-class FindbugsReporterTest extends AbstractKitTest {
+class SpotbugsReporterTest extends AbstractKitTest {
 
-    def "Check findbugs report"() {
+    def "Check spotbugs report"() {
 
         setup: "prepare project"
         build("""
@@ -19,19 +19,15 @@ class FindbugsReporterTest extends AbstractKitTest {
                 id 'groovy'
                 id 'ru.vyarus.quality'
             }
-            
-            quality {
-                spotbugs = false
-            }
 
             task testReport() << {
-                new ru.vyarus.gradle.plugin.quality.report.FindbugsReporter(
+                new ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter(
                     new ru.vyarus.gradle.plugin.quality.ConfigLoader(project)
                 ).report(project, 'main')
             }
         """)
         file('src/main/java').mkdirs()
-        fileFromClasspath('build/reports/findbugs/main.xml', '/ru/vyarus/gradle/plugin/quality/report/findbugs/main.xml')
+        fileFromClasspath('build/reports/spotbugs/main.xml', '/ru/vyarus/gradle/plugin/quality/report/spotbugs/main.xml')
 
         when: "call reporter"
         BuildResult result = run('testReport')
@@ -40,7 +36,7 @@ class FindbugsReporterTest extends AbstractKitTest {
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
         error.replaceAll("\r", '').contains """
-2 (0 / 2 / 0) FindBugs violations were found in 2 files
+2 (0 / 2 / 0) SpotBugs violations were found in 2 files
 
 [Performance | URF_UNREAD_FIELD] sample.(Sample.java:8)  [priority 2]
 \t>> Unread field: sample.Sample.sample
@@ -50,7 +46,7 @@ class FindbugsReporterTest extends AbstractKitTest {
 \t>> Unread field: sample.Sample2.sample
   This field is never read. Consider removing it from the class.
 
-Findbugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir.root)}/build/reports/findbugs/main.html
+SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir.root)}/build/reports/spotbugs/main.html
 """ as String
     }
 }

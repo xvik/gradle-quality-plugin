@@ -1,5 +1,6 @@
 package ru.vyarus.gradle.plugin.quality
 
+import com.github.spotbugs.SpotBugsPlugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.api.plugins.quality.CodeNarcPlugin
@@ -25,8 +26,9 @@ class QualityPluginTest extends AbstractTest {
         then: "plugins registered"
         project.plugins.findPlugin(CheckstylePlugin)
         project.plugins.findPlugin(PmdPlugin)
-        project.plugins.findPlugin(FindBugsPlugin)
+        project.plugins.findPlugin(SpotBugsPlugin)
         !project.plugins.findPlugin(CodeNarcPlugin)
+        !project.plugins.findPlugin(FindBugsPlugin)
 
         then: "tasks installed"
         project.tasks.initQualityConfig
@@ -48,7 +50,60 @@ class QualityPluginTest extends AbstractTest {
         !project.plugins.findPlugin(CheckstylePlugin)
         !project.plugins.findPlugin(PmdPlugin)
         !project.plugins.findPlugin(FindBugsPlugin)
+        !project.plugins.findPlugin(SpotBugsPlugin)
         project.plugins.findPlugin(CodeNarcPlugin)
+    }
+
+    def "Check findbugs activation"() {
+
+        when: "apply plugin"
+        file('src/main/java').mkdirs()
+
+        Project project = project {
+            apply plugin: 'java'
+            apply plugin: 'ru.vyarus.quality'
+
+            quality {
+                spotbugs = false
+            }
+        }
+
+        then: "plugins registered"
+        project.plugins.findPlugin(CheckstylePlugin)
+        project.plugins.findPlugin(PmdPlugin)
+        !project.plugins.findPlugin(SpotBugsPlugin)
+        !project.plugins.findPlugin(CodeNarcPlugin)
+        project.plugins.findPlugin(FindBugsPlugin)
+
+        then: "tasks installed"
+        project.tasks.initQualityConfig
+        project.tasks.checkQualityMain
+        project.tasks.checkQualityTest
+    }
+
+    def "Check findbugs manual activation"() {
+
+        when: "apply plugin"
+        file('src/main/java').mkdirs()
+
+        Project project = project {
+            apply plugin: 'java'
+            // spotbugs will not be registered because findbugs registered manually
+            apply plugin: 'findbugs'
+            apply plugin: 'ru.vyarus.quality'
+        }
+
+        then: "plugins registered"
+        project.plugins.findPlugin(CheckstylePlugin)
+        project.plugins.findPlugin(PmdPlugin)
+        !project.plugins.findPlugin(SpotBugsPlugin)
+        !project.plugins.findPlugin(CodeNarcPlugin)
+        project.plugins.findPlugin(FindBugsPlugin)
+
+        then: "tasks installed"
+        project.tasks.initQualityConfig
+        project.tasks.checkQualityMain
+        project.tasks.checkQualityTest
     }
 
     def "Check plugins disable options"() {
@@ -65,6 +120,7 @@ class QualityPluginTest extends AbstractTest {
                 pmd false
                 findbugs false
                 codenarc false
+                spotbugs false
             }
         }
 
@@ -72,6 +128,7 @@ class QualityPluginTest extends AbstractTest {
         !project.plugins.findPlugin(CheckstylePlugin)
         !project.plugins.findPlugin(PmdPlugin)
         !project.plugins.findPlugin(FindBugsPlugin)
+        !project.plugins.findPlugin(SpotBugsPlugin)
         !project.plugins.findPlugin(CodeNarcPlugin)
     }
 
@@ -126,6 +183,7 @@ class QualityPluginTest extends AbstractTest {
         project.plugins.findPlugin(CheckstylePlugin)
         !project.plugins.findPlugin(PmdPlugin)
         !project.plugins.findPlugin(FindBugsPlugin)
+        !project.plugins.findPlugin(SpotBugsPlugin)
         !project.plugins.findPlugin(CodeNarcPlugin)
     }
 }

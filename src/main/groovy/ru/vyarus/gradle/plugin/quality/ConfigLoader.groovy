@@ -19,6 +19,8 @@ class ConfigLoader {
     private final String pmd = 'pmd/pmd.xml'
     private final String findbugsExclude = 'findbugs/exclude.xml'
     private final String findbugsXsl = 'findbugs/html-report-style.xsl'
+    private final String spotbugsExclude = 'spotbugs/exclude.xml'
+    private final String spotbugsXsl = 'spotbugs/html-report-style.xsl'
     private final String codenarc = 'codenarc/codenarc.xml'
 
     Project project
@@ -37,12 +39,22 @@ class ConfigLoader {
         resolve(pmd, copyDefaultFile)
     }
 
+    @Deprecated
     File resolveFindbugsExclude(boolean copyDefaultFile = true) {
         resolve(findbugsExclude, copyDefaultFile)
     }
 
+    @Deprecated
     File resolveFindbugsXsl(boolean copyDefaultFile = true) {
         resolve(findbugsXsl, copyDefaultFile)
+    }
+
+    File resolveSpotbugsExclude(boolean copyDefaultFile = true) {
+        resolve(spotbugsExclude, copyDefaultFile)
+    }
+
+    File resolveSpotbugsXsl(boolean copyDefaultFile = true) {
+        resolve(spotbugsXsl, copyDefaultFile)
     }
 
     File resolveCodenarcConfig(boolean copyDefaultFile = true) {
@@ -53,10 +65,13 @@ class ConfigLoader {
      * Copies default configs into configured user directory.
      *
      * @param override override filed
+     * @param spotbugs true when spotbugs used instead of findbugs
      */
-    void initUserConfigs(boolean override) {
+    void initUserConfigs(boolean override, boolean spotbugs) {
         init()
-        [checkstyle, pmd, findbugsExclude, findbugsXsl, codenarc].each {
+        [checkstyle, pmd, codenarc,
+         spotbugs ? spotbugsExclude : findbugsExclude,
+         spotbugs ? spotbugsXsl : findbugsXsl,].each {
             copyConfig(configDir, it, override)
         }
     }

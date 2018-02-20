@@ -30,8 +30,8 @@ class GroupingTasksTest extends AbstractTest {
         project.tasks.checkQualityTest
 
         then: "correct tasks grouped"
-        dependsOn(project.tasks.checkQualityMain) == ['checkstyleMain', 'pmdMain', 'findbugsMain'] as Set
-        dependsOn(project.tasks.checkQualityTest) == ['checkstyleTest', 'pmdTest', 'findbugsTest'] as Set
+        dependsOn(project.tasks.checkQualityMain) == ['checkstyleMain', 'pmdMain', 'spotbugsMain'] as Set
+        dependsOn(project.tasks.checkQualityTest) == ['checkstyleTest', 'pmdTest', 'spotbugsTest'] as Set
     }
 
     def "Check groovy grouping tasks registration"() {
@@ -107,8 +107,8 @@ class GroupingTasksTest extends AbstractTest {
         project.tasks.checkQualityTest
 
         then: "correct tasks grouped"
-        dependsOn(project.tasks.checkQualityMain) == ['checkstyleMain', 'pmdMain', 'findbugsMain', 'animalsnifferMain'] as Set
-        dependsOn(project.tasks.checkQualityTest) == ['checkstyleTest', 'pmdTest', 'findbugsTest', 'animalsnifferTest'] as Set
+        dependsOn(project.tasks.checkQualityMain) == ['checkstyleMain', 'pmdMain', 'spotbugsMain', 'animalsnifferMain'] as Set
+        dependsOn(project.tasks.checkQualityTest) == ['checkstyleTest', 'pmdTest', 'spotbugsTest', 'animalsnifferTest'] as Set
     }
 
     private Set<String> dependsOn(Task task) {

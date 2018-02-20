@@ -24,6 +24,7 @@ class QualityExtension {
     String checkstyleVersion = '8.8'
     String pmdVersion = '6.0.1'
     String findbugsVersion = '3.0.1'
+    String spotbugsVersion = '3.1.1'
     String codenarcVersion = '1.1'
 
     /**
@@ -58,8 +59,18 @@ class QualityExtension {
     /**
      * Enable FindBugs plugin. True by default.
      * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
+     * Plugin is not enabled and not configured when spotbugs plugin enabled.
+     *
+     * @deprecated will be removed later as findbugs plugin is abandoned (spotbugs must be used instead).
      */
+    @Deprecated
     boolean findbugs = true
+
+    /**
+     * Enable SpotBugs plugin. True by default.
+     * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
+     */
+    boolean spotbugs = true
 
     /**
      * Enable CodeNarc plugin. Ignored if groovy plugin is not applied). True by default.
@@ -71,15 +82,35 @@ class QualityExtension {
      * The analysis effort level. The value specified should be one of min, default, or max.
      * Higher levels increase precision and find more bugs at the expense of running time and
      * memory consumption. Default is 'max'.
+     *
+     * @deprecated will be removed later as findbugs plugin is abandoned (spotbugs must be used instead).
      */
+    @Deprecated
     String findbugsEffort = 'max'
 
     /**
      * The priority threshold for reporting bugs. If set to low, all bugs are reported.
      * If set to medium, medium and high priority bugs are reported.
      * If set to high, only high priority bugs are reported. Default is 'medium'.
+     *
+     * @deprecated will be removed later as findbugs plugin is abandoned (spotbugs must be used instead).
      */
+    @Deprecated
     String findbugsLevel = 'medium'
+
+    /**
+     * The analysis effort level. The value specified should be one of min, default, or max.
+     * Higher levels increase precision and find more bugs at the expense of running time and
+     * memory consumption. Default is 'max'.
+     */
+    String spotbugsEffort = findbugsEffort
+
+    /**
+     * The priority threshold for reporting bugs. If set to low, all bugs are reported.
+     * If set to medium, medium and high priority bugs are reported.
+     * If set to high, only high priority bugs are reported. Default is 'medium'.
+     */
+    String spotbugsLevel = findbugsLevel
 
     /**
      * Javac lint options to show compiler warnings, not visible by default.
