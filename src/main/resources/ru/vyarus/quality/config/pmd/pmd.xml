@@ -50,9 +50,9 @@
     <!-- Design (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html) -->
     <rule ref="category/java/design.xml">
         <exclude name="AvoidCatchingGenericException"/>
-        <exclude name="CyclomaticComplexity"/>
         <exclude name="LawOfDemeter"/>
         <exclude name="LoosePackageCoupling"/>
+        <exclude name="ModifiedCyclomaticComplexity"/>
         <exclude name="SignatureDeclareThrowsException"/>
         <exclude name="StdCyclomaticComplexity"/>
     </rule>
@@ -71,14 +71,14 @@
             <property name="minimum" value="500"/>
         </properties>
     </rule>
-    <rule ref="category/java/design.xml/ModifiedCyclomaticComplexity">
+    <rule ref="category/java/design.xml/CyclomaticComplexity">
         <properties>
-            <property name="reportLevel" value="11"/>
+            <property name="methodReportLevel" value="11"/>
         </properties>
     </rule>
     <rule ref="category/java/design.xml/NPathComplexity">
         <properties>
-            <property name="minimum" value="201"/>
+            <property name="reportLevel" value="201"/>
         </properties>
     </rule>
     <rule ref="category/java/design.xml/TooManyMethods" message="Avoid classes longer than 20 methods">

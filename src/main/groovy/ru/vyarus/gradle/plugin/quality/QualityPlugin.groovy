@@ -154,6 +154,7 @@ class QualityPlugin implements Plugin<Project> {
                 pmd {
                     toolVersion = extension.pmdVersion
                     ignoreFailures = !extension.strict
+                    ruleSets = []
                     ruleSetFiles = files(configLoader.resolvePmdConfig(false).absolutePath)
                     sourceSets = extension.sourceSets
                 }
