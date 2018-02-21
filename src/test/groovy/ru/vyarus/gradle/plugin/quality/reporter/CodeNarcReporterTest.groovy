@@ -35,7 +35,7 @@ class CodeNarcReporterTest extends AbstractKitTest {
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
         error.replaceAll("\r", '').contains """
-24 (0 / 10 / 14) CodeNarc violations were found in 2 files
+28 (0 / 10 / 18) CodeNarc violations were found in 2 files
 
 [Formatting | ClassJavadoc] sample.(GSample.groovy:3)  [priority 2]
 \t>> class GSample {
@@ -45,15 +45,27 @@ class CodeNarcReporterTest extends AbstractKitTest {
 
 [Convention | NoDef] sample.(GSample.groovy:5)  [priority 3]
 \t>> def foo(String bar) {
-  def should not be used
+  def for method return type should not be used
   def should not be used. You should replace it with concrete type.
   http://codenarc.sourceforge.net/codenarc-rules-convention.html#NoDef
 
+[Convention | MethodReturnTypeRequired] sample.(GSample.groovy:5)  [priority 3]
+\t>> def foo(String bar) {
+  Method "foo" has a dynamic return type
+  Checks that method return types are not dynamic, that is they are explicitly stated and different than def.
+  http://codenarc.sourceforge.net/codenarc-rules-convention.html#MethodReturnTypeRequired
+
 [Convention | NoDef] sample.(GSample.groovy:6)  [priority 3]
 \t>> def res = "123" + bar + "123";
-  def should not be used
+  def for declaration should not be used
   def should not be used. You should replace it with concrete type.
   http://codenarc.sourceforge.net/codenarc-rules-convention.html#NoDef
+
+[Convention | VariableTypeRequired] sample.(GSample.groovy:6)  [priority 3]
+\t>> def res = "123" + bar + "123";
+  The type is not specified for variable "res"
+  Checks that variable types are explicitly specified in declarations (and not using def)
+  http://codenarc.sourceforge.net/codenarc-rules-convention.html#VariableTypeRequired
 
 [Dry | DuplicateStringLiteral] sample.(GSample.groovy:6)  [priority 2]
 \t>> def res = "123" + bar + "123";
@@ -117,15 +129,27 @@ class CodeNarcReporterTest extends AbstractKitTest {
 
 [Convention | NoDef] sample.(GSample2.groovy:5)  [priority 3]
 \t>> def foo(String bar) {
-  def should not be used
+  def for method return type should not be used
   def should not be used. You should replace it with concrete type.
   http://codenarc.sourceforge.net/codenarc-rules-convention.html#NoDef
 
+[Convention | MethodReturnTypeRequired] sample.(GSample2.groovy:5)  [priority 3]
+\t>> def foo(String bar) {
+  Method "foo" has a dynamic return type
+  Checks that method return types are not dynamic, that is they are explicitly stated and different than def.
+  http://codenarc.sourceforge.net/codenarc-rules-convention.html#MethodReturnTypeRequired
+
 [Convention | NoDef] sample.(GSample2.groovy:6)  [priority 3]
 \t>> def res = "123" + bar + "123";
-  def should not be used
+  def for declaration should not be used
   def should not be used. You should replace it with concrete type.
   http://codenarc.sourceforge.net/codenarc-rules-convention.html#NoDef
+
+[Convention | VariableTypeRequired] sample.(GSample2.groovy:6)  [priority 3]
+\t>> def res = "123" + bar + "123";
+  The type is not specified for variable "res"
+  Checks that variable types are explicitly specified in declarations (and not using def)
+  http://codenarc.sourceforge.net/codenarc-rules-convention.html#VariableTypeRequired
 
 [Dry | DuplicateStringLiteral] sample.(GSample2.groovy:6)  [priority 2]
 \t>> def res = "123" + bar + "123";

@@ -37,67 +37,59 @@ class PmdReporterTest extends AbstractKitTest {
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
         error.replaceAll("\r", '').contains """
-15 PMD rule violations were found in 2 files
+13 PMD rule violations were found in 2 files
 
-[Unused Code | UnusedPrivateField] sample.(Sample.java:5)
+[Best Practices | UnusedPrivateField] sample.(Sample.java:8)
   Avoid unused private fields such as 'sample'.
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unusedcode.html#UnusedPrivateField
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_bestpractices.html#unusedprivatefield
 
-[Naming | AvoidFieldNameMatchingTypeName] sample.(Sample.java:5)
+[Error Prone | AvoidFieldNameMatchingTypeName] sample.(Sample.java:8)
   It is somewhat confusing to have a field name matching the declaring class name
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/naming.html#AvoidFieldNameMatchingTypeName
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_errorprone.html#avoidfieldnamematchingtypename
 
-[Design | SingularField] sample.(Sample.java:5)
+[Design | SingularField] sample.(Sample.java:8)
   Perhaps 'sample' could be replaced by a local variable.
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#SingularField
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html#singularfield
 
-[Design | ImmutableField] sample.(Sample.java:5)
+[Design | ImmutableField] sample.(Sample.java:8)
   Private field 'sample' could be made final; it is only initialized in the declaration or constructor.
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#ImmutableField
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html#immutablefield
 
-[Optimization | MethodArgumentCouldBeFinal] sample.(Sample.java:7)
+[Code Style | MethodArgumentCouldBeFinal] sample.(Sample.java:10)
   Parameter 'sample' is not assigned and could be declared final
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_codestyle.html#methodargumentcouldbefinal
 
-[Design | UseVarargs] sample.(Sample.java:11)
-  Consider using varargs for methods or constructors which take an array the last parameter.
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UseVarargs
-
-[Design | UncommentedEmptyMethodBody] sample.(Sample.java:11)
-  Document empty method body
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UncommentedEmptyMethodBody
-
-[Optimization | MethodArgumentCouldBeFinal] sample.(Sample.java:11)
+[Code Style | MethodArgumentCouldBeFinal] sample.(Sample.java:14)
   Parameter 'args' is not assigned and could be declared final
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_codestyle.html#methodargumentcouldbefinal
 
-[Unused Code | UnusedPrivateField] sample.(Sample2.java:5)
+[Best Practices | SystemPrintln] sample.(Sample.java:16)
+  System.out.println is used
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_bestpractices.html#systemprintln
+
+[Best Practices | UnusedPrivateField] sample.(Sample2.java:8)
   Avoid unused private fields such as 'sample'.
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unusedcode.html#UnusedPrivateField
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_bestpractices.html#unusedprivatefield
 
-[Design | SingularField] sample.(Sample2.java:5)
+[Design | SingularField] sample.(Sample2.java:8)
   Perhaps 'sample' could be replaced by a local variable.
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#SingularField
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html#singularfield
 
-[Design | ImmutableField] sample.(Sample2.java:5)
+[Design | ImmutableField] sample.(Sample2.java:8)
   Private field 'sample' could be made final; it is only initialized in the declaration or constructor.
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#ImmutableField
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html#immutablefield
 
-[Optimization | MethodArgumentCouldBeFinal] sample.(Sample2.java:7)
+[Code Style | MethodArgumentCouldBeFinal] sample.(Sample2.java:10)
   Parameter 'sample' is not assigned and could be declared final
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_codestyle.html#methodargumentcouldbefinal
 
-[Design | UseVarargs] sample.(Sample2.java:11)
-  Consider using varargs for methods or constructors which take an array the last parameter.
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UseVarargs
-
-[Design | UncommentedEmptyMethodBody] sample.(Sample2.java:11)
-  Document empty method body
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UncommentedEmptyMethodBody
-
-[Optimization | MethodArgumentCouldBeFinal] sample.(Sample2.java:11)
+[Code Style | MethodArgumentCouldBeFinal] sample.(Sample2.java:14)
   Parameter 'args' is not assigned and could be declared final
-  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_codestyle.html#methodargumentcouldbefinal
+
+[Best Practices | SystemPrintln] sample.(Sample2.java:16)
+  System.out.println is used
+  https://pmd.github.io/pmd-6.0.1/pmd_rules_java_bestpractices.html#systemprintln
 """ as String
     }
 }

@@ -130,6 +130,12 @@ class QualityPluginKitTest extends AbstractKitTest {
         result.output.contains('Checkstyle rule violations were found')
         result.output.contains('SpotBugs rule violations were found')
         result.output.contains('PMD rule violations were found')
+
+//        cleanup:
+//        new File("checkstyle.xml") <<  file('build/reports/checkstyle/main.xml').text
+//        new File("spotbugs.xml") << file('build/reports/spotbugs/main.xml').text
+//        new File("pmd.xml") << file('build/reports/pmd/main.xml').text
+//        new File("codenarc.xml") << file('build/reports/codenarc/main.xml').text
     }
 
     def "Check plugins config override"() {

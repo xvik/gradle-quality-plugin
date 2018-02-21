@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="6.12.1">
-<file name="${srcRoot}\sample\Sample.java">
-<error line="0" severity="error" message="File does not end with a newline." source="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck"/>
-<error line="3" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
-<error line="11" severity="error" message="Uncommented main method found." source="com.puppycrawl.tools.checkstyle.checks.UncommentedMainCheck"/>
-</file>
-<file name="${srcRoot}\sample\Sample2.java">
-<error line="0" severity="error" message="File does not end with a newline." source="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck"/>
-<error line="3" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
-<error line="11" severity="error" message="Uncommented main method found." source="com.puppycrawl.tools.checkstyle.checks.UncommentedMainCheck"/>
-</file>
+<checkstyle version="8.8">
+    <file name="${srcRoot}\sample\Sample.java">
+        <error line="0" severity="error" message="File does not end with a newline." source="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck"/>
+        <error line="6" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
+    </file>
+    <file name="${srcRoot}\sample\Sample2.java">
+        <error line="0" severity="error" message="File does not end with a newline." source="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck"/>
+        <error line="6" severity="error" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
+    </file>
 </checkstyle>

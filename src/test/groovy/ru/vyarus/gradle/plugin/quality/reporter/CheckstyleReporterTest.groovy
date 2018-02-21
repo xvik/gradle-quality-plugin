@@ -40,31 +40,23 @@ class CheckstyleReporterTest extends AbstractKitTest {
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
        error.replaceAll("\r", '').contains """
-6 Checkstyle rule violations were found in 2 files
+4 Checkstyle rule violations were found in 2 files
 
 [Misc | NewlineAtEndOfFile] sample.(Sample.java:0)
   File does not end with a newline.
   http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
 
-[Javadoc | JavadocType] sample.(Sample.java:3)
+[Javadoc | JavadocType] sample.(Sample.java:6)
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
-
-[Misc | UncommentedMain] sample.(Sample.java:11)
-  Uncommented main method found.
-  http://checkstyle.sourceforge.net/config_misc.html#UncommentedMain
 
 [Misc | NewlineAtEndOfFile] sample.(Sample2.java:0)
   File does not end with a newline.
   http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
 
-[Javadoc | JavadocType] sample.(Sample2.java:3)
+[Javadoc | JavadocType] sample.(Sample2.java:6)
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
-
-[Misc | UncommentedMain] sample.(Sample2.java:11)
-  Uncommented main method found.
-  http://checkstyle.sourceforge.net/config_misc.html#UncommentedMain
 """ as String
     }
 }

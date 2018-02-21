@@ -1,52 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="5.4.0" timestamp="2015-11-18T15:39:39.518">
-<file name="${srcRoot}\sample\Sample.java">
-<violation beginline="5" endline="5" begincolumn="20" endcolumn="25" rule="UnusedPrivateField" ruleset="Unused Code" package="sample" class="Sample" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unusedcode.html#UnusedPrivateField" priority="3">
-Avoid unused private fields such as 'sample'.
-</violation>
-<violation beginline="5" endline="5" begincolumn="13" endcolumn="26" rule="AvoidFieldNameMatchingTypeName" ruleset="Naming" package="sample" class="Sample" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/naming.html#AvoidFieldNameMatchingTypeName" priority="3">
-It is somewhat confusing to have a field name matching the declaring class name
-</violation>
-<violation beginline="5" endline="5" begincolumn="13" endcolumn="26" rule="SingularField" ruleset="Design" package="sample" class="Sample" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#SingularField" priority="3">
-Perhaps 'sample' could be replaced by a local variable.
-</violation>
-<violation beginline="5" endline="5" begincolumn="20" endcolumn="25" rule="ImmutableField" ruleset="Design" package="sample" class="Sample" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#ImmutableField" priority="3">
-Private field 'sample' could be made final; it is only initialized in the declaration or constructor.
-</violation>
-<violation beginline="7" endline="7" begincolumn="19" endcolumn="31" rule="MethodArgumentCouldBeFinal" ruleset="Optimization" package="sample" class="Sample" method="Sample" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal" priority="3">
-Parameter 'sample' is not assigned and could be declared final
-</violation>
-<violation beginline="11" endline="11" begincolumn="29" endcolumn="41" rule="UseVarargs" ruleset="Design" package="sample" class="Sample" method="main" variable="args" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UseVarargs" priority="4">
-Consider using varargs for methods or constructors which take an array the last parameter.
-</violation>
-<violation beginline="11" endline="13" begincolumn="44" endcolumn="5" rule="UncommentedEmptyMethodBody" ruleset="Design" package="sample" class="Sample" method="main" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UncommentedEmptyMethodBody" priority="3">
-Document empty method body
-</violation>
-<violation beginline="11" endline="11" begincolumn="29" endcolumn="41" rule="MethodArgumentCouldBeFinal" ruleset="Optimization" package="sample" class="Sample" method="main" variable="args" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal" priority="3">
-Parameter 'args' is not assigned and could be declared final
-</violation>
-</file>
-<file name="${srcRoot}\sample\Sample2.java">
-<violation beginline="5" endline="5" begincolumn="20" endcolumn="25" rule="UnusedPrivateField" ruleset="Unused Code" package="sample" class="Sample2" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unusedcode.html#UnusedPrivateField" priority="3">
-Avoid unused private fields such as 'sample'.
-</violation>
-<violation beginline="5" endline="5" begincolumn="13" endcolumn="26" rule="SingularField" ruleset="Design" package="sample" class="Sample2" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#SingularField" priority="3">
-Perhaps 'sample' could be replaced by a local variable.
-</violation>
-<violation beginline="5" endline="5" begincolumn="20" endcolumn="25" rule="ImmutableField" ruleset="Design" package="sample" class="Sample2" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#ImmutableField" priority="3">
-Private field 'sample' could be made final; it is only initialized in the declaration or constructor.
-</violation>
-<violation beginline="7" endline="7" begincolumn="20" endcolumn="32" rule="MethodArgumentCouldBeFinal" ruleset="Optimization" package="sample" class="Sample2" method="Sample2" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal" priority="3">
-Parameter 'sample' is not assigned and could be declared final
-</violation>
-<violation beginline="11" endline="11" begincolumn="29" endcolumn="41" rule="UseVarargs" ruleset="Design" package="sample" class="Sample2" method="main" variable="args" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UseVarargs" priority="4">
-Consider using varargs for methods or constructors which take an array the last parameter.
-</violation>
-<violation beginline="11" endline="13" begincolumn="44" endcolumn="5" rule="UncommentedEmptyMethodBody" ruleset="Design" package="sample" class="Sample2" method="main" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/design.html#UncommentedEmptyMethodBody" priority="3">
-Document empty method body
-</violation>
-<violation beginline="11" endline="11" begincolumn="29" endcolumn="41" rule="MethodArgumentCouldBeFinal" ruleset="Optimization" package="sample" class="Sample2" method="main" variable="args" externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/optimizations.html#MethodArgumentCouldBeFinal" priority="3">
-Parameter 'args' is not assigned and could be declared final
-</violation>
-</file>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd"
+     version="6.0.1" timestamp="2018-02-22T00:32:04.682">
+    <file name="${srcRoot}\sample\Sample.java">
+        <violation beginline="8" endline="8" begincolumn="20" endcolumn="25" rule="UnusedPrivateField" ruleset="Best Practices" package="sample" class="Sample" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_bestpractices.html#unusedprivatefield" priority="3">
+            Avoid unused private fields such as 'sample'.
+        </violation>
+        <violation beginline="8" endline="8" begincolumn="13" endcolumn="26" rule="AvoidFieldNameMatchingTypeName" ruleset="Error Prone" package="sample" class="Sample" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_errorprone.html#avoidfieldnamematchingtypename" priority="3">
+            It is somewhat confusing to have a field name matching the declaring class name
+        </violation>
+        <violation beginline="8" endline="8" begincolumn="13" endcolumn="26" rule="SingularField" ruleset="Design" package="sample" class="Sample" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html#singularfield" priority="3">
+            Perhaps 'sample' could be replaced by a local variable.
+        </violation>
+        <violation beginline="8" endline="8" begincolumn="20" endcolumn="25" rule="ImmutableField" ruleset="Design" package="sample" class="Sample" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html#immutablefield" priority="3">
+            Private field 'sample' could be made final; it is only initialized in the declaration or constructor.
+        </violation>
+        <violation beginline="10" endline="10" begincolumn="19" endcolumn="31" rule="MethodArgumentCouldBeFinal" ruleset="Code Style" package="sample" class="Sample" method="Sample" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_codestyle.html#methodargumentcouldbefinal" priority="3">
+            Parameter 'sample' is not assigned and could be declared final
+        </violation>
+        <violation beginline="14" endline="14" begincolumn="29" endcolumn="41" rule="MethodArgumentCouldBeFinal" ruleset="Code Style" package="sample" class="Sample" method="main" variable="args" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_codestyle.html#methodargumentcouldbefinal" priority="3">
+            Parameter 'args' is not assigned and could be declared final
+        </violation>
+        <violation beginline="16" endline="16" begincolumn="9" endcolumn="26" rule="SystemPrintln" ruleset="Best Practices" package="sample" class="Sample" method="main" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_bestpractices.html#systemprintln" priority="2">
+            System.out.println is used
+        </violation>
+    </file>
+    <file name="${srcRoot}\sample\Sample2.java">
+        <violation beginline="8" endline="8" begincolumn="20" endcolumn="25" rule="UnusedPrivateField" ruleset="Best Practices" package="sample" class="Sample2" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_bestpractices.html#unusedprivatefield" priority="3">
+            Avoid unused private fields such as 'sample'.
+        </violation>
+        <violation beginline="8" endline="8" begincolumn="13" endcolumn="26" rule="SingularField" ruleset="Design" package="sample" class="Sample2" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html#singularfield" priority="3">
+            Perhaps 'sample' could be replaced by a local variable.
+        </violation>
+        <violation beginline="8" endline="8" begincolumn="20" endcolumn="25" rule="ImmutableField" ruleset="Design" package="sample" class="Sample2" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html#immutablefield" priority="3">
+            Private field 'sample' could be made final; it is only initialized in the declaration or constructor.
+        </violation>
+        <violation beginline="10" endline="10" begincolumn="20" endcolumn="32" rule="MethodArgumentCouldBeFinal" ruleset="Code Style" package="sample" class="Sample2" method="Sample2" variable="sample" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_codestyle.html#methodargumentcouldbefinal" priority="3">
+            Parameter 'sample' is not assigned and could be declared final
+        </violation>
+        <violation beginline="14" endline="14" begincolumn="29" endcolumn="41" rule="MethodArgumentCouldBeFinal" ruleset="Code Style" package="sample" class="Sample2" method="main" variable="args" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_codestyle.html#methodargumentcouldbefinal" priority="3">
+            Parameter 'args' is not assigned and could be declared final
+        </violation>
+        <violation beginline="16" endline="16" begincolumn="9" endcolumn="26" rule="SystemPrintln" ruleset="Best Practices" package="sample" class="Sample2" method="main" externalInfoUrl="https://pmd.github.io/pmd-6.0.1/pmd_rules_java_bestpractices.html#systemprintln" priority="2">
+            System.out.println is used
+        </violation>
+    </file>
 </pmd>
