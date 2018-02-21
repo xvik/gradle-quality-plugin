@@ -24,10 +24,12 @@ class FindbugsReporterTest extends AbstractKitTest {
                 spotbugs = false
             }
 
-            task testReport() << {
-                new ru.vyarus.gradle.plugin.quality.report.FindbugsReporter(
-                    new ru.vyarus.gradle.plugin.quality.ConfigLoader(project)
-                ).report(project, 'main')
+            task testReport() {
+                doLast {
+                    new ru.vyarus.gradle.plugin.quality.report.FindbugsReporter(
+                        new ru.vyarus.gradle.plugin.quality.ConfigLoader(project)
+                    ).report(project, 'main')
+                }
             }
         """)
         file('src/main/java').mkdirs()

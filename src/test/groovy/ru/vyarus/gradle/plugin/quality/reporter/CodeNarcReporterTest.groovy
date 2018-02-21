@@ -21,8 +21,10 @@ class CodeNarcReporterTest extends AbstractKitTest {
 
             repositories {jcenter()}
 
-            task testReport() << {
-                new ru.vyarus.gradle.plugin.quality.report.CodeNarcReporter().report(project, 'main')
+            task testReport() {
+                doLast {
+                    new ru.vyarus.gradle.plugin.quality.report.CodeNarcReporter().report(project, 'main')
+                }
             }
         """)
         file('src/main/groovy').mkdirs()
