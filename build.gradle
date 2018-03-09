@@ -1,29 +1,29 @@
 plugins {
     id 'groovy'
     id 'java-gradle-plugin'
-    id 'com.gradle.plugin-publish' version '0.9.7'
+    id 'com.gradle.plugin-publish' version '0.9.10'
     id 'net.researchgate.release' version '2.6.0'
     id 'ru.vyarus.quality' version '2.4.0'
-    id 'com.jfrog.bintray' version '1.7.3'
+    id 'com.jfrog.bintray' version '1.8.0'
     id 'ru.vyarus.java-lib' version '1.0.5'
     id 'ru.vyarus.github-info' version '1.1.0'
-    id 'com.github.ben-manes.versions' version '0.15.0'
+    id 'com.github.ben-manes.versions' version '0.17.0'
 }
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.7
 
 wrapper {
-    gradleVersion = '4.2'
+    gradleVersion = '4.6'
 }
 
 repositories { jcenter(); maven { url "https://plugins.gradle.org/m2/"} }
 dependencies {
-    compile 'gradle.plugin.com.github.spotbugs:gradlePlugin:1.6.0'
+    compile 'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.1'
 
     testCompile('org.spockframework:spock-core:1.1-groovy-2.4') {
         exclude module: 'groovy-all'
     }
-    testCompile 'ru.vyarus:gradle-animalsniffer-plugin:1.4.2'
+    testCompile 'ru.vyarus:gradle-animalsniffer-plugin:1.4.3'
 }
 
 group = 'ru.vyarus'
