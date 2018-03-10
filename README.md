@@ -18,13 +18,25 @@ Features:
 * Task to copy default configs for customization
 * Grouping tasks to run registered quality plugins for exact source set (e.g. checkQualityMain)
 
+##### Summary
+
+* Configuration: `quality`
+* Tasks:
+    - `initQualityConfig` - copy default configs for customization 
+    - `checkQuality[Main]` - run quality tasks for main (or any other) source set       
+* Enable plugins: [Checkstyle](https://docs.gradle.org/current/userguide/checkstyle_plugin.html),
+[PMD](https://docs.gradle.org/current/userguide/pmd_plugin.html),
+[FindBugs](https://docs.gradle.org/current/userguide/findbugs_plugin.html),
+[CodeNarc](https://docs.gradle.org/current/userguide/codenarc_plugin.html)
+
+
 ### Setup
 
 Releases are published to [bintray jcenter](https://bintray.com/vyarus/xvik/gradle-quality-plugin/), 
 [maven central](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/gradle-quality-plugin) and 
 [gradle plugins portal](https://plugins.gradle.org/plugin/ru.vyarus.quality).
 
-[![JCenter](https://img.shields.io/bintray/v/vyarus/xvik/gradle-quality-plugin.svg?label=jcenter)](https://bintray.com/vyarus/xvik/gradle-quality-plugin/_latestVersion)
+[![JCenter](https://api.bintray.com/packages/vyarus/xvik/gradle-quality-plugin/images/download.svg)](https://bintray.com/vyarus/xvik/gradle-quality-plugin/_latestVersion)
 [![Maven Central](https://img.shields.io/maven-central/v/ru.vyarus/gradle-quality-plugin.svg)](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/gradle-quality-plugin)
 
 ```groovy
@@ -695,6 +707,8 @@ can't know it without parsing xml report (which is useless without console repor
 
 ### Might also like
 
+* [mkdocs-plugin](https://github.com/xvik/gradle-mkdocs-plugin) - beautiful project documentation generation
+* [python-plugin](https://github.com/xvik/gradle-use-python-plugin) - use python modules in build
 * [pom-plugin](https://github.com/xvik/gradle-pom-plugin) - improves pom generation
 * [java-lib-plugin](https://github.com/xvik/gradle-java-lib-plugin) - avoid boilerplate for java or groovy library project
 * [github-info-plugin](https://github.com/xvik/gradle-github-info-plugin) - pre-configure common plugins with github related info
