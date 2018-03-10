@@ -1,10 +1,17 @@
 language: java
 jdk: oraclejdk8
-sudo: false
-before_install: chmod +x gradlew
+sudo: required
+before_install:
+  - chmod +x gradlew
+  - sudo apt-get -y install python3-pip
+  - sudo pip3 install -U pip
 
 install: ./gradlew assemble --no-daemon
 script: travis_wait 20 ./gradlew check --no-daemon
+
+after_success:
+  - ./gradlew jacocoTestReport --no-daemon
+  - bash <(curl -s https://codecov.io/bash) -F linux
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

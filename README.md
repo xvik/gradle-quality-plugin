@@ -1,6 +1,8 @@
 # Gradle quality plugin
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://www.opensource.org/licenses/MIT)
 [![Build Status](https://img.shields.io/travis/xvik/gradle-quality-plugin.svg)](https://travis-ci.org/xvik/gradle-quality-plugin)
+[![Appveyor build status](https://ci.appveyor.com/api/projects/status/github/xvik/gradle-quality-plugin?svg=true)](https://ci.appveyor.com/project/xvik/gradle-quality-plugin)
+[![codecov](https://codecov.io/gh/xvik/gradle-quality-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/xvik/gradle-quality-plugin)
 
 ### About
 
