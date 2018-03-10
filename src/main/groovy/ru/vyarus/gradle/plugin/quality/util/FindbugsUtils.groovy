@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.util
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlUtil
 import org.gradle.api.plugins.quality.FindBugs
 import org.gradle.api.tasks.SourceSet
@@ -12,6 +14,7 @@ import ru.vyarus.gradle.plugin.quality.QualityExtension
  * @author Vyacheslav Rusakov
  * @since 17.03.2017
  */
+@CompileStatic
 @Deprecated
 class FindbugsUtils {
 
@@ -22,6 +25,7 @@ class FindbugsUtils {
      * @param extension extension instance
      * @param logger project logger for error messages
      */
+    @CompileStatic(TypeCheckingMode.SKIP)
     static void replaceExcludeFilter(FindBugs task, QualityExtension extension, Logger logger) {
         Set<File> ignored = FileUtils.resolveIgnoredFiles(task.source, extension.exclude)
         if (extension.excludeSources) {

@@ -1,6 +1,8 @@
 package ru.vyarus.gradle.plugin.quality.util
 
 import com.github.spotbugs.SpotBugsTask
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlUtil
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
@@ -13,6 +15,7 @@ import ru.vyarus.gradle.plugin.quality.QualityExtension
  * @author Vyacheslav Rusakov
  * @since 28.01.2018
  */
+@CompileStatic
 class SpotbugsUtils {
 
     /**
@@ -22,6 +25,7 @@ class SpotbugsUtils {
      * @param extension extension instance
      * @param logger project logger for error messages
      */
+    @CompileStatic(TypeCheckingMode.SKIP)
     static void replaceExcludeFilter(SpotBugsTask task, QualityExtension extension, Logger logger) {
         Set<File> ignored = FileUtils.resolveIgnoredFiles(task.source, extension.exclude)
         if (extension.excludeSources) {

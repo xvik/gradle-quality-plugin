@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.util
 
+import groovy.transform.CompileStatic
+
 /**
  * Copy of gradle's internal {@link org.gradle.internal.time.TimeFormatting} class, which become internal in
  * gradle 4.2 and broke compatibility.
@@ -9,6 +11,7 @@ package ru.vyarus.gradle.plugin.quality.util
  * @author Vyacheslav Rusakov
  * @since 21.09.2017
  */
+@CompileStatic
 class DurationFormatter {
     private static final long MILLIS_PER_SECOND = 1000
     private static final long MILLIS_PER_MINUTE = 60000
@@ -28,21 +31,21 @@ class DurationFormatter {
         }
 
         StringBuilder result = new StringBuilder()
-        long days = duration / MILLIS_PER_DAY
+        long days = (duration / MILLIS_PER_DAY).longValue()
         duration %= MILLIS_PER_DAY
         if (days > 0L) {
             result.append(days)
             result.append('d')
         }
 
-        long hours = duration / MILLIS_PER_HOUR
+        long hours = (duration / MILLIS_PER_HOUR).longValue()
         duration %= MILLIS_PER_HOUR
         if (hours > 0L || result.length() > 0) {
             result.append(hours)
             result.append('h')
         }
 
-        long minutes = duration / MILLIS_PER_MINUTE
+        long minutes = (duration / MILLIS_PER_MINUTE).longValue()
         duration %= MILLIS_PER_MINUTE
         if (minutes > 0L || result.length() > 0) {
             result.append(minutes)

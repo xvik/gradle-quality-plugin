@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.util
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import org.gradle.api.file.FileTree
 import org.gradle.api.tasks.SourceSet
 
@@ -9,6 +11,7 @@ import org.gradle.api.tasks.SourceSet
  * @author Vyacheslav Rusakov
  * @since 21.03.2017
  */
+@CompileStatic
 class FileUtils {
 
     /**
@@ -30,6 +33,7 @@ class FileUtils {
      * @param excludes exclude patterns
      * @return set of excluded files
      */
+    @CompileStatic(TypeCheckingMode.SKIP)
     static Set<File> resolveIgnoredFiles(FileTree files, Collection<String> excludes) {
         excludes ? files.matching { include excludes }.files : []
     }

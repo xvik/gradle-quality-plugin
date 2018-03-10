@@ -13,6 +13,7 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
  * @author Vyacheslav Rusakov
  * @since 28.01.2018
  */
+@CompileStatic
 class SpotbugsReporter implements Reporter, HtmlReportGenerator {
     ConfigLoader configLoader
 
