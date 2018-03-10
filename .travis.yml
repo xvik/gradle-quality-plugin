@@ -1,10 +1,7 @@
 language: java
 jdk: oraclejdk8
-sudo: required
-before_install:
-  - chmod +x gradlew
-  - sudo apt-get -y install python3-pip
-  - sudo pip3 install -U pip
+sudo: false
+before_install: chmod +x gradlew
 
 install: ./gradlew assemble --no-daemon
 script: travis_wait 20 ./gradlew check --no-daemon
