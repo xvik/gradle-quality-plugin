@@ -101,7 +101,7 @@ test {
         events 'skipped', 'failed', 'standard_error'
         exceptionFormat 'full'
     }
-    maxHeapSize = '1g'
+    maxHeapSize = '2g'
     forkEvery = 10
 }
 
