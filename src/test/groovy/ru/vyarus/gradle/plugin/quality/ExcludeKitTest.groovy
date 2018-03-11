@@ -49,6 +49,75 @@ class ExcludeKitTest extends AbstractKitTest {
         output.contains "14 (0 / 5 / 9) CodeNarc violations were found in 1 files"
     }
 
+    def "Check empty spotbugs exclusion"() {
+        setup:
+        build("""
+            plugins {
+                id 'java'
+                id 'ru.vyarus.quality'
+            }
+
+            quality {
+                strict false
+                exclude '**/Sample2.groovy'
+            }
+
+            repositories {
+                jcenter() //required for testKit run
+            }
+            
+            dependencies {
+                compile localGroovy()
+            }
+        """)
+
+        fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
+        fileFromClasspath('src/main/java/sample/Sample2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample2.java')
+
+        when: "run spotbugs"
+        BuildResult result = run('spotbugsMain')
+
+        then: "no exclusions"
+        result.task(":spotbugsMain").outcome == TaskOutcome.SUCCESS
+        def output = result.output
+        output.contains "SpotBugs violations were found in 2 files"
+    }
+
+    def "Check findbugs exclusion"() {
+        setup:
+        build("""
+            plugins {
+                id 'java'
+                id 'ru.vyarus.quality'
+            }
+
+            quality {
+                strict false
+                spotbugs = false
+                exclude '**/Sample2.java'
+            }
+
+            repositories {
+                jcenter() //required for testKit run
+            }
+            
+            dependencies {
+                compile localGroovy()
+            }
+        """)
+
+        fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
+        fileFromClasspath('src/main/java/sample/Sample2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample2.java')
+
+        when: "run findbugs"
+        BuildResult result = run('findbugsMain')
+
+        then: "all plugins detect violations only in 1 file"
+        result.task(":findbugsMain").outcome == TaskOutcome.SUCCESS
+        def output = result.output
+        output.contains "1 (0 / 1 / 0) FindBugs violations were found in 1 files"
+    }
+
     def "Check animalsniffer exclusion ignore"() {
 
         setup:
