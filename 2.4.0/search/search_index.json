@@ -162,7 +162,7 @@
         },
         {
             "location": "/tool/checkstyle/",
-            "text": "Checkstyle\n\u00b6\n\n\n\n\nJava | \nHome\n | \nPlugin\n\n\n\n\nBy default, plugin is activated if java sources available (\nsrc/main/java\n).    \n\n\nDefault config\n\ncontains all possible checks, but some of them are disabled (note that some checkstyle rules are opposite and \nnever intended to be used together). Uncomment check to enable it.\n\n\nOutput\n\u00b6\n\n\n8 Checkstyle rule violations were found in 2 files\n\n[Misc | NewlineAtEndOfFile] sample.(Sample.java:0)\n  File does not end with a newline.\n  http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile\n\n...\n\n\n\n\nConfig\n\u00b6\n\n\nTool config options with defaults:\n\n\nquality\n \n{\n\n    \ncheckstyleVersion\n \n=\n \n'8.8'\n\n    \ncheckstyle\n \n=\n \ntrue\n \n// false to disable automatic plugin activation\n\n\n}\n\n\n\n\n\nSuppress\n\u00b6\n\n\nTo \nsuppress violation\n:\n\n\n@SuppressWarnings\n(\n\"NewlineAtEndOfFile\"\n)\n\n\n\n\n\nOr \nwith prefix\n (but require lower cased name):\n\n\n@SuppressWarnings\n(\n\"checkstyle:newlineatendoffile\"\n)\n\n\n\n\n\nTo suppress all violations:\n\n\n@SuppressWarnings\n(\n\"all\"\n)\n\n\n\n\n\nOr using \ncomments\n:\n\n\n// CHECKSTYLE:OFF\n\n\n..\nanything\n..\n\n\n// CHECKSTYLE:ON",
+            "text": "Checkstyle\n\u00b6\n\n\n\n\nJava | \nHome\n | \nPlugin\n\n\n\n\nBy default, plugin is activated if java sources available (\nsrc/main/java\n).    \n\n\nDefault config\n\ncontains all possible checks, but some of them are disabled (note that some checkstyle rules are opposite and \nnever intended to be used together). Uncomment check to enable it.\n\n\nOutput\n\u00b6\n\n\n8 Checkstyle rule violations were found in 2 files\n\n[Misc | NewlineAtEndOfFile] sample.(Sample.java:0)\n  File does not end with a newline.\n  http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile\n\n...\n\n\n\n\nConfig\n\u00b6\n\n\nTool config options with defaults:\n\n\nquality\n \n{\n\n    \ncheckstyleVersion\n \n=\n \n'8.2'\n\n    \ncheckstyle\n \n=\n \ntrue\n \n// false to disable automatic plugin activation\n\n\n}\n\n\n\n\n\nSuppress\n\u00b6\n\n\nTo \nsuppress violation\n:\n\n\n@SuppressWarnings\n(\n\"NewlineAtEndOfFile\"\n)\n\n\n\n\n\nOr \nwith prefix\n (but require lower cased name):\n\n\n@SuppressWarnings\n(\n\"checkstyle:newlineatendoffile\"\n)\n\n\n\n\n\nTo suppress all violations:\n\n\n@SuppressWarnings\n(\n\"all\"\n)\n\n\n\n\n\nOr using \ncomments\n:\n\n\n// CHECKSTYLE:OFF\n\n\n..\nanything\n..\n\n\n// CHECKSTYLE:ON",
             "title": "Checkstyle"
         },
         {
@@ -177,7 +177,7 @@
         },
         {
             "location": "/tool/checkstyle/#config",
-            "text": "Tool config options with defaults:  quality   { \n     checkstyleVersion   =   '8.8' \n     checkstyle   =   true   // false to disable automatic plugin activation  }",
+            "text": "Tool config options with defaults:  quality   { \n     checkstyleVersion   =   '8.2' \n     checkstyle   =   true   // false to disable automatic plugin activation  }",
             "title": "Config"
         },
         {
@@ -252,7 +252,7 @@
         },
         {
             "location": "/tool/codenarc/",
-            "text": "Checkstyle\n\u00b6\n\n\n\n\nGroovy | \nHome\n | \nPlugin\n\n\n\n\nBy default, plugin is activated if groovy sources available (\nsrc/main/groovy\n).    \n\n\nOutput\n\u00b6\n\n\n24 (0 / 10 / 14) CodeNarc violations were found in 2 files\n\n[Formatting | ClassJavadoc] sample.(GSample.groovy:3)  [priority 2]\n    >> class GSample {\n  Class sample.GSample missing Javadoc\n  Makes sure each class and interface definition is preceded by javadoc. Enum definitions are not checked, due to strange behavior in the Groovy AST.\n  http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassJavadoc\n\n...  \n\n\n\n\nCounts in braces show priorities (p1/p2/p3).\n\n\nConfig\n\u00b6\n\n\nTool config options with defaults:\n\n\nquality\n \n{\n\n    \ncodenarcVersion\n \n=\n \n'1.1'\n\n    \ncodenarc\n \n=\n \ntrue\n \n// false to disable automatic plugin activation\n\n\n}\n\n\n\n\n\nSuppress\n\u00b6\n\n\nTo \nsuppress violation\n:\n\n\n@SuppressWarnings\n(\n\"ClassJavadoc\"\n)",
+            "text": "Checkstyle\n\u00b6\n\n\n\n\nGroovy | \nHome\n | \nPlugin\n\n\n\n\nBy default, plugin is activated if groovy sources available (\nsrc/main/groovy\n).    \n\n\nOutput\n\u00b6\n\n\n24 (0 / 10 / 14) CodeNarc violations were found in 2 files\n\n[Formatting | ClassJavadoc] sample.(GSample.groovy:3)  [priority 2]\n    >> class GSample {\n  Class sample.GSample missing Javadoc\n  Makes sure each class and interface definition is preceded by javadoc. Enum definitions are not checked, due to strange behavior in the Groovy AST.\n  http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassJavadoc\n\n...  \n\n\n\n\nCounts in braces show priorities (p1/p2/p3).\n\n\nConfig\n\u00b6\n\n\nTool config options with defaults:\n\n\nquality\n \n{\n\n    \ncodenarcVersion\n \n=\n \n'1.0'\n\n    \ncodenarc\n \n=\n \ntrue\n \n// false to disable automatic plugin activation\n\n\n}\n\n\n\n\n\nSuppress\n\u00b6\n\n\nTo \nsuppress violation\n:\n\n\n@SuppressWarnings\n(\n\"ClassJavadoc\"\n)",
             "title": "CodeNarc"
         },
         {
@@ -267,7 +267,7 @@
         },
         {
             "location": "/tool/codenarc/#config",
-            "text": "Tool config options with defaults:  quality   { \n     codenarcVersion   =   '1.1' \n     codenarc   =   true   // false to disable automatic plugin activation  }",
+            "text": "Tool config options with defaults:  quality   { \n     codenarcVersion   =   '1.0' \n     codenarc   =   true   // false to disable automatic plugin activation  }",
             "title": "Config"
         },
         {
