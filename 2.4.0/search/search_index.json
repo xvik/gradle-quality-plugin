@@ -1,0 +1,389 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "Welcome to gradle quality plugin\n\u00b6\n\n\n\n\nPlugin activates and configures quality tools for java and groovy projects using \n\nCheckstyle\n, \n\nPMD\n, \n\nFindBugs\n,\n\nCodeNarc\n. \nPlugin unifies console output for all quality plugins which greatly simplifies developer workflow: \nonly console is required for working with violations and makes it feel the same as java compiler errors.\n\n\n\n\n\n\nNote\n\n\nGoogle's \nerror-prone\n is not included because checkstyle and pmd covers all\nerror-prone checks and quality plugin makes all tools behave the same way as error-prone, but without java compiler modifications\nand \nenvironment specific setup\n.    \n\n\n\n\nRelease notes\n - \nLicense\n\n\nMain Features\n\u00b6\n\n\n\n\nAdds extra javac lint options to see more warnings\n\n\nComplete and unified console output for all quality plugins\n\n\nHtml and xml reports configured for all plugins\n\n\nZero configuration by default: provided opinionated configs will make it work out of the box\n\n\nEasy configs customization \n\n\nGrouping tasks to run registered quality plugins for exact source set\n\n\n\n\nHow to use docs\n\u00b6\n\n\n\n\nGetting started\n covers installation and main usage info. Ideal for introduction.\n\n\nUser guide\n section contain detailed behavior description. Good to read, but if no time, read as you need it.\n\n\nConfiguration\n - configuration reference\n\n\n\n\n\n\nTools\n section describes exact quality tool configuration and usage aspects. Use it as a \nhand book\n.\n\n\nTasks\n section describes custom tasks.",
+            "title": "Home"
+        },
+        {
+            "location": "/#welcome-to-gradle-quality-plugin",
+            "text": "Plugin activates and configures quality tools for java and groovy projects using  Checkstyle ,  PMD ,  FindBugs , CodeNarc . \nPlugin unifies console output for all quality plugins which greatly simplifies developer workflow: \nonly console is required for working with violations and makes it feel the same as java compiler errors.    Note  Google's  error-prone  is not included because checkstyle and pmd covers all\nerror-prone checks and quality plugin makes all tools behave the same way as error-prone, but without java compiler modifications\nand  environment specific setup .       Release notes  -  License",
+            "title": "Welcome to gradle quality plugin"
+        },
+        {
+            "location": "/#main-features",
+            "text": "Adds extra javac lint options to see more warnings  Complete and unified console output for all quality plugins  Html and xml reports configured for all plugins  Zero configuration by default: provided opinionated configs will make it work out of the box  Easy configs customization   Grouping tasks to run registered quality plugins for exact source set",
+            "title": "Main Features"
+        },
+        {
+            "location": "/#how-to-use-docs",
+            "text": "Getting started  covers installation and main usage info. Ideal for introduction.  User guide  section contain detailed behavior description. Good to read, but if no time, read as you need it.  Configuration  - configuration reference    Tools  section describes exact quality tool configuration and usage aspects. Use it as a  hand book .  Tasks  section describes custom tasks.",
+            "title": "How to use docs"
+        },
+        {
+            "location": "/getting-started/",
+            "text": "Getting started\n\u00b6\n\n\nInstallation\n\u00b6\n\n\nPlugin is available from maven central, \nbintray jcenter\n\nand \ngradle plugins portal\n.\n\n\nbuildscript\n \n{\n\n    \nrepositories\n \n{\n\n        \njcenter\n()\n\n    \n}\n\n    \ndependencies\n \n{\n\n        \nclasspath\n \n'ru.vyarus:gradle-quality-plugin:2.4.0'\n\n    \n}\n\n\n}\n\n\napply\n \nplugin:\n \n'ru.vyarus.quality'\n\n\n\n\n\nOR\n\n\nplugins\n \n{\n\n    \nid\n \n'ru.vyarus.quality'\n \nversion\n \n'2.4.0'\n\n\n}\n\n\n\n\n\n\n\nWarning\n\n\nPlugin must be applied after \njava\n or \ngroovy\n plugins. Otherwise it will do nothing.\n\n\n\n\n\n\nNote\n\n\nPlugin is compiled for java 6, but pmd 5.5 \nrequires java 7\n \nand checkstyle 7 \nrequires java 8\n. So, by default, you will need java 8.\n\n\n\n\nIf you are using lower java versions either use previous plugin release (\n1.3.0\n) or manually specify lower checkstyle and pmd (if required java 6)\nversions using \ncheckstyleVersion = '6.19'\n and \npmdVersion = '5.4.2'\n properties (note that you may need to customize provided default rules configurations to disable rules not yet available in your tool versions).\n\n\nUsage\n\u00b6\n\n\nPlugin will auto detect java and groovy sources and activate required quality plugins.\nAll tools will be configured with the default opinionated configs. \n\n\n$ gradlew check\n\n\n\n\nWill execute all quality plugins. Alternatively, you can use \ngrouping task\n to run checks without tests.\n\n\nIf any violations were found then build will fail with all violations printed to console. For example like this:\n\n\n23 PMD rule violations were found in 2 files\n\n[Comments | CommentRequired] sample.(Sample.java:3) \n  headerCommentRequirement Required\n  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/comments.html#CommentRequired\n\n...  \n\n\n\n\nOr you can use build task (which also calls check): \n\n\n$ gradlew build\n\n\n\n\n\n\nTip\n\n\nIt's better to fix all quality issues before commit.\n\n\n\n\nNon strict mode\n\u00b6\n\n\nYou can switch off strict mode to avoid build failure when quality violations are found:\n\n\nquality\n \n{\n\n    \nstrict\n \n=\n \nfalse\n\n\n}\n\n\n\n\n\nYou will still see all violations in the output.\n\n\nSuppress\n\u00b6\n\n\nSometimes (quite rare) tool could be wrong or your situation\ncould require violation break. In this case violation could be suppressed: see exact tool page for suppression hints.",
+            "title": "Getting started"
+        },
+        {
+            "location": "/getting-started/#getting-started",
+            "text": "",
+            "title": "Getting started"
+        },
+        {
+            "location": "/getting-started/#installation",
+            "text": "Plugin is available from maven central,  bintray jcenter \nand  gradle plugins portal .  buildscript   { \n     repositories   { \n         jcenter () \n     } \n     dependencies   { \n         classpath   'ru.vyarus:gradle-quality-plugin:2.4.0' \n     }  }  apply   plugin:   'ru.vyarus.quality'   OR  plugins   { \n     id   'ru.vyarus.quality'   version   '2.4.0'  }    Warning  Plugin must be applied after  java  or  groovy  plugins. Otherwise it will do nothing.    Note  Plugin is compiled for java 6, but pmd 5.5  requires java 7  \nand checkstyle 7  requires java 8 . So, by default, you will need java 8.   If you are using lower java versions either use previous plugin release ( 1.3.0 ) or manually specify lower checkstyle and pmd (if required java 6)\nversions using  checkstyleVersion = '6.19'  and  pmdVersion = '5.4.2'  properties (note that you may need to customize provided default rules configurations to disable rules not yet available in your tool versions).",
+            "title": "Installation"
+        },
+        {
+            "location": "/getting-started/#usage",
+            "text": "Plugin will auto detect java and groovy sources and activate required quality plugins.\nAll tools will be configured with the default opinionated configs.   $ gradlew check  Will execute all quality plugins. Alternatively, you can use  grouping task  to run checks without tests.  If any violations were found then build will fail with all violations printed to console. For example like this:  23 PMD rule violations were found in 2 files\n\n[Comments | CommentRequired] sample.(Sample.java:3) \n  headerCommentRequirement Required\n  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/comments.html#CommentRequired\n\n...    Or you can use build task (which also calls check):   $ gradlew build   Tip  It's better to fix all quality issues before commit.",
+            "title": "Usage"
+        },
+        {
+            "location": "/getting-started/#non-strict-mode",
+            "text": "You can switch off strict mode to avoid build failure when quality violations are found:  quality   { \n     strict   =   false  }   You will still see all violations in the output.",
+            "title": "Non strict mode"
+        },
+        {
+            "location": "/getting-started/#suppress",
+            "text": "Sometimes (quite rare) tool could be wrong or your situation\ncould require violation break. In this case violation could be suppressed: see exact tool page for suppression hints.",
+            "title": "Suppress"
+        },
+        {
+            "location": "/guide/automatic/",
+            "text": "Automatic mode\n\u00b6\n\n\nBy default, plugin works in automatic mode an does not require configuration to run.\n\n\nPlugins\n\u00b6\n\n\nJava quality tool plugins will be activated if java sources are present (\nsrc/main/java\n):\n\nCheckstyle\n, \n\nPMD\n and \n\nFindBugs\n.\n\n\nGroovy quality plugins will be activated if groovy sources are present (\nsrc/main/groovy\n):\n\nCodeNarc\n\n\nIf you have both java and groovy sources then all plugins will be enabled (and they will not conflict).\n\n\nIf \nanimalsniffer\n plugin was manually registered then it would be \nconfigured the same way as other quality plugins (quality configuration unification).\n\n\nScope\n\u00b6\n\n\nAll quality plugins register a check task per source set. For example, \ncheckstyleMain\n, \ncheckstyleTest\n.\nBut \ncheck\n task depend only on quality tasks from configured scopes. \n\n\nBy default, all activated plugins will check only main source set: only *Main quality tasks will be executed\nduring \ncheck\n (or \nbuild\n). You can call quality task for not configured source set manually (e.g. \ncheckstyleTest\n).\n\n\n\n\nHint\n\n\nTo enable test sources check: \nquality.sourceSets = [sourceSets.main, sourceSets.test]\n\n\n\n\n\n\nHint\n\n\nTo run all checks for source set use \ngrouping task\n\n\n\n\nConfigs\n\u00b6\n\n\nPlugin provides default configs for all tools.\nThese configs are opinionated: not all possible checks are enabled, just the sane majority of them. Also, some defaults were changed.\nAnyway, all disabled checks are commented in config files, so it would be clear what was disabled.\n\n\nYou can modify one or more configs with \ninitConfigsTask\n.  \n\n\nManually registered plugins configuration\n\u00b6\n\n\nIf you register any quality plugin manually then it will be configured even if it's not supposed to be registered by project sources.\n\n\nFor example, project contains only java sources (\n/src/main/java\n) and codenarc plugin registered manually:\n\n\nplugins\n \n{\n\n    \nid\n \n'groovy'\n\n    \nid\n \n'codenarc'\n\n    \nid\n \n'ru.vyarus.quality'\n\n\n}\n\n\n\n\n\nThen quality plugin will register checkstyle, pmd and findbugs plugins and configure codenarc plugin (which is not supposed to be used according to current sources). \n\n\nTo prevent manually registered plugin configuration use referenced quality option. For example, to prevent codenarc plugin configuration in example above:\n\n\nquality\n \n{\n\n    \ncodenarc\n \n=\n \nfalse\n\n\n}",
+            "title": "Automatic mode"
+        },
+        {
+            "location": "/guide/automatic/#automatic-mode",
+            "text": "By default, plugin works in automatic mode an does not require configuration to run.",
+            "title": "Automatic mode"
+        },
+        {
+            "location": "/guide/automatic/#plugins",
+            "text": "Java quality tool plugins will be activated if java sources are present ( src/main/java ): Checkstyle ,  PMD  and  FindBugs .  Groovy quality plugins will be activated if groovy sources are present ( src/main/groovy ): CodeNarc  If you have both java and groovy sources then all plugins will be enabled (and they will not conflict).  If  animalsniffer  plugin was manually registered then it would be \nconfigured the same way as other quality plugins (quality configuration unification).",
+            "title": "Plugins"
+        },
+        {
+            "location": "/guide/automatic/#scope",
+            "text": "All quality plugins register a check task per source set. For example,  checkstyleMain ,  checkstyleTest .\nBut  check  task depend only on quality tasks from configured scopes.   By default, all activated plugins will check only main source set: only *Main quality tasks will be executed\nduring  check  (or  build ). You can call quality task for not configured source set manually (e.g.  checkstyleTest ).   Hint  To enable test sources check:  quality.sourceSets = [sourceSets.main, sourceSets.test]    Hint  To run all checks for source set use  grouping task",
+            "title": "Scope"
+        },
+        {
+            "location": "/guide/automatic/#configs",
+            "text": "Plugin provides default configs for all tools.\nThese configs are opinionated: not all possible checks are enabled, just the sane majority of them. Also, some defaults were changed.\nAnyway, all disabled checks are commented in config files, so it would be clear what was disabled.  You can modify one or more configs with  initConfigsTask .",
+            "title": "Configs"
+        },
+        {
+            "location": "/guide/automatic/#manually-registered-plugins-configuration",
+            "text": "If you register any quality plugin manually then it will be configured even if it's not supposed to be registered by project sources.  For example, project contains only java sources ( /src/main/java ) and codenarc plugin registered manually:  plugins   { \n     id   'groovy' \n     id   'codenarc' \n     id   'ru.vyarus.quality'  }   Then quality plugin will register checkstyle, pmd and findbugs plugins and configure codenarc plugin (which is not supposed to be used according to current sources).   To prevent manually registered plugin configuration use referenced quality option. For example, to prevent codenarc plugin configuration in example above:  quality   { \n     codenarc   =   false  }",
+            "title": "Manually registered plugins configuration"
+        },
+        {
+            "location": "/guide/config/",
+            "text": "Configuration\n\u00b6\n\n\nUse \nquality\n closure to configure plugin.\nDefaults:\n\n\nquality\n \n{\n\n\n    \n// Tools versions\n\n\n    \ncheckstyleVersion\n \n=\n \n'8.2'\n\n    \npmdVersion\n \n=\n \n'5.8.1'\n\n    \nfindbugsVersion\n \n=\n \n'3.0.1'\n\n    \ncodenarcVersion\n \n=\n \n'1.0'\n\n    \nanimalsnifferVersion\n\n\n    \n/**\n\n\n     * When disabled, quality plugins will not be registered automatically (according to sources). \n\n\n     * Only manually registered quality plugins will be configured. \n\n\n     */\n\n    \nautoRegistration\n \n=\n \ntrue\n\n\n    \n// Enable/disable tools (when auto registration disabled control configuration appliance)\n\n\n    \ncheckstyle\n \n=\n \ntrue\n\n    \npmd\n \n=\n \ntrue\n\n    \nfindbugs\n \n=\n \ntrue\n\n    \ncodenarc\n \n=\n \ntrue\n\n\n    \n/**\n\n\n     * The analysis effort level. The value specified should be one of min, default, or max.\n\n\n     * Higher levels increase precision and find more bugs at the expense of running time and\n\n\n     * memory consumption. Default is 'max'.\n\n\n     */\n\n    \nfindbugsEffort\n \n=\n \n'max'\n\n\n    \n/**\n\n\n     * The priority threshold for reporting bugs. If set to low, all bugs are reported.\n\n\n     * If set to medium, medium and high priority bugs are reported.\n\n\n     * If set to high, only high priority bugs are reported. Default is 'medium'.\n\n\n     */\n\n    \nfindbugsLevel\n \n=\n \n'medium'\n\n\n    \n/**\n\n\n     * Javac lint options to show compiler warnings, not visible by default.\n\n\n     * Applies to all CompileJava tasks.\n\n\n     * Options will be added as -Xlint:option\n\n\n     * Full list of options: http://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCJCABJ\n\n\n     */\n\n    \nlintOptions\n \n=\n \n[\n'deprecation'\n,\n \n'unchecked'\n]\n\n\n    \n/**\n\n\n     * Strict quality leads to build fail on any violation found. If disabled, all violation\n\n\n     * are just printed to console.\n\n\n     */\n\n    \nstrict\n \n=\n \ntrue\n\n\n    \n/**\n\n\n     * When false, disables quality tasks execution. Allows disabling tasks without removing plugins.\n\n\n     * Quality tasks are still registered, but skip execution, except when task called directly or through\n\n\n     * checkQualityMain (or other source set) grouping task.\n\n\n     */\n\n    \nenabled\n \n=\n \ntrue\n\n\n    \n/**\n\n\n     * When false, disables reporting quality issues to console. Only gradle general error messages will\n\n\n     * remain in logs. This may be useful in cases when project contains too many warnings.\n\n\n     * Also, console reporting require xml reports parsing, which could be time consuming in case of too\n\n\n     * many errors (large xml reports).\n\n\n     * True by default.\n\n\n     */\n\n    \nconsoleReporting\n \n=\n \ntrue\n\n\n    \n/**\n\n\n     * Source sets to apply checks on.\n\n\n     * Default is [sourceSets.main] to apply only for project sources, excluding tests.\n\n\n     */\n\n    \nsourceSets\n \n=\n \n[\nproject\n.\nsourceSets\n.\nmain\n]\n\n\n    \n/**\n\n\n     * Source patterns (relative to source dir) to exclude from checks. Simply sets exclusions to quality tasks.\n\n\n     * \n\n\n     * Animalsniffer is not affected because\n\n\n     * it's a different kind of check (and, also, it operates on classes so source patterns may not comply).\n\n\n     * \n\n\n     * Findbugs does not support exclusion directly, but plugin will resolve excluded classes and apply\n\n\n     * them to xml exclude file (default one or provided by user).\n\n\n     * \n\n\n     * By default nothing is excluded.\n\n\n     * \n\n\n     * IMPORTANT: Patterns are checked relatively to source set dirs (not including them). So you can only\n\n\n     * match source files and packages, but not absolute file path (this is gradle specific, not plugin).\n\n\n     *\n\n\n     * @see org.gradle.api.tasks.SourceTask#exclude(java.lang.Iterable) (base class for all quality tasks)\n\n\n     */\n\n    \nexclude\n \n=\n \n[]\n\n\n     \n/**\n\n\n      * Direct sources to exclude from checks (except animalsniffer).\n\n\n      * This is useful as last resort, when extension or package is not enough for filtering.\n\n\n      * Use {@link Project#files(java.lang.Object)} or {@link Project#fileTree(java.lang.Object)}\n\n\n      * to create initial collections and apply filter on it (using\n\n\n      * {@link org.gradle.api.file.FileTree#matching(groovy.lang.Closure)}).\n\n\n      * \n\n\n      * Plugin will include files into findbugs exclusion filter xml (default one or provided by user).\n\n\n      * \n\n\n      * Note: this must be used when excluded classes can't be extracted to different source set and\n\n\n      * filter by package and filename is not sufficient.\n\n\n      */\n\n     \nFileCollection\n \nexcludeSources\n   \n\n    \n/**\n\n\n     * User configuration files directory. Files in this directory will be used instead of default (bundled) configs.\n\n\n     */\n\n    \nconfigDir\n \n=\n \n'gradle/config/'\n\n\n}\n\n\n\n\n\nManual mode\n\u00b6\n\n\nYou can disable \nautomatic quality plugins registration\n (guided by source detection) \nand register required plugins manually:\n\n\nplugins\n \n{\n\n    \nid\n \n'groovy'\n\n    \nid\n \n'checkstyle'\n\n    \nid\n \n'pmd'\n\n\n}\n\n\n\nquality\n \n{\n\n    \nautoRegistration\n \n=\n \nfalse\n\n\n}\n\n\n\n\n\nHere checkstyle and pmd plugins will be configured and no other plugins will be registered.\n\n\nDisable console output\n\u00b6\n\n\nIn some cases it may not be desired to see errors in console. For example, when quality control applied on existing project\nand you have thousands of warnings.\n\n\nquality\n \n{\n\n    \nconsoleReporting\n \n=\n \nfalse\n\n\n}\n\n\n\n\n\n\n\nWarning\n\n\nDon't turn off console warnings in other cases: people tend to ignore problems they didn't see \n(practice shows that normally almost no one looks html reports of quality tools). You must see warnings for\neach build to finally fix them all someday (or fix them as they appear).\n\n\n\n\nConsole reporting use xml reports, produced by quality plugins. In case of too many errors, xml parsing could slow down build.\nYou may use reporting disabling to speed up build a bit. In most cases (when you don't have thousands of errors) console reporting \nwill be fast\n. \n\n\nDisable quality plugins\n\u00b6\n\n\nIf you want to disable all quality checks:\n\n\nquality\n \n{\n\n    \nenabled\n \n=\n \nfalse\n\n\n}\n\n\n\n\n\nThis will disable all quality tasks (by setting \ntask.enabled = false\n for each quality task). Quality tasks will still be visible, but marked as SKIPPED on execution.\n\n\n\n\nNote\n\n\nenable\n state will not affect tasks called directly. For example, you set \nquality.enabled = false\n and call \ncheckstyleMain\n - it will be executed.\nMotivation is simple - if you call task directly then you want it to work. \n\n\n\n\nAlso, enabled state not affects quality tasks when quality grouping tasks called. For example, if you call \ncheckQualityMain\n - all quality plugins will be executed,\neven if disabled in configuration. Motivation is the same as with direct call - you obviously want to perform quality checks.\n\n\n\n\nNote\n\n\nif quality grouping task called as dependency of other task, quality plugins will be skipped. Exceptions applies only to direct cases when expected behaviour is obvious.\n\n\n\n\nConfiguration override\n\u00b6\n\n\nIt is still possible to configure quality plugins, but direct configuration closures will not work:\n\n\n\n\nFail\n\n\ncheckstyle\n \n{\n  \n// will not work, because plugin will override it\n\n    \n...\n\n\n}\n\n\n\n\n\n\n\nBut will work like this:\n\n\n\n\nSuccess\n\n\nafterEvaluation\n \n{\n\n    \ncheckstyle\n \n{\n \n// will be applied after plugin and override configuration\n\n        \n...\n\n    \n}\n\n\n}\n\n\n\n\n\n\n\nFor plugins configuration options look:\n\n\n\n\nCheckstyleExtension\n\n\nPmdExtension\n\n\nFindBugsExtension\n\n\nCodeNarcExtension",
+            "title": "Configuration"
+        },
+        {
+            "location": "/guide/config/#configuration",
+            "text": "Use  quality  closure to configure plugin.\nDefaults:  quality   { \n\n     // Tools versions \n\n     checkstyleVersion   =   '8.2' \n     pmdVersion   =   '5.8.1' \n     findbugsVersion   =   '3.0.1' \n     codenarcVersion   =   '1.0' \n     animalsnifferVersion \n\n     /**       * When disabled, quality plugins will not be registered automatically (according to sources).        * Only manually registered quality plugins will be configured.        */ \n     autoRegistration   =   true \n\n     // Enable/disable tools (when auto registration disabled control configuration appliance) \n\n     checkstyle   =   true \n     pmd   =   true \n     findbugs   =   true \n     codenarc   =   true \n\n     /**       * The analysis effort level. The value specified should be one of min, default, or max.       * Higher levels increase precision and find more bugs at the expense of running time and       * memory consumption. Default is 'max'.       */ \n     findbugsEffort   =   'max' \n\n     /**       * The priority threshold for reporting bugs. If set to low, all bugs are reported.       * If set to medium, medium and high priority bugs are reported.       * If set to high, only high priority bugs are reported. Default is 'medium'.       */ \n     findbugsLevel   =   'medium' \n\n     /**       * Javac lint options to show compiler warnings, not visible by default.       * Applies to all CompileJava tasks.       * Options will be added as -Xlint:option       * Full list of options: http://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCJCABJ       */ \n     lintOptions   =   [ 'deprecation' ,   'unchecked' ] \n\n     /**       * Strict quality leads to build fail on any violation found. If disabled, all violation       * are just printed to console.       */ \n     strict   =   true \n\n     /**       * When false, disables quality tasks execution. Allows disabling tasks without removing plugins.       * Quality tasks are still registered, but skip execution, except when task called directly or through       * checkQualityMain (or other source set) grouping task.       */ \n     enabled   =   true \n\n     /**       * When false, disables reporting quality issues to console. Only gradle general error messages will       * remain in logs. This may be useful in cases when project contains too many warnings.       * Also, console reporting require xml reports parsing, which could be time consuming in case of too       * many errors (large xml reports).       * True by default.       */ \n     consoleReporting   =   true \n\n     /**       * Source sets to apply checks on.       * Default is [sourceSets.main] to apply only for project sources, excluding tests.       */ \n     sourceSets   =   [ project . sourceSets . main ] \n\n     /**       * Source patterns (relative to source dir) to exclude from checks. Simply sets exclusions to quality tasks.       *        * Animalsniffer is not affected because       * it's a different kind of check (and, also, it operates on classes so source patterns may not comply).       *        * Findbugs does not support exclusion directly, but plugin will resolve excluded classes and apply       * them to xml exclude file (default one or provided by user).       *        * By default nothing is excluded.       *        * IMPORTANT: Patterns are checked relatively to source set dirs (not including them). So you can only       * match source files and packages, but not absolute file path (this is gradle specific, not plugin).       *       * @see org.gradle.api.tasks.SourceTask#exclude(java.lang.Iterable) (base class for all quality tasks)       */ \n     exclude   =   [] \n\n      /**        * Direct sources to exclude from checks (except animalsniffer).        * This is useful as last resort, when extension or package is not enough for filtering.        * Use {@link Project#files(java.lang.Object)} or {@link Project#fileTree(java.lang.Object)}        * to create initial collections and apply filter on it (using        * {@link org.gradle.api.file.FileTree#matching(groovy.lang.Closure)}).        *         * Plugin will include files into findbugs exclusion filter xml (default one or provided by user).        *         * Note: this must be used when excluded classes can't be extracted to different source set and        * filter by package and filename is not sufficient.        */ \n      FileCollection   excludeSources    \n\n     /**       * User configuration files directory. Files in this directory will be used instead of default (bundled) configs.       */ \n     configDir   =   'gradle/config/'  }",
+            "title": "Configuration"
+        },
+        {
+            "location": "/guide/config/#manual-mode",
+            "text": "You can disable  automatic quality plugins registration  (guided by source detection) \nand register required plugins manually:  plugins   { \n     id   'groovy' \n     id   'checkstyle' \n     id   'pmd'  }  quality   { \n     autoRegistration   =   false  }   Here checkstyle and pmd plugins will be configured and no other plugins will be registered.",
+            "title": "Manual mode"
+        },
+        {
+            "location": "/guide/config/#disable-console-output",
+            "text": "In some cases it may not be desired to see errors in console. For example, when quality control applied on existing project\nand you have thousands of warnings.  quality   { \n     consoleReporting   =   false  }    Warning  Don't turn off console warnings in other cases: people tend to ignore problems they didn't see \n(practice shows that normally almost no one looks html reports of quality tools). You must see warnings for\neach build to finally fix them all someday (or fix them as they appear).   Console reporting use xml reports, produced by quality plugins. In case of too many errors, xml parsing could slow down build.\nYou may use reporting disabling to speed up build a bit. In most cases (when you don't have thousands of errors) console reporting  will be fast .",
+            "title": "Disable console output"
+        },
+        {
+            "location": "/guide/config/#disable-quality-plugins",
+            "text": "If you want to disable all quality checks:  quality   { \n     enabled   =   false  }   This will disable all quality tasks (by setting  task.enabled = false  for each quality task). Quality tasks will still be visible, but marked as SKIPPED on execution.   Note  enable  state will not affect tasks called directly. For example, you set  quality.enabled = false  and call  checkstyleMain  - it will be executed.\nMotivation is simple - if you call task directly then you want it to work.    Also, enabled state not affects quality tasks when quality grouping tasks called. For example, if you call  checkQualityMain  - all quality plugins will be executed,\neven if disabled in configuration. Motivation is the same as with direct call - you obviously want to perform quality checks.   Note  if quality grouping task called as dependency of other task, quality plugins will be skipped. Exceptions applies only to direct cases when expected behaviour is obvious.",
+            "title": "Disable quality plugins"
+        },
+        {
+            "location": "/guide/config/#configuration-override",
+            "text": "It is still possible to configure quality plugins, but direct configuration closures will not work:   Fail  checkstyle   {    // will not work, because plugin will override it \n     ...  }    But will work like this:   Success  afterEvaluation   { \n     checkstyle   {   // will be applied after plugin and override configuration \n         ... \n     }  }    For plugins configuration options look:   CheckstyleExtension  PmdExtension  FindBugsExtension  CodeNarcExtension",
+            "title": "Configuration override"
+        },
+        {
+            "location": "/guide/exclusion/",
+            "text": "Exclusions\n\u00b6\n\n\nExclude files from check\n\u00b6\n\n\nAll quality tasks are based on \nSourceTask\n\nwhich allows excluding sources using ant patterns.\n\n\nTo apply exclusion to all plugins at once use:\n\n\nquality\n \n{\n\n    \nexclude\n \n'**/sample/**'\n\n\n}\n\n\n\n\n\n\n\nNote\n\n\nThis will not affect animalsniffer plugin, because it checks different thing (binary compatibility) and \nuse it's own configuration \nto configure exclusions\n.\n\n\n\n\n\n\nInfo\n\n\nFindbugs task does not support exclusions on task level, so plugin manually resolve all excluded\nclasses and add them to findbugs excludes filter xml file (default or custom user file).\nAs a result, exclusion works the same way for all plugins.\n\n\n\n\n\n\nNote\n\n\nExclusion patterns are resolved on relative paths (relative to source dir),\nso absolute file path matching will not work. Your pattern must match just \"package\" and file name parts.\nIf you need to exclude on full paths then use \ndirect source exclusion\n.\n\n\n\n\nAlternative configurations\n\u00b6\n\n\nAll of the following configurations are allowed:\n\n\nquality\n \n{\n\n    \nexclude\n \n'**/Sample.java'\n,\n \n'com/foo/**'\n\n\n}\n\n\n\n\n\nquality\n \n{\n\n    \nexclude\n \n'**/Sample.java'\n \n    \nexclude\n \n'com/foo/**'\n\n\n}\n\n\n\n\n\nquality\n \n{\n\n    \nexclude\n \n=\n \n[\n'**/Sample.java'\n,\n \n'com/foo/**'\n]\n\n\n}\n\n\n\n\n\nDirect source exclusions\n\u00b6\n\n\nWhen you need to exclude sources from check, you should consider:\n\n\n\n\nExtract such sources into it's own source set and exclude this set from check. (generated classes case)\n\n\nUse pattern excludes (see above) to exclude sources based on package and (or) file name\n\n\n\n\nIf non of the above works for you, then you did sources configuration not according to best practices. \nAnyway, there is last resort option for such cases (when it could not be done the right way).\n\n\nSuppose we have generated sources, added to main source set:\n\n\nsourceSets\n.\nmain\n \n{\n\n    \njava\n \n{\n\n        \nsrcDir\n \n'build/generated/java'\n\n    \n}\n\n\n}\n\n\n\n\n\nHere we have two source dirs for java sources: \nsrc/main/java\n and \nbuild/generated/java\n.\n\n\nWe want to exclude them from quality check, so we try:\n\n\n\n\nFail\n\n\nquality\n \n{\n\n    \nexclude\n \n'**/generated/**'\n\n\n}\n\n\n\n\n\n\n\nwhich WILL NOT WORK because gradle applies patterns relatively to \nbuild/generated/java\n directory\nand so our patter will never match.\n\n\nInstead, specify ignored files directly, using rich \n\ngradle files api\n:\n\n\n\n\nSuccess\n\n\nquality\n \n{\n\n    \nexcludeSources\n \n=\n \nfileTree\n(\n'build/generated'\n)\n\n\n}\n\n\n\n\n\n\n\nThis will exclude all files in 'generated' directory from quality tools checks.\n\n\n\n\nNote\n\n\nAs with patterns exclude, this will not affect animalsniffer. For findbugs, plugin will\nadd excluded classes to exclude filter.\n\n\n\n\nAnother example, just to show how flexible it could be configured:\n\n\nquality\n \n{\n\n    \nexcludeSources\n \n=\n \nfileTree\n(\n'build/generated'\n).\nmatching\n \n{\n\n        \ninclude\n \n'**/sample/**/*.java'\n\n    \n}\n\n\n}\n\n\n\n\n\nExclude all java sources in sample package (in generated directory).\nInclude pattern here will work relatively to \nbuild/generated\n directory.\n\n\nYou can use even single files:\n\n\nquality\n \n{\n\n    \nexcludeSources\n \n=\n \nfiles\n(\n'build/generated/java/com/mypkg/Bad.java'\n)\n\n\n}\n\n\n\n\n\nExclude options could be used together (exclude files and patterns).",
+            "title": "Exclusion"
+        },
+        {
+            "location": "/guide/exclusion/#exclusions",
+            "text": "",
+            "title": "Exclusions"
+        },
+        {
+            "location": "/guide/exclusion/#exclude-files-from-check",
+            "text": "All quality tasks are based on  SourceTask \nwhich allows excluding sources using ant patterns.  To apply exclusion to all plugins at once use:  quality   { \n     exclude   '**/sample/**'  }    Note  This will not affect animalsniffer plugin, because it checks different thing (binary compatibility) and \nuse it's own configuration  to configure exclusions .    Info  Findbugs task does not support exclusions on task level, so plugin manually resolve all excluded\nclasses and add them to findbugs excludes filter xml file (default or custom user file).\nAs a result, exclusion works the same way for all plugins.    Note  Exclusion patterns are resolved on relative paths (relative to source dir),\nso absolute file path matching will not work. Your pattern must match just \"package\" and file name parts.\nIf you need to exclude on full paths then use  direct source exclusion .",
+            "title": "Exclude files from check"
+        },
+        {
+            "location": "/guide/exclusion/#alternative-configurations",
+            "text": "All of the following configurations are allowed:  quality   { \n     exclude   '**/Sample.java' ,   'com/foo/**'  }   quality   { \n     exclude   '**/Sample.java'  \n     exclude   'com/foo/**'  }   quality   { \n     exclude   =   [ '**/Sample.java' ,   'com/foo/**' ]  }",
+            "title": "Alternative configurations"
+        },
+        {
+            "location": "/guide/exclusion/#direct-source-exclusions",
+            "text": "When you need to exclude sources from check, you should consider:   Extract such sources into it's own source set and exclude this set from check. (generated classes case)  Use pattern excludes (see above) to exclude sources based on package and (or) file name   If non of the above works for you, then you did sources configuration not according to best practices. \nAnyway, there is last resort option for such cases (when it could not be done the right way).  Suppose we have generated sources, added to main source set:  sourceSets . main   { \n     java   { \n         srcDir   'build/generated/java' \n     }  }   Here we have two source dirs for java sources:  src/main/java  and  build/generated/java .  We want to exclude them from quality check, so we try:   Fail  quality   { \n     exclude   '**/generated/**'  }    which WILL NOT WORK because gradle applies patterns relatively to  build/generated/java  directory\nand so our patter will never match.  Instead, specify ignored files directly, using rich  gradle files api :   Success  quality   { \n     excludeSources   =   fileTree ( 'build/generated' )  }    This will exclude all files in 'generated' directory from quality tools checks.   Note  As with patterns exclude, this will not affect animalsniffer. For findbugs, plugin will\nadd excluded classes to exclude filter.   Another example, just to show how flexible it could be configured:  quality   { \n     excludeSources   =   fileTree ( 'build/generated' ). matching   { \n         include   '**/sample/**/*.java' \n     }  }   Exclude all java sources in sample package (in generated directory).\nInclude pattern here will work relatively to  build/generated  directory.  You can use even single files:  quality   { \n     excludeSources   =   files ( 'build/generated/java/com/mypkg/Bad.java' )  }   Exclude options could be used together (exclude files and patterns).",
+            "title": "Direct source exclusions"
+        },
+        {
+            "location": "/guide/profile/",
+            "text": "Profiling\n\u00b6\n\n\nGradle profile report (\n--profile\n \noption\n) \nshows quality tools tasks time (checkstyleMain, pmdMain etc), \nwhich includes both tool execution time and console reporting (performed by quality plugin). \n\n\nIf you need to know exact console reporting time use \n--info\n option. Plugin writes reporting execution time as info log \n(see log messages starting with \n[plugin:quality]\n just after quality tools logs).\n\n\nAlternatively, you can disable console reporting and run quality tasks with \n--profile\n again to see \"pure\" quality plugins time.",
+            "title": "Profile"
+        },
+        {
+            "location": "/guide/profile/#profiling",
+            "text": "Gradle profile report ( --profile   option ) \nshows quality tools tasks time (checkstyleMain, pmdMain etc), \nwhich includes both tool execution time and console reporting (performed by quality plugin).   If you need to know exact console reporting time use  --info  option. Plugin writes reporting execution time as info log \n(see log messages starting with  [plugin:quality]  just after quality tools logs).  Alternatively, you can disable console reporting and run quality tasks with  --profile  again to see \"pure\" quality plugins time.",
+            "title": "Profiling"
+        },
+        {
+            "location": "/tool/lint/",
+            "text": "Javac lint\n\u00b6\n\n\n\n\nJava | \nHome\n\n\n\n\nJavac linter could show more useful warnings (not visible by default).\n\nSee the \nlist of all options\n.\n\n\nConfiguration\n\u00b6\n\n\nBy default, plugin will enable deprecation and unchecked warnings (as the most useful):\n\n\nquality\n \n{\n\n    \nlintOptions\n \n=\n \n[\n'deprecation'\n,\n \n'unchecked'\n]\n\n\n}\n\n\n\n\n\nThese lint options are applied to all registered \nCompileJava\n tasks.",
+            "title": "Javac lint"
+        },
+        {
+            "location": "/tool/lint/#javac-lint",
+            "text": "Java |  Home   Javac linter could show more useful warnings (not visible by default). \nSee the  list of all options .",
+            "title": "Javac lint"
+        },
+        {
+            "location": "/tool/lint/#configuration",
+            "text": "By default, plugin will enable deprecation and unchecked warnings (as the most useful):  quality   { \n     lintOptions   =   [ 'deprecation' ,   'unchecked' ]  }   These lint options are applied to all registered  CompileJava  tasks.",
+            "title": "Configuration"
+        },
+        {
+            "location": "/tool/checkstyle/",
+            "text": "Checkstyle\n\u00b6\n\n\n\n\nJava | \nHome\n | \nPlugin\n\n\n\n\nBy default, plugin is activated if java sources available (\nsrc/main/java\n).    \n\n\nDefault config\n\ncontains all possible checks, but some of them are disabled (note that some checkstyle rules are opposite and \nnever intended to be used together). Uncomment check to enable it.\n\n\nOutput\n\u00b6\n\n\n8 Checkstyle rule violations were found in 2 files\n\n[Misc | NewlineAtEndOfFile] sample.(Sample.java:0)\n  File does not end with a newline.\n  http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile\n\n...\n\n\n\n\nConfig\n\u00b6\n\n\nTool config options with defaults:\n\n\nquality\n \n{\n\n    \ncheckstyleVersion\n \n=\n \n'8.8'\n\n    \ncheckstyle\n \n=\n \ntrue\n \n// false to disable automatic plugin activation\n\n\n}\n\n\n\n\n\nSuppress\n\u00b6\n\n\nTo \nsuppress violation\n:\n\n\n@SuppressWarnings\n(\n\"NewlineAtEndOfFile\"\n)\n\n\n\n\n\nOr \nwith prefix\n (but require lower cased name):\n\n\n@SuppressWarnings\n(\n\"checkstyle:newlineatendoffile\"\n)\n\n\n\n\n\nTo suppress all violations:\n\n\n@SuppressWarnings\n(\n\"all\"\n)\n\n\n\n\n\nOr using \ncomments\n:\n\n\n// CHECKSTYLE:OFF\n\n\n..\nanything\n..\n\n\n// CHECKSTYLE:ON",
+            "title": "Checkstyle"
+        },
+        {
+            "location": "/tool/checkstyle/#checkstyle",
+            "text": "Java |  Home  |  Plugin   By default, plugin is activated if java sources available ( src/main/java ).      Default config \ncontains all possible checks, but some of them are disabled (note that some checkstyle rules are opposite and \nnever intended to be used together). Uncomment check to enable it.",
+            "title": "Checkstyle"
+        },
+        {
+            "location": "/tool/checkstyle/#output",
+            "text": "8 Checkstyle rule violations were found in 2 files\n\n[Misc | NewlineAtEndOfFile] sample.(Sample.java:0)\n  File does not end with a newline.\n  http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile\n\n...",
+            "title": "Output"
+        },
+        {
+            "location": "/tool/checkstyle/#config",
+            "text": "Tool config options with defaults:  quality   { \n     checkstyleVersion   =   '8.8' \n     checkstyle   =   true   // false to disable automatic plugin activation  }",
+            "title": "Config"
+        },
+        {
+            "location": "/tool/checkstyle/#suppress",
+            "text": "To  suppress violation :  @SuppressWarnings ( \"NewlineAtEndOfFile\" )   Or  with prefix  (but require lower cased name):  @SuppressWarnings ( \"checkstyle:newlineatendoffile\" )   To suppress all violations:  @SuppressWarnings ( \"all\" )   Or using  comments :  // CHECKSTYLE:OFF  .. anything ..  // CHECKSTYLE:ON",
+            "title": "Suppress"
+        },
+        {
+            "location": "/tool/pmd/",
+            "text": "PMD\n\u00b6\n\n\n\n\nJava | \nHome\n | \nPlugin\n\n\n\n\nBy default, plugin is activated if java sources available (\nsrc/main/java\n).    \n\n\nDefault config\n\ncontains all java checks, but some of them are disabled. Remove exclusion to enable disabled rule.\n\n\nOutput\n\u00b6\n\n\n23 PMD rule violations were found in 2 files\n\n[Comments | CommentRequired] sample.(Sample.java:3) \n  headerCommentRequirement Required\n  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/comments.html#CommentRequired\n\n...\n\n\n\n\nConfig\n\u00b6\n\n\nTool config options with defaults:\n\n\nquality\n \n{\n\n    \npmdVersion\n \n=\n \n'5.8.1'\n\n    \npmd\n \n=\n \ntrue\n \n// false to disable automatic plugin activation\n\n\n}\n\n\n\n\n\nSuppress\n\u00b6\n\n\nTo \nsuppress violation\n:\n\n\n@SuppressWarnings\n(\n\"PMD.CommentRequired\"\n)\n\n\n\n\n\nTo suppress all violations:\n\n\n@SuppressWarnings\n(\n\"PMD\"\n)",
+            "title": "PMD"
+        },
+        {
+            "location": "/tool/pmd/#pmd",
+            "text": "Java |  Home  |  Plugin   By default, plugin is activated if java sources available ( src/main/java ).      Default config \ncontains all java checks, but some of them are disabled. Remove exclusion to enable disabled rule.",
+            "title": "PMD"
+        },
+        {
+            "location": "/tool/pmd/#output",
+            "text": "23 PMD rule violations were found in 2 files\n\n[Comments | CommentRequired] sample.(Sample.java:3) \n  headerCommentRequirement Required\n  https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/comments.html#CommentRequired\n\n...",
+            "title": "Output"
+        },
+        {
+            "location": "/tool/pmd/#config",
+            "text": "Tool config options with defaults:  quality   { \n     pmdVersion   =   '5.8.1' \n     pmd   =   true   // false to disable automatic plugin activation  }",
+            "title": "Config"
+        },
+        {
+            "location": "/tool/pmd/#suppress",
+            "text": "To  suppress violation :  @SuppressWarnings ( \"PMD.CommentRequired\" )   To suppress all violations:  @SuppressWarnings ( \"PMD\" )",
+            "title": "Suppress"
+        },
+        {
+            "location": "/tool/findbugs/",
+            "text": "FindBugs\n\u00b6\n\n\n\n\nJava | \nHome\n | \nPlugin\n\n\n\n\nBy default, plugin is activated if java sources available (\nsrc/main/java\n).    \n\n\nFindbugs configuration differ from other tools (checkstyle, pmd): instead of exact rules configuration\nit uses efforts level. Deeper level could reveal more bugs, but with higher mistake possibility. \nDefault settings ('max' effort and 'medium' level) are perfect for most cases.\n\n\n\n\nNote\n\n\nSpecial \nxsl file\n \nused for manual html report generation because findbugs plugin could generate either xml or html report and not both. \n\n\n\n\nOutput\n\u00b6\n\n\n2 (0 / 2 / 0) FindBugs violations were found in 2 files\n\n[Performance | URF_UNREAD_FIELD] sample.(Sample.java:8) [priority 2]\n    >> Unread field: sample.Sample.sample\n  This field is never read. Consider removing it from the class.\n\n...  \n\n\n\n\nCounts in braces show priorities (p1/p2/p3).\n\n\n\n\nNote\n\n\nThere is no link to findbugs site (like other tools), because report already contains everything from there.\n\n\n\n\nConfig\n\u00b6\n\n\nTool config options with defaults:\n\n\nquality\n \n{\n\n    \nfindbugsVersion\n \n=\n \n'3.0.1'\n\n    \nfindbugs\n \n=\n \ntrue\n \n// false to disable automatic plugin activation\n\n    \nfindbugsEffort\n \n=\n \n'max'\n  \n// min, default or max\n\n    \nfindbugsLevel\n \n=\n \n'medium'\n \n// low, medium, high\n\n\n}\n\n\n\n\n\nSuppress\n\u00b6\n\n\nTo suppress violations you can use \nfilter file\n.\nIn this case you need to override \ndefault filter file\n.\n\n\nOr you can use annotations. FindBugs use custom annotations and so you need to add \n\ncom.google.code.findbugs:annotations:3.0.0\n dependency (with provided scope if possible) and use:\n\n\n@SuppressFBWarnings\n(\n\"URF_UNREAD_FIELD\"\n)\n\n\n\n\n\nPlugins\n\u00b6\n\n\nYou may add additional findbugs checks by declaring findbugs plugins in \nfindbugsPlugins\n dependency configuration.\n\n\n\n\nWarning\n\n\nAs, by default, findbugs plugin is automatically applied after configuration read, \nfindbugsPlugins\n can't be used directly\n\n\n\n\nEither use afterEvaluate:\n\n\nafterEvaluate\n \n{\n\n    \ndependencies\n \n{\n\n        \nfindbugsPlugins\n \n'com.mebigfatguy.fb-contrib:fb-contrib:6.4.1'\n\n    \n}\n\n\n}\n\n\n\n\n\nOr declare findbugs plugin manually (it will be configured by quality plugin):\n\n\nplugins\n \n{\n\n    \nid\n \n'findbugs'\n\n\n}\n\n\ndependencies\n \n{\n\n    \nfindbugsPlugins\n \n'com.mebigfatguy.fb-contrib:fb-contrib:6.4.1'\n\n\n}\n\n\n\n\n\nAvailable plugins\n\u00b6\n\n\nFind Security Bugs\n\n\nfindbugsPlugins\n \n'com.h3xstream.findsecbugs:findsecbugs-plugin:1.4.4'\n\n\n\n\n\nfb-contrib: A FindBugs auxiliary detector plugin\n\n\nfindbugsPlugins\n \n'com.mebigfatguy.fb-contrib:fb-contrib:6.6.0'\n\n\n\n\n\nAnnotations\n\u00b6\n\n\nYou may use \njsr305 annotations\n to guide findbugs.\nAdd \ncom.google.code.findbugs:jsr305:3.0.0\n dependency (with provided scope if possible).\n\n\nIn some cases you will have to use it.\nFor example, you may face issues with guava functions or predicates:\n\n\n[NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE] input must be nonnull but is marked as nullable \n\n\n\n\nThe reason for this is that guava use \n@Nullable\n annotation, which is \n@Inherited\n, so\neven if you not set annotation on your own function or predicate it will still be visible.\n\n\nThe simplest workaround is to set \n@Nonnull\n annotation (jsr305) on your function or predicate:\n\n\npublic\n \nboolean\n \napply\n(\n@Nonnull\n \nfinal\n \nObject\n \ninput\n)\n \n{",
+            "title": "FindBugs"
+        },
+        {
+            "location": "/tool/findbugs/#findbugs",
+            "text": "Java |  Home  |  Plugin   By default, plugin is activated if java sources available ( src/main/java ).      Findbugs configuration differ from other tools (checkstyle, pmd): instead of exact rules configuration\nit uses efforts level. Deeper level could reveal more bugs, but with higher mistake possibility. \nDefault settings ('max' effort and 'medium' level) are perfect for most cases.   Note  Special  xsl file  \nused for manual html report generation because findbugs plugin could generate either xml or html report and not both.",
+            "title": "FindBugs"
+        },
+        {
+            "location": "/tool/findbugs/#output",
+            "text": "2 (0 / 2 / 0) FindBugs violations were found in 2 files\n\n[Performance | URF_UNREAD_FIELD] sample.(Sample.java:8) [priority 2]\n    >> Unread field: sample.Sample.sample\n  This field is never read. Consider removing it from the class.\n\n...    Counts in braces show priorities (p1/p2/p3).   Note  There is no link to findbugs site (like other tools), because report already contains everything from there.",
+            "title": "Output"
+        },
+        {
+            "location": "/tool/findbugs/#config",
+            "text": "Tool config options with defaults:  quality   { \n     findbugsVersion   =   '3.0.1' \n     findbugs   =   true   // false to disable automatic plugin activation \n     findbugsEffort   =   'max'    // min, default or max \n     findbugsLevel   =   'medium'   // low, medium, high  }",
+            "title": "Config"
+        },
+        {
+            "location": "/tool/findbugs/#suppress",
+            "text": "To suppress violations you can use  filter file .\nIn this case you need to override  default filter file .  Or you can use annotations. FindBugs use custom annotations and so you need to add  com.google.code.findbugs:annotations:3.0.0  dependency (with provided scope if possible) and use:  @SuppressFBWarnings ( \"URF_UNREAD_FIELD\" )",
+            "title": "Suppress"
+        },
+        {
+            "location": "/tool/findbugs/#plugins",
+            "text": "You may add additional findbugs checks by declaring findbugs plugins in  findbugsPlugins  dependency configuration.   Warning  As, by default, findbugs plugin is automatically applied after configuration read,  findbugsPlugins  can't be used directly   Either use afterEvaluate:  afterEvaluate   { \n     dependencies   { \n         findbugsPlugins   'com.mebigfatguy.fb-contrib:fb-contrib:6.4.1' \n     }  }   Or declare findbugs plugin manually (it will be configured by quality plugin):  plugins   { \n     id   'findbugs'  }  dependencies   { \n     findbugsPlugins   'com.mebigfatguy.fb-contrib:fb-contrib:6.4.1'  }",
+            "title": "Plugins"
+        },
+        {
+            "location": "/tool/findbugs/#available-plugins",
+            "text": "Find Security Bugs  findbugsPlugins   'com.h3xstream.findsecbugs:findsecbugs-plugin:1.4.4'   fb-contrib: A FindBugs auxiliary detector plugin  findbugsPlugins   'com.mebigfatguy.fb-contrib:fb-contrib:6.6.0'",
+            "title": "Available plugins"
+        },
+        {
+            "location": "/tool/findbugs/#annotations",
+            "text": "You may use  jsr305 annotations  to guide findbugs.\nAdd  com.google.code.findbugs:jsr305:3.0.0  dependency (with provided scope if possible).  In some cases you will have to use it.\nFor example, you may face issues with guava functions or predicates:  [NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE] input must be nonnull but is marked as nullable   The reason for this is that guava use  @Nullable  annotation, which is  @Inherited , so\neven if you not set annotation on your own function or predicate it will still be visible.  The simplest workaround is to set  @Nonnull  annotation (jsr305) on your function or predicate:  public   boolean   apply ( @Nonnull   final   Object   input )   {",
+            "title": "Annotations"
+        },
+        {
+            "location": "/tool/codenarc/",
+            "text": "Checkstyle\n\u00b6\n\n\n\n\nGroovy | \nHome\n | \nPlugin\n\n\n\n\nBy default, plugin is activated if groovy sources available (\nsrc/main/groovy\n).    \n\n\nOutput\n\u00b6\n\n\n24 (0 / 10 / 14) CodeNarc violations were found in 2 files\n\n[Formatting | ClassJavadoc] sample.(GSample.groovy:3)  [priority 2]\n    >> class GSample {\n  Class sample.GSample missing Javadoc\n  Makes sure each class and interface definition is preceded by javadoc. Enum definitions are not checked, due to strange behavior in the Groovy AST.\n  http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassJavadoc\n\n...  \n\n\n\n\nCounts in braces show priorities (p1/p2/p3).\n\n\nConfig\n\u00b6\n\n\nTool config options with defaults:\n\n\nquality\n \n{\n\n    \ncodenarcVersion\n \n=\n \n'1.1'\n\n    \ncodenarc\n \n=\n \ntrue\n \n// false to disable automatic plugin activation\n\n\n}\n\n\n\n\n\nSuppress\n\u00b6\n\n\nTo \nsuppress violation\n:\n\n\n@SuppressWarnings\n(\n\"ClassJavadoc\"\n)",
+            "title": "CodeNarc"
+        },
+        {
+            "location": "/tool/codenarc/#checkstyle",
+            "text": "Groovy |  Home  |  Plugin   By default, plugin is activated if groovy sources available ( src/main/groovy ).",
+            "title": "Checkstyle"
+        },
+        {
+            "location": "/tool/codenarc/#output",
+            "text": "24 (0 / 10 / 14) CodeNarc violations were found in 2 files\n\n[Formatting | ClassJavadoc] sample.(GSample.groovy:3)  [priority 2]\n    >> class GSample {\n  Class sample.GSample missing Javadoc\n  Makes sure each class and interface definition is preceded by javadoc. Enum definitions are not checked, due to strange behavior in the Groovy AST.\n  http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassJavadoc\n\n...    Counts in braces show priorities (p1/p2/p3).",
+            "title": "Output"
+        },
+        {
+            "location": "/tool/codenarc/#config",
+            "text": "Tool config options with defaults:  quality   { \n     codenarcVersion   =   '1.1' \n     codenarc   =   true   // false to disable automatic plugin activation  }",
+            "title": "Config"
+        },
+        {
+            "location": "/tool/codenarc/#suppress",
+            "text": "To  suppress violation :  @SuppressWarnings ( \"ClassJavadoc\" )",
+            "title": "Suppress"
+        },
+        {
+            "location": "/tool/animalsniffer/",
+            "text": "Animalsniffer\n\u00b6\n\n\n\n\nJava, Groovy | \nHome\n | \nPlugin\n\n\n\n\nIn contrast to other tools, animalsniffer plugin is never activated automatically. Plugin will only \napply common configuration (used source sets, strict mode) if \nru.vyarus.animalsniffer\n \nplugin manually applied.\n\n\nConfig\n\u00b6\n\n\nAnimalsniffer version could be defined through quality config:\n\n\nquality\n \n{\n\n    \nanimalsnifferVersion\n \n=\n \n'1.16'\n\n\n}\n\n\n\n\n\nDefault version is not declared and animalsniffer plugin driven version will be used by default.\n\n\nQuality configuration is applied to animalsniffer configuration like this:\n\n\nanimalsniffer\n \n{\n\n    \ntoolVersion\n \n=\n \nextension\n.\nanimalsnifferVersion\n\n    \nignoreFailures\n \n=\n \n!\nextension\n.\nstrict\n\n    \nsourceSets\n \n=\n \nextension\n.\nsourceSets\n    \n\n}",
+            "title": "Animalsniffer"
+        },
+        {
+            "location": "/tool/animalsniffer/#animalsniffer",
+            "text": "Java, Groovy |  Home  |  Plugin   In contrast to other tools, animalsniffer plugin is never activated automatically. Plugin will only \napply common configuration (used source sets, strict mode) if  ru.vyarus.animalsniffer  \nplugin manually applied.",
+            "title": "Animalsniffer"
+        },
+        {
+            "location": "/tool/animalsniffer/#config",
+            "text": "Animalsniffer version could be defined through quality config:  quality   { \n     animalsnifferVersion   =   '1.16'  }   Default version is not declared and animalsniffer plugin driven version will be used by default.  Quality configuration is applied to animalsniffer configuration like this:  animalsniffer   { \n     toolVersion   =   extension . animalsnifferVersion \n     ignoreFailures   =   ! extension . strict \n     sourceSets   =   extension . sourceSets      }",
+            "title": "Config"
+        },
+        {
+            "location": "/task/config/",
+            "text": "Copy configs task\n\u00b6\n\n\n\n\ninitQualityConfig task\n\n\n\n\nPlugin contains predefined configurations for all plugins.\nDuring execution default files are copied into \n$buildDir/quality-configs\n (if no custom user configs provided).\n\n\nIf you want to customize default configs then use the following task to copy everything into project:\n\n\n$ gradlew initQualityConfig\n\n\n\n\nIt will copy all configs into configured (\nquality.configDir\n) folder (will not override existing configs).\n\n\ngradle\\\n    config\\\n        checkstyle\\\n            checkstyle.xml      \n        codenarc\\\n            codenarc.xml        \n        findbugs\\\n            exclude.xml         \n            html-report-style.xsl   \n        pmd\\\n            pmd.xml         \n\n\n\n\nTask copies all configs, but you may remove all files you don't want to customize (plugin will use default versions for them).\nFile names are important: if you rename files plugin will not find them and use defaults.\n\n\nConfiguration files contain all possible rules. Not used rules are commented (or excluded).",
+            "title": "Copy config"
+        },
+        {
+            "location": "/task/config/#copy-configs-task",
+            "text": "initQualityConfig task   Plugin contains predefined configurations for all plugins.\nDuring execution default files are copied into  $buildDir/quality-configs  (if no custom user configs provided).  If you want to customize default configs then use the following task to copy everything into project:  $ gradlew initQualityConfig  It will copy all configs into configured ( quality.configDir ) folder (will not override existing configs).  gradle\\\n    config\\\n        checkstyle\\\n            checkstyle.xml      \n        codenarc\\\n            codenarc.xml        \n        findbugs\\\n            exclude.xml         \n            html-report-style.xsl   \n        pmd\\\n            pmd.xml           Task copies all configs, but you may remove all files you don't want to customize (plugin will use default versions for them).\nFile names are important: if you rename files plugin will not find them and use defaults.  Configuration files contain all possible rules. Not used rules are commented (or excluded).",
+            "title": "Copy configs task"
+        },
+        {
+            "location": "/task/group/",
+            "text": "Grouping tasks\n\u00b6\n\n\n\n\ncheckQuality[Main] task\n\n\n\n\nEach quality plugin (checkstyle, pmd, findbugs etc) registers separate quality task for each source set. \nFor example, \ncheckstyleMain\n and \ncheckstyleTest\n.\n\n\nBut \ncheck\n  task will only depend on tasks for configured source sets (\nquality.sourceSets\n).\n\n\nFor example, by default, only main source set is configured, so only \ncheckstyleMain\n assigned to \ncheck\n.\nAnyway, \ncheckstyleTest\n task is registered and may be called directly (even if it's not used for project validation).\n\n\nBy analogy, quality plugin register grouping task for each available source set: \ncheckQualityMain\n, \ncheckQualityTest\n etc.\nThese tasks simply calls all quality tasks relative to source set. \nFor example, if we have java quality plugins registered then calling \ncheckQualityMain\n will call\n\ncheckstyleMain\n, \npmdMain\n and \nfindbugsMain\n.\n\n\nThis is just a handy shortcut to run quality check tasks for exact source set without running tests (like main \ncheck\n).\nGenerally usable to periodically check code violations.",
+            "title": "Group"
+        },
+        {
+            "location": "/task/group/#grouping-tasks",
+            "text": "checkQuality[Main] task   Each quality plugin (checkstyle, pmd, findbugs etc) registers separate quality task for each source set. \nFor example,  checkstyleMain  and  checkstyleTest .  But  check   task will only depend on tasks for configured source sets ( quality.sourceSets ).  For example, by default, only main source set is configured, so only  checkstyleMain  assigned to  check .\nAnyway,  checkstyleTest  task is registered and may be called directly (even if it's not used for project validation).  By analogy, quality plugin register grouping task for each available source set:  checkQualityMain ,  checkQualityTest  etc.\nThese tasks simply calls all quality tasks relative to source set. \nFor example, if we have java quality plugins registered then calling  checkQualityMain  will call checkstyleMain ,  pmdMain  and  findbugsMain .  This is just a handy shortcut to run quality check tasks for exact source set without running tests (like main  check ).\nGenerally usable to periodically check code violations.",
+            "title": "Grouping tasks"
+        },
+        {
+            "location": "/about/history/",
+            "text": "2.4.0\n (2017-09-21)\n\u00b6\n\n\n\n\nSupport gradle 4.2 (#3)    \n\n\nUpdate checkstyle 8.0 -> 8.2\n\n\nUpdate codenarc 0.27.0 -> 1.0\n\n\nUpdate checkstyle config:\n\n\nMove SuppressionCommentFilter inside TreeWalker (8.1 breaking change)\n\n\nRemove FileContentsHolder (8.2 breaking change) \n\n\nNew check \nAnnotationOnSameLine\n (added in 8.2) added to config, but disabled\n\n\n\n\n\n\n\n\n2.3.0\n (2017-07-24)\n\u00b6\n\n\n\n\nUpdate checkstyle 7.6 -> 8.0\n\n\nUpdate pmd 5.5.4 -> 5.8.1\n\n\nUpdate pmd config:\n\n\nAdd description to avoid \nwarning\n\n\nDisable \nAccessorMethodGeneration\n\ncheck as it makes sense for android projects and not so important for java. \nMoreover, possible fixes will contradict with checkstyle's \nVisibilityModifier\n   \n\n\n\n\n\n\n\n\n2.2.0\n (2017-03-21)\n\u00b6\n\n\n\n\nUpdate checkstyle 7.4 -> 7.6\n\n\nUpdate pmd 5.5.2 -> 5.5.4\n\n\nUpdate codenarc 0.26.0 -> 0.27.0\n\n\nUpdate pmd config:\n\n\nDisable \nNullAssignment\n\ncheck due to false positives\n\n\n\n\n\n\nAdd unified exclusion patterns (glob) configuration: exclude (#2)\n\n\nDoes not affect animalsniffer because it's a different type of check\n\n\nFindbugs did not support direct exclusions, so plugin resolves excluded classes and adds them to exclusion xml (default or user defined)\n\n\n\n\n\n\nAdd configuration to directly exclude source files from check (for exceptional cases when pattern exclusion cant help): excludeSources\n\n\nDoes not affect animalsniffer\n\n\nFor findbugs excluded classes will be added to exclusions xml filter   \n\n\n\n\n\n\n\n\n2.1.0\n (2017-01-24)\n\u00b6\n\n\n\n\nUpdate checkstyle 7.1 -> 7.4\n\n\nUpdate pmd 5.5.1 -> 5.5.2\n\n\nUpdate codenarc 0.25.2 -> 0.26.0\n\n\nUpdate pmd config:\n\n\nDisable junit4 migration rules which cause false positives for non test code:\n\nJUnit4TestShouldUseBeforeAnnotation\n,\n\nJUnit4TestShouldUseAfterAnnotation\n,\n\nJUnit4TestShouldUseTestAnnotation\n    \n\n\n\n\n\n\n\n\n2.0.0\n (2016-09-03)\n\u00b6\n\n\n\n\nUpdate checkstyle 6.17 -> 7.1 (requires min jdk 8)\n\n\nUpdate checkstyle config:\n\n\nAdd \nSingleSpaceSeparator\n check (since 6.19)\n\n\nDisable \nFileLength\n check in favour of more correct PMD ExcessiveClassLength check (which checks actual class length not file)\n\n\nEnable \nReturnCount\n to replace pmd OnlyOneReturn check\n\n\n\n\n\n\nUpdate pmd 5.4.1 -> 5.5.1 (requires min jdk 7)\n\n\nUpdate pmd config:\n\n\nDisable \nUselessParentheses\n because of too many false positives\n\n\nDisable \nOnlyOneReturn\n in favour of checkstyle ReturnCount\n\n\nDisable \nInvalidSlf4jMessageFormat\n due to \nknown bug\n\n\nDisable \nCyclomaticComplexity\n and \nStdCyclomaticComplexity\n as duplicate rules for ModifiedCyclomaticComplexity\n\n\n\n\n\n\nUpdate codenarc 0.25.1 -> 0.25.2\n\n\n(breaking) quality.lintOptions configuration now applies to all JavaCompile tasks (not only to compileJava as before) \n\n\nFix multi-module projects reporting (remove duplicate reports)\n\n\nFix generated html reports links (redundant slash on linux)\n\n\nFix newline in reporters (use platform specific)\n\n\nChange reporting format so intelliJ IDEA can recognize class reference and show link (eclipse will probably too). Reference line ranges are not shown anymore (pmd, findbugs and column in checkstyle) - always exact line.\n\n\n(breaking) configure manually registered plugins, even if plugin not supposed to be used due to sources auto detection. Configuration may be disabled using quality configuration flags.\n\n\nAdd ability to disable automatic plugins registration: quality.autoRegistration = false. Only manually registered plugins will be configured.\n\n\nAdd ability to disable quality tasks with configuration property: quality.enabled = false. Quality tasks will still work if called directly or through grouping task (e.g. checkQualityMain).\n\n\n(breaking) Remove checkstyle html report generation: gradle can generate html report since 2.10 and when gradle generates html report, it puts link to it into main error message\n\n\nFindbugs html report is always generated (not only when errors found like before)\n\n\nAdd ability to disable console reporting with configuration property: quality.consoleReporting = false\n\n\nAdd grouping tasks for registered quality plugins: checkQualityMain, checkQualityTest (per source set). Allows running quality tasks for exact source set or run quality tasks not enabled for 'check' task.\n\n\n\n\n1.3.0\n (2016-03-30)\n\u00b6\n\n\n\n\nUpdate checkstyle 6.14.1 -> 6.17\n\n\nUpdate codenarc 0.24.1 -> 0.25.1 \n\n\nDisable default checkstyle html report (enabled in gradle >=2.10) to avoid duplicate report generation\n\n\nAdd reporting execution time logging (visible with --info option)\n\n\nUpdate default checkstyle config:\n\n\nDisable \nMisc/UncommentedMain\n\n\n\n\n\n\n\n\n1.2.0\n (2016-01-01)\n\u00b6\n\n\n\n\nUpdate default configs: \n\n\nDisable \nPmd/Controversial/AvoidFinalLocalVariable\n\n\nPmd/Design/AvoidDeeplyNestedIfStmts\n default set to 4\n\n\nCheckstyle/Coding/NestedIfDepth\n default set to 3\n\n\nAdd disabled check in config \nCheckstyle/Naming/CatchParameterName\n  \n\n\n\n\n\n\nUpdate checkstyle 6.13 -> 6.14.1     \n\n\n\n\n1.1.1\n (2015-12-24)\n\u00b6\n\n\n\n\nFix AnimalSniffer version configuration\n\n\n\n\n1.1.0\n (2015-12-21)\n\u00b6\n\n\n\n\nAdd \nru.vyarus.animalsniffer\n plugin configuration support\n\n\nImprove FindBugs console output\n\n\n\n\n1.0.3\n (2015-12-11)\n\u00b6\n\n\n\n\nDelay default configs copying to actual task execution to avoid problems with clean task\n\n\n\n\n1.0.2\n (2015-12-06)\n\u00b6\n\n\n\n\nUnescape CodeNarc messages\n\n\nUpdate checkstyle 6.12.1 -> 6.13\n\n\nUpdate pmd 5.4.0 -> 5.4.1\n\n\n\n\n1.0.1\n (2015-12-04)\n\u00b6\n\n\n\n\nDon't activate CodeNarc if groovy plugin enabled but no groovy sources folder exists\n\n\n\n\n1.0.0\n (2015-11-19)\n\u00b6\n\n\n\n\nInitial release",
+            "title": "Release notes"
+        },
+        {
+            "location": "/about/history/#240-2017-09-21",
+            "text": "Support gradle 4.2 (#3)      Update checkstyle 8.0 -> 8.2  Update codenarc 0.27.0 -> 1.0  Update checkstyle config:  Move SuppressionCommentFilter inside TreeWalker (8.1 breaking change)  Remove FileContentsHolder (8.2 breaking change)   New check  AnnotationOnSameLine  (added in 8.2) added to config, but disabled",
+            "title": "2.4.0 (2017-09-21)"
+        },
+        {
+            "location": "/about/history/#230-2017-07-24",
+            "text": "Update checkstyle 7.6 -> 8.0  Update pmd 5.5.4 -> 5.8.1  Update pmd config:  Add description to avoid  warning  Disable  AccessorMethodGeneration \ncheck as it makes sense for android projects and not so important for java. \nMoreover, possible fixes will contradict with checkstyle's  VisibilityModifier",
+            "title": "2.3.0 (2017-07-24)"
+        },
+        {
+            "location": "/about/history/#220-2017-03-21",
+            "text": "Update checkstyle 7.4 -> 7.6  Update pmd 5.5.2 -> 5.5.4  Update codenarc 0.26.0 -> 0.27.0  Update pmd config:  Disable  NullAssignment \ncheck due to false positives    Add unified exclusion patterns (glob) configuration: exclude (#2)  Does not affect animalsniffer because it's a different type of check  Findbugs did not support direct exclusions, so plugin resolves excluded classes and adds them to exclusion xml (default or user defined)    Add configuration to directly exclude source files from check (for exceptional cases when pattern exclusion cant help): excludeSources  Does not affect animalsniffer  For findbugs excluded classes will be added to exclusions xml filter",
+            "title": "2.2.0 (2017-03-21)"
+        },
+        {
+            "location": "/about/history/#210-2017-01-24",
+            "text": "Update checkstyle 7.1 -> 7.4  Update pmd 5.5.1 -> 5.5.2  Update codenarc 0.25.2 -> 0.26.0  Update pmd config:  Disable junit4 migration rules which cause false positives for non test code: JUnit4TestShouldUseBeforeAnnotation , JUnit4TestShouldUseAfterAnnotation , JUnit4TestShouldUseTestAnnotation",
+            "title": "2.1.0 (2017-01-24)"
+        },
+        {
+            "location": "/about/history/#200-2016-09-03",
+            "text": "Update checkstyle 6.17 -> 7.1 (requires min jdk 8)  Update checkstyle config:  Add  SingleSpaceSeparator  check (since 6.19)  Disable  FileLength  check in favour of more correct PMD ExcessiveClassLength check (which checks actual class length not file)  Enable  ReturnCount  to replace pmd OnlyOneReturn check    Update pmd 5.4.1 -> 5.5.1 (requires min jdk 7)  Update pmd config:  Disable  UselessParentheses  because of too many false positives  Disable  OnlyOneReturn  in favour of checkstyle ReturnCount  Disable  InvalidSlf4jMessageFormat  due to  known bug  Disable  CyclomaticComplexity  and  StdCyclomaticComplexity  as duplicate rules for ModifiedCyclomaticComplexity    Update codenarc 0.25.1 -> 0.25.2  (breaking) quality.lintOptions configuration now applies to all JavaCompile tasks (not only to compileJava as before)   Fix multi-module projects reporting (remove duplicate reports)  Fix generated html reports links (redundant slash on linux)  Fix newline in reporters (use platform specific)  Change reporting format so intelliJ IDEA can recognize class reference and show link (eclipse will probably too). Reference line ranges are not shown anymore (pmd, findbugs and column in checkstyle) - always exact line.  (breaking) configure manually registered plugins, even if plugin not supposed to be used due to sources auto detection. Configuration may be disabled using quality configuration flags.  Add ability to disable automatic plugins registration: quality.autoRegistration = false. Only manually registered plugins will be configured.  Add ability to disable quality tasks with configuration property: quality.enabled = false. Quality tasks will still work if called directly or through grouping task (e.g. checkQualityMain).  (breaking) Remove checkstyle html report generation: gradle can generate html report since 2.10 and when gradle generates html report, it puts link to it into main error message  Findbugs html report is always generated (not only when errors found like before)  Add ability to disable console reporting with configuration property: quality.consoleReporting = false  Add grouping tasks for registered quality plugins: checkQualityMain, checkQualityTest (per source set). Allows running quality tasks for exact source set or run quality tasks not enabled for 'check' task.",
+            "title": "2.0.0 (2016-09-03)"
+        },
+        {
+            "location": "/about/history/#130-2016-03-30",
+            "text": "Update checkstyle 6.14.1 -> 6.17  Update codenarc 0.24.1 -> 0.25.1   Disable default checkstyle html report (enabled in gradle >=2.10) to avoid duplicate report generation  Add reporting execution time logging (visible with --info option)  Update default checkstyle config:  Disable  Misc/UncommentedMain",
+            "title": "1.3.0 (2016-03-30)"
+        },
+        {
+            "location": "/about/history/#120-2016-01-01",
+            "text": "Update default configs:   Disable  Pmd/Controversial/AvoidFinalLocalVariable  Pmd/Design/AvoidDeeplyNestedIfStmts  default set to 4  Checkstyle/Coding/NestedIfDepth  default set to 3  Add disabled check in config  Checkstyle/Naming/CatchParameterName       Update checkstyle 6.13 -> 6.14.1",
+            "title": "1.2.0 (2016-01-01)"
+        },
+        {
+            "location": "/about/history/#111-2015-12-24",
+            "text": "Fix AnimalSniffer version configuration",
+            "title": "1.1.1 (2015-12-24)"
+        },
+        {
+            "location": "/about/history/#110-2015-12-21",
+            "text": "Add  ru.vyarus.animalsniffer  plugin configuration support  Improve FindBugs console output",
+            "title": "1.1.0 (2015-12-21)"
+        },
+        {
+            "location": "/about/history/#103-2015-12-11",
+            "text": "Delay default configs copying to actual task execution to avoid problems with clean task",
+            "title": "1.0.3 (2015-12-11)"
+        },
+        {
+            "location": "/about/history/#102-2015-12-06",
+            "text": "Unescape CodeNarc messages  Update checkstyle 6.12.1 -> 6.13  Update pmd 5.4.0 -> 5.4.1",
+            "title": "1.0.2 (2015-12-06)"
+        },
+        {
+            "location": "/about/history/#101-2015-12-04",
+            "text": "Don't activate CodeNarc if groovy plugin enabled but no groovy sources folder exists",
+            "title": "1.0.1 (2015-12-04)"
+        },
+        {
+            "location": "/about/history/#100-2015-11-19",
+            "text": "Initial release",
+            "title": "1.0.0 (2015-11-19)"
+        },
+        {
+            "location": "/about/license/",
+            "text": "The MIT License (MIT)\n\n\nCopyright \u00a9 2015 Vyacheslav Rusakov\n\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+            "title": "License"
+        }
+    ]
+}
