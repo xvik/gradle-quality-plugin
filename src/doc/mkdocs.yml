@@ -1,0 +1,69 @@
+site_name: Gradle quality plugin
+
+# Meta tags (placed in header)
+site_description: Gradle quality plugin for Java and Groovy
+site_author: Vyacheslav Rusakov
+site_url: 'https://xvik.github.io/gradle-quality-plugin'
+
+# Repository (add link to repository on each page)
+repo_name: gradle-quality-plugin
+repo_url: http://github.com/xvik/gradle-quality-plugin
+edit_uri: edit/master/src/doc/docs/
+
+#Copyright (shown at the footer)
+copyright: 'Copyright &copy; 2015-2018 Vyacheslav Rusakov'
+
+# Meterial theme
+theme: 'material'
+extra:
+#  palette:
+#    primary: 'indigo'
+#    accent: 'indigo'
+
+  social:
+    - type: 'github'
+      link: 'https://github.com/xvik'
+    - type: 'twitter'
+      link: 'https://twitter.com/vyarus'
+
+
+# Google Analytics
+#google_analytics:
+#  - 'UA-111111111-1'
+#  - 'auto'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite(guess_lang=false)
+  - footnotes
+  - meta
+  - toc(permalink=true)
+  - pymdownx.betterem(smart_enable=all)
+  - pymdownx.caret
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+
+pages:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - User guide:
+      - Automatic mode: guide/automatic.md
+      - Configuration: guide/config.md
+      - Exclusion: guide/exclusion.md
+      - Profile: guide/profile.md
+  - Tools:
+      - Javac lint: tool/lint.md
+      - Checkstyle: tool/checkstyle.md
+      - PMD: tool/pmd.md
+      - FindBugs: tool/findbugs.md
+      - CodeNarc: tool/codenarc.md
+      - Animalsniffer: tool/animalsniffer.md
+  - Tasks:
+      - Copy config: task/config.md
+      - Group: task/group.md
+  - About:
+      - Release notes: about/history.md
+      - License: about/license.md
