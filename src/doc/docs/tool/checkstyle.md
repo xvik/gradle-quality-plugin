@@ -27,7 +27,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    checkstyleVersion = '8.8'
+    checkstyleVersion = '8.2'
     checkstyle = true // false to disable automatic plugin activation
 }
 ```
