@@ -3,8 +3,9 @@
 !!! summary ""
     Plugin activates and configures quality tools for java and groovy projects using 
     [Checkstyle](http://checkstyle.sourceforge.net), 
-    [PMD](http://pmd.sourceforge.net), 
-    [FindBugs](http://findbugs.sourceforge.net),
+    [PMD](http://pmd.sourceforge.net),
+    [SpotBugs](https://spotbugs.github.io), 
+    [FindBugs (deprecated)](http://findbugs.sourceforge.net),
     [CodeNarc](http://codenarc.sourceforge.net). 
     Plugin unifies console output for all quality plugins which greatly simplifies developer workflow: 
     only console is required for working with violations and makes it feel the same as java compiler errors.

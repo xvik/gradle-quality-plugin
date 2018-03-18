@@ -38,7 +38,7 @@ github {
 }
 
 mkdocs.publish {
-    docPath = '2.4.0'
+    docPath = '3.0.0'
     rootRedirect = true
 }
 
@@ -62,7 +62,7 @@ bintray {
         repo = 'xvik'
         name = project.name
         desc = project.description
-        labels = ['gradle', 'java', 'groovy', 'quality', 'checkstyle', 'pmd', 'findbugs', 'codenarc']
+        labels = ['gradle', 'java', 'groovy', 'quality', 'checkstyle', 'pmd', 'spotbugs', 'findbugs', 'codenarc']
         publicDownloadNumbers = true
         version {
             gpg {
@@ -80,7 +80,7 @@ bintray {
 
 pluginBundle {
     description = 'Static code analysis for Java and Groovy projects'
-    tags = ['java', 'groovy', 'quality', 'checkstyle', 'pmd', 'findbugs', 'codenarc']
+    tags = ['java', 'groovy', 'quality', 'checkstyle', 'pmd', 'spotbugs', 'findbugs', 'codenarc']
 
     plugins {
         qualityPlugin {

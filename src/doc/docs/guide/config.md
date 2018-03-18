@@ -8,10 +8,10 @@ quality {
     
     // Tools versions
     
-    checkstyleVersion = '8.2'
-    pmdVersion = '5.8.1'
-    findbugsVersion = '3.0.1'
-    codenarcVersion = '1.0'
+    checkstyleVersion = '8.8'
+    pmdVersion = '6.1.0'    
+    spotbugsVersion = '3.1.2'
+    codenarcVersion = '1.1'
     animalsnifferVersion
 
     /**
@@ -24,7 +24,8 @@ quality {
      
     checkstyle = true
     pmd = true
-    findbugs = true
+    // when spotbugs disabled, findbugs plugin is used by default
+    spotbugs = true
     codenarc = true
     
     /**
@@ -32,14 +33,14 @@ quality {
      * Higher levels increase precision and find more bugs at the expense of running time and
      * memory consumption. Default is 'max'.
      */
-    findbugsEffort = 'max'
+    spotbugsEffort = 'max'
     
     /**
      * The priority threshold for reporting bugs. If set to low, all bugs are reported.
      * If set to medium, medium and high priority bugs are reported.
      * If set to high, only high priority bugs are reported. Default is 'medium'.
      */
-    findbugsLevel = 'medium'
+    spotbugsLevel = 'medium'
 
     /**
      * Javac lint options to show compiler warnings, not visible by default.
@@ -83,7 +84,7 @@ quality {
      * Animalsniffer is not affected because
      * it's a different kind of check (and, also, it operates on classes so source patterns may not comply).
      * 
-     * Findbugs does not support exclusion directly, but plugin will resolve excluded classes and apply
+     * Spotbugs (Findbugs) does not support exclusion directly, but plugin will resolve excluded classes and apply
      * them to xml exclude file (default one or provided by user).
      * 
      * By default nothing is excluded.
@@ -102,7 +103,7 @@ quality {
       * to create initial collections and apply filter on it (using
       * {@link org.gradle.api.file.FileTree#matching(groovy.lang.Closure)}).
       * 
-      * Plugin will include files into findbugs exclusion filter xml (default one or provided by user).
+      * Plugin will include files into spotbugs (findbugs) exclusion filter xml (default one or provided by user).
       * 
       * Note: this must be used when excluded classes can't be extracted to different source set and
       * filter by package and filename is not sufficient.
@@ -113,6 +114,13 @@ quality {
      * User configuration files directory. Files in this directory will be used instead of default (bundled) configs.
      */
     configDir = 'gradle/config/'
+    
+    
+    // Deprecated due to switch to SpotBugs by default
+    findbugsVersion = '3.0.1'
+    findbugs = true
+    findbugsEffort = 'max'
+    findbugsLevel = 'medium'
 }
 ```
 
@@ -202,6 +210,7 @@ For plugins configuration options look:
 
 * [CheckstyleExtension](https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html)
 * [PmdExtension](https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.PmdExtension.html)
+* [SpotBugsExtension](http://spotbugs.readthedocs.io/en/latest/gradle.html#configure-gradle-plugin)
 * [FindBugsExtension](https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.FindBugsExtension.html)
 * [CodeNarcExtension](https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CodeNarcExtension.html)
 

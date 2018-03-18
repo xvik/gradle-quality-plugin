@@ -1,3 +1,17 @@
+### [3.0.0](http://xvik.github.io/gradle-quality-plugin/2.4.0) (2018-03-19)
+* Update codenarc 1.0 -> 1.1
+* Update checkstyle 8.2 -> 8.8
+* Update pmd 5.8.1 -> 6.1.0
+* Update pmd config:
+    - (breaking) All rules reordered according to [new groups](https://pmd.github.io/pmd-6.0.0/pmd_release_notes.html#rule-categories) 
+* (breaking) use Spotbugs (3.1.2) instead of Findbugs by default (as [successor](https://github.com/findbugsproject/findbugs))
+    - [com.github.spotbugs](http://spotbugs.readthedocs.io/en/latest/gradle.html) external plugin applied (quality plugin brings it as a dependency)
+    - Spotbugs plugin will use configs from different folder (spotbugs/), so if custom findbugs configs were used move them to spotbugs/ folder    
+    - Findbugs support is deprecated and will be removed someday (but not soon). 
+    - To use findbugs (as before): disable spotbugs support (quality.spotbugs = false) 
+       or enable findbugs plugin manually (in this case spotbugs plugin will not be registered)  
+
+
 ### [2.4.0](http://xvik.github.io/gradle-quality-plugin/2.4.0) (2017-09-21)
 * Support gradle 4.2 (#3)    
 * Update checkstyle 8.0 -> 8.2

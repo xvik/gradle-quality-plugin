@@ -28,7 +28,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    codenarcVersion = '1.0'
+    codenarcVersion = '1.1'
     codenarc = true // false to disable automatic plugin activation
 }
 ```

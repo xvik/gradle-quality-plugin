@@ -29,11 +29,10 @@ plugins {
     Plugin must be applied after `java` or `groovy` plugins. Otherwise it will do nothing.
 
 !!! note
-    Plugin is compiled for java 6, but pmd 5.5 [requires java 7](https://pmd.github.io/pmd-5.5.1/overview/changelog-old.html) 
-    and checkstyle 7 [requires java 8](http://checkstyle.sourceforge.net/releasenotes.html#Release_7.0). So, by default, you will need java 8.
+    Plugin is compiled for java 7, but pmd 5.5 [requires java 7](https://pmd.github.io/pmd-5.5.1/overview/changelog-old.html) 
+    and checkstyle 7 [requires java 8](http://checkstyle.sourceforge.net/releasenotes.html#Release_7.0). So, by default, you will need java 8 for java.
 
-If you are using lower java versions either use previous plugin release ([1.3.0](https://github.com/xvik/gradle-quality-plugin/tree/1.3.0)) or manually specify lower checkstyle and pmd (if required java 6)
-versions using `checkstyleVersion = '6.19'` and `pmdVersion = '5.4.2'` properties (note that you may need to customize provided default rules configurations to disable rules not yet available in your tool versions).
+If you are using lower java versions use previous plugin releases.
 
 ## Usage
 

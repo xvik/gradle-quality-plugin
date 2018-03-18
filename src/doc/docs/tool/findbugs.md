@@ -2,8 +2,26 @@
 
 !!! summary ""
     Java | [Home](http://findbugs.sourceforge.net) | [Plugin](https://docs.gradle.org/current/userguide/findbugs_plugin.html)
+
+!!! danger
+    FindBugs support is deprecated, because project is abandoned. Use SpotBugs [successor project](https://github.com/findbugsproject/findbugs) instead.
+    By default, quality plugin will activate [SpotBugs](spotbugs.md) and not findbugs.
     
-By default, plugin is activated if java sources available (`src/main/java`).    
+!!! abstract "Migration"
+    If you were using custom configs then rename `findbugs` folder to `spotbugs`.
+    If plugins were used then change `findbugsPlugins` to `spotbugsPlugins`.
+    [Migration guide](http://spotbugs.readthedocs.io/en/latest/migration.html)
+        
+!!! hint
+    If you want to continue using FindBugs instead of SpotBugs then simply disable spotbugs:
+    `quality.spotbugs = false`. This will force automatic findbugs activation, as before. 
+    If findbugs plugin is enabled manually (in `plugins` section) then spotbugs will not be activated automatically
+    and findbugs will be configured.
+    FindBugs support is marked as deprecated, but it *will not* be removed soon.
+        
+    
+By default, plugin is activated if java sources available (`src/main/java`) and [spotbugs plugin](spotbugs.md) disabled 
+(or findbugs plugin enabled manually).    
 
 Findbugs configuration differ from other tools (checkstyle, pmd): instead of exact rules configuration
 it uses efforts level. Deeper level could reveal more bugs, but with higher mistake possibility. 

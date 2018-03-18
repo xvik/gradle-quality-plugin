@@ -35,8 +35,8 @@ class QualityExtension {
 
     /**
      * Automatically register quality plugins, based on configured (affected) sources ({@link #sourceSets}).
-     * For example, if configured sources contain only java sources then only pmd, checkstyle and findbugs plugins
-     * will be activated; if only groovy sources - then codenarc only.
+     * For example, if configured sources contain only java sources then only pmd, checkstyle and spotbugs (findbugs)
+     * plugins will be activated; if only groovy sources - then codenarc only.
      * <p>
      * When disabled, quality plugins must be registered manually. Only registered plugins will be configured
      * if configuration is not disabled with plugin flags ({@link #pmd}, {@link #checkstyle} etc.).
@@ -155,7 +155,7 @@ class QualityExtension {
      * Animalsniffer is not affected because
      * it's a different kind of check (and, also, it operates on classes so source patterns may not comply).
      * <p>
-     * Findbugs does not support exclusion directly, but plugin will resolve excluded classes and apply
+     * Spotbugs (findbugs) does not support exclusion directly, but plugin will resolve excluded classes and apply
      * them to xml exclude file (default one or provided by user).
      * <p>
      * By default nothing is excluded.
@@ -174,7 +174,7 @@ class QualityExtension {
      * to create initial collections and apply filter on it (using
      * {@link org.gradle.api.file.FileTree#matching(groovy.lang.Closure)}).
      * <p>
-     * Plugin will include files into findbugs exclusion filter xml (default one or provided by user).
+     * Plugin will include files into spotbugs (findbugs) exclusion filter xml (default one or provided by user).
      * <p>
      * Note: this must be used when excluded classes can't be extracted to different source set and
      * filter by package and filename is not sufficient.

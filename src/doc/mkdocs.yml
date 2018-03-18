@@ -58,6 +58,7 @@ pages:
       - Javac lint: tool/lint.md
       - Checkstyle: tool/checkstyle.md
       - PMD: tool/pmd.md
+      - SpotBugs: tool/spotbugs.md
       - FindBugs: tool/findbugs.md
       - CodeNarc: tool/codenarc.md
       - Animalsniffer: tool/animalsniffer.md
