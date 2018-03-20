@@ -9,7 +9,9 @@
         in favor of new rule [NcssCount](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#ncsscount) (which counts lengths without empty lines and comments)
     - Defaults for [NcssCount](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#ncsscount) (which counts length without empty lines and comments) changed:
         30 lines for method and 300 for class (with previous Excessive* rules it was 50 and 500 accordingly)
-    - Disable new rule [DataClass](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#dataclass) as too strict for general cases    
+    - Disable new rule [DataClass](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#dataclass) as too strict for general cases
+    - Switch from [ModifiedCyclomaticComplexity](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#modifiedcyclomaticcomplexity) (deprecated) to
+        [CyclomaticComplexity](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#cyclomaticcomplexity)    
               
 * (breaking) use Spotbugs (3.1.2) instead of Findbugs by default (as [successor](https://github.com/findbugsproject/findbugs))
     - [com.github.spotbugs](http://spotbugs.readthedocs.io/en/latest/gradle.html) external plugin applied (quality plugin brings it as a dependency)
