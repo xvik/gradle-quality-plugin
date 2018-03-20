@@ -67,6 +67,8 @@
     </rule>
     <rule ref="category/java/design.xml/CyclomaticComplexity">
         <properties>
+            <property name="cycloOptions" value="ignoreBooleanPaths"/>
+            <property name="classReportLevel" value="81"/>
             <property name="methodReportLevel" value="11"/>
         </properties>
     </rule>
