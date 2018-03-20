@@ -2,7 +2,15 @@
 * Update checkstyle 8.2 -> 8.8
 * Update pmd 5.8.1 -> 6.1.0
 * Update pmd config:
-    - (breaking) All rules reordered according to [new groups](https://pmd.github.io/pmd-6.0.0/pmd_release_notes.html#rule-categories) 
+    - (breaking) All rules reordered according to [new groups](https://pmd.github.io/pmd-6.0.0/pmd_release_notes.html#rule-categories)
+    - Disable [CommentDefaultAccessModifier](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_codestyle.html#commentdefaultaccessmodifier) as not useful
+    - Disable [ExcessiveClassLength](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#excessiveclasslength)
+        and [ExcessiveMethodLength](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#excessivemethodlength)
+        in favor of new rule [NcssCount](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#ncsscount) (which counts lengths without empty lines and comments)
+    - Defaults for [NcssCount](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#ncsscount) (which counts length without empty lines and comments) changed:
+        30 lines for method and 300 for class (with previous Excessive* rules it was 50 and 500 accordingly)
+    - Disable new rule [DataClass](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#dataclass) as too strict for general cases    
+              
 * (breaking) use Spotbugs (3.1.2) instead of Findbugs by default (as [successor](https://github.com/findbugsproject/findbugs))
     - [com.github.spotbugs](http://spotbugs.readthedocs.io/en/latest/gradle.html) external plugin applied (quality plugin brings it as a dependency)
     - Spotbugs plugin will use configs from different folder (spotbugs/), so if custom findbugs configs were used move them to spotbugs/ folder    

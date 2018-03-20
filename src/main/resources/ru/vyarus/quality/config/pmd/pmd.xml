@@ -30,6 +30,7 @@
         <exclude name="AtLeastOneConstructor"/>
         <exclude name="AvoidFinalLocalVariable"/>
         <exclude name="CallSuperInConstructor"/>
+        <exclude name="CommentDefaultAccessModifier"/>
         <exclude name="ConfusingTernary"/>
         <exclude name="LocalHomeNamingConvention"/> <!-- earlier j2ee group-->
         <exclude name="LocalInterfaceSessionNamingConvention"/> <!-- earlier j2ee group-->
@@ -50,6 +51,9 @@
     <!-- Design (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html) -->
     <rule ref="category/java/design.xml">
         <exclude name="AvoidCatchingGenericException"/>
+        <exclude name="DataClass"/>
+        <exclude name="ExcessiveClassLength"/> <!-- replaced by NcssCount -->
+        <exclude name="ExcessiveMethodLength"/> <!-- replaced by NcssCount -->
         <exclude name="LawOfDemeter"/>
         <exclude name="LoosePackageCoupling"/>
         <exclude name="ModifiedCyclomaticComplexity"/>
@@ -61,19 +65,15 @@
             <property name="problemDepth" value="4"/>
         </properties>
     </rule>
-    <rule ref="category/java/design.xml/ExcessiveMethodLength" message="Avoid methods longer than 50 lines">
-        <properties>
-            <property name="minimum" value="50"/>
-        </properties>
-    </rule>
-    <rule ref="category/java/design.xml/ExcessiveClassLength" message="Avoid classes longer than 500 lines">
-        <properties>
-            <property name="minimum" value="500"/>
-        </properties>
-    </rule>
     <rule ref="category/java/design.xml/CyclomaticComplexity">
         <properties>
             <property name="methodReportLevel" value="11"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/design.xml/NcssCount">
+        <properties>
+            <property name="methodReportLevel" value="30"/>
+            <property name="classReportLevel" value="300"/>
         </properties>
     </rule>
     <rule ref="category/java/design.xml/NPathComplexity">
