@@ -1,16 +1,29 @@
-### [3.0.0](http://xvik.github.io/gradle-quality-plugin/2.4.0) (2018-03-19)
+### [3.0.0](http://xvik.github.io/gradle-quality-plugin/3.0.0) (2018-03-25)
 * Update codenarc 1.0 -> 1.1
 * Update checkstyle 8.2 -> 8.8
 * Update pmd 5.8.1 -> 6.1.0
 * Update pmd config:
-    - (breaking) All rules reordered according to [new groups](https://pmd.github.io/pmd-6.0.0/pmd_release_notes.html#rule-categories) 
+    - (breaking) All rules reordered according to [new groups](https://pmd.github.io/pmd-6.0.0/pmd_release_notes.html#rule-categories)
+    - Disable [CommentDefaultAccessModifier](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_codestyle.html#commentdefaultaccessmodifier) as not useful
+    - Disable [ExcessiveClassLength](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#excessiveclasslength)
+        and [ExcessiveMethodLength](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#excessivemethodlength)
+        in favor of new rule [NcssCount](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#ncsscount) (which counts lengths without empty lines and comments)
+    - Defaults for [NcssCount](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#ncsscount) (which counts length without empty lines and comments) changed:
+        30 lines for method and 300 for class (with previous Excessive* rules it was 50 and 500 accordingly)
+    - Disable new rule [DataClass](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#dataclass) as too strict for general cases
+    - Switch from [ModifiedCyclomaticComplexity](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#modifiedcyclomaticcomplexity) (deprecated) to
+        [CyclomaticComplexity](https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#cyclomaticcomplexity) with ignoreBooleanPaths option                 
 * (breaking) use Spotbugs (3.1.2) instead of Findbugs by default (as [successor](https://github.com/findbugsproject/findbugs))
     - [com.github.spotbugs](http://spotbugs.readthedocs.io/en/latest/gradle.html) external plugin applied (quality plugin brings it as a dependency)
     - Spotbugs plugin will use configs from different folder (spotbugs/), so if custom findbugs configs were used move them to spotbugs/ folder    
     - Findbugs support is deprecated and will be removed someday (but not soon). 
     - To use findbugs (as before): disable spotbugs support (quality.spotbugs = false) 
        or enable findbugs plugin manually (in this case spotbugs plugin will not be registered)  
-
+* Update spotbugs exclusions:
+    - Exclude [NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#np-method-tightens-nullness-annotation-on-parameter-np-method-parameter-tightens-annotation) 
+        check as it prevents @Nullable override, which may be required for guava functions
+    - Exclude [NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#np-possible-null-pointer-dereference-due-to-return-value-of-called-method-np-null-on-some-path-from-return-value) 
+        check as misleading and not useful 
 
 ### [2.4.0](http://xvik.github.io/gradle-quality-plugin/2.4.0) (2017-09-21)
 * Support gradle 4.2 (#3)    

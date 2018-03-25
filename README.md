@@ -8,7 +8,7 @@
 
 ### About
 
-Static code analysis for Java and Groovy projects using Checkstyle, PMD, FindBugs and CodeNarc.
+Static code analysis for Java and Groovy projects using Checkstyle, PMD, SpotBugs (FindBugs) and CodeNarc.
 Plugin implements unified console output for all quality plugins which greatly simplifies developer workflow: 
 only console is required for working with violations and makes it feel the same as java compiler errors.
 
@@ -28,6 +28,7 @@ Features:
     - `checkQuality[Main]` - run quality tasks for main (or any other) source set       
 * Enable plugins: [Checkstyle](https://docs.gradle.org/current/userguide/checkstyle_plugin.html),
 [PMD](https://docs.gradle.org/current/userguide/pmd_plugin.html),
+[SpotBugs](http://spotbugs.readthedocs.io/en/latest/gradle.html),
 [FindBugs](https://docs.gradle.org/current/userguide/findbugs_plugin.html),
 [CodeNarc](https://docs.gradle.org/current/userguide/codenarc_plugin.html)
 
@@ -47,7 +48,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:2.4.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:3.0.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -57,17 +58,16 @@ OR
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '2.4.0'
+    id 'ru.vyarus.quality' version '3.0.0'
 }
 ```
 
 Plugin must be applied after `java` or `groovy` plugins. Otherwise it will do nothing.
 
-**IMPORTANT** Plugin is compiled for java 6, but pmd 5.5 [requires java 7](https://pmd.github.io/pmd-5.5.1/overview/changelog-old.html) 
-and checkstyle 7 [requires java 8](http://checkstyle.sourceforge.net/releasenotes.html#Release_7.0). So, by default, you will need java 8.
+**IMPORTANT** Plugin itself is compiled for java 7, but java quality tools require java 8 so, by default, 
+you will need java 8 for java projects. Groovy project will work on java 7.
 
-If you are using lower java versions either use previous plugin release ([1.3.0](https://github.com/xvik/gradle-quality-plugin/tree/1.3.0)) or manually specify lower checkstyle and pmd (if required java 6)
-versions using `checkstyleVersion = '6.19'` and `pmdVersion = '5.4.2'` properties (note that you may need to customize provided default rules configurations to disable rules not yet available in your tool versions).
+If you are using lower java versions use previous plugin releases.
 
 ### Usage
 

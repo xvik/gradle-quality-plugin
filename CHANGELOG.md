@@ -1,3 +1,4 @@
+### 3.0.0 (2018-03-25)
 * Update codenarc 1.0 -> 1.1
 * Update checkstyle 8.2 -> 8.8
 * Update pmd 5.8.1 -> 6.1.0

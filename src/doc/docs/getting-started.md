@@ -29,8 +29,8 @@ plugins {
     Plugin must be applied after `java` or `groovy` plugins. Otherwise it will do nothing.
 
 !!! note
-    Plugin is compiled for java 7, but pmd 5.5 [requires java 7](https://pmd.github.io/pmd-5.5.1/overview/changelog-old.html) 
-    and checkstyle 7 [requires java 8](http://checkstyle.sourceforge.net/releasenotes.html#Release_7.0). So, by default, you will need java 8 for java.
+    Plugin itself is compiled for java 7, but java quality tools require java 8 so, by default, 
+    you will need java 8 for java. Groovy project will work on java 7. 
 
 If you are using lower java versions use previous plugin releases.
 
