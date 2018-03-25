@@ -17,7 +17,8 @@ By default, plugin is activated if java sources available (`src/main/java`).
 
 SpotBugs configuration differ from other tools (checkstyle, pmd): instead of exact rules configuration
 it uses [efforts level](http://spotbugs.readthedocs.io/en/latest/effort.html). Deeper level could reveal more bugs, but with higher mistake possibility. 
-Default settings ('max' effort and 'medium' level) are perfect for most cases.
+Default settings ('max' effort and 'medium' level) are perfect for most cases. Some checks were disabled in the default 
+[filter file](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/spotbugs/exclude.xml)
 
 !!! note
     Special [xsl file](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/spotbugs/html-report-style.xsl) 
@@ -38,7 +39,7 @@ Default settings ('max' effort and 'medium' level) are perfect for most cases.
 Counts in braces show priorities (p1/p2/p3).
 
 !!! note
-    There is no link to spotbugs site (like other tools), because report already contains everything from there.
+    There is no link to spotbugs site (like other tools), because report already contains [everything from there](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html).
 
 ## Config
 
@@ -64,6 +65,10 @@ Or you can use annotations. SpotBugs use custom annotations and so you need to a
 ```java
 @SuppressFBWarnings("URF_UNREAD_FIELD")
 ```
+
+!!! abstract
+    Spotbugs can't use default `@SuppressWarnings` annotation because it's a source annotation
+    and not available in bytecode. 
 
 ## Plugins
 
@@ -112,13 +117,14 @@ spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.2.0'
 
 ## Annotations
 
-You may use [jsr305 annotations](http://findbugs.sourceforge.net/manual/annotations.html) to guide findbugs.
-Add `com.google.code.findbugs:jsr305:3.0.0` dependency (with provided scope if possible).
+Use spotbugs-annotations to guide spotbugs nullability checks (`#!java @Nonnull` and `#!java @Nullable`).
+Add ``com.github.spotbugs:spotbugs-annotations:3.1.2`` dependency (with provided scope if possible).
 
 !!! warning
-    Jsr-305 is dead and if you use just `#!java @Nonnull` and `#!java @Nullable` then prefer using spotbugs-annotations
-    `#!java @NonNull` and `#!java @Nullable` (which were [undeprecated](https://github.com/spotbugs/spotbugs/issues/130)):
-    `com.github.spotbugs:spotbugs-annotations:3.1.2`
+    Before,  annotations from Jsr-305 [were used](http://findbugs.sourceforge.net/manual/annotations.html) 
+    (`com.google.code.findbugs:jsr305`), but now it is dead.
+    Remove jsr-305 jar if it were used and use [undeprecated](https://github.com/spotbugs/spotbugs/issues/130))
+    `#!java @Nonnull` and `#!java @Nullable`
 
 In some cases you will have to use it.
 For example, you may face issues with guava functions or predicates:
@@ -130,11 +136,14 @@ For example, you may face issues with guava functions or predicates:
 The reason for this is that guava use `@Nullable` annotation, which is `@Inherited`, so
 even if you not set annotation on your own function or predicate it will still be visible.
 
-!!! note
-    Guava is also [trying to get rid of jsr-305](https://github.com/google/guava/issues/2960).
-
-The simplest workaround is to set `@Nonnull` annotation (jsr305) on your function or predicate:
+The simplest workaround is to set `@Nonnull` annotation on your function or predicate:
 
 ```java
 public boolean apply(@Nonnull final Object input) {
 ```
+
+!!! note
+    `NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION` check is disabled because it does not allow this workaround to work
+
+!!! abstract
+    Guava is now using checker framework [instead of jsr-305](https://github.com/google/guava/issues/2960).
