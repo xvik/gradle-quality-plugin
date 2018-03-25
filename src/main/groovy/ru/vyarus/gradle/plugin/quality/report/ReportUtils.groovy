@@ -37,7 +37,6 @@ class ReportUtils {
         name = name[0..name.lastIndexOf('.') - 1] // remove extension
         name = name.replaceAll('\\\\|/', '.')
         name[0..name.lastIndexOf('.') - 1] // remove class name
-
     }
 
     /**

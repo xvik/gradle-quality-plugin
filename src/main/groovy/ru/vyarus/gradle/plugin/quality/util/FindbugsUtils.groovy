@@ -55,7 +55,6 @@ class FindbugsUtils {
      */
     @SuppressWarnings('FileCreateTempFile')
     static File mergeExcludes(File src, Collection<File> exclude, Collection<File> roots) {
-
         Node xml = new XmlParser().parse(src)
         exclude.each {
             String clazz = FileUtils.extractJavaClass(roots, it)

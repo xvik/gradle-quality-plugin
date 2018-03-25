@@ -303,7 +303,6 @@ class QualityPlugin implements Plugin<Project> {
         // in multi-project reporter registered for each project, but all gets called on task execution in any module
         project.gradle.taskGraph.afterTask { Task task, TaskState state ->
             if (task.name.startsWith(type) && project == task.project) {
-
                 String taskType = task.name[type.length()..-1].toLowerCase()
                 if (generatesHtmlReport) {
                     (reporter as HtmlReportGenerator).generateHtmlReport(project, taskType)
