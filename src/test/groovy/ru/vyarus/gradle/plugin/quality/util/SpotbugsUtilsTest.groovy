@@ -23,6 +23,12 @@ class SpotbugsUtilsTest extends AbstractTest {
     <Source name="~.*\\.groovy"/>
   </Match>
   <Match>
+    <Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/>
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+  <Match>
     <Class name="sample.Sample"/>
   </Match>
   <Match>
@@ -43,6 +49,12 @@ class SpotbugsUtilsTest extends AbstractTest {
   <Match>
     <Source name="~.*\\.groovy"/>
   </Match>
+  <Match>
+    <Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/>
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
 </FindBugsFilter>
 """ as String
     }
@@ -57,6 +69,12 @@ class SpotbugsUtilsTest extends AbstractTest {
                 """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
   <Match>
     <Source name="~.*\\.groovy"/>
+  </Match>
+  <Match>
+    <Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/>
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 </FindBugsFilter>
 """ as String
