@@ -1,7 +1,10 @@
 # PMD
 
 !!! summary ""
-    Java | [Home](http://pmd.sourceforge.net) | [Plugin](https://docs.gradle.org/current/userguide/pmd_plugin.html)
+    Java | 
+    [Home](http://pmd.sourceforge.net) | 
+    [Release Notes](https://pmd.github.io/latest/pmd_release_notes.html) | 
+    [Plugin](https://docs.gradle.org/current/userguide/pmd_plugin.html)  
     
 By default, plugin is activated if java sources available (`src/main/java`).    
 

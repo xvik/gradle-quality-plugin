@@ -1,7 +1,10 @@
 # SpotBugs
 
 !!! summary ""
-    Java | [Home](https://spotbugs.github.io) | [Plugin](http://spotbugs.readthedocs.io/en/latest/gradle.html)
+    Java | 
+    [Home](https://spotbugs.github.io) | 
+    [Release Notes](https://github.com/spotbugs/spotbugs/blob/master/CHANGELOG.md) |
+    [Plugin](http://spotbugs.readthedocs.io/en/latest/gradle.html)     
 
 !!! info
     SpotBugs is a successor project to [deprecated FindBugs](https://github.com/findbugsproject/findbugs) project.
@@ -17,7 +20,7 @@ By default, plugin is activated if java sources available (`src/main/java`).
 
 SpotBugs configuration differ from other tools (checkstyle, pmd): instead of exact rules configuration
 it uses [efforts level](http://spotbugs.readthedocs.io/en/latest/effort.html). Deeper level could reveal more bugs, but with higher mistake possibility. 
-Default settings ('max' effort and 'medium' level) are perfect for most cases. Some checks were disabled in the default 
+Default settings (`max` effort and `medium` level) are perfect for most cases. Some checks were disabled in the default 
 [filter file](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/spotbugs/exclude.xml)
 
 !!! note
@@ -123,7 +126,7 @@ Add ``com.github.spotbugs:spotbugs-annotations:3.1.2`` dependency (with provided
 !!! warning
     Before,  annotations from Jsr-305 [were used](http://findbugs.sourceforge.net/manual/annotations.html) 
     (`com.google.code.findbugs:jsr305`), but now it is dead.
-    Remove jsr-305 jar if it were used and use [undeprecated](https://github.com/spotbugs/spotbugs/issues/130))
+    Remove jsr-305 jar if it were used and use [undeprecated](https://github.com/spotbugs/spotbugs/issues/130)
     `#!java @Nonnull` and `#!java @Nullable`
 
 In some cases you will have to use it.
@@ -142,8 +145,8 @@ The simplest workaround is to set `@Nonnull` annotation on your function or pred
 public boolean apply(@Nonnull final Object input) {
 ```
 
-!!! note
-    `NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION` check is disabled because it does not allow this workaround to work
+!!! hint
+    `NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION` check was disabled because it does not allow this workaround to work
 
 !!! abstract
     Guava is now using checker framework [instead of jsr-305](https://github.com/google/guava/issues/2960).

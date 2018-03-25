@@ -1,7 +1,9 @@
 # Animalsniffer
 
 !!! summary ""
-    Java, Groovy | [Home](http://www.mojohaus.org/animal-sniffer/) | [Plugin](https://github.com/xvik/gradle-animalsniffer-plugin)
+    Java, Groovy | 
+    [Home](http://www.mojohaus.org/animal-sniffer/) | 
+    [Plugin](https://github.com/xvik/gradle-animalsniffer-plugin) 
     
 In contrast to other tools, animalsniffer plugin is never activated automatically. Plugin will only 
 apply common configuration (used source sets, strict mode) if [ru.vyarus.animalsniffer](https://github.com/xvik/gradle-animalsniffer-plugin) 

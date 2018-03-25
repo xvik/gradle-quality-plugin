@@ -2,18 +2,18 @@
 
 !!! summary ""
     Plugin activates and configures quality tools for java and groovy projects using 
-    [Checkstyle](http://checkstyle.sourceforge.net), 
-    [PMD](http://pmd.sourceforge.net),
-    [SpotBugs](https://spotbugs.github.io), 
-    [FindBugs (deprecated)](http://findbugs.sourceforge.net),
-    [CodeNarc](http://codenarc.sourceforge.net). 
+    [Checkstyle](tool/checkstyle.md), 
+    [PMD](tool/pmd.md),
+    [SpotBugs](tool/spotbugs.md), 
+    [FindBugs (deprecated)](tool/spotbugs.md),
+    [CodeNarc](tool/codenarc.md). 
     Plugin unifies console output for all quality plugins which greatly simplifies developer workflow: 
     only console is required for working with violations and makes it feel the same as java compiler errors.
     
 !!! note
     Google's [error-prone](http://errorprone.info/) is not included because checkstyle and pmd covers all
     error-prone checks and quality plugin makes all tools behave the same way as error-prone, but without java compiler modifications
-    and [environment specific setup](https://github.com/tbroyer/gradle-errorprone-plugin#requirements).    
+    and [environment specific setup](https://github.com/tbroyer/gradle-errorprone-plugin#requirements).          
 
 [Release notes](about/history.md) - [License](about/license.md)
 

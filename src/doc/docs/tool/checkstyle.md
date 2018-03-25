@@ -1,7 +1,10 @@
 # Checkstyle
 
 !!! summary ""
-    Java | [Home](http://checkstyle.sourceforge.net) | [Plugin](https://docs.gradle.org/current/userguide/checkstyle_plugin.html)
+    Java | 
+    [Home](http://checkstyle.sourceforge.net) | 
+    [Release Notes](http://checkstyle.sourceforge.net/releasenotes.html) |
+    [Plugin](https://docs.gradle.org/current/userguide/checkstyle_plugin.html)     
     
 By default, plugin is activated if java sources available (`src/main/java`).    
 

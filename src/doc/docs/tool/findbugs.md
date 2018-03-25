@@ -1,7 +1,10 @@
 # FindBugs
 
 !!! summary ""
-    Java | [Home](http://findbugs.sourceforge.net) | [Plugin](https://docs.gradle.org/current/userguide/findbugs_plugin.html)
+    Java | 
+    [Home](http://findbugs.sourceforge.net) | 
+    [Release Notes](http://findbugs.sourceforge.net/Changes.html) |
+    [Plugin](https://docs.gradle.org/current/userguide/findbugs_plugin.html)     
 
 !!! danger
     FindBugs support is deprecated, because project is abandoned. Use SpotBugs [successor project](https://github.com/findbugsproject/findbugs) instead.

@@ -1,7 +1,10 @@
 # Checkstyle
 
 !!! summary ""
-    Groovy | [Home](http://codenarc.sourceforge.net) | [Plugin](https://docs.gradle.org/current/userguide/codenarc_plugin.html)
+    Groovy | 
+    [Home](http://codenarc.sourceforge.net) | 
+    [Release Notes](https://github.com/CodeNarc/CodeNarc/blob/master/CHANGELOG.md) |
+    [Plugin](https://docs.gradle.org/current/userguide/codenarc_plugin.html)     
     
 By default, plugin is activated if groovy sources available (`src/main/groovy`).    
 
