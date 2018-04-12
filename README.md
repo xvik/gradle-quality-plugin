@@ -46,6 +46,7 @@ Releases are published to [bintray jcenter](https://bintray.com/vyarus/xvik/grad
 buildscript {
     repositories {
         jcenter()
+        gradlePluginPortal()
     }
     dependencies {
         classpath 'ru.vyarus:gradle-quality-plugin:3.0.0'

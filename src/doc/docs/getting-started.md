@@ -9,6 +9,7 @@ and [gradle plugins portal](https://plugins.gradle.org).
 buildscript {
     repositories {
         jcenter()
+        gradlePluginPortal()
     }
     dependencies {
         classpath 'ru.vyarus:gradle-quality-plugin:3.0.0'
