@@ -7,8 +7,6 @@ environment:
 
 install:
   - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
-  - python --version
-  - pip --version
   - pip install codecov --user
 
 build_script:

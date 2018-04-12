@@ -9,7 +9,7 @@
     "projectVersion": "0.1.0",
     "projectDesc": "Gradle quality plugin for Java and Groovy",
     "pluginPortalDesc": "Static code analysis for Java and Groovy projects",
-    "targetJava": "1.8",
+    "targetJava": "1.7",
     "pluginPortalTags": "java, groovy, quality, checkstyle, pmd, spotbugs, findbugs, codenarc",
     "mirrorToJcenter": true,
     "pluginPortalUseCustomGroup": true,
@@ -18,6 +18,6 @@
     "bintrayTags": "gradle, java, groovy, quality, checkstyle, pmd, spotbugs, findbugs, codenarc",
     "bintraySignFiles": true,
     "mavenCentralSync": true,
-    "usedGeneratorVersion": "1.5.0"
+    "usedGeneratorVersion": "1.6.0"
   }
 }
