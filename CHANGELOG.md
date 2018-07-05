@@ -1,6 +1,11 @@
 * Gradle 4.8 compatibility:
     - updated com.github.spotbugs plugin 1.6.1 -> 1.6.2  
     - fix exclusions support 
+* Update checkstyle 8.8 -> 8.11
+* Update checkstyle config:
+    - New check [LambdaParameterName](http://checkstyle.sourceforge.net/config_naming.html#LambdaParameterName)    
+* Update pmd 6.1.0 -> 6.5.0 
+* Update spotbugs 3.1.2 -> 3.1.5 
 
 ### 3.0.0 (2018-03-25)
 * Update codenarc 1.0 -> 1.1

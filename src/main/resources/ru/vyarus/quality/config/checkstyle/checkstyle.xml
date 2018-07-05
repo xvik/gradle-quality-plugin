@@ -185,6 +185,7 @@
         <module name="InterfaceTypeParameterName">
             <property name="format" value="^[A-Z]*$"/>
         </module>
+        <module name="LambdaParameterName"/>
         <module name="LocalFinalVariableName"/>
         <module name="LocalVariableName"/>
         <module name="MemberName"/>
