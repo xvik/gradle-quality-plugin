@@ -3,12 +3,12 @@ plugins {
     id 'jacoco'
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '0.9.10'
-    id 'net.researchgate.release' version '2.6.0'
+    id 'net.researchgate.release' version '2.7.0'
     id 'ru.vyarus.quality' version '3.0.0'
-    id 'com.jfrog.bintray' version '1.8.0'
+    id 'com.jfrog.bintray' version '1.8.3'
     id 'ru.vyarus.java-lib' version '1.0.5'
     id 'ru.vyarus.github-info' version '1.1.0'
-    id 'com.github.ben-manes.versions' version '0.17.0'
+    id 'com.github.ben-manes.versions' version '0.20.0'
     id "pl.droidsonroids.jacoco.testkit" version "1.0.3"
     id 'ru.vyarus.mkdocs' version '1.0.0'
 }
@@ -16,12 +16,12 @@ plugins {
 sourceCompatibility = 1.7
 
 wrapper {
-    gradleVersion = '4.6'
+    gradleVersion = '4.8.1'
 }
 
 repositories { jcenter(); maven { url "https://plugins.gradle.org/m2/"} }
 dependencies {
-    compile 'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.1'
+    compile 'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.2'
 
     testCompile('org.spockframework:spock-core:1.1-groovy-2.4') {
         exclude module: 'groovy-all'

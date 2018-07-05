@@ -42,11 +42,15 @@ class MultiModuleUseKitTest extends AbstractKitTest {
         BuildResult result = run('check')
 
         then: "violations detected in module only"
-        result.output.replaceAll("Total time: .*", "").replaceAll("\r", '').trim().startsWith(""":mod1:compileJava
-:mod1:processResources NO-SOURCE
-:mod1:classes
-:mod1:checkstyleMain
+        result.output.replaceAll("Total time: .*", "").replaceAll("\r", '').trim().startsWith("""> Task :mod1:compileJava
+> Task :mod1:processResources NO-SOURCE
+> Task :mod1:classes
+
+> Task :mod1:checkstyleMain
 Checkstyle rule violations were found. See the report at: file:///tmp/junit6300057182805361069/mod1/build/reports/checkstyle/main.html
+Checkstyle files with violations: 1
+Checkstyle violations by severity: [error:2]
+
 
 2 Checkstyle rule violations were found in 1 files
 
@@ -58,16 +62,21 @@ Checkstyle rule violations were found. See the report at: file:///tmp/junit63000
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 
-:mod1:compileTestJava NO-SOURCE
-:mod1:processTestResources NO-SOURCE
-:mod1:testClasses UP-TO-DATE
-:mod1:test NO-SOURCE
-:mod1:check
-:mod2:compileJava
-:mod2:processResources NO-SOURCE
-:mod2:classes
-:mod2:checkstyleMain
+
+> Task :mod1:compileTestJava NO-SOURCE
+> Task :mod1:processTestResources NO-SOURCE
+> Task :mod1:testClasses UP-TO-DATE
+> Task :mod1:test NO-SOURCE
+> Task :mod1:check
+> Task :mod2:compileJava
+> Task :mod2:processResources NO-SOURCE
+> Task :mod2:classes
+
+> Task :mod2:checkstyleMain
 Checkstyle rule violations were found. See the report at: file:///tmp/junit6300057182805361069/mod2/build/reports/checkstyle/main.html
+Checkstyle files with violations: 1
+Checkstyle violations by severity: [error:2]
+
 
 2 Checkstyle rule violations were found in 1 files
 
@@ -79,11 +88,12 @@ Checkstyle rule violations were found. See the report at: file:///tmp/junit63000
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
 
-:mod2:compileTestJava NO-SOURCE
-:mod2:processTestResources NO-SOURCE
-:mod2:testClasses UP-TO-DATE
-:mod2:test NO-SOURCE
-:mod2:check
+
+> Task :mod2:compileTestJava NO-SOURCE
+> Task :mod2:processTestResources NO-SOURCE
+> Task :mod2:testClasses UP-TO-DATE
+> Task :mod2:test NO-SOURCE
+> Task :mod2:check
 
 BUILD SUCCESSFUL""".replaceAll("tmp/junit6300057182805361069", ReportUtils.noRootFilePath(testProjectDir.root)))
     }

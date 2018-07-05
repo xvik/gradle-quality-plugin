@@ -18,6 +18,6 @@
     "bintrayTags": "gradle, java, groovy, quality, checkstyle, pmd, spotbugs, findbugs, codenarc",
     "bintraySignFiles": true,
     "mavenCentralSync": true,
-    "usedGeneratorVersion": "1.6.0"
+    "usedGeneratorVersion": "1.7.0"
   }
 }

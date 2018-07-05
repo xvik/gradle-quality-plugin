@@ -1,3 +1,7 @@
+* Gradle 4.8 compatibility:
+    - updated com.github.spotbugs plugin 1.6.1 -> 1.6.2  
+    - fix exclusions support 
+
 ### 3.0.0 (2018-03-25)
 * Update codenarc 1.0 -> 1.1
 * Update checkstyle 8.2 -> 8.8

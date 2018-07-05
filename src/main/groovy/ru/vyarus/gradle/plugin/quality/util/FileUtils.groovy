@@ -35,7 +35,7 @@ class FileUtils {
      */
     @CompileStatic(TypeCheckingMode.SKIP)
     static Set<File> resolveIgnoredFiles(FileTree files, Collection<String> excludes) {
-        excludes ? files.matching { include excludes }.files : []
+        excludes ? new HashSet(files.matching { include excludes }.files) : []
     }
 
     /**
