@@ -32,6 +32,7 @@
         <exclude name="CallSuperInConstructor"/>
         <exclude name="CommentDefaultAccessModifier"/>
         <exclude name="ConfusingTernary"/>
+        <exclude name="ClassNamingConventions"/>
         <exclude name="LocalHomeNamingConvention"/> <!-- earlier j2ee group-->
         <exclude name="LocalInterfaceSessionNamingConvention"/> <!-- earlier j2ee group-->
         <exclude name="LocalVariableCouldBeFinal"/>

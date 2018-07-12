@@ -5,6 +5,8 @@
 * Update checkstyle config:
     - New check [LambdaParameterName](http://checkstyle.sourceforge.net/config_naming.html#LambdaParameterName)    
 * Update pmd 6.1.0 -> 6.5.0 
+* Update pmd config:
+    - Disable [ClassNamingConventions](https://pmd.github.io/pmd-6.5.0/pmd_rules_java_codestyle.html#classnamingconventions)
 * Update spotbugs 3.1.2 -> 3.1.5 
 * Update codenarc 1.1 -> 1.2
 * Update codenarc config:
