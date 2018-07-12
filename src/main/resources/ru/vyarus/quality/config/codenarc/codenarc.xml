@@ -12,7 +12,9 @@
     <ruleset-ref path='rulesets/concurrency.xml'/>
 
     <!-- Convention (http://codenarc.sourceforge.net/codenarc-rules-convention.html) -->
-    <ruleset-ref path='rulesets/convention.xml'/>
+    <ruleset-ref path='rulesets/convention.xml'>
+        <exclude name="NoJavaUtilDate"/>
+    </ruleset-ref>
 
     <!-- Design (http://codenarc.sourceforge.net/codenarc-rules-design.html) -->
     <ruleset-ref path='rulesets/design.xml'/>

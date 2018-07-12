@@ -6,6 +6,9 @@
     - New check [LambdaParameterName](http://checkstyle.sourceforge.net/config_naming.html#LambdaParameterName)    
 * Update pmd 6.1.0 -> 6.5.0 
 * Update spotbugs 3.1.2 -> 3.1.5 
+* Update codenarc 1.1 -> 1.2
+* Update codenarc config:
+    - Disable new check [NoJavaUtilDate](http://codenarc.sourceforge.net/codenarc-rules-convention.html#NoJavaUtilDate) 
 
 ### 3.0.0 (2018-03-25)
 * Update codenarc 1.0 -> 1.1
