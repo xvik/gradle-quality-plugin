@@ -140,8 +140,15 @@ class QualityExtension {
      * Also, console reporting require xml reports parsing, which could be time consuming in case of too
      * many errors (large xml reports).
      * True by default.
+     * @see #htmlReports to disable html reporting
      */
     boolean consoleReporting = true
+
+    /**
+     * When false, no html report will be built. By default, html reports are always built.
+     * @see #consoleReporting for disabling console reporting
+     */
+    boolean htmlReports = true
 
     /**
      * Source sets to apply checks on.

@@ -137,6 +137,10 @@ class QualityPlugin implements Plugin<Project> {
                         configLoader.resolveCheckstyleConfig()
                         applyExcludes(it, extension)
                     }
+                    reports {
+                        xml.enabled = true
+                        html.enabled = extension.htmlReports
+                    }
                 }
             }
             configurePluginTasks(project, extension, Checkstyle, 'checkstyle', new CheckstyleReporter(configLoader))
@@ -162,6 +166,10 @@ class QualityPlugin implements Plugin<Project> {
                     doFirst {
                         configLoader.resolvePmdConfig()
                         applyExcludes(it, extension)
+                    }
+                    reports {
+                        xml.enabled = true
+                        html.enabled = extension.htmlReports
                     }
                 }
             }
@@ -268,7 +276,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                     reports {
                         xml.enabled = true
-                        html.enabled = true
+                        html.enabled = extension.htmlReports
                     }
                 }
             }
@@ -294,8 +302,9 @@ class QualityPlugin implements Plugin<Project> {
         }
     }
 
-    private void applyReporter(Project project, String type, Reporter reporter, boolean consoleReport) {
-        boolean generatesHtmlReport = HtmlReportGenerator.isAssignableFrom(reporter.class)
+    private void applyReporter(Project project, String type, Reporter reporter,
+                               boolean consoleReport, boolean htmlReport) {
+        boolean generatesHtmlReport = htmlReport && HtmlReportGenerator.isAssignableFrom(reporter.class)
         if (!consoleReport && !generatesHtmlReport) {
             // nothing to do at all
             return
@@ -375,7 +384,7 @@ class QualityPlugin implements Plugin<Project> {
      */
     private void configurePluginTasks(Project project, QualityExtension extension,
                                       Class taskType, String task, Reporter reporter) {
-        applyReporter(project, task, reporter, extension.consoleReporting)
+        applyReporter(project, task, reporter, extension.consoleReporting, extension.htmlReports)
         applyEnabledState(project, extension, taskType)
         groupQualityTasks(project, task)
     }

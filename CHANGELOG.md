@@ -9,6 +9,7 @@
 * Update codenarc 1.1 -> 1.2
 * Update codenarc config:
     - Disable new check [NoJavaUtilDate](http://codenarc.sourceforge.net/codenarc-rules-convention.html#NoJavaUtilDate) 
+* Option to disable html reports: quality.htmlReports=false (#5)
 
 ### 3.0.0 (2018-03-25)
 * Update codenarc 1.0 -> 1.1
