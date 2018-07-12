@@ -1,3 +1,19 @@
+### [3.1.0](http://xvik.github.io/gradle-quality-plugin/3.1.0) (2018-07-13)
+* Gradle 4.8 compatibility:
+    - updated com.github.spotbugs plugin 1.6.1 -> 1.6.2  
+    - fix exclusions support 
+* Update checkstyle 8.8 -> 8.11
+* Update checkstyle config:
+    - New check [LambdaParameterName](http://checkstyle.sourceforge.net/config_naming.html#LambdaParameterName)    
+* Update pmd 6.1.0 -> 6.5.0 
+* Update pmd config:
+    - Disable [ClassNamingConventions](https://pmd.github.io/pmd-6.5.0/pmd_rules_java_codestyle.html#classnamingconventions)
+* Update spotbugs 3.1.2 -> 3.1.5 
+* Update codenarc 1.1 -> 1.2
+* Update codenarc config:
+    - Disable new check [NoJavaUtilDate](http://codenarc.sourceforge.net/codenarc-rules-convention.html#NoJavaUtilDate) 
+* Option to disable html reports: quality.htmlReports=false (#5)
+
 ### [3.0.0](http://xvik.github.io/gradle-quality-plugin/3.0.0) (2018-03-25)
 * Update codenarc 1.0 -> 1.1
 * Update checkstyle 8.2 -> 8.8

@@ -27,20 +27,13 @@ contains all java checks, but some of them are disabled. Remove exclusion to ena
 ...
 ```
 
-!!! note
-    Pmd will always show warning in logs:
-    ```
-    This analysis could be faster, please consider using Incremental Analysis: https://pmd.github.io/pmd-6.1.0/pmd_userdocs_getting_started.html#incremental-analysis
-    ```
-    This is [known gradle issue](https://github.com/pmd/pmd/issues/921), without solution.
-
 ## Config
 
 Tool config options with defaults:
 
 ```groovy
 quality {
-    pmdVersion = '6.1.0'
+    pmdVersion = '6.5.0'
     pmd = true // false to disable automatic plugin activation
 }
 ```

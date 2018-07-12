@@ -2,6 +2,9 @@
 
 ## Installation
 
+!!! note
+    When updating plugin version in your project don't forget to call `clean` task to remove cached configs from previous plugin version
+
 Plugin is available from maven central, [bintray jcenter](https://bintray.com/bintray/jcenter)
 and [gradle plugins portal](https://plugins.gradle.org).
 
@@ -12,7 +15,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:3.0.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:3.1.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -22,7 +25,7 @@ OR
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '3.0.0'
+    id 'ru.vyarus.quality' version '3.1.0'
 }
 ```
 

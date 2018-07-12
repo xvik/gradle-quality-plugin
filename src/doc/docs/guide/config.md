@@ -71,6 +71,11 @@ quality {
      * True by default.
      */
     consoleReporting = true
+    
+    /**
+     * When false, no html reports will be built. True by default.
+     */
+    htmlReports = true
 
     /**
      * Source sets to apply checks on.
@@ -161,6 +166,18 @@ quality {
 
 Console reporting use xml reports, produced by quality plugins. In case of too many errors, xml parsing could slow down build.
 You may use reporting disabling to speed up build a bit. In most cases (when you don't have thousands of errors) console reporting [will be fast](profile.md). 
+
+## Html reports
+
+By default, all plugins are configured to generate both xml and html reports. Xml report is
+required for console output and html report preserved for consultation.
+If you don't need html reports (e.g. on ci server) they could be disabled:
+
+```groovy
+quality {
+    htmlReports = false
+}
+```
 
 ## Disable quality plugins
 

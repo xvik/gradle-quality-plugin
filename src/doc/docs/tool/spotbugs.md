@@ -50,7 +50,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    spotbugsVersion = '3.1.2'
+    spotbugsVersion = '3.1.5'
     spotbugs = true // false to disable automatic plugin activation
     spotbugsEffort = 'max'  // min, less, more or max
     spotbugsLevel = 'medium' // low, medium, high
@@ -97,7 +97,7 @@ Or declare spotbugs plugin manually (it will be configured by quality plugin):
 
 ```groovy
 plugins {
-    id 'com.github.spotbugs' version '1.6.1'
+    id 'com.github.spotbugs' version '1.6.2'
 }
 dependencies {
     spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.2.0'

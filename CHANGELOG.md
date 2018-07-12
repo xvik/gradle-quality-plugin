@@ -1,3 +1,4 @@
+### 3.1.0 (2018-07-13)
 * Gradle 4.8 compatibility:
     - updated com.github.spotbugs plugin 1.6.1 -> 1.6.2  
     - fix exclusions support 
