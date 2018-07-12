@@ -35,6 +35,8 @@ Features:
 
 ### Setup
 
+NOTE: when updating plugin version in your project don't forget to call `clean` task to remove cached configs from previous plugin version
+
 Releases are published to [bintray jcenter](https://bintray.com/vyarus/xvik/gradle-quality-plugin/), 
 [maven central](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/gradle-quality-plugin) and 
 [gradle plugins portal](https://plugins.gradle.org/plugin/ru.vyarus.quality).
