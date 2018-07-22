@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/getting-started/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/guide/automatic/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/guide/config/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/guide/exclusion/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/guide/profile/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/tool/lint/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/tool/checkstyle/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/tool/pmd/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/tool/spotbugs/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/tool/findbugs/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/tool/codenarc/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/tool/animalsniffer/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/task/config/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/task/group/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/about/history/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://xvik.github.io/gradle-quality-plugin/3.1.1/about/license/</loc>
+     <lastmod>2018-07-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+</urlset>
