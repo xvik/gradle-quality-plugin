@@ -1,3 +1,7 @@
+### [3.1.1](http://xvik.github.io/gradle-quality-plugin/3.1.1) (2018-07-22)
+* Fix maven central and jcenter artifacts (missed dependency) (#9)
+* Update spotbugs 3.1.5 -> 3.1.6 
+
 ### [3.1.0](http://xvik.github.io/gradle-quality-plugin/3.1.0) (2018-07-13)
 * Gradle 4.8 compatibility:
     - updated com.github.spotbugs plugin 1.6.1 -> 1.6.2  
