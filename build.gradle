@@ -109,6 +109,9 @@ test {
     }
     maxHeapSize = '2g'
     forkEvery = 5
+    doLast {
+        sleep(1000)
+    }
 }
 
 dependencyUpdates {
