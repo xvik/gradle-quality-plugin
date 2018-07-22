@@ -1,4 +1,5 @@
 * Fix maven central and jcenter artifacts (missed dependency) (#9)
+* Update spotbugs 3.1.5 -> 3.1.6 
 
 ### 3.1.0 (2018-07-13)
 * Gradle 4.8 compatibility:
