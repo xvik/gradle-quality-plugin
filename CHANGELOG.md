@@ -1,3 +1,4 @@
+### 3.1.1 (2018-07-22)
 * Fix maven central and jcenter artifacts (missed dependency) (#9)
 * Update spotbugs 3.1.5 -> 3.1.6 
 
