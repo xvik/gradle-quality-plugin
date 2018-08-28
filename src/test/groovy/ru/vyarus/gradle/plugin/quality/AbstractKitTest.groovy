@@ -48,12 +48,16 @@ abstract class AbstractKitTest extends Specification {
         return testProjectDir.root.getName()
     }
 
-    GradleRunner gradle(String... commands) {
+    GradleRunner gradle(File root, String... commands) {
         GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(root)
                 .withArguments((commands + ['--stacktrace']) as String[])
                 .withPluginClasspath()
                 .forwardOutput()
+    }
+
+    GradleRunner gradle(String... commands) {
+        gradle(testProjectDir.root, commands)
     }
 
     BuildResult run(String... commands) {
