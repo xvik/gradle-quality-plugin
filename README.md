@@ -6,25 +6,6 @@
 
 **DOCUMENTATION** http://xvik.github.io/gradle-quality-plugin
 
-## Gradle 4.10 warning
-
-Current spotbugs plugin is [not compatible with gradle 4.10](https://github.com/spotbugs/spotbugs-gradle-plugin/issues/39).
-To use quality plugin with gradle 4.10 disable spotbugs:
-
-```
-quality {
-    spotbugs = false
-}
-```
-
-or enable findbugs instead of spotbugs (note that configs are different):
-
-```
-quality {
-    findbugs = true
-}
-``` 
-
 ### About
 
 Static code analysis for Java and Groovy projects using Checkstyle, PMD, SpotBugs (FindBugs) and CodeNarc.
@@ -70,7 +51,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:3.1.1'
+        classpath 'ru.vyarus:gradle-quality-plugin:3.2.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -80,7 +61,7 @@ OR
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '3.1.1'
+    id 'ru.vyarus.quality' version '3.2.0'
 }
 ```
 

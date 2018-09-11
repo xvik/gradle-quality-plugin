@@ -1,3 +1,4 @@
+### 3.2.0 (2018-09-11)
 * Gradle 4.10 compatibility:
     - updated com.github.spotbugs plugin 1.6.2 -> 1.6.3  
 * Update checkstyle 8.11 -> 8.12    

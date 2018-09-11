@@ -30,7 +30,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    checkstyleVersion = '8.11'
+    checkstyleVersion = '8.12'
     checkstyle = true // false to disable automatic plugin activation
 }
 ```

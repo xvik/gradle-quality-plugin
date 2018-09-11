@@ -97,7 +97,7 @@ Or declare spotbugs plugin manually (it will be configured by quality plugin):
 
 ```groovy
 plugins {
-    id 'com.github.spotbugs' version '1.6.2'
+    id 'com.github.spotbugs' version '1.6.3'
 }
 dependencies {
     spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.2.0'

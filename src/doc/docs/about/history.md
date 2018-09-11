@@ -1,3 +1,10 @@
+### [3.2.0](http://xvik.github.io/gradle-quality-plugin/3.2.0) (2018-09-11)
+* Gradle 4.10 compatibility:
+    - updated com.github.spotbugs plugin 1.6.2 -> 1.6.3  
+* Update checkstyle 8.11 -> 8.12    
+* Update pmd 6.5.0 -> 6.7.0     
+* Update codenarc 1.2 -> 1.2.1
+
 ### [3.1.1](http://xvik.github.io/gradle-quality-plugin/3.1.1) (2018-07-22)
 * Fix maven central and jcenter artifacts (missed dependency) (#9)
 * Update spotbugs 3.1.5 -> 3.1.6 
