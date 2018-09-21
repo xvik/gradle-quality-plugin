@@ -1,3 +1,6 @@
+* Update pmd config:
+    - Allow camel cased enum constants for [FieldNamingConventions](https://pmd.github.io/pmd-6.7.0/pmd_rules_java_codestyle.html#fieldnamingconventions)
+
 ### 3.2.0 (2018-09-11)
 * Gradle 4.10 compatibility:
     - updated com.github.spotbugs plugin 1.6.2 -> 1.6.3  

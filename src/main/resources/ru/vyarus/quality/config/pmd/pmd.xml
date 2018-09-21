@@ -47,6 +47,11 @@
         <exclude name="TooManyStaticImports"/>
         <exclude name="UselessParentheses"/>
     </rule>
+    <rule ref="category/java/codestyle.xml/FieldNamingConventions">
+        <properties>
+            <property name="enumConstantPattern" value="[A-Z][a-zA-Z_0-9]*"/>
+        </properties>
+    </rule>
 
 
     <!-- Design (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html) -->
