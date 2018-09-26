@@ -24,7 +24,7 @@ class QualityExtension {
     String checkstyleVersion = '8.12'
     String pmdVersion = '6.7.0'
     String findbugsVersion = '3.0.1'
-    String spotbugsVersion = '3.1.6'
+    String spotbugsVersion = '3.1.7'
     String codenarcVersion = '1.2.1'
 
     /**
