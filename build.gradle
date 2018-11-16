@@ -124,3 +124,7 @@ dependencyUpdates {
 
 jacocoTestReport.reports.xml.enabled = true
 generateJacocoTestKitProperties.destinationFile = file('build/jacoco/test.exec').absolutePath.replace("\\", '/')
+
+jacoco {
+    toolVersion = "0.8.2"
+}
