@@ -54,7 +54,7 @@ Checkstyle violations by severity: [error:2]
 
 2 Checkstyle rule violations were found in 1 files
 
-[Misc | NewlineAtEndOfFile] sample.(Sample.java:0)
+[Misc | NewlineAtEndOfFile] sample.(Sample.java:1)
   File does not end with a newline.
   http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
 
@@ -80,7 +80,7 @@ Checkstyle violations by severity: [error:2]
 
 2 Checkstyle rule violations were found in 1 files
 
-[Misc | NewlineAtEndOfFile] sample.(Sample.java:0)
+[Misc | NewlineAtEndOfFile] sample.(Sample.java:1)
   File does not end with a newline.
   http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
 

@@ -40,6 +40,6 @@ class JavaInGroovyDirKitTest extends AbstractKitTest {
         result.output.contains('Checkstyle rule violations were found')
 
         then: "correct package build"
-        result.output.contains('[Misc | NewlineAtEndOfFile] sample.(Sample.java:0)')
+        result.output.contains('[Misc | NewlineAtEndOfFile] sample.(Sample.java:1)')
     }
 }
