@@ -17,7 +17,7 @@ never intended to be used together). Uncomment check to enable it.
 ```
 8 Checkstyle rule violations were found in 2 files
 
-[Misc | NewlineAtEndOfFile] sample.(Sample.java:0)
+[Misc | NewlineAtEndOfFile] sample.(Sample.java:1)
   File does not end with a newline.
   http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
   
@@ -30,7 +30,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    checkstyleVersion = '8.12'
+    checkstyleVersion = '8.14'
     checkstyle = true // false to disable automatic plugin activation
 }
 ```

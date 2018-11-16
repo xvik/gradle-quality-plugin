@@ -13,7 +13,7 @@
     
 !!! warning
     In contrast to other plugins, [spotbugs plugin](http://spotbugs.readthedocs.io/en/latest/gradle.html) is not bundled with gradle,
-    but quality plugin will bring it as a dependency (v 1.6.1) and activate automatically.
+    but quality plugin will bring it as a dependency (v 1.6.5) and activate automatically.
     To use newer spotbugs plugin version simply enable plugin manually (in `plugins` section).    
     
 By default, plugin is activated if java sources available (`src/main/java`).    
@@ -50,7 +50,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    spotbugsVersion = '3.1.6'
+    spotbugsVersion = '3.1.8'
     spotbugs = true // false to disable automatic plugin activation
     spotbugsEffort = 'max'  // min, less, more or max
     spotbugsLevel = 'medium' // low, medium, high
@@ -97,7 +97,7 @@ Or declare spotbugs plugin manually (it will be configured by quality plugin):
 
 ```groovy
 plugins {
-    id 'com.github.spotbugs' version '1.6.3'
+    id 'com.github.spotbugs' version '1.6.5'
 }
 dependencies {
     spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.2.0'
