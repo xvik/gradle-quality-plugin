@@ -1,7 +1,7 @@
-### [3.3.0](http://xvik.github.io/gradle-quality-plugin/3.3.0) (2018-11-16)
+### [3.3.0](http://xvik.github.io/gradle-quality-plugin/3.3.0) (2018-11-23)
 * Update pmd config:
     - Allow camel cased enum constants for [FieldNamingConventions](https://pmd.github.io/pmd-6.7.0/pmd_rules_java_codestyle.html#fieldnamingconventions)
-* Update spotbugs 3.1.6 -> 3.1.8
+* Update spotbugs 3.1.6 -> 3.1.9
 * Update com.github.spotbugs plugin 1.6.3 -> 1.6.5 
 * Update checkstyle 8.12 -> 8.14
 * Update pmd 6.7.0 -> 6.9.0    

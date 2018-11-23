@@ -10,7 +10,7 @@ quality {
     
     checkstyleVersion = '8.14'
     pmdVersion = '6.9.0'    
-    spotbugsVersion = '3.1.8'
+    spotbugsVersion = '3.1.9'
     codenarcVersion = '1.2.1'
     animalsnifferVersion
 
