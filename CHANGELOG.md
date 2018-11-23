@@ -1,3 +1,4 @@
+### 3.3.0 (2018-11-23)
 * Update pmd config:
     - Allow camel cased enum constants for [FieldNamingConventions](https://pmd.github.io/pmd-6.7.0/pmd_rules_java_codestyle.html#fieldnamingconventions)
 * Update spotbugs 3.1.6 -> 3.1.9
