@@ -16,7 +16,7 @@ plugins {
 sourceCompatibility = 1.7
 
 wrapper {
-    gradleVersion = '4.10'
+    gradleVersion = '4.10.2'
 }
 
 repositories { jcenter(); maven { url "https://plugins.gradle.org/m2/"} }
@@ -108,8 +108,8 @@ test {
         events 'skipped', 'failed', 'standard_error'
         exceptionFormat 'full'
     }
-    maxHeapSize = '3g'
-    forkEvery = 5
+    maxHeapSize = '2g'
+    forkEvery = 4
     doLast {
         sleep(1000)
     }
