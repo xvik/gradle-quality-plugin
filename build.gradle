@@ -4,7 +4,7 @@ plugins {
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '0.10.0'
     id 'net.researchgate.release' version '2.7.0'
-    id 'ru.vyarus.quality' version '3.2.0'
+    id 'ru.vyarus.quality' version '3.3.0'
     id 'com.jfrog.bintray' version '1.8.4'
     id 'ru.vyarus.java-lib' version '1.1.2'
     id 'ru.vyarus.github-info' version '1.1.0'
