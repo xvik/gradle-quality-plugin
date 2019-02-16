@@ -1,4 +1,5 @@
 * Fix source files root detection (#13)
+* Set spotbugs tasks default heap size to 1g to mimic old behaviour in [gradle 5](https://docs.gradle.org/5.0/userguide/upgrading_version_4.html#rel5.0:default_memory_settings) (#12)
 * Update pmd 6.9.0 -> 6.11.0   
 * Update checkstyle 8.14 -> 8.17
 * Update spotbugs 3.1.9 -> 3.1.11
