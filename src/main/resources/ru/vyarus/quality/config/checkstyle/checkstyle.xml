@@ -170,6 +170,7 @@
 
 
         <!-- Modifiers (http://checkstyle.sourceforge.net/config_modifier.html) -->
+        <!--<module name="ClassMemberImpliedModifier"/>-->
         <!--<module name="InterfaceMemberImpliedModifier"/>-->
         <module name="ModifierOrder"/>
         <module name="RedundantModifier"/>

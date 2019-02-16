@@ -1,5 +1,6 @@
 * Fix source files root detection (#13)
 * Update pmd 6.9.0 -> 6.11.0   
+* Update checkstyle 8.14 -> 8.17
 
 ### 3.3.0 (2018-11-23)
 * Update pmd config:
