@@ -39,11 +39,11 @@ class CodeNarcReporterTest extends AbstractKitTest {
         error.replaceAll("\r", '').contains """
 28 (0 / 10 / 18) CodeNarc violations were found in 2 files
 
-[Formatting | ClassJavadoc] sample.(GSample.groovy:3)  [priority 2]
+[Comments | ClassJavadoc] sample.(GSample.groovy:3)  [priority 2]
 \t>> class GSample {
   Class sample.GSample missing Javadoc
   Makes sure each class and interface definition is preceded by javadoc. Enum definitions are not checked, due to strange behavior in the Groovy AST.
-  http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassJavadoc
+  http://codenarc.sourceforge.net/codenarc-rules-comments.html#ClassJavadoc
 
 [Convention | NoDef] sample.(GSample.groovy:5)  [priority 3]
 \t>> def foo(String bar) {
@@ -123,11 +123,11 @@ class CodeNarcReporterTest extends AbstractKitTest {
   Makes sure the source code file ends with a newline character.
   http://codenarc.sourceforge.net/codenarc-rules-formatting.html#FileEndsWithoutNewline
 
-[Formatting | ClassJavadoc] sample.(GSample2.groovy:3)  [priority 2]
+[Comments | ClassJavadoc] sample.(GSample2.groovy:3)  [priority 2]
 \t>> class GSample2 {
   Class sample.GSample2 missing Javadoc
   Makes sure each class and interface definition is preceded by javadoc. Enum definitions are not checked, due to strange behavior in the Groovy AST.
-  http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassJavadoc
+  http://codenarc.sourceforge.net/codenarc-rules-comments.html#ClassJavadoc
 
 [Convention | NoDef] sample.(GSample2.groovy:5)  [priority 3]
 \t>> def foo(String bar) {

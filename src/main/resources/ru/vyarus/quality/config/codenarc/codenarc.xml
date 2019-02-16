@@ -8,6 +8,9 @@
     <!-- Braces (http://codenarc.sourceforge.net/codenarc-rules-braces.html) -->
     <ruleset-ref path='rulesets/braces.xml'/>
 
+    <!-- Comments (http://codenarc.sourceforge.net/codenarc-rules-comments.html) -->
+    <ruleset-ref path='rulesets/comments.xml'/>
+
     <!-- Concurrency (http://codenarc.sourceforge.net/codenarc-rules-concurrency.html) -->
     <ruleset-ref path='rulesets/concurrency.xml'/>
 
@@ -65,6 +68,14 @@
         <exclude name="FactoryMethodName"/>
     </ruleset-ref>
 
+    <!-- Security (http://codenarc.sourceforge.net/codenarc-rules-security.html) -->
+    <ruleset-ref path='rulesets/security.xml'>
+        <exclude name="JavaIoPackageAccess"/>
+    </ruleset-ref>
+
+    <!-- Serialization (http://codenarc.sourceforge.net/codenarc-rules-serialization.html) -->
+    <ruleset-ref path='rulesets/serialization.xml'/>
+
     <!-- Size and Complexity (http://codenarc.sourceforge.net/codenarc-rules-size.html) -->
     <ruleset-ref path='rulesets/size.xml'>
         <rule-config name="ClassSize">
@@ -75,14 +86,6 @@
         </rule-config>
         <exclude name="CrapMetric"/>
     </ruleset-ref>
-
-    <!-- Security (http://codenarc.sourceforge.net/codenarc-rules-security.html) -->
-    <ruleset-ref path='rulesets/security.xml'>
-        <exclude name="JavaIoPackageAccess"/>
-    </ruleset-ref>
-
-    <!-- Serialization (http://codenarc.sourceforge.net/codenarc-rules-serialization.html) -->
-    <ruleset-ref path='rulesets/serialization.xml'/>
 
     <!-- Unnecessary (http://codenarc.sourceforge.net/codenarc-rules-unnecessary.html) -->
     <ruleset-ref path='rulesets/unnecessary.xml'>
