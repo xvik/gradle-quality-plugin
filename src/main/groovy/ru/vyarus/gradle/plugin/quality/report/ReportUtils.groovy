@@ -29,8 +29,8 @@ class ReportUtils {
         Closure search = { Iterable<File> files ->
             files*.canonicalPath.find { String s -> name.startsWith(s) }
         }
-        // try looking in java and then in groovy sources (mixed mode)
-        String root = search(project.sourceSets[type].java.srcDirs) ?: search(project.sourceSets[type].groovy.srcDirs)
+        // try looking in java and related (groovy) sources (mixed mode)
+        String root = search(project.sourceSets[type].allJava.srcDirs)
         if (root) {
             name = name[root.length() + 1..-1] // remove sources dir prefix
         }
