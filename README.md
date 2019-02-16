@@ -51,7 +51,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:3.3.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:3.4.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -61,7 +61,7 @@ OR
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '3.3.0'
+    id 'ru.vyarus.quality' version '3.4.0'
 }
 ```
 

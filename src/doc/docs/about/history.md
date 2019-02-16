@@ -1,3 +1,14 @@
+### [3.4.0](http://xvik.github.io/gradle-quality-plugin/3.4.0)  (2019-02-16)
+* Fix source files root detection (#13)
+* Update pmd 6.9.0 -> 6.11.0   
+* Update checkstyle 8.14 -> 8.17
+* Update spotbugs 3.1.9 -> 3.1.11
+* Update codenarc 1.2.1 -> 1.3
+* Update codenarc config:
+    - Add new ruleset [Comments](http://codenarc.sourceforge.net/codenarc-rules-comments.html)
+    - Disable new rule [ClassStartsWithBlankLine](http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassStartsWithBlankLine)
+    - Disable new rule [ClassEndsWithBlankLine](http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassEndsWithBlankLine)
+
 ### [3.3.0](http://xvik.github.io/gradle-quality-plugin/3.3.0) (2018-11-23)
 * Update pmd config:
     - Allow camel cased enum constants for [FieldNamingConventions](https://pmd.github.io/pmd-6.7.0/pmd_rules_java_codestyle.html#fieldnamingconventions)
