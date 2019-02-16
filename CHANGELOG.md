@@ -1,6 +1,10 @@
 * Fix source files root detection (#13)
 * Update pmd 6.9.0 -> 6.11.0   
 * Update checkstyle 8.14 -> 8.17
+* Update spotbugs 3.1.9 -> 3.1.11
+
+NOTE com.github.spotbugs plugin not updated to more recent version (1.6.9) because 
+it breaks gradle 4.0-4.6 compatibility (versions from 1.6.6) and build cache support  
 
 ### 3.3.0 (2018-11-23)
 * Update pmd config:
