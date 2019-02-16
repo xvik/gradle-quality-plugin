@@ -11,7 +11,7 @@ repo_url: http://github.com/xvik/gradle-quality-plugin
 edit_uri: edit/master/src/doc/docs/
 
 #Copyright (shown at the footer)
-copyright: 'Copyright &copy; 2015-2018 Vyacheslav Rusakov'
+copyright: 'Copyright &copy; 2015-2019 Vyacheslav Rusakov'
 
 # Meterial theme
 theme: 'material'
@@ -35,18 +35,21 @@ extra:
 # Extensions
 markdown_extensions:
   - admonition
-  - codehilite(guess_lang=false)
+  - codehilite:
+      guess_lang: false
   - footnotes
   - meta
-  - toc(permalink=true)
-  - pymdownx.betterem(smart_enable=all)
+  - toc:
+      permalink: true
+  - pymdownx.betterem:
+      smart_enable: all
   - pymdownx.caret
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.smartsymbols
   - pymdownx.superfences
 
-pages:
+nav:
   - Home: index.md
   - Getting started: getting-started.md
   - User guide:

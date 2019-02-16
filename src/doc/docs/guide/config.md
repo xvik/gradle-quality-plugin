@@ -8,10 +8,10 @@ quality {
     
     // Tools versions
     
-    checkstyleVersion = '8.14'
-    pmdVersion = '6.9.0'    
-    spotbugsVersion = '3.1.9'
-    codenarcVersion = '1.2.1'
+    checkstyleVersion = '8.17'
+    pmdVersion = '6.11.0'    
+    spotbugsVersion = '3.1.11'
+    codenarcVersion = '1.3'
     animalsnifferVersion
 
     /**
