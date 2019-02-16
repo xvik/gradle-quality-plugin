@@ -333,7 +333,7 @@ class QualityPlugin implements Plugin<Project> {
      *
      * @param project
      * @param extension
-     * @return
+     * @return context instance
      */
     @CompileStatic(TypeCheckingMode.SKIP)
     private Context createContext(Project project, QualityExtension extension) {

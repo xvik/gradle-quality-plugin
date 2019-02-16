@@ -36,6 +36,8 @@
         <rule-config name="SpaceAroundMapEntryColon">
             <property name="characterAfterColonRegex" value="\s"/>
         </rule-config>
+        <exclude name="ClassStartsWithBlankLine"/>
+        <exclude name="ClassEndsWithBlankLine"/>
     </ruleset-ref>
 
     <!-- Generic (http://codenarc.sourceforge.net/codenarc-rules-generic.html) -->

@@ -4,7 +4,9 @@
 * Update spotbugs 3.1.9 -> 3.1.11
 * Update codenarc 1.2.1 -> 1.3
 * Update codenarc config:
-    - Add new [Comments ruleset](http://codenarc.sourceforge.net/codenarc-rules-comments.html)
+    - Add new ruleset [Comments](http://codenarc.sourceforge.net/codenarc-rules-comments.html)
+    - Disable new rule [ClassStartsWithBlankLine](http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassStartsWithBlankLine)
+    - Disable new rule [ClassEndsWithBlankLine](http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassEndsWithBlankLine)
 
 NOTE com.github.spotbugs plugin not updated to more recent version (1.6.9) because 
 it breaks gradle 4.0-4.6 compatibility (versions from 1.6.6) and build cache support  
