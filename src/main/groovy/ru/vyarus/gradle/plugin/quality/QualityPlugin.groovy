@@ -113,7 +113,10 @@ class QualityPlugin implements Plugin<Project> {
             return
         }
         project.tasks.withType(JavaCompile) { JavaCompile t ->
-            t.options.compilerArgs.addAll(extension.lintOptions.collect { "-Xlint:$it" as String })
+            // .collect not used because of incompatibility of groovy 2.5 method with 2.4
+            for (String option : extension.lintOptions) {
+                t.options.compilerArgs.add("-Xlint:$option" as String)
+            }
         }
     }
 
