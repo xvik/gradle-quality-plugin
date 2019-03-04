@@ -42,7 +42,7 @@ Default settings (`max` effort and `medium` level) are perfect for most cases. S
 Counts in braces show priorities (p1/p2/p3).
 
 !!! note
-    There is no link to spotbugs site (like other tools), because report already contains [everything from there](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html).
+    There is no link to spotbugs site (like other tools), because report already contains [everything from there](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html). 
 
 ## Config
 
@@ -56,6 +56,14 @@ quality {
     spotbugsLevel = 'medium' // low, medium, high
 }
 ```
+
+!!! attention 
+    Gradle 5 [reduced default memory settings](https://github.com/gradle/gradle/issues/6216) and so default memory for 
+    spotbugs task become `512mb` (instead of `1/4 of physical memory` as it was before). 
+    To reduce the impact (as spotbugs task is memory-consuming), quality plugin sets now default
+    memory to `1g`: for gradle 4 projects it's less then was before and for gradle 5
+    projects it's more then new default. If your project requires more memory for spotbugs, increase it manually with
+    `spotbugsMain.maxHeapSize='2g'` 
 
 ## Suppress
 
