@@ -1,3 +1,6 @@
+* Add quality.spotbugsMaxHeapSize setting to increase default spotbugs memory ([reduced to 512mb in gradle 5](https://github.com/gradle/gradle/issues/6216)).
+    Option does not override maxHeapSize manually set on spotbugs task (to not break woking builds) (#12)
+
 ### 3.4.0 (2019-02-16)
 * Fix source files root detection (#13)
 * Set spotbugs tasks default heap size to 1g to mimic old behaviour in [gradle 5](https://docs.gradle.org/5.0/userguide/upgrading_version_4.html#rel5.0:default_memory_settings) (#12)

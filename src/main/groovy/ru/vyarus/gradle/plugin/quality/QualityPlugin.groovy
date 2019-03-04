@@ -214,7 +214,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                     // in gradle 5 default 1g was changed and so spotbugs fails on large projects (recover behaviour),
                     // but not if value set manually
-                    maxHeapSize = maxHeapSize ?: '1g'
+                    maxHeapSize = maxHeapSize ?: extension.spotbugsMaxHeapSize
                 }
             }
             configurePluginTasks(project, extension, SpotBugsTask, 'spotbugs', new SpotbugsReporter(configLoader))

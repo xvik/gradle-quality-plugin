@@ -113,6 +113,21 @@ class QualityExtension {
     String spotbugsLevel = findbugsLevel
 
     /**
+     * Max memory available for spotbugs task. Note that in gradle 4 spotbugs task maximum memory was
+     * 1/4 of physical memory, but in gradle 5 it become only 512mb (default for workers api).
+     * To minify impact of this gradle 5 change, default value in extension is 1g now, but it may be not
+     * enough for large projects (and so you will have to increase it manually).
+     * <p>
+     * IMPORTANT: setting will not work if heap size configured directly in spotbugs task (for example, with
+     * <code>spotbugsMain.maxHeapSize = '2g'</code>. This was done in order to not break current behaviour
+     * (when task memory is already configured) and affect only default cases (mostly caused by gradle 5 transition).
+     * <p>
+     * See: https://github.com/gradle/gradle/issues/6216 (Reduce default memory settings for daemon and
+     * workers).
+     */
+    String spotbugsMaxHeapSize = '1g'
+
+    /**
      * Javac lint options to show compiler warnings, not visible by default.
      * By default enables deprecation and unchecked options. Applies to all JavaCompile tasks.
      * Full list of options: http://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCJCABJ

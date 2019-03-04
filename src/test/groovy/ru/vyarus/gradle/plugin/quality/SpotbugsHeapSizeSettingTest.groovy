@@ -34,6 +34,8 @@ class SpotbugsHeapSizeSettingTest extends AbstractTest {
             apply plugin: 'com.github.spotbugs'
             apply plugin: 'ru.vyarus.quality'
 
+            quality.spotbugsMaxHeapSize = '3g'
+
             spotbugsMain.maxHeapSize = '2g'
         }
 
