@@ -40,7 +40,7 @@ quality {
 
 ## Suppress
 
-To [suppress violation](https://pmd.github.io/pmd-5.4.0/usage/suppressing.html):
+To [suppress violation](https://pmd.github.io/latest/pmd_userdocs_suppressing_warnings.html):
 
 ```java
 @SuppressWarnings("PMD.CommentRequired")
@@ -52,3 +52,9 @@ To suppress all violations:
 @SuppressWarnings("PMD")
 ```
 
+Single line could be suppressed with comment:
+
+```java
+if (x > 5) { // NOPMD
+}
+```
