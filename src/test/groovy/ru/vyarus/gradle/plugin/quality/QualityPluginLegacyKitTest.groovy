@@ -9,7 +9,7 @@ import org.gradle.testkit.runner.TaskOutcome
  */
 class QualityPluginLegacyKitTest extends AbstractKitTest {
 
-    def "Check java and groovy checks with gradle 4.1 (previous)"() {
+    def "Check java and groovy checks with gradle 5.1 (previous)"() {
         setup:
         build("""
             plugins {
@@ -36,7 +36,7 @@ class QualityPluginLegacyKitTest extends AbstractKitTest {
         fileFromClasspath('src/main/groovy/sample/GSample2.groovy', '/ru/vyarus/gradle/plugin/quality/groovy/sample/GSample2.groovy')
 
         when: "run check task with both sources"
-        BuildResult result = runVer('4.1','check')
+        BuildResult result = runVer('5.1','check')
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS

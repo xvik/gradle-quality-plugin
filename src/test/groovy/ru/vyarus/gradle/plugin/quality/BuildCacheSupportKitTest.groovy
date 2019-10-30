@@ -19,7 +19,9 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
     def "Check java and groovy checks"() {
         setup:
         // build cache will survive within test only!!
-        file("settings.gradle") << """
+        // spotbugs task cache key depends on project name!!!
+        file("settings.gradle") << """  
+            rootProject.name='my-project'
             buildCache {
                 local(DirectoryBuildCache) {
                     directory = new File('${cacheDir.root.canonicalPath.replace('\\', '\\\\')}')
