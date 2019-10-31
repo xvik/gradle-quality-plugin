@@ -125,10 +125,6 @@ dependencyUpdates {
 
 jacocoTestReport.reports.xml.enabled = true
 
-jacoco {
-    toolVersion = "0.8.2"
-}
-
 buildScan {
     termsOfServiceUrl = 'https://gradle.com/terms-of-service'
     termsOfServiceAgree = 'yes'
