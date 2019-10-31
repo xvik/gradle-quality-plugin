@@ -51,7 +51,7 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
         then: "all plugins detect violations only in 1 file"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         def output = result.output
-        output.contains "2 Checkstyle rule violations were found in 1 files"
+        output.contains "4 Checkstyle rule violations were found in 1 files"
         output.contains "1 (0 / 1 / 0) SpotBugs violations were found in 1 files"
         output.contains "7 PMD rule violations were found in 1 files"
         output.contains "15 (0 / 6 / 9) CodeNarc violations were found in 1 files"
@@ -102,7 +102,7 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
         then: "all plugins detect violations only in 1 file"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         def output = result.output
-        output.contains "2 Checkstyle rule violations were found in 1 files"
+        output.contains "4 Checkstyle rule violations were found in 1 files"
         output.contains "1 (0 / 1 / 0) SpotBugs violations were found in 1 files"
         output.contains "7 PMD rule violations were found in 1 files"
         output.contains "15 (0 / 6 / 9) CodeNarc violations were found in 1 files"

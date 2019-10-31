@@ -1,8 +1,5 @@
 * Update pmd config:
-    - Add 1 as allowed "magic number" for [AvoidLiteralsInIfCondition](https://pmd.github.io/pmd-6.11.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition)
-* Update checkstyle config:
-    - Disable [TrailingComment](https://checkstyle.sourceforge.io/config_misc.html#TrailingComment)
-        as not useful and contradicting with PMD suppression syntax (`// NOPMD`)        
+    - Add 1 as allowed "magic number" for [AvoidLiteralsInIfCondition](https://pmd.github.io/pmd-6.11.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition)                   
 * Update spotbugs 3.1.11 -> 3.1.12
 * Update com.github.spotbugs plugin: 1.6.5 -> 2.0.1
     - Note that plugin group changed: gradle.plugin.com.github.spotbugs -> com.github.spotbugs
@@ -10,6 +7,20 @@
 * Add quality.spotbugsMaxHeapSize setting to increase default spotbugs memory ([reduced to 512mb in gradle 5](https://github.com/gradle/gradle/issues/6216)).
     Option does not override maxHeapSize manually set on spotbugs task (to not break working builds) (#12)     
 * Update codenarc 1.3 -> 1.4
+* Update checkstyle 8.17 -> 8.26
+* Update checkstyle config:
+    - Disable [TrailingComment](https://checkstyle.sourceforge.io/config_misc.html#TrailingComment)
+        as not useful and contradicting with PMD suppression syntax (`// NOPMD`)
+    - Add new checks:
+        * [MissingJavadocMethod](https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocMethod)
+        * [MissingJavadocPackage](https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocPackage)
+        * [MissingJavadocType](https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocType)
+        * [UnnecessarySemicolonInTryWithResources](https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonInTryWithResources)
+        * [UnnecessarySemicolonInEnumeration](https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonInEnumeration)
+        * [UnnecessarySemicolonAfterTypeMemberDeclaration](https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonAfterTypeMemberDeclaration)
+        * [InvalidJavadocPosition](https://checkstyle.sourceforge.io/config_javadoc.html#InvalidJavadocPosition)        
+        * [JavadocBlockTagLocation](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocBlockTagLocation)
+    - Disable new check [OrderedProperties](https://checkstyle.sourceforge.io/config_misc.html#OrderedProperties)
 
 ### 3.4.0 (2019-02-16)
 * Fix source files root detection (#13)

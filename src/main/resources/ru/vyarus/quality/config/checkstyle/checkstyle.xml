@@ -9,6 +9,9 @@
     <!-- Filters (http://checkstyle.sourceforge.net/config_filters.html) -->
     <module name="SuppressWarningsFilter"/>
 
+    <module name="LineLength">
+        <property name="max" value="120"/>
+    </module>
     <module name="NewlineAtEndOfFile">
         <property name="lineSeparator" value="lf"/>
     </module>
@@ -110,6 +113,9 @@
         <!--<module name="SuperClone"/>-->
         <!--<module name="SuperFinalize"/>-->
         <module name="UnnecessaryParentheses"/>
+        <module name="UnnecessarySemicolonAfterTypeMemberDeclaration"/>
+        <module name="UnnecessarySemicolonInEnumeration"/>
+        <module name="UnnecessarySemicolonInTryWithResources"/>
         <module name="VariableDeclarationUsageDistance">
             <property name="allowedDistance" value="5"/>
         </module>
@@ -133,6 +139,8 @@
 
         <!-- Javadoc Comments (http://checkstyle.sourceforge.net/config_javadoc.html) -->
         <!--<module name="AtclauseOrder"/>-->
+        <module name="InvalidJavadocPosition"/>
+        <module name="JavadocBlockTagLocation"/>
         <!--<module name="JavadocMethod"/>-->
         <!--<module name="JavadocPackage"/>-->
         <!--<module name="JavadocParagraph"/>-->
@@ -140,6 +148,9 @@
         <!--<module name="JavadocTagContinuationIndentation"/>-->
         <module name="JavadocType"/>
         <!--<module name="JavadocVariable"/>-->
+        <module name="MissingJavadocMethod"/>
+        <module name="MissingJavadocPackage"/>
+        <module name="MissingJavadocType"/>
         <module name="NonEmptyAtclauseDescription"/>
         <!--<module name="SingleLineJavadoc"/>-->
         <!--<module name="SummaryJavadoc"/>-->
@@ -163,6 +174,7 @@
         <!--<module name="FinalParameters"/>-->  <!-- DISABLED in favor of less restricted ParameterAssignment -->
         <module name="Indentation"/>
         <module name="OuterTypeFilename"/>
+        <!--<module name="OrderedProperties"/>-->
         <!--<module name="TodoComment"/>-->
         <!--<module name="TrailingComment"/>-->
         <!--<module name="UncommentedMain"/>-->
@@ -204,6 +216,7 @@
         <!-- Regexp (http://checkstyle.sourceforge.net/config_regexp.html) -->
         <!--<module name="Regexp"/>-->
         <!--<module name="RegexpMultiline"/>-->
+        <!--<module name="RegexpOnFilename"/>-->
         <!--<module name="RegexpSingleline"/>-->
         <!--<module name="RegexpSinglelineJava"/>-->
 
@@ -211,9 +224,6 @@
         <!-- Size Violations (http://checkstyle.sourceforge.net/config_sizes.html) -->
         <module name="AnonInnerLength"/>
         <module name="ExecutableStatementCount"/>
-        <module name="LineLength">
-            <property name="max" value="120"/>
-        </module>
         <module name="MethodCount"/>
         <module name="MethodLength"/>
         <module name="OuterTypeNumber"/>
