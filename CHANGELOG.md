@@ -9,6 +9,7 @@
     - Minimal required gradle version is 5.1
 * Add quality.spotbugsMaxHeapSize setting to increase default spotbugs memory ([reduced to 512mb in gradle 5](https://github.com/gradle/gradle/issues/6216)).
     Option does not override maxHeapSize manually set on spotbugs task (to not break working builds) (#12)     
+* Update codenarc 1.3 -> 1.4
 
 ### 3.4.0 (2019-02-16)
 * Fix source files root detection (#13)
