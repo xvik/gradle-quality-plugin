@@ -1,5 +1,3 @@
-* Update pmd config:
-    - Add 1 as allowed "magic number" for [AvoidLiteralsInIfCondition](https://pmd.github.io/pmd-6.11.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition)                   
 * Update spotbugs 3.1.11 -> 3.1.12
 * Update com.github.spotbugs plugin: 1.6.5 -> 2.0.1
     - Note that plugin group changed: gradle.plugin.com.github.spotbugs -> com.github.spotbugs
@@ -21,6 +19,9 @@
         * [InvalidJavadocPosition](https://checkstyle.sourceforge.io/config_javadoc.html#InvalidJavadocPosition)        
         * [JavadocBlockTagLocation](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocBlockTagLocation)
     - Disable new check [OrderedProperties](https://checkstyle.sourceforge.io/config_misc.html#OrderedProperties)
+* Update pmd 6.11.0 -> 6.19.0   
+* Update pmd config:
+    - Add 1 as allowed "magic number" for [AvoidLiteralsInIfCondition](https://pmd.github.io/pmd-6.11.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition)
 
 ### 3.4.0 (2019-02-16)
 * Fix source files root detection (#13)
