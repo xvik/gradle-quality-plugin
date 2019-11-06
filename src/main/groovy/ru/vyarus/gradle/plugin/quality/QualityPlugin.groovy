@@ -165,6 +165,14 @@ class QualityPlugin implements Plugin<Project> {
                     ruleSetFiles = files(configLoader.resolvePmdConfig(false).absolutePath)
                     sourceSets = extension.sourceSets
                 }
+                if (extension.pmdIncremental) {
+                    if (PmdExtension.metaClass.properties.any { it.name == 'incrementalAnalysis' }) {
+                        pmd.incrementalAnalysis = true
+                    } else {
+                        project.logger.warn('WARNING: PMD incremental analysis option ignored, because it\'s '
+                                + 'supported only from gradle 5.6')
+                    }
+                }
                 tasks.withType(Pmd) {
                     doFirst {
                         configLoader.resolvePmdConfig()

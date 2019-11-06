@@ -22,6 +22,7 @@
 * Update pmd 6.11.0 -> 6.19.0   
 * Update pmd config:
     - Add 1 as allowed "magic number" for [AvoidLiteralsInIfCondition](https://pmd.github.io/pmd-6.11.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition)
+* Add `pmdIncremental` option - shortcut for gradle's `pmd.incrementalAnalysis` option. Disabled by default.    
 
 ### 3.4.0 (2019-02-16)
 * Fix source files root detection (#13)

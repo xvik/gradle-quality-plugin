@@ -79,6 +79,13 @@ class QualityExtension {
     boolean codenarc = true
 
     /**
+     * Enable PMD incremental analysis (cache results between builds to speed up processing).
+     * This is a shortcut for pmd plugin's {@code pmd.incrementalAnalysis } configuration option.
+     * Option is disabled by default due to possible side effects with build gradle cache or incremental builds.
+     */
+    boolean pmdIncremental = false
+
+    /**
      * The analysis effort level. The value specified should be one of min, default, or max.
      * Higher levels increase precision and find more bugs at the expense of running time and
      * memory consumption. Default is 'max'.
