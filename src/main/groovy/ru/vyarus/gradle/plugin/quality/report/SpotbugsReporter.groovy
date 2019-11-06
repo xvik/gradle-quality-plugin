@@ -51,7 +51,7 @@ class SpotbugsReporter implements Reporter, HtmlReportGenerator {
                     String cls = src.@sourcefile
                     // part in braces recognized by intellij IDEA and shown as link
                     logger.error "[${cat[bug.@category]} | ${bug.@type}] $pkg(${cls}:${srcPosition})  " +
-                            "[priority ${bug.@priority}]" +
+                            "[priority ${bug.@priority} / rank ${bug.@rank}]" +
                             "$NL\t>> ${msg.text()}" +
                             "$NL  ${description}$NL"
                 }

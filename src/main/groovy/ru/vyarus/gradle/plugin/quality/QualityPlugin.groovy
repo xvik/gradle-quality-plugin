@@ -191,6 +191,8 @@ class QualityPlugin implements Plugin<Project> {
     @CompileStatic(TypeCheckingMode.SKIP)
     private void applySpotbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
                                boolean register) {
+        SpotbugsUtils.validateRankSetting(extension.spotbugsMaxRank)
+
         configurePlugin(project,
                 extension.spotbugs,
                 register,
@@ -210,7 +212,8 @@ class QualityPlugin implements Plugin<Project> {
                         configLoader.resolveSpotbugsExclude()
                         // spotbugs does not support exclude of SourceTask, so appending excluded classes to
                         // xml exclude filter
-                        if (extension.exclude || extension.excludeSources) {
+                        // for custom rank appending extra rank exclusion rule
+                        if (extension.exclude || extension.excludeSources || extension.spotbugsMaxRank < 20) {
                             SpotbugsUtils.replaceExcludeFilter(it, extension, logger)
                         }
                     }

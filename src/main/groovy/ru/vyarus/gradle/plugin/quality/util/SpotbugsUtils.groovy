@@ -18,6 +18,20 @@ import ru.vyarus.gradle.plugin.quality.QualityExtension
 @CompileStatic
 class SpotbugsUtils {
 
+    private static final int MAX_RANK = 20
+    private static final String MATCH = 'Match'
+
+    /**
+     * Validate declared rank value correctness.
+     * @param rank rank value
+     */
+    static void validateRankSetting(int rank) {
+        if (rank < 1 || rank > MAX_RANK) {
+            throw new IllegalArgumentException(
+                    "spotbugsMaxRank may be only between 1 and 20, but it is set to $rank ")
+        }
+    }
+
     /**
      * Replace exclusion file with extended one when exclusions are required.
      *
@@ -27,13 +41,15 @@ class SpotbugsUtils {
      */
     @CompileStatic(TypeCheckingMode.SKIP)
     static void replaceExcludeFilter(SpotBugsTask task, QualityExtension extension, Logger logger) {
+        // setting means max allowed rank, but filter evicts all ranks >= specified (so +1)
+        Integer rank = extension.spotbugsMaxRank < MAX_RANK ? extension.spotbugsMaxRank + 1 : null
         Set<File> ignored = FileUtils.resolveIgnoredFiles(task.source, extension.exclude)
         if (extension.excludeSources) {
             // add directly excluded files
             ignored.addAll(extension.excludeSources.asFileTree.matching { include '**/*.java' }.files)
         }
-        if (!ignored) {
-            // no excluded files
+        if (!ignored && !rank) {
+            // no custom excludes required
             return
         }
         SourceSet set = FileUtils.findMatchingSet('spotbugs', task.name, extension.sourceSets)
@@ -42,26 +58,36 @@ class SpotbugsUtils {
                     ' will not be applied')
             return
         }
-        task.excludeFilter = mergeExcludes(task.excludeFilter, ignored, set.allJava.srcDirs)
+
+        task.excludeFilter = mergeExcludes(task.excludeFilter, ignored, set.allJava.srcDirs, rank)
     }
 
     /**
      * Spotbugs task is a {@link org.gradle.api.tasks.SourceTask}, but does not properly support exclusions.
      * To overcome this limitation, source exclusions could be added to spotbugs exclusions filter xml file.
+     * <p>
+     * Also, rank-based filtering is only possible through exclusions file.
      *
      * @param src original excludes file (default of user defined)
-     * @param exclude files to exclude
+     * @param exclude files to exclude (may be empty)
      * @param roots source directories (to resolve class files)
+     * @param rank custom rank value (optional)
      */
     @SuppressWarnings('FileCreateTempFile')
-    static File mergeExcludes(File src, Collection<File> exclude, Collection<File> roots) {
+    static File mergeExcludes(File src, Collection<File> exclude, Collection<File> roots, Integer rank = null) {
         Node xml = new XmlParser().parse(src)
+
         exclude.each {
             String clazz = FileUtils.extractJavaClass(roots, it)
             if (clazz) {
-                Node match = xml.appendNode('Match').appendNode('Class')
-                match.attributes().put('name', clazz)
+                xml.appendNode(MATCH).appendNode('Class')
+                        .attributes().put('name', clazz)
             }
+        }
+
+        if (rank) {
+            xml.appendNode(MATCH).appendNode('Rank')
+                    .attributes().put('value', rank)
         }
 
         File tmp = File.createTempFile('spotbugs-extended-exclude', '.xml')

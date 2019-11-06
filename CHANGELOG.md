@@ -2,8 +2,12 @@
 * Update com.github.spotbugs plugin: 1.6.5 -> 2.0.1
     - Note that plugin group changed: gradle.plugin.com.github.spotbugs -> com.github.spotbugs
     - Minimal required gradle version is 5.1
-* Add quality.spotbugsMaxHeapSize setting to increase default spotbugs memory ([reduced to 512mb in gradle 5](https://github.com/gradle/gradle/issues/6216)).
-    Option does not override maxHeapSize manually set on spotbugs task (to not break working builds) (#12)     
+* Add spotbugs-related options:
+    - spotbugsMaxHeapSize setting may be used to increase default spotbugs memory ([reduced to 512mb in gradle 5](https://github.com/gradle/gradle/issues/6216)).
+        Option does not override maxHeapSize manually set on spotbugs task (to not break working builds) (#12)
+    - spotbugsMaxRank setting allows to filter low-ranked rules (ranks are different from priorities!) (#15)
+        Option modifies excludes.xml file (the only way to apply rank threshold)
+* Spotbugs report now shows not only rule priority, but also it's rank: `[priority 2 / rank 14]`           
 * Update codenarc 1.3 -> 1.4
 * Update checkstyle 8.17 -> 8.26
 * Update checkstyle config:

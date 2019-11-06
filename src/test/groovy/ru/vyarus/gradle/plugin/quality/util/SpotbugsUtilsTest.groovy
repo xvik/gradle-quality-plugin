@@ -80,6 +80,59 @@ class SpotbugsUtilsTest extends AbstractTest {
 """ as String
     }
 
+    def "Check custom rank"() {
+
+        expect: "no changes"
+        mergeExcludes(exclude(), [], [], 15).text.replaceAll('\r', '') ==
+                """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
+  <Match>
+    <Source name="~.*\\.groovy"/>
+  </Match>
+  <Match>
+    <Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/>
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Rank value="15"/>
+  </Match>
+</FindBugsFilter>
+""" as String
+    }
+
+    def "Check excludes with rank together"() {
+
+        expect: "conversion"
+        mergeExcludes(exclude(),
+                [file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
+                [file('/src/main/java')],
+                15
+        ).text.replaceAll('\r', '') ==
+                """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
+  <Match>
+    <Source name="~.*\\.groovy"/>
+  </Match>
+  <Match>
+    <Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/>
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="sample.Sample"/>
+  </Match>
+  <Match>
+    <Class name="other.Sample2"/>
+  </Match>
+  <Match>
+    <Rank value="15"/>
+  </Match>
+</FindBugsFilter>
+""" as String
+    }
+
+
     def "Check plugin detection"() {
 
         when: "spotbugs plugin enabled"

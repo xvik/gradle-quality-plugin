@@ -120,6 +120,21 @@ class QualityExtension {
     String spotbugsLevel = findbugsLevel
 
     /**
+     * Spotbugs rank should be an integer value between 1 and 20, where 1 to 4 are scariest, 5 to 9 scary,
+     * 10 to 14 troubling, and 15 to 20 of concern bugs.
+     * <p>
+     * This option allows you to filter low-priority ranks: for example, setting {@code spotbugsMaxRank=15} will
+     * filter all bugs with ranks 16-20. Note that this is not the same as {@link #spotbugsLevel}:
+     * it has a bit different meaning (note that both priority and rank are shown for each spotbugs
+     * violation in console).
+     * <p>
+     * The only way to apply rank filtering is through exclude filter. Plugin will automatically generate
+     * additional rule in your exclude filter or in default one. But it may conflict with manual rank rule declaration
+     * (in case if you edit exclude filter manually), so be careful when enabling this option.
+     */
+    int spotbugsMaxRank = 20
+
+    /**
      * Max memory available for spotbugs task. Note that in gradle 4 spotbugs task maximum memory was
      * 1/4 of physical memory, but in gradle 5 it become only 512mb (default for workers api).
      * To minify impact of this gradle 5 change, default value in extension is 1g now, but it may be not
