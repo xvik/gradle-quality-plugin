@@ -29,6 +29,7 @@ dependencies {
         exclude group: 'org.codehaus.groovy'
     }
     testCompile 'ru.vyarus:gradle-animalsniffer-plugin:1.5.0'
+    testCompile 'de.aaschmid:gradle-cpd-plugin:3.0'
 }
 
 group = 'ru.vyarus'

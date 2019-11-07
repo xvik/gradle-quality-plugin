@@ -57,6 +57,16 @@ class QualityExtension {
     boolean pmd = true
 
     /**
+     * Enable auto configuration of de.aaschmid.cpd plugin (if applied). CPD is a part of PMD and so should
+     * share the same version. Cpd plugin will not be configured at all if option set to false.
+     * <p>
+     * As cpd plugin is applied manually, then all other cpd configuration may be performed in cpd closure directly
+     * (without "afterEvaluate"). Plugin will affect only ignoreFailures, toolVersion, enable xml report and
+     * change cpdCheck task sources (see {@link #cpdUnifySources}).
+     */
+    boolean cpd = true
+
+    /**
      * Enable FindBugs plugin. True by default.
      * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
      * Plugin is not enabled and not configured when spotbugs plugin enabled.
@@ -84,6 +94,18 @@ class QualityExtension {
      * Option is disabled by default due to possible side effects with build gradle cache or incremental builds.
      */
     boolean pmdIncremental = false
+
+    /**
+     * By default, cpd looks in all sources (cpd gradle plugin behaviour). When option enabled, quality plugin will
+     * exclude all not configured source sets from cpd task sources. In case of multi-module build, where
+     * cpd project declared in root project, all subprojects with quality plugin will exclude their sourceSets not
+     * configured for quality checks. Also, all custom exclusions ({@link #exclude}, {@link #excludeSources})
+     * will also be excluded.
+     * <p>
+     * When disabled, cpdCheck task sources will not be modified (and so cpd will check all source sets without manual
+     * configuration).
+     */
+    boolean cpdUnifySources = true
 
     /**
      * The analysis effort level. The value specified should be one of min, default, or max.

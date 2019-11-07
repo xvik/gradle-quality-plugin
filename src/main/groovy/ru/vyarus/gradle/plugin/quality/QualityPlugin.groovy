@@ -17,6 +17,7 @@ import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
 import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
+import ru.vyarus.gradle.plugin.quality.util.CpdUtils
 import ru.vyarus.gradle.plugin.quality.util.DurationFormatter
 import ru.vyarus.gradle.plugin.quality.util.FindbugsUtils
 import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
@@ -57,6 +58,7 @@ import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
  * @see CheckstylePlugin
  * @see PmdPlugin
  * @see com.github.spotbugs.SpotBugsPlugin
+ * @see de.aaschmid.gradle.plugins.cpd.CpdPlugin
  */
 @CompileStatic
 class QualityPlugin implements Plugin<Project> {
@@ -86,6 +88,7 @@ class QualityPlugin implements Plugin<Project> {
                 applyFindbugs(project, extension, configLoader,
                         context.registerJavaPlugins && !SpotbugsUtils.isPluginEnabled(project))
                 configureAnimalSniffer(project, extension)
+                configureCpdPlugin(project, extension)
                 applyCodeNarc(project, extension, configLoader, context.registerGroovyPlugins)
             }
         }
@@ -316,6 +319,48 @@ class QualityPlugin implements Plugin<Project> {
             applyEnabledState(project, extension,
                     it.class.classLoader.loadClass('ru.vyarus.gradle.plugin.animalsniffer.AnimalSniffer'))
             groupQualityTasks(project, 'animalsniffer')
+        }
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    private void configureCpdPlugin(Project project, QualityExtension extension) {
+        if (!extension.cpd) {
+            return
+        }
+
+        CpdUtils.findAndConfigurePlugin(project) { Project prj ->
+            boolean declaredInSameProject = prj == project
+            prj.configure(prj) {
+                cpd {
+                    toolVersion = extension.pmdVersion
+                    // ignore can't affect parent project task
+                    if (declaredInSameProject) {
+                        ignoreFailures = !extension.strict
+                    }
+                }
+                cpdCheck {
+                    doFirst {
+                        if (extension.cpdUnifySources) {
+                            applyExcludes(it, extension)
+                        }
+                    }
+                    reports {
+                        xml.enabled = true
+                    }
+                }
+            }
+            // configure sources according to declared sourceSets
+            SourceTask cpdCheck = CpdUtils.findCpdTask(prj)
+            if (extension.cpdUnifySources) {
+                // exclude sources, not declared for quality checks in quality plugin declaration project
+                CpdUtils.unifyCpdSources(project, cpdCheck, extension.sourceSets)
+            }
+            if (declaredInSameProject) {
+                // cpd disabled together with all quality plugins
+                applyEnabledState(prj, extension, cpdCheck.class)
+                // manual grouping: cpd does only one pass for all sources
+                prj.tasks.getByName(QUALITY_TASK + 'Main').dependsOn << cpdCheck
+            }
         }
     }
 
