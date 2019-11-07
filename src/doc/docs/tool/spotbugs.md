@@ -13,7 +13,7 @@
     
 !!! warning
     In contrast to other plugins, [spotbugs plugin](http://spotbugs.readthedocs.io/en/latest/gradle.html) is not bundled with gradle,
-    but quality plugin will bring it as a dependency (v 1.6.5) and activate automatically.
+    but quality plugin will bring it as a dependency (v 2.0.1) and activate automatically.
     To use newer spotbugs plugin version simply enable plugin manually (in `plugins` section).    
     
 By default, plugin is activated if java sources available (`src/main/java`).    
@@ -32,7 +32,7 @@ Default settings (`max` effort and `medium` level) are perfect for most cases. S
 ```
 2 (0 / 2 / 0) SpotBugs violations were found in 2 files
 
-[Performance | URF_UNREAD_FIELD] sample.(Sample.java:8) [priority 2]
+[Performance | URF_UNREAD_FIELD] sample.(Sample.java:8) [priority 2 / rank 14]
 	>> Unread field: sample.Sample.sample
   This field is never read. Consider removing it from the class.
   
@@ -44,16 +44,23 @@ Counts in braces show priorities (p1/p2/p3).
 !!! note
     There is no link to spotbugs site (like other tools), because report already contains [everything from there](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html). 
 
+!!! tip
+    Both [priority](https://spotbugs.readthedocs.io/en/stable/filter.html#confidence) 
+    and [rank](https://spotbugs.readthedocs.io/en/stable/filter.html#rank) are shown for violations: `[priority 2 / rank 14]`. 
+    Priority relates to `spotbugsLevel` setting and rank to `spotbugsMaxRank`.   
+
 ## Config
 
 Tool config options with defaults:
 
 ```groovy
 quality {
-    spotbugsVersion = '3.1.11'
+    spotbugsVersion = '3.1.12'
     spotbugs = true // false to disable automatic plugin activation
     spotbugsEffort = 'max'  // min, less, more or max
     spotbugsLevel = 'medium' // low, medium, high
+    spotbugsMaxRank = 20 // 1-4 scariest, 5-9 scary, 10-14 troubling, 15-20 of concern  
+    spotbugsMaxHeapSize = '1g'
 }
 ```
 
@@ -61,9 +68,11 @@ quality {
     Gradle 5 [reduced default memory settings](https://github.com/gradle/gradle/issues/6216) and so default memory for 
     spotbugs task become `512mb` (instead of `1/4 of physical memory` as it was before). 
     To reduce the impact (as spotbugs task is memory-consuming), quality plugin sets now default
-    memory to `1g`: for gradle 4 projects it's less then was before and for gradle 5
-    projects it's more then new default. If your project requires more memory for spotbugs, increase it manually with
-    `spotbugsMain.maxHeapSize='2g'` 
+    memory to `1g`. If your project requires more memory for spotbugs, increase it with `spotbugsMaxHeapSize` option:
+    `spotbugsMaxHeapSize='2g'` 
+    
+    Note that quality pligin setting is applied only if sotbugs task was not configured manually, for example, with
+    `spotbugsMain.maxHeapSize = '2g'`.
 
 ## Suppress
 
@@ -105,7 +114,7 @@ Or declare spotbugs plugin manually (it will be configured by quality plugin):
 
 ```groovy
 plugins {
-    id 'com.github.spotbugs' version '1.6.5'
+    id 'com.github.spotbugs' version '2.0.1'
 }
 dependencies {
     spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.2.0'

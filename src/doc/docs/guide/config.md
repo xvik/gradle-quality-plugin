@@ -8,10 +8,10 @@ quality {
     
     // Tools versions
     
-    checkstyleVersion = '8.17'
-    pmdVersion = '6.11.0'    
-    spotbugsVersion = '3.1.11'
-    codenarcVersion = '1.3'
+    checkstyleVersion = '8.26'
+    pmdVersion = '6.18.0'    
+    spotbugsVersion = '3.1.12'
+    codenarcVersion = '1.4'
     animalsnifferVersion
 
     /**
@@ -41,6 +41,36 @@ quality {
      * If set to high, only high priority bugs are reported. Default is 'medium'.
      */
     spotbugsLevel = 'medium'
+
+    /**
+     * Spotbugs rank should be an integer value between 1 and 20, where 1 to 4 are scariest, 5 to 9 scary,
+     * 10 to 14 troubling, and 15 to 20 of concern bugs.
+     * <p>
+     * This option allows you to filter low-priority ranks: for example, setting {@code spotbugsMaxRank=15} will
+     * filter all bugs with ranks 16-20. Note that this is not the same as {@link #spotbugsLevel}:
+     * it has a bit different meaning (note that both priority and rank are shown for each spotbugs
+     * violation in console).
+     * <p>
+     * The only way to apply rank filtering is through exclude filter. Plugin will automatically generate
+     * additional rule in your exclude filter or in default one. But it may conflict with manual rank rule declaration
+     * (in case if you edit exclude filter manually), so be careful when enabling this option.
+     */
+    int spotbugsMaxRank = 20
+
+    /**
+     * Max memory available for spotbugs task. Note that in gradle 4 spotbugs task maximum memory was
+     * 1/4 of physical memory, but in gradle 5 it become only 512mb (default for workers api).
+     * To minify impact of this gradle 5 change, default value in extension is 1g now, but it may be not
+     * enough for large projects (and so you will have to increase it manually).
+     * <p>
+     * IMPORTANT: setting will not work if heap size configured directly in spotbugs task (for example, with
+     * <code>spotbugsMain.maxHeapSize = '2g'</code>. This was done in order to not break current behaviour
+     * (when task memory is already configured) and affect only default cases (mostly caused by gradle 5 transition).
+     * <p>
+     * See: https://github.com/gradle/gradle/issues/6216 (Reduce default memory settings for daemon and
+     * workers).
+     */
+    String spotbugsMaxHeapSize = '1g'
 
     /**
      * Javac lint options to show compiler warnings, not visible by default.

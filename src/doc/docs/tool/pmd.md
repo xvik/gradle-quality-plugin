@@ -12,7 +12,7 @@ By default, plugin is activated if java sources available (`src/main/java`).
 contains all java checks, but some of them are disabled. Remove exclusion to enable disabled rule.
 
 !!! warning
-    Pmd 6.0 [changed rule groups](https://pmd.github.io/pmd-6.0.0/pmd_release_notes.html#rule-categories). Default confing was 
+    Pmd 6.0 [changed rule groups](https://pmd.github.io/pmd-6.0.0/pmd_release_notes.html#rule-categories). Default config was 
     rewritten accordingly.
 
 ## Output
@@ -33,7 +33,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    pmdVersion = '6.11.0'
+    pmdVersion = '6.18.0'
     pmd = true // false to disable automatic plugin activation
 }
 ```
