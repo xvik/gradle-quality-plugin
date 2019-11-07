@@ -23,7 +23,7 @@
         * [InvalidJavadocPosition](https://checkstyle.sourceforge.io/config_javadoc.html#InvalidJavadocPosition)        
         * [JavadocBlockTagLocation](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocBlockTagLocation)
     - Disable new check [OrderedProperties](https://checkstyle.sourceforge.io/config_misc.html#OrderedProperties)
-* Update pmd 6.11.0 -> 6.19.0   
+* Update pmd 6.11.0 -> 6.18.0   
 * Update pmd config:
     - Add 1 as allowed "magic number" for [AvoidLiteralsInIfCondition](https://pmd.github.io/pmd-6.11.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition)
 * Add `pmdIncremental` option - shortcut for gradle's `pmd.incrementalAnalysis` option. Disabled by default.    
