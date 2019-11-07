@@ -59,8 +59,7 @@ class FindbugsUtils {
         exclude.each {
             String clazz = FileUtils.extractJavaClass(roots, it)
             if (clazz) {
-                Node match = xml.appendNode('Match').appendNode('Class')
-                match.attributes().put('name', clazz)
+                xml.appendNode('Match').appendNode('Class', ['name': clazz])
             }
         }
 

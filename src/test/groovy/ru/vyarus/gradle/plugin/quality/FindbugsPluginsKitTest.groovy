@@ -17,6 +17,8 @@ class FindbugsPluginsKitTest extends AbstractKitTest {
                 id 'findbugs'
                 id 'ru.vyarus.quality'
             }
+            
+            sourceCompatibility = 1.8
 
             quality {
                 checkstyle false
@@ -49,6 +51,8 @@ class FindbugsPluginsKitTest extends AbstractKitTest {
                 id 'java'
                 id 'ru.vyarus.quality'
             }
+            
+            sourceCompatibility = 1.8
 
             quality {
                 checkstyle false

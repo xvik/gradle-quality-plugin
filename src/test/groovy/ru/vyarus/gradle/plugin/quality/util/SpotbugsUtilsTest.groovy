@@ -14,10 +14,8 @@ class SpotbugsUtilsTest extends AbstractTest {
     def "Check exclude xml modification"() {
 
         expect: "conversion"
-        mergeExcludes(exclude(),
-                [file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
-                [file('/src/main/java')]
-        ).text.replaceAll('\r', '') ==
+        merge([file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
+                [file('/src/main/java')] ) ==
                 """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
   <Match>
     <Source name="~.*\\.groovy"/>
@@ -41,10 +39,7 @@ class SpotbugsUtilsTest extends AbstractTest {
     def "Check no excludes"() {
 
         expect: "no modification"
-        mergeExcludes(exclude(),
-                [],
-                [file('/src/main/java')]
-        ).text.replaceAll('\r', '') ==
+        merge([], [file('/src/main/java')]) ==
                 """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
   <Match>
     <Source name="~.*\\.groovy"/>
@@ -62,10 +57,8 @@ class SpotbugsUtilsTest extends AbstractTest {
     def "Check no matching roots"() {
 
         expect: "no changes"
-        mergeExcludes(exclude(),
-                [file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
-                [file('/src/main/bad')]
-        ).text.replaceAll('\r', '') ==
+        merge([file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
+                [file('/src/main/bad')]) ==
                 """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
   <Match>
     <Source name="~.*\\.groovy"/>
@@ -83,7 +76,7 @@ class SpotbugsUtilsTest extends AbstractTest {
     def "Check custom rank"() {
 
         expect: "no changes"
-        mergeExcludes(exclude(), [], [], 15).text.replaceAll('\r', '') ==
+        merge([], [], 15) ==
                 """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
   <Match>
     <Source name="~.*\\.groovy"/>
@@ -104,11 +97,9 @@ class SpotbugsUtilsTest extends AbstractTest {
     def "Check excludes with rank together"() {
 
         expect: "conversion"
-        mergeExcludes(exclude(),
-                [file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
+        merge([file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
                 [file('/src/main/java')],
-                15
-        ).text.replaceAll('\r', '') ==
+                15) ==
                 """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
   <Match>
     <Source name="~.*\\.groovy"/>
@@ -145,7 +136,11 @@ class SpotbugsUtilsTest extends AbstractTest {
         SpotbugsUtils.isPluginEnabled(project)
     }
 
-    private File exclude() {
-        return new File(getClass().getResource('/ru/vyarus/quality/config/spotbugs/exclude.xml').toURI())
+    private String merge(Collection<File> exclude, Collection<File> roots, Integer rank = null) {
+        return mergeExcludes(new File(getClass().getResource('/ru/vyarus/quality/config/spotbugs/exclude.xml').toURI()),
+                exclude,  roots, rank)
+                .text.replace('\r', '')
+                // on java 11 groovy inserts blank lines between tags
+                .replaceAll('\n {1,}\n', '\n')
     }
 }

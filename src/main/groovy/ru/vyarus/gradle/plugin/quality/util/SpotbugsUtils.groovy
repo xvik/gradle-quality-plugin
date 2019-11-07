@@ -80,14 +80,12 @@ class SpotbugsUtils {
         exclude.each {
             String clazz = FileUtils.extractJavaClass(roots, it)
             if (clazz) {
-                xml.appendNode(MATCH).appendNode('Class')
-                        .attributes().put('name', clazz)
+                xml.appendNode(MATCH).appendNode('Class', ['name': clazz])
             }
         }
 
         if (rank) {
-            xml.appendNode(MATCH).appendNode('Rank')
-                    .attributes().put('value', rank)
+            xml.appendNode(MATCH).appendNode('Rank', ['value': rank])
         }
 
         File tmp = File.createTempFile('spotbugs-extended-exclude', '.xml')

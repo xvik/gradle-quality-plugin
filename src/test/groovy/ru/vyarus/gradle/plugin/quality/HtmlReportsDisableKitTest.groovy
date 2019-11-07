@@ -61,6 +61,8 @@ class HtmlReportsDisableKitTest extends AbstractKitTest {
                 id 'java'
                 id 'ru.vyarus.quality'
             }
+            
+            sourceCompatibility = 1.8
 
             quality {
                 strict false

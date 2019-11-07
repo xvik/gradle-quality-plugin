@@ -117,6 +117,8 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
                 id 'ru.vyarus.animalsniffer' version '1.5.0'
                 id 'ru.vyarus.quality'
             }
+            
+            sourceCompatibility = 1.8
 
             sourceSets.main {
                 java {

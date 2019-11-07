@@ -1,6 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.util
 
 import ru.vyarus.gradle.plugin.quality.AbstractTest
+import spock.lang.IgnoreIf
 
 import static ru.vyarus.gradle.plugin.quality.util.FindbugsUtils.mergeExcludes
 
@@ -8,6 +9,7 @@ import static ru.vyarus.gradle.plugin.quality.util.FindbugsUtils.mergeExcludes
  * @author Vyacheslav Rusakov
  * @since 20.03.2017
  */
+@IgnoreIf({jvm.java9Compatible})
 class FindbugsUtilsTest extends AbstractTest {
 
     def "Check exclude xml modification"() {
