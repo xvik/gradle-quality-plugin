@@ -22,6 +22,7 @@ class CpdIntegrationKitTest extends AbstractKitTest {
                 pmd false
                 checkstyle false
                 spotbugs false
+                findbugs false
                 strict false
             }
 
