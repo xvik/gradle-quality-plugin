@@ -27,8 +27,13 @@
 * Update pmd config:
     - Add 1 as allowed "magic number" for [AvoidLiteralsInIfCondition](https://pmd.github.io/pmd-6.11.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition)
 * Add `pmdIncremental` option - shortcut for gradle's `pmd.incrementalAnalysis` option. Disabled by default.    
-* Add PMD's cpd project support through [de.aaschmid.cpd](https://github.com/aaschmid/gradle-cpd-plugin) plugin. 
-    Cpd plugin is only configured if applied manually: unify pmd version, source sets and silent options. (#4)  
+* Add PMD's cpd project support through [de.aaschmid.cpd](https://github.com/aaschmid/gradle-cpd-plugin) plugin. (#4) 
+    - CPD gradle plugin must be applied manually: no automatic plugin enabling  
+    - Sets pmd version and silent mode. 
+    - Sources are configured according to quality configuration. Exclusions (source and pattern) are supported too 
+    - Add html report (using style recommended by pmd; style file added as overridable config)
+    - Add console report (to be in common with other plugins)  
+    - Support for multi-module projects (where cpd plugin applied in root project and quality in subprojects)
 
 ### 3.4.0 (2019-02-16)
 * Fix source files root detection (#13)

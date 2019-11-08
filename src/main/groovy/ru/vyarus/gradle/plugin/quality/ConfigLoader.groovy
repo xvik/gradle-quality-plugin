@@ -17,6 +17,7 @@ import org.gradle.api.Project
 class ConfigLoader {
     private final String checkstyle = 'checkstyle/checkstyle.xml'
     private final String pmd = 'pmd/pmd.xml'
+    private final String cpdXsl = 'cpd/cpdhtml.xslt'
     private final String findbugsExclude = 'findbugs/exclude.xml'
     private final String findbugsXsl = 'findbugs/html-report-style.xsl'
     private final String spotbugsExclude = 'spotbugs/exclude.xml'
@@ -37,6 +38,10 @@ class ConfigLoader {
 
     File resolvePmdConfig(boolean copyDefaultFile = true) {
         resolve(pmd, copyDefaultFile)
+    }
+
+    File resolveCpdXsl(boolean copyDefaultFile = true) {
+        resolve(cpdXsl, copyDefaultFile)
     }
 
     @Deprecated
@@ -69,7 +74,7 @@ class ConfigLoader {
      */
     void initUserConfigs(boolean override, boolean spotbugs) {
         init()
-        [checkstyle, pmd, codenarc,
+        [checkstyle, pmd, cpdXsl, codenarc,
          spotbugs ? spotbugsExclude : findbugsExclude,
          spotbugs ? spotbugsXsl : findbugsXsl,].each {
             copyConfig(configDir, it, override)

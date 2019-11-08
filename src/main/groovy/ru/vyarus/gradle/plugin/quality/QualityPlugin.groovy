@@ -88,7 +88,7 @@ class QualityPlugin implements Plugin<Project> {
                 applyFindbugs(project, extension, configLoader,
                         context.registerJavaPlugins && !SpotbugsUtils.isPluginEnabled(project))
                 configureAnimalSniffer(project, extension)
-                configureCpdPlugin(project, extension)
+                configureCpdPlugin(project, extension, configLoader)
                 applyCodeNarc(project, extension, configLoader, context.registerGroovyPlugins)
             }
         }
@@ -323,7 +323,7 @@ class QualityPlugin implements Plugin<Project> {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    private void configureCpdPlugin(Project project, QualityExtension extension) {
+    private void configureCpdPlugin(Project project, QualityExtension extension, ConfigLoader configLoader) {
         if (!extension.cpd) {
             return
         }
@@ -361,6 +361,13 @@ class QualityPlugin implements Plugin<Project> {
                 // manual grouping: cpd does only one pass for all sources
                 prj.tasks.getByName(QUALITY_TASK + 'Main').dependsOn << cpdCheck
             }
+            // apply custom reporting
+            // (in case of multi-module project important to apply root project report just once)
+            if (!prj.findProperty('cpdReportConfigured')) {
+                applyReporter(prj, 'cpdCheck', new CpdReporter(configLoader),
+                        extension.consoleReporting, extension.htmlReports)
+                prj.ext.cpdReportConfigured = true
+            }
         }
     }
 
@@ -374,7 +381,8 @@ class QualityPlugin implements Plugin<Project> {
         // in multi-project reporter registered for each project, but all gets called on task execution in any module
         project.gradle.taskGraph.afterTask { Task task, TaskState state ->
             if (task.name.startsWith(type) && project == task.project) {
-                String taskType = task.name[type.length()..-1].toLowerCase()
+                // special case for cpd where single task used for all source sets
+                String taskType = task.name == type ? type : task.name[type.length()..-1].toLowerCase()
                 if (generatesHtmlReport) {
                     (reporter as HtmlReportGenerator).generateHtmlReport(project, taskType)
                 }

@@ -3,8 +3,7 @@ package ru.vyarus.gradle.plugin.quality.report
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
-
-import java.util.zip.ZipFile
+import ru.vyarus.gradle.plugin.quality.util.FileUtils
 
 /**
  * Prints codenarc errors (from xml report) into console.
@@ -67,12 +66,11 @@ class CodeNarcReporter implements Reporter {
     }
 
     private Properties loadCodenarcProperties(Project project) {
-        Properties props = new Properties()
-        File codenarcJar = project.configurations.getByName('codenarc').files.find {
-            it.name.contains('CodeNarc')
+        File codenarcJar = FileUtils.findConfigurationJar(project, 'codenarc', 'CodeNarc')
+        return FileUtils.loadFileFromJar(codenarcJar, 'codenarc-base-rules.properties') { InputStream it ->
+            Properties props = new Properties()
+            props.load(it)
+            return props
         }
-        ZipFile file = new ZipFile(codenarcJar)
-        props.load(file.getInputStream(file.getEntry('codenarc-base-rules.properties')))
-        return props
     }
 }

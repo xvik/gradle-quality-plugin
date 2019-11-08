@@ -8,6 +8,11 @@ public class OtherStruct2 {
         Math.sqrt(12);
         Math.sqrt(12);
         Math.sqrt(12);
+        Math.sqrt(12);
+        Math.sqrt(12);
+        Math.sqrt(12);
+        Math.sqrt(12);
+        Math.sqrt(12);
     }
 
     public void differentMethod2() {

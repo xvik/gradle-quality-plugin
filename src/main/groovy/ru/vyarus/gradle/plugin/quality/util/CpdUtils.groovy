@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.util
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.SourceSet
@@ -11,6 +13,7 @@ import org.gradle.api.tasks.SourceTask
  * @author Vyacheslav Rusakov
  * @since 07.11.2019
  */
+@CompileStatic
 class CpdUtils {
 
     /**
@@ -57,6 +60,7 @@ class CpdUtils {
      * @param cpdCheck cpdCheck task (probably from parent project)
      * @param qualitySets configured source sets for quality tasks
      */
+    @CompileStatic(TypeCheckingMode.SKIP)
     static void unifyCpdSources(Project project, SourceTask cpdCheck, Collection<SourceSet> qualitySets) {
         project.plugins.withType(JavaBasePlugin) {
             project.sourceSets.all {

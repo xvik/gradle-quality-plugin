@@ -35,6 +35,7 @@ class InitQualityConfigTaskKitTest extends AbstractKitTest {
         file('config/spotbugs/html-report-style.xsl').exists()
         !file('config/findbugs').exists()
         file('config/pmd/pmd.xml').exists()
+        file('config/cpd/cpdhtml.xslt').exists()
     }
 
     def "Check configs findbugs init"() {
@@ -62,5 +63,6 @@ class InitQualityConfigTaskKitTest extends AbstractKitTest {
         file('config/findbugs/html-report-style.xsl').exists()
         !file('config/spotbugs').exists()
         file('config/pmd/pmd.xml').exists()
+        file('config/cpd/cpdhtml.xslt').exists()
     }
 }

@@ -34,13 +34,19 @@ class CpdIntegrationKitTest extends AbstractKitTest {
 
         fileFromClasspath('src/main/java/sample/cpd/Struct1.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/Struct1.java')
         fileFromClasspath('src/main/java/sample/cpd/Struct2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/Struct2.java')
+        fileFromClasspath('src/main/java/sample/cpd/OtherStruct1.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/OtherStruct1.java')
+        fileFromClasspath('src/main/java/sample/cpd/OtherStruct2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/OtherStruct2.java')
 
         when: "run check task with java sources"
         BuildResult result = run('check')
 
-        then: "all plugins detect violations"
+        then: "cpd detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('CPD found duplicate code. See the report at')
+
+        and: "xml report generated"
+        file('build/reports/cpd/cpdCheck.xml').exists()
+        file('build/reports/cpd/cpdCheck.html').exists()
     }
 
     def "Check cpd disable"() {
@@ -67,7 +73,7 @@ class CpdIntegrationKitTest extends AbstractKitTest {
         when: "run check task with java sources"
         BuildResult result = run('check')
 
-        then: "all plugins detect violations"
+        then: "task skipped"
         result.task(":check").outcome == TaskOutcome.UP_TO_DATE
         result.task(":cpdCheck").outcome == TaskOutcome.SKIPPED
     }
