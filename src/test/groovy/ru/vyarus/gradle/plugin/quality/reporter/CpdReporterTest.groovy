@@ -30,7 +30,8 @@ class CpdReporterTest extends AbstractKitTest {
         """)
         file('src/main/java').mkdirs()
         String report = getClass().getResourceAsStream('/ru/vyarus/gradle/plugin/quality/report/cpd/cpdCheck.xml').text
-                .replaceAll('\\$\\{srcRoot}', file('src/main/java').canonicalPath.replaceAll('\\\\', '\\\\\\\\'))
+                .replaceAll('\\$\\{srcMainRoot}', file('src/main/java').canonicalPath.replaceAll('\\\\', '\\\\\\\\'))
+                .replaceAll('\\$\\{srcTestRoot}', file('src/test/java').canonicalPath.replaceAll('\\\\', '\\\\\\\\'))
         File target = file('build/reports/cpd/cpdCheck.xml')
         target.parentFile.mkdirs()
         target << report

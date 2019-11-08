@@ -67,6 +67,35 @@ class CpdIntegrationTest extends AbstractTest {
         task.ignoreFailures
     }
 
+    def "Check cpd support disabled"() {
+
+        when: "apply plugin"
+        file('src/main/java').mkdirs()
+        file('src/test/java').mkdirs()
+
+        file('src/main/java/Sample.java').createNewFile()
+        file('src/test/java/SampleTest.java').createNewFile()
+
+        Project project = project {
+            apply plugin: 'java'
+            apply plugin: 'de.aaschmid.cpd'
+            apply plugin: 'ru.vyarus.quality'
+
+            quality {
+                strict = false
+                cpd = false
+            }
+        }
+
+        then: "cpd configured"
+        CpdExtension extension = project.extensions.cpd
+        !extension.ignoreFailures
+        extension.toolVersion != project.extensions.quality.pmdVersion
+        def task = project.tasks.cpdCheck
+        task.source.files.collect{it.name} == ['Sample.java', 'SampleTest.java']
+        !task.ignoreFailures
+    }
+
 
     def "Check multi-module cpd integration"() {
 

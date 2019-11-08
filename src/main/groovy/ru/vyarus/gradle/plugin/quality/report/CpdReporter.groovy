@@ -43,7 +43,7 @@ class CpdReporter implements Reporter, HtmlReportGenerator {
                     dupl.file.each { file ->
                         String filePath = file.@path
                         String sourceFile = ReportUtils.extractFile(filePath)
-                        String name = ReportUtils.extractJavaPackage(project, 'main', filePath)
+                        String name = ReportUtils.extractJavaPackage(project, filePath)
                         msg << "$name.($sourceFile:${file.@line})"
                         if (first) {
                             start = file.@line as Integer

@@ -3,6 +3,7 @@ package ru.vyarus.gradle.plugin.quality.report
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
+import org.gradle.api.tasks.SourceSet
 
 /**
  * Reporting utils.
@@ -26,17 +27,37 @@ class ReportUtils {
     @CompileStatic(TypeCheckingMode.SKIP)
     static String extractJavaPackage(Project project, String type, String file) {
         String name = new File(file).canonicalPath
-        Closure search = { Iterable<File> files ->
-            files*.canonicalPath.find { String s -> name.startsWith(s) }
-        }
         // try looking in java and related (groovy) sources (mixed mode)
-        String root = search(project.sourceSets[type].allJava.srcDirs)
-        if (root) {
-            name = name[root.length() + 1..-1] // remove sources dir prefix
+        String root = matchRoot(project.sourceSets[type] as SourceSet, name)
+        return resolvePackage(root, name)
+    }
+
+    /**
+     * Special version of package matching mechanism: looks for all source sets and all child modules.
+     *
+     * @param project project instance
+     * @param file absolute path to source file
+     * @return package for provided java class path
+     */
+    @CompileStatic(TypeCheckingMode.SKIP)
+    static String extractJavaPackage(Project project, String file) {
+        String name = new File(file).canonicalPath
+        // check source sets
+        for (SourceSet set : project.sourceSets) {
+            String root = matchRoot(set, name)
+            if (root) {
+                return resolvePackage(root, name)
+            }
         }
-        name = name[0..name.lastIndexOf('.') - 1] // remove extension
-        name = name.replaceAll('\\\\|/', '.')
-        name[0..name.lastIndexOf('.') - 1] // remove class name
+        // check subprojects
+        for (Project sub : project.subprojects) {
+            String res = extractJavaPackage(sub, name)
+            if (res != null) {
+                return res
+            }
+        }
+        // no match found
+        return resolvePackage(null, name)
     }
 
     /**
@@ -74,5 +95,24 @@ class ReportUtils {
      */
     static String toConsoleLink(File file) {
         return "file:///${noRootFilePath(file)}"
+    }
+
+    private static String matchRoot(SourceSet set, String filePath) {
+        Closure search = { Iterable<File> files ->
+            files*.canonicalPath.find { String s -> filePath.startsWith(s) }
+        }
+        // try looking in java and related (groovy) sources (mixed mode)
+        return search(set.allJava.srcDirs)
+    }
+
+    private static String resolvePackage(String rootPath, String filePath) {
+        String name = filePath
+        if (rootPath) {
+            name = name[rootPath.length() + 1..-1] // remove sources dir prefix
+        }
+        name = name[0..name.lastIndexOf('.') - 1] // remove extension
+        name = name.replaceAll('\\\\|/', '.')
+        name = name[0..name.lastIndexOf('.') - 1] // remove class name
+        return name
     }
 }

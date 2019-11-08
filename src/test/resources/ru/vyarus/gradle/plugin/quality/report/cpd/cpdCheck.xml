@@ -2,9 +2,9 @@
 <pmd-cpd>
     <duplication lines="16" tokens="75">
         <file line="3"
-              path="${srcRoot}/sample/cpd/OtherStruct1.java"/>
+              path="${srcMainRoot}/sample/cpd/OtherStruct1.java"/>
         <file line="3"
-              path="${srcRoot}/sample/cpd/OtherStruct2.java"/>
+              path="${srcTestRoot}/sample/cpd/OtherStruct2.java"/>
         <codefragment><![CDATA[public class OtherStruct1 {
 
     public static void main(String[] args) {
@@ -24,9 +24,9 @@
     </duplication>
     <duplication lines="12" tokens="63">
         <file line="6"
-              path="${srcRoot}/sample/cpd/Struct2.java"/>
+              path="${srcTestRoot}/sample/cpd/Struct2.java"/>
         <file line="6"
-              path="${srcRoot}/sample/cpd/Struct1.java"/>
+              path="${srcMainRoot}/sample/cpd/Struct1.java"/>
         <codefragment><![CDATA[public class Struct2 {
 
     public static void main(String[] args) {
