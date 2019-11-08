@@ -1,7 +1,8 @@
-package ru.vyarus.gradle.plugin.quality
+package ru.vyarus.gradle.plugin.quality.tools.spotbugs
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
+import ru.vyarus.gradle.plugin.quality.AbstractKitTest
 
 /**
  * @author Vyacheslav Rusakov

@@ -1,35 +1,33 @@
-package ru.vyarus.gradle.plugin.quality
+package ru.vyarus.gradle.plugin.quality.tools.spotbugs
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
+import ru.vyarus.gradle.plugin.quality.AbstractKitTest
 
 /**
  * @author Vyacheslav Rusakov
- * @since 21.12.2015
+ * @since 20.02.2018
  */
-class FindbugsPluginsKitTest extends AbstractKitTest {
+class SpotbugsPluginsKitTest extends AbstractKitTest {
 
-    def "Check findbugs plugins"() {
+    def "Check spotbugs plugins"() {
         setup:
         build("""
             plugins {
                 id 'java'
-                id 'findbugs'
+                id 'com.github.spotbugs'
                 id 'ru.vyarus.quality'
             }
-            
-            sourceCompatibility = 1.8
 
             quality {
                 checkstyle false
                 pmd false
                 strict false
-                spotbugs false
             }
 
             repositories { mavenCentral() }
             dependencies {
-                findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.6.0'
+                spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.6.0'
             }
         """)
 
@@ -41,30 +39,27 @@ class FindbugsPluginsKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.output.contains('FindBugs rule violations were found')
+        result.output.contains('SpotBugs rule violations were found')
     }
 
-    def "Check findbugs plugins 2"() {
+    def "Check spotbugs plugins 2"() {
         setup:
         build("""
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
             }
-            
-            sourceCompatibility = 1.8
 
             quality {
                 checkstyle false
                 pmd false
                 strict false
-                spotbugs false
             }
 
             repositories { mavenCentral() }
             afterEvaluate {
                 dependencies {
-                    findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.6.0'
+                    spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.6.0'
                 }
             }
         """)
@@ -77,6 +72,6 @@ class FindbugsPluginsKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.output.contains('FindBugs rule violations were found')
+        result.output.contains('SpotBugs rule violations were found')
     }
 }

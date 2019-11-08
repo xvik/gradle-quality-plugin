@@ -1,7 +1,8 @@
-package ru.vyarus.gradle.plugin.quality
+package ru.vyarus.gradle.plugin.quality.tools.pmd
 
 
 import org.gradle.api.Project
+import ru.vyarus.gradle.plugin.quality.AbstractTest
 
 /**
  * @author Vyacheslav Rusakov
