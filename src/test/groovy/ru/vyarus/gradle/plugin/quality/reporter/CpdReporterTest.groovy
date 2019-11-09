@@ -43,7 +43,7 @@ class CpdReporterTest extends AbstractKitTest {
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
         error.replaceAll("\r", '').contains """
-2 duplicates were found by CPD
+2 java duplicates were found by CPD
 
 sample.cpd.(OtherStruct1.java:3)  [16 lines / 75 tokens]
 sample.cpd.(OtherStruct2.java:3)
@@ -118,7 +118,7 @@ sample.cpd.(Struct1.java:6)
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
         error.replaceAll("\r", '').contains """
-2 duplicates were found by CPD
+2 java duplicates were found by CPD
 
 sample.cpd.(OtherStruct1.java:3)  [16 lines / 75 tokens]
 build/generated/java/sample/cpd.(OtherStruct2.java:3)

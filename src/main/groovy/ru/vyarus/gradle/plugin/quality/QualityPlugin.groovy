@@ -371,6 +371,9 @@ class QualityPlugin implements Plugin<Project> {
                 reports {
                     xml.enabled = true
                 }
+                doFirst {
+                    configLoader.resolveCpdXsl()
+                }
                 // console reporting for each cpd task
                 applyReporter(prj, it.name, new CpdReporter(configLoader),
                         extension.consoleReporting, extension.htmlReports)

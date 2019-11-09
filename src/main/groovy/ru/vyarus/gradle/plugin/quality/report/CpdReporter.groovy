@@ -34,7 +34,7 @@ class CpdReporter implements Reporter, HtmlReportGenerator {
             Node result = new XmlParser().parse(reportFile)
             int cnt = result.duplication.size()
             if (cnt > 0) {
-                logger.error "$NL$cnt duplicates were found by CPD$NL"
+                logger.error "$NL$cnt ${project.tasks[type].language} duplicates were found by CPD$NL"
                 result.duplication.each { dupl ->
                     int lines = dupl.@lines as Integer
                     int start = 0

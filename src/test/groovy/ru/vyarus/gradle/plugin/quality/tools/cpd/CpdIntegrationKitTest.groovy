@@ -42,7 +42,7 @@ class CpdIntegrationKitTest extends AbstractKitTest {
 
         then: "cpd detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.output.contains('4 duplicates were found by CPD')
+        result.output.contains('4 java duplicates were found by CPD')
 
         and: "xml report generated"
         file('build/reports/cpd/cpdCheck.xml').exists()
@@ -80,7 +80,6 @@ class CpdIntegrationKitTest extends AbstractKitTest {
 
     def "Check multi-module cpd integration"() {
         setup:
-        debug()
         build("""         
             plugins {
                 id 'ru.vyarus.quality'
@@ -119,7 +118,7 @@ class CpdIntegrationKitTest extends AbstractKitTest {
 
         then: "cpd detect violations"
         result.task(":cpdCheck").outcome == TaskOutcome.SUCCESS
-        result.output.contains('4 duplicates were found by CPD')
+        result.output.contains('4 java duplicates were found by CPD')
 
         and: "xml report generated"
         file('build/reports/cpd/cpdCheck.xml').exists()
