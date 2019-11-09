@@ -34,7 +34,7 @@ class CpdIntegrationTest extends AbstractTest {
         extension.ignoreFailures
         extension.toolVersion == project.extensions.quality.pmdVersion
         def task = project.tasks.cpdCheck
-        task.source.files.collect{it.name} == ['Sample.java']
+        task.source.files.collect { it.name } == ['Sample.java']
         task.ignoreFailures
         project.check.dependsOn.contains task
     }
@@ -64,7 +64,7 @@ class CpdIntegrationTest extends AbstractTest {
         extension.ignoreFailures
         extension.toolVersion == project.extensions.quality.pmdVersion
         def task = project.tasks.cpdCheck
-        task.source.files.collect{it.name} == ['Sample.java', 'SampleTest.java']
+        task.source.files.collect { it.name } == ['Sample.java', 'SampleTest.java']
         task.ignoreFailures
     }
 
@@ -94,7 +94,7 @@ class CpdIntegrationTest extends AbstractTest {
         }
 
         then: "sources correct"
-        project.tasks.cpdCheck.source.files.collect{it.name} as Set == ['Sample.java', 'SampleTest.java'] as Set
+        project.tasks.cpdCheck.source.files.collect { it.name } as Set == ['Sample.java', 'SampleTest.java'] as Set
     }
 
 
@@ -127,7 +127,7 @@ class CpdIntegrationTest extends AbstractTest {
         }
 
         then: "sources correct"
-        project.tasks.cpdCheck.source.files.collect{it.name} as Set == ['Sample.java', 'SampleTest.java'] as Set
+        project.tasks.cpdCheck.source.files.collect { it.name } as Set == ['Sample.java', 'SampleTest.java'] as Set
     }
 
     def "Check cpd support disabled"() {
@@ -155,7 +155,7 @@ class CpdIntegrationTest extends AbstractTest {
         !extension.ignoreFailures
         extension.toolVersion != project.extensions.quality.pmdVersion
         def task = project.tasks.cpdCheck
-        task.source.files.collect{it.name} == ['Sample.java', 'SampleTest.java']
+        task.source.files.collect { it.name } == ['Sample.java', 'SampleTest.java']
         !task.ignoreFailures
     }
 
@@ -188,8 +188,44 @@ class CpdIntegrationTest extends AbstractTest {
         extension.toolVersion == project.project(':sub').extensions.quality.pmdVersion
         def task = project.tasks.cpdCheck
         // sources were not re-configured for root project
-        task.source.files.collect{it.name} == ['Sample.java']
+        task.source.files.collect { it.name } == ['Sample.java']
         !task.ignoreFailures
         project.project(':sub').tasks.check.dependsOn.contains task
+    }
+
+    def "Check multi-module cpd middle integration"() {
+
+        when: "apply plugin"
+        file('subroot/sub/src/main/java').mkdirs()
+        file('subroot/sub/src/test/java').mkdirs()
+
+        file('subroot/sub/src/main/java/Sample.java').createNewFile()
+        file('subroot/sub/src/test/java/SampleTest.java').createNewFile()
+
+        Project project = projectBuilder()
+        // cpd declared in the middle project
+                .child('subroot') {
+                    apply plugin: 'de.aaschmid.cpd'
+                }
+                .childOf('subroot', 'sub') {
+                    apply plugin: 'java'
+                    apply plugin: 'ru.vyarus.quality'
+
+                    quality {
+                        strict = false
+                    }
+                }
+                .build()
+
+        then: "cpd partly configured"
+        def subroot = project.project(':subroot')
+        CpdExtension extension = subroot.extensions.cpd
+        !extension.ignoreFailures
+        extension.toolVersion == project.project(':subroot:sub').extensions.quality.pmdVersion
+        def task = subroot.tasks.cpdCheck
+        // sources were not re-configured for root project
+        task.source.files.collect { it.name } == ['Sample.java']
+        !task.ignoreFailures
+        project.project(':subroot:sub').tasks.check.dependsOn.contains task
     }
 }
