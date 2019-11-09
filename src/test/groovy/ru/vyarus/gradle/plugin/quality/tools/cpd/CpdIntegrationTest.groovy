@@ -68,6 +68,68 @@ class CpdIntegrationTest extends AbstractTest {
         task.ignoreFailures
     }
 
+    def "Check extra source dirs applied"() {
+
+        when: "apply plugin"
+        file('src/main/java').mkdirs()
+        file('build/generated/java').mkdirs()
+
+        file('src/main/java/Sample.java').createNewFile()
+        file('build/generated/java/SampleTest.java').createNewFile()
+
+        Project project = project {
+            apply plugin: 'java'
+            apply plugin: 'de.aaschmid.cpd'
+            apply plugin: 'ru.vyarus.quality'
+
+            sourceSets.main {
+                java {
+                    srcDir 'build/generated/java'
+                }
+            }
+
+            quality {
+                strict = false
+            }
+        }
+
+        then: "sources correct"
+        project.tasks.cpdCheck.source.files.collect{it.name} as Set == ['Sample.java', 'SampleTest.java'] as Set
+    }
+
+
+    def "Check custom source set applied"() {
+
+        when: "apply plugin"
+        file('src/main/java').mkdirs()
+        file('src/custom/java').mkdirs()
+
+        file('src/main/java/Sample.java').createNewFile()
+        file('src/custom/java/SampleTest.java').createNewFile()
+
+        Project project = project {
+            apply plugin: 'java'
+            apply plugin: 'de.aaschmid.cpd'
+            apply plugin: 'ru.vyarus.quality'
+
+            sourceSets {
+                custom {
+                    java {
+                        srcDirs = ['src/custom/java']
+                    }
+                }
+            }
+
+            quality {
+                strict = false
+                sourceSets = [project.sourceSets.main, project.sourceSets.custom]
+            }
+        }
+
+        then: "sources correct"
+        project.tasks.cpdCheck.source.files.collect{it.name} as Set == ['Sample.java', 'SampleTest.java'] as Set
+    }
+
     def "Check cpd support disabled"() {
 
         when: "apply plugin"
