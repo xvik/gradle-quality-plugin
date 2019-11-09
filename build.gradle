@@ -35,6 +35,11 @@ dependencies {
 group = 'ru.vyarus'
 description = 'Gradle quality plugin for Java and Groovy'
 
+compileJava.options.encoding = "UTF-8"
+tasks.withType(Test) {
+    systemProperty "file.encoding", "UTF-8"
+}
+
 github {
     user 'xvik'
     license 'MIT'

@@ -51,12 +51,12 @@ class ReportUtils {
         // if found, extract package, otherwise format file path, relative to root project
         if (root) {
             // cut off possible module prefix
-            String module = root.indexOf(':') > 0 ? root[0..root.lastIndexOf(':')] : ''
+            String module = root.indexOf('>') > 0 ? root[0..root.lastIndexOf('>')] : ''
             if (module) {
                 root = root[module.length()..-1]
             }
             // apply module prefix
-            return module.replace(':', '/') + resolvePackage(root, file)
+            return module.replace('>', '/') + resolvePackage(root, file)
         }
         return resolveFilePath(project.rootDir.canonicalPath, name)
     }
@@ -142,7 +142,7 @@ class ReportUtils {
             String res = findMultiModuleRoot(sub, file)
             if (res != null) {
                 // apply module name to easily identify class location
-                return "$sub.name:$res"
+                return "$sub.name>$res"
             }
         }
         return null
