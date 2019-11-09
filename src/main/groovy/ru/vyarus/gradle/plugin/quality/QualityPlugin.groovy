@@ -330,48 +330,55 @@ class QualityPlugin implements Plugin<Project> {
         }
 
         CpdUtils.findAndConfigurePlugin(project) { Project prj ->
-            boolean declaredInSameProject = prj == project
+            // STAGE1 for multi-module project this part applies by all modules with quality plugin enabled
             prj.configure(prj) {
                 cpd {
                     toolVersion = extension.pmdVersion
                     // assuming that in case of multi-module project quality plugin is applied in subprojects section
-                    // and so it is normal that subproject configres root project
-                    // Otherwise, side effect is possible that last configured module with quality plugin determines
-                    // flag value
+                    // and so it is normal that subproject configures root project
+                    // Otherwise, side effect is possible that first configured module with quality plugin determines
+                    // root project flag value
                     ignoreFailures = !extension.strict
                 }
+                // only default task is affected
                 cpdCheck {
                     doFirst {
                         if (extension.cpdUnifySources) {
                             applyExcludes(it, extension)
                         }
                     }
-                    reports {
-                        xml.enabled = true
-                    }
                 }
             }
-            // configure sources according to declared sourceSets
+            // cpdCheck is always declared by cpd plugin
             SourceTask cpdCheck = CpdUtils.findCpdTask(prj)
             if (extension.cpdUnifySources) {
                 // exclude sources, not declared for quality checks in quality plugin declaration project
                 CpdUtils.unifyCpdSources(project, cpdCheck, extension.sourceSets)
             }
-            if (declaredInSameProject) {
-                // cpd disabled together with all quality plugins
-                applyEnabledState(prj, extension, cpdCheck.class)
-            }
+
             // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
             // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
             // For single module projects simply make sure check will trigger cpd
             project.check.dependsOn << cpdCheck
-            // apply custom reporting
-            // (in case of multi-module project important to apply root project report just once)
-            if (!prj.findProperty('cpdReportConfigured')) {
-                applyReporter(prj, 'cpdCheck', new CpdReporter(configLoader),
-                        extension.consoleReporting, extension.htmlReports)
-                prj.ext.cpdReportConfigured = true
+
+            // STAGE2 for multi-module project everything below must be applied just once
+            if (CpdUtils.isCpdAlreadyConfigured(prj)) {
+                return
             }
+
+            // reports applied for all registered cpd tasks
+            prj.tasks.withType(cpdCheck.class) {
+                reports {
+                    xml.enabled = true
+                }
+                // console reporting for each cpd task
+                applyReporter(prj, it.name, new CpdReporter(configLoader),
+                        extension.consoleReporting, extension.htmlReports)
+            }
+            // cpd disabled together with all quality plugins
+            // yes, it's not completely normal that module could disable root project task, but it would be much
+            // simpler to use like that (because quality plugin assumed to be applied in subprojects section)
+            applyEnabledState(prj, extension, cpdCheck.class)
         }
     }
 

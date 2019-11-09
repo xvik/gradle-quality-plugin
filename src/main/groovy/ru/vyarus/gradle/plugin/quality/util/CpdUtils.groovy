@@ -71,4 +71,20 @@ class CpdUtils {
             }
         }
     }
+
+    /**
+     * In case of multi-module projects, many sub modules may be declared with quality plugin. Some configuration
+     * must be applied only once for cpd plugin (assuming declared in root module).
+     *
+     * @param project project where cpd plugin is declared
+     * @return true if cpd plugin was not configured yet, false otherwise
+     */
+    @CompileStatic(TypeCheckingMode.SKIP)
+    static boolean isCpdAlreadyConfigured(Project project) {
+        if (project.findProperty('cpdReportConfigured')) {
+            return true
+        }
+        project.ext.cpdReportConfigured = true
+        return false
+    }
 }
