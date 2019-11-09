@@ -358,9 +358,11 @@ class QualityPlugin implements Plugin<Project> {
             if (declaredInSameProject) {
                 // cpd disabled together with all quality plugins
                 applyEnabledState(prj, extension, cpdCheck.class)
-                // manual grouping: cpd does only one pass for all sources
-                prj.tasks.getByName(QUALITY_TASK + 'Main').dependsOn << cpdCheck
             }
+            // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
+            // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
+            // For single module projects simply make sure check will trigger cpd
+            project.check.dependsOn << cpdCheck
             // apply custom reporting
             // (in case of multi-module project important to apply root project report just once)
             if (!prj.findProperty('cpdReportConfigured')) {

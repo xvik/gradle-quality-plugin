@@ -36,6 +36,7 @@ class CpdIntegrationTest extends AbstractTest {
         def task = project.tasks.cpdCheck
         task.source.files.collect{it.name} == ['Sample.java']
         task.ignoreFailures
+        project.check.dependsOn.contains task
     }
 
     def "Check disabled cpd sources override"() {
@@ -127,5 +128,6 @@ class CpdIntegrationTest extends AbstractTest {
         // sources were not re-configured for root project
         task.source.files.collect{it.name} == ['Sample.java']
         !task.ignoreFailures
+        project.project(':sub').tasks.check.dependsOn.contains task
     }
 }

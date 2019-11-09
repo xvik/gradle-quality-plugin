@@ -62,7 +62,9 @@ class QualityExtension {
      * <p>
      * As cpd plugin is applied manually, then all other cpd configuration may be performed in cpd closure directly
      * (without "afterEvaluate"). Plugin will affect only ignoreFailures, toolVersion, enable xml report and
-     * change cpdCheck task sources (see {@link #cpdUnifySources}).
+     * change cpdCheck task sources (see {@link #cpdUnifySources}). cpdCheck task is always linked to check task.
+     * In case of multi-module project it means that sub module check will call cpdCheck declared in root project
+     * (because module check must also check for potential new duplicate parts).
      */
     boolean cpd = true
 
