@@ -59,8 +59,8 @@ class MultipleCpdTasksKitTest extends AbstractKitTest {
         result.task(":groovyCpdCheck").outcome == TaskOutcome.SUCCESS
         result.output.contains('1 java duplicates were found by CPD')
         result.output.contains('1 groovy duplicates were found by CPD')
-        result.output.contains('sample.cpd.(Struct2.java:6)  [12 lines / 63 tokens]')
-        result.output.contains('sample.cpd.(GStruct1.groovy:6)  [12 lines / 70 tokens]')
+        result.output.contains('sample.cpd.(Struct2.java:6)')
+        result.output.contains('sample.cpd.(GStruct1.groovy:6)')
 
         and: "xml report generated"
         file('build/reports/cpd/cpdCheck.xml').exists()
