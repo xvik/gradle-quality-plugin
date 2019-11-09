@@ -42,7 +42,7 @@ class CpdIntegrationKitTest extends AbstractKitTest {
 
         then: "cpd detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.output.contains('CPD found duplicate code. See the report at')
+        result.output.contains('4 duplicates were found by CPD')
 
         and: "xml report generated"
         file('build/reports/cpd/cpdCheck.xml').exists()
@@ -76,5 +76,53 @@ class CpdIntegrationKitTest extends AbstractKitTest {
         then: "task skipped"
         result.task(":check").outcome == TaskOutcome.UP_TO_DATE
         result.task(":cpdCheck").outcome == TaskOutcome.SKIPPED
+    }
+
+    def "Check multi-module cpd integration"() {
+        setup:
+        debug()
+        build("""         
+            plugins {
+                id 'ru.vyarus.quality'
+                id 'de.aaschmid.cpd' version '3.0'
+            }
+            
+            allprojects {
+                repositories {
+                    jcenter() //required for testKit run
+                }
+            }
+
+            subprojects {
+                apply plugin: 'java'
+                apply plugin: 'ru.vyarus.quality'
+
+                quality {
+                    strict = false
+                    checkstyle = false
+                    findbugs = false
+                    pmd = false
+                    spotbugs = false
+                }               
+            }
+        """)
+
+        file('settings.gradle') << "include 'mod1', 'mod2'"
+
+        fileFromClasspath('mod1/src/main/java/sample/cpd/Struct1.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/Struct1.java')
+        fileFromClasspath('mod2/src/main/java/sample/cpd/Struct2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/Struct2.java')
+        fileFromClasspath('mod1/src/main/java/sample/cpd/OtherStruct1.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/OtherStruct1.java')
+        fileFromClasspath('mod2/src/main/java/sample/cpd/OtherStruct2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/OtherStruct2.java')
+
+        when: "run check task with java sources"
+        BuildResult result = run('check')
+
+        then: "cpd detect violations"
+        result.task(":cpdCheck").outcome == TaskOutcome.SUCCESS
+        result.output.contains('4 duplicates were found by CPD')
+
+        and: "xml report generated"
+        file('build/reports/cpd/cpdCheck.xml').exists()
+        file('build/reports/cpd/cpdCheck.html').exists()
     }
 }

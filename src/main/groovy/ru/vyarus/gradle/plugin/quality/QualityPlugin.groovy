@@ -323,6 +323,7 @@ class QualityPlugin implements Plugin<Project> {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
+    @SuppressWarnings('MethodSize')
     private void configureCpdPlugin(Project project, QualityExtension extension, ConfigLoader configLoader) {
         if (!extension.cpd) {
             return
@@ -333,10 +334,11 @@ class QualityPlugin implements Plugin<Project> {
             prj.configure(prj) {
                 cpd {
                     toolVersion = extension.pmdVersion
-                    // ignore can't affect parent project task
-                    if (declaredInSameProject) {
-                        ignoreFailures = !extension.strict
-                    }
+                    // assuming that in case of multi-module project quality plugin is applied in subprojects section
+                    // and so it is normal that subproject configres root project
+                    // Otherwise, side effect is possible that last configured module with quality plugin determines
+                    // flag value
+                    ignoreFailures = !extension.strict
                 }
                 cpdCheck {
                     doFirst {

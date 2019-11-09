@@ -3,6 +3,7 @@ package ru.vyarus.gradle.plugin.quality.report
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.SourceSet
 
 /**
@@ -29,35 +30,35 @@ class ReportUtils {
         String name = new File(file).canonicalPath
         // try looking in java and related (groovy) sources (mixed mode)
         String root = matchRoot(project.sourceSets[type] as SourceSet, name)
-        return resolvePackage(root, name)
+        // if found, extract package, otherwise format file path, relative to project
+        return root
+                ? resolvePackage(root, name)
+                : resolveFilePath(project.projectDir.canonicalPath, name)
     }
 
     /**
-     * Special version of package matching mechanism: looks for all source sets and all child modules.
+     * Special version of package matching mechanism for muti-module resolution: looks for all source sets and all
+     * child modules.
      *
      * @param project project instance
      * @param file absolute path to source file
      * @return package for provided java class path
      */
-    @CompileStatic(TypeCheckingMode.SKIP)
     static String extractJavaPackage(Project project, String file) {
         String name = new File(file).canonicalPath
-        // check source sets
-        for (SourceSet set : project.sourceSets) {
-            String root = matchRoot(set, name)
-            if (root) {
-                return resolvePackage(root, name)
+
+        String root = findMultiModuleRoot(project, name)
+        // if found, extract package, otherwise format file path, relative to root project
+        if (root) {
+            // cut off possible module prefix
+            String module = root.indexOf(':') > 0 ? root[0..root.lastIndexOf(':')] : ''
+            if (module) {
+                root = root[module.length()..-1]
             }
+            // apply module prefix
+            return module.replace(':', '/') + resolvePackage(root, file)
         }
-        // check subprojects
-        for (Project sub : project.subprojects) {
-            String res = extractJavaPackage(sub, name)
-            if (res != null) {
-                return res
-            }
-        }
-        // no match found
-        return resolvePackage(null, name)
+        return resolveFilePath(project.rootDir.canonicalPath, name)
     }
 
     /**
@@ -114,5 +115,36 @@ class ReportUtils {
         name = name.replaceAll('\\\\|/', '.')
         name = name[0..name.lastIndexOf('.') - 1] // remove class name
         return name
+    }
+
+    private static String resolveFilePath(String rootPath, String filePath) {
+        String name = filePath
+        name = name[rootPath.length() + 1..-1] // relative to project root
+        name = name[0..name.lastIndexOf('.') - 1] // remove extension
+        name = name.replaceAll('\\\\|/', '/')
+        name = name[0..name.lastIndexOf('/') - 1] // remove class name
+        return name
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    private static String findMultiModuleRoot(Project project, String file) {
+        // check source sets
+        if (project.plugins.findPlugin(JavaBasePlugin) != null) {
+            for (SourceSet set : project.sourceSets) {
+                String root = matchRoot(set, file)
+                if (root) {
+                    return root
+                }
+            }
+        }
+        // check subprojects
+        for (Project sub : project.subprojects) {
+            String res = findMultiModuleRoot(sub, file)
+            if (res != null) {
+                // apply module name to easily identify class location
+                return "$sub.name:$res"
+            }
+        }
+        return null
     }
 }

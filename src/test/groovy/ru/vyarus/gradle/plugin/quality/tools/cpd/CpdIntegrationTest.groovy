@@ -184,12 +184,12 @@ class CpdIntegrationTest extends AbstractTest {
 
         then: "cpd partly configured"
         CpdExtension extension = project.extensions.cpd
-        !extension.ignoreFailures
+        extension.ignoreFailures
         extension.toolVersion == project.project(':sub').extensions.quality.pmdVersion
         def task = project.tasks.cpdCheck
         // sources were not re-configured for root project
         task.source.files.collect { it.name } == ['Sample.java']
-        !task.ignoreFailures
+        task.ignoreFailures
         project.project(':sub').tasks.check.dependsOn.contains task
     }
 
@@ -220,12 +220,12 @@ class CpdIntegrationTest extends AbstractTest {
         then: "cpd partly configured"
         def subroot = project.project(':subroot')
         CpdExtension extension = subroot.extensions.cpd
-        !extension.ignoreFailures
+        extension.ignoreFailures
         extension.toolVersion == project.project(':subroot:sub').extensions.quality.pmdVersion
         def task = subroot.tasks.cpdCheck
         // sources were not re-configured for root project
         task.source.files.collect { it.name } == ['Sample.java']
-        !task.ignoreFailures
+        task.ignoreFailures
         project.project(':subroot:sub').tasks.check.dependsOn.contains task
     }
 }
