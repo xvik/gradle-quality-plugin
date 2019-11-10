@@ -53,6 +53,50 @@ class QualityPluginKitTest extends AbstractKitTest {
         result.output.contains('PMD rule violations were found')
     }
 
+    def "Check java checks with java-library"() {
+        setup:
+        build("""
+            plugins {
+                id 'java-library'
+                id 'ru.vyarus.quality'
+            }
+
+            quality {
+                strict false
+            }
+
+            repositories {
+                jcenter() //required for testKit run
+            }
+        """)
+
+        fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
+        fileFromClasspath('src/main/java/sample/Sample2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample2.java')
+
+        when: "run check task with java sources"
+        BuildResult result = run('check')
+
+        then: "all plugins detect violations"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('Checkstyle rule violations were found')
+        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('PMD rule violations were found')
+
+        then: "all html reports generated"
+        file('build/reports/checkstyle/main.html').exists()
+        file('build/reports/spotbugs/main.html').exists()
+        file('build/reports/pmd/main.html').exists()
+
+        when: "run one more time"
+        result = run('check', '--rerun-tasks')
+
+        then: "ok"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('Checkstyle rule violations were found')
+        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('PMD rule violations were found')
+    }
+
     def "Check groovy checks"() {
         setup:
         build("""
@@ -70,7 +114,50 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
+            }
+        """)
+
+        fileFromClasspath('src/main/groovy/sample/GSample.groovy', '/ru/vyarus/gradle/plugin/quality/groovy/sample/GSample.groovy')
+        fileFromClasspath('src/main/groovy/sample/GSample2.groovy', '/ru/vyarus/gradle/plugin/quality/groovy/sample/GSample2.groovy')
+
+        when: "run check task with groovy sources"
+        BuildResult result = run('check')
+
+        then: "plugin detect violations"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('CodeNarc rule violations were found')
+
+        then: "html report generated"
+        file('build/reports/codenarc/main.html').exists()
+
+        when: "run one more time"
+        result = run('check', '--rerun-tasks')
+
+        then: "ok"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('CodeNarc rule violations were found')
+    }
+
+    def "Check groovy checks with java-library"() {
+        setup:
+        build("""
+            plugins {
+                id 'java-library'
+                id 'groovy'
+                id 'ru.vyarus.quality'
+            }
+
+            quality {
+                strict false
+            }
+
+            repositories {
+                jcenter() //required for testKit run
+            }
+
+            dependencies {
+                implementation localGroovy()
             }
         """)
 
@@ -112,7 +199,7 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 

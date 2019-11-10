@@ -4,7 +4,6 @@ import com.github.spotbugs.SpotBugsPlugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.api.plugins.quality.CodeNarcPlugin
-import org.gradle.api.plugins.quality.FindBugsPlugin
 import org.gradle.api.plugins.quality.PmdPlugin
 
 /**
@@ -35,12 +34,52 @@ class QualityPluginTest extends AbstractTest {
         project.tasks.checkQualityTest
     }
 
+    def "Check plugins registration for java-library"() {
+
+        when: "apply plugin"
+        file('src/main/java').mkdirs()
+
+        Project project = project {
+            apply plugin: 'java-library'
+            apply plugin: 'ru.vyarus.quality'
+        }
+
+        then: "plugins registered"
+        project.plugins.findPlugin(CheckstylePlugin)
+        project.plugins.findPlugin(PmdPlugin)
+        project.plugins.findPlugin(SpotBugsPlugin)
+        !project.plugins.findPlugin(CodeNarcPlugin)
+
+        then: "tasks installed"
+        project.tasks.initQualityConfig
+        project.tasks.checkQualityMain
+        project.tasks.checkQualityTest
+    }
+
     def "Check plugins registration fo groovy"() {
 
         when: "apply plugin"
         file('src/main/groovy').mkdirs()
 
         Project project = project {
+            apply plugin: 'groovy'
+            apply plugin: 'ru.vyarus.quality'
+        }
+
+        then: "plugins registered"
+        !project.plugins.findPlugin(CheckstylePlugin)
+        !project.plugins.findPlugin(PmdPlugin)
+        !project.plugins.findPlugin(SpotBugsPlugin)
+        project.plugins.findPlugin(CodeNarcPlugin)
+    }
+
+    def "Check plugins registration fo groovy with java-library"() {
+
+        when: "apply plugin"
+        file('src/main/groovy').mkdirs()
+
+        Project project = project {
+            apply plugin: 'java-library'
             apply plugin: 'groovy'
             apply plugin: 'ru.vyarus.quality'
         }

@@ -40,7 +40,7 @@ class MultipleCpdTasksKitTest extends AbstractKitTest {
             }
             
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 

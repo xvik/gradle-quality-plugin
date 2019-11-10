@@ -43,7 +43,7 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
             }
 
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 
@@ -114,7 +114,7 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
             }
 
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 

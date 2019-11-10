@@ -27,7 +27,7 @@ class ConsoleReportsDisableKitTest extends AbstractKitTest {
             }
 
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 

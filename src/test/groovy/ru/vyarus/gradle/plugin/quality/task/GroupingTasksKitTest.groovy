@@ -29,7 +29,7 @@ class GroupingTasksKitTest extends AbstractKitTest {
             }
 
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 

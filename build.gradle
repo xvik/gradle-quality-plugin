@@ -1,5 +1,6 @@
 plugins {
     id 'com.gradle.build-scan' version '3.0'
+    id 'java-library'
     id 'groovy'
     id 'jacoco'
     id 'java-gradle-plugin'
@@ -22,14 +23,13 @@ wrapper {
 
 repositories { jcenter(); gradlePluginPortal() }
 dependencies {
+    api 'com.github.spotbugs:spotbugs-gradle-plugin:2.0.1'
 
-    compile 'com.github.spotbugs:spotbugs-gradle-plugin:2.0.1'
-
-    testCompile('org.spockframework:spock-core:1.2-groovy-2.5') {
+    testImplementation('org.spockframework:spock-core:1.2-groovy-2.5') {
         exclude group: 'org.codehaus.groovy'
     }
-    testCompile 'ru.vyarus:gradle-animalsniffer-plugin:1.5.0'
-    testCompile 'de.aaschmid:gradle-cpd-plugin:3.0'
+    testImplementation 'ru.vyarus:gradle-animalsniffer-plugin:1.5.0'
+    testImplementation 'de.aaschmid:gradle-cpd-plugin:3.0'
 }
 
 group = 'ru.vyarus'

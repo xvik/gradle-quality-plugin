@@ -26,7 +26,7 @@ class QualityTasksDisableKitTest extends AbstractKitTest {
             }
 
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 
@@ -61,7 +61,7 @@ class QualityTasksDisableKitTest extends AbstractKitTest {
             }
 
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 
@@ -92,7 +92,7 @@ class QualityTasksDisableKitTest extends AbstractKitTest {
             }
 
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 

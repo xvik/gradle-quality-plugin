@@ -74,7 +74,7 @@ class CpdExcludesKitTest extends AbstractKitTest {
             }
             
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 

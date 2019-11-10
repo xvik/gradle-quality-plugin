@@ -26,7 +26,7 @@ class QualityPluginLegacyKitTest extends AbstractKitTest {
             }
 
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 

@@ -36,7 +36,7 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
             }
             
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 
@@ -85,7 +85,7 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
             }
             
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 

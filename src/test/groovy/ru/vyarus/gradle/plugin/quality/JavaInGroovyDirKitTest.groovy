@@ -26,7 +26,7 @@ class JavaInGroovyDirKitTest extends AbstractKitTest {
             }
 
             dependencies {
-                compile localGroovy()
+                implementation localGroovy()
             }
         """)
 
