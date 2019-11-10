@@ -19,7 +19,6 @@ import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.util.CpdUtils
 import ru.vyarus.gradle.plugin.quality.util.DurationFormatter
-import ru.vyarus.gradle.plugin.quality.util.FindbugsUtils
 import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
 
 /**
@@ -36,9 +35,6 @@ import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
  * All plugins are configured to produce xml and html reports. For spotbugs html report
  * generated manually. All plugins violations are printed into console in unified format which makes console
  * output good enough for fixing violations.
- * <p>
- * Spotbugs is activated instead of findbugs, but it still possible to disable spotbugs and use findbugs instead
- * (findbugs support is marked as deprecated now and will be removed someday to avoid confusion).
  * <p>
  * Plugin may be configured with 'quality' closure. See {@link QualityExtension} for configuration options.
  * <p>
@@ -81,12 +77,7 @@ class QualityPlugin implements Plugin<Project> {
                 configureJavac(project, extension)
                 applyCheckstyle(project, extension, configLoader, context.registerJavaPlugins)
                 applyPMD(project, extension, configLoader, context.registerJavaPlugins)
-                // enable only if findbugs wasn't registered manually
-                applySpotbugs(project, extension, configLoader,
-                        context.registerJavaPlugins && !project.plugins.hasPlugin(FindBugsPlugin))
-                // enable only if spotbugs wasn't registered neither automatically nor manually
-                applyFindbugs(project, extension, configLoader,
-                        context.registerJavaPlugins && !SpotbugsUtils.isPluginEnabled(project))
+                applySpotbugs(project, extension, configLoader, context.registerJavaPlugins)
                 configureAnimalSniffer(project, extension)
                 configureCpdPlugin(project, extension, configLoader)
                 applyCodeNarc(project, extension, configLoader, context.registerGroovyPlugins)
@@ -232,46 +223,6 @@ class QualityPlugin implements Plugin<Project> {
                 }
             }
             configurePluginTasks(project, extension, SpotBugsTask, 'spotbugs', new SpotbugsReporter(configLoader))
-        }
-    }
-
-    @CompileStatic(TypeCheckingMode.SKIP)
-    @Deprecated
-    private void applyFindbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
-                               boolean register) {
-        configurePlugin(project,
-                // ignored if spotbugs enabled
-                extension.findbugs && !extension.spotbugs,
-                register,
-                FindBugsPlugin) {
-            project.configure(project) {
-                findbugs {
-                    toolVersion = extension.findbugsVersion
-                    ignoreFailures = !extension.strict
-                    effort = extension.findbugsEffort
-                    reportLevel = extension.findbugsLevel
-                    excludeFilter = configLoader.resolveFindbugsExclude(false)
-                    sourceSets = extension.sourceSets
-                }
-
-                tasks.withType(FindBugs) {
-                    doFirst {
-                        configLoader.resolveFindbugsExclude()
-                        // findbugs does not support exclude of SourceTask, so appending excluded classes to
-                        // xml exclude filter
-                        if (extension.exclude || extension.excludeSources) {
-                            FindbugsUtils.replaceExcludeFilter(it, extension, logger)
-                        }
-                    }
-                    reports {
-                        xml {
-                            enabled true
-                            withMessages true
-                        }
-                    }
-                }
-            }
-            configurePluginTasks(project, extension, FindBugs, 'findbugs', new FindbugsReporter(configLoader))
         }
     }
 
@@ -500,7 +451,7 @@ class QualityPlugin implements Plugin<Project> {
 
     /**
      * Applies exclude path patterns to quality tasks.
-     * Note: this does not apply to animalsniffer; for findbugs this appliance is useless, see custom support above.
+     * Note: this does not apply to animalsniffer. For spotbugs this appliance is useless, see custom support above.
      *
      * @param task quality task
      * @param extension extension instance

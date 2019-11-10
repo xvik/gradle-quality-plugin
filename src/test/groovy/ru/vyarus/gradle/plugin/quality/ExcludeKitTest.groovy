@@ -83,19 +83,16 @@ class ExcludeKitTest extends AbstractKitTest {
         output.contains "SpotBugs violations were found in 2 files"
     }
 
-    def "Check findbugs exclusion"() {
+    def "Check spotbugs exclusion"() {
         setup:
         build("""
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
             }
-            
-            sourceCompatibility = 1.8
 
             quality {
                 strict false
-                spotbugs = false
                 exclude '**/Sample2.java'
             }
 
@@ -111,13 +108,13 @@ class ExcludeKitTest extends AbstractKitTest {
         fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
         fileFromClasspath('src/main/java/sample/Sample2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample2.java')
 
-        when: "run findbugs"
-        BuildResult result = run('findbugsMain')
+        when: "run spotbugs"
+        BuildResult result = run('spotbugsMain')
 
         then: "all plugins detect violations only in 1 file"
-        result.task(":findbugsMain").outcome == TaskOutcome.SUCCESS
+        result.task(":spotbugsMain").outcome == TaskOutcome.SUCCESS
         def output = result.output
-        output.contains "1 (0 / 1 / 0) FindBugs violations were found in 1 files"
+        output.contains "1 (0 / 1 / 0) SpotBugs violations were found in 1 files"
     }
 
     def "Check animalsniffer exclusion ignore"() {
@@ -134,7 +131,7 @@ class ExcludeKitTest extends AbstractKitTest {
 
             quality {
                 strict false
-                findbugs false
+                spotbugs false
                 pmd false
                 checkstyle false
                 // animalsniffer operates on sources so use universal pattern which might affect

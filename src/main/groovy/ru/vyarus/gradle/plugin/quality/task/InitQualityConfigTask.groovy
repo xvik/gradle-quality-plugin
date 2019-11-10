@@ -5,7 +5,6 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
-import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
 
 /**
  * Task copies default configs to user directory (quality.configDir) for customization.
@@ -29,6 +28,6 @@ class InitQualityConfigTask extends DefaultTask {
 
     @TaskAction
     void run() {
-        new ConfigLoader(project).initUserConfigs(override, SpotbugsUtils.isPluginEnabled(project))
+        new ConfigLoader(project).initUserConfigs(override)
     }
 }

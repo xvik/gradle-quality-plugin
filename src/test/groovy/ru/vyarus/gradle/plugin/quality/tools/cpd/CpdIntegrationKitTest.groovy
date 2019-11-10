@@ -23,7 +23,6 @@ class CpdIntegrationKitTest extends AbstractKitTest {
                 pmd false
                 checkstyle false
                 spotbugs false
-                findbugs false
                 strict false
             }
 
@@ -99,7 +98,6 @@ class CpdIntegrationKitTest extends AbstractKitTest {
                 quality {
                     strict = false
                     checkstyle = false
-                    findbugs = false
                     pmd = false
                     spotbugs = false
                 }               

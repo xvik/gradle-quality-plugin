@@ -22,7 +22,6 @@ class MultiModuleUseKitTest extends AbstractKitTest {
 
                 quality {
                     strict false
-                    findbugs = false
                     pmd = false
                     spotbugs = false
                 }

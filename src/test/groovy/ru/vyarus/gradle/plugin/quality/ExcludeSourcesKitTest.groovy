@@ -128,7 +128,7 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
             
             quality {
                 strict false
-                findbugs false
+                spotbugs false
                 pmd false
                 checkstyle false
                 excludeSources = fileTree('build/generated/')

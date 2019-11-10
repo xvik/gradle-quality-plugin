@@ -23,7 +23,6 @@ class QualityExtension {
 
     String checkstyleVersion = '8.26'
     String pmdVersion = '6.18.0'
-    String findbugsVersion = '3.0.1'
     String spotbugsVersion = '3.1.12'
     String codenarcVersion = '1.4'
 
@@ -35,7 +34,7 @@ class QualityExtension {
 
     /**
      * Automatically register quality plugins, based on configured (affected) sources ({@link #sourceSets}).
-     * For example, if configured sources contain only java sources then only pmd, checkstyle and spotbugs (findbugs)
+     * For example, if configured sources contain only java sources then only pmd, checkstyle and spotbugs
      * plugins will be activated; if only groovy sources - then codenarc only.
      * <p>
      * When disabled, quality plugins must be registered manually. Only registered plugins will be configured
@@ -69,18 +68,8 @@ class QualityExtension {
     boolean cpd = true
 
     /**
-     * Enable FindBugs plugin. True by default.
-     * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
-     * Plugin is not enabled and not configured when spotbugs plugin enabled.
-     *
-     * @deprecated will be removed later as findbugs plugin is abandoned (spotbugs must be used instead).
-     */
-    @Deprecated
-    boolean findbugs = true
-
-    /**
      * Enable SpotBugs plugin. True by default.
-     * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
+     * If plugin enabled manually then disabling this option will just prevent applying plugin configuration.
      */
     boolean spotbugs = true
 
@@ -113,35 +102,15 @@ class QualityExtension {
      * The analysis effort level. The value specified should be one of min, default, or max.
      * Higher levels increase precision and find more bugs at the expense of running time and
      * memory consumption. Default is 'max'.
-     *
-     * @deprecated will be removed later as findbugs plugin is abandoned (spotbugs must be used instead).
      */
-    @Deprecated
-    String findbugsEffort = 'max'
-
-    /**
-     * The priority threshold for reporting bugs. If set to low, all bugs are reported.
-     * If set to medium, medium and high priority bugs are reported.
-     * If set to high, only high priority bugs are reported. Default is 'medium'.
-     *
-     * @deprecated will be removed later as findbugs plugin is abandoned (spotbugs must be used instead).
-     */
-    @Deprecated
-    String findbugsLevel = 'medium'
-
-    /**
-     * The analysis effort level. The value specified should be one of min, default, or max.
-     * Higher levels increase precision and find more bugs at the expense of running time and
-     * memory consumption. Default is 'max'.
-     */
-    String spotbugsEffort = findbugsEffort
+    String spotbugsEffort = 'max'
 
     /**
      * The priority threshold for reporting bugs. If set to low, all bugs are reported.
      * If set to medium, medium and high priority bugs are reported.
      * If set to high, only high priority bugs are reported. Default is 'medium'.
      */
-    String spotbugsLevel = findbugsLevel
+    String spotbugsLevel = 'medium'
 
     /**
      * Spotbugs rank should be an integer value between 1 and 20, where 1 to 4 are scariest, 5 to 9 scary,
@@ -223,8 +192,10 @@ class QualityExtension {
      * Animalsniffer is not affected because
      * it's a different kind of check (and, also, it operates on classes so source patterns may not comply).
      * <p>
-     * Spotbugs (findbugs) does not support exclusion directly, but plugin will resolve excluded classes and apply
+     * Spotbugs does not support exclusion directly, but plugin will resolve excluded classes and apply
      * them to xml exclude file (default one or provided by user).
+     * <p>
+     * Cpd plugin (if applied) will also be affected.
      * <p>
      * By default nothing is excluded.
      * <p>
@@ -242,7 +213,9 @@ class QualityExtension {
      * to create initial collections and apply filter on it (using
      * {@link org.gradle.api.file.FileTree#matching(groovy.lang.Closure)}).
      * <p>
-     * Plugin will include files into spotbugs (findbugs) exclusion filter xml (default one or provided by user).
+     * Plugin will include files into spotbugs exclusion filter xml (default one or provided by user).
+     * <p>
+     * Exclusions will also be applied to cpd plugin (if plugin applied).
      * <p>
      * Note: this must be used when excluded classes can't be extracted to different source set and
      * filter by package and filename is not sufficient.

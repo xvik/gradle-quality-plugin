@@ -23,7 +23,6 @@ class MultipleCpdTasksKitTest extends AbstractKitTest {
                 pmd false
                 checkstyle false
                 spotbugs false
-                findbugs false
                 codenarc = false
                 strict false
             }   

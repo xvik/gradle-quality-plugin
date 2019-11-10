@@ -47,7 +47,7 @@ class ConsoleReportsDisableKitTest extends AbstractKitTest {
         then: "no console reporting performed"
         !result.output.contains('[Formatting | ClassJavadoc] sample.(GSample.groovy:3)  [priority 2]') // codenarc
         !result.output.contains('[Javadoc | JavadocType] sample.(Sample.java:3)') // checkstyle
-        !result.output.contains('[Performance | URF_UNREAD_FIELD] sample.(Sample.java:8)  [priority 2]') // findbugs
+        !result.output.contains('[Performance | URF_UNREAD_FIELD] sample.(Sample.java:8)  [priority 2]') // spotbugs
         !result.output.contains('[Unused Code | UnusedPrivateField] sample.(Sample.java:5)') // pmd
 
         then: "spotbugs html report generated"

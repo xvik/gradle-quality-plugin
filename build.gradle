@@ -70,7 +70,7 @@ bintray {
         repo = 'xvik'
         name = project.name
         desc = project.description
-        labels = ['gradle', 'java', 'groovy', 'quality', 'checkstyle', 'pmd', 'spotbugs', 'findbugs', 'codenarc']
+        labels = ['gradle', 'java', 'groovy', 'quality', 'checkstyle', 'pmd', 'cpd', 'spotbugs', 'codenarc']
         publicDownloadNumbers = true
         version {
             gpg {
@@ -88,7 +88,7 @@ bintray {
 
 pluginBundle {
     description = 'Static code analysis for Java and Groovy projects'
-    tags = ['java', 'groovy', 'quality', 'checkstyle', 'pmd', 'spotbugs', 'findbugs', 'codenarc']
+    tags = ['java', 'groovy', 'quality', 'checkstyle', 'pmd', 'cpd', 'spotbugs', 'codenarc']
 
     plugins {
         qualityPlugin {

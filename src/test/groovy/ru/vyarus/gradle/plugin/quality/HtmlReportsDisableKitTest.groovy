@@ -52,40 +52,4 @@ class HtmlReportsDisableKitTest extends AbstractKitTest {
         !file('build/reports/spotbugs/main.html').exists()
         !file('build/reports/pmd/main.html').exists()
     }
-
-
-    def "Check findbugs html report disable"() {
-        setup:
-        build("""
-            plugins {
-                id 'java'
-                id 'ru.vyarus.quality'
-            }
-            
-            sourceCompatibility = 1.8
-
-            quality {
-                strict false
-                spotbugs false
-                htmlReports false
-            }
-
-            repositories {
-                jcenter() //required for testKit run
-            }
-        """)
-
-        fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
-        fileFromClasspath('src/main/java/sample/Sample2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample2.java')
-
-        when: "run check task with both sources"
-        BuildResult result = run('check')
-
-        then: "all plugins detect violations"
-        result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.output.contains('FindBugs rule violations were found')
-
-        then: "html reports are not generated"
-        !file('build/reports/findbugs/main.html').exists()
-    }
 }
