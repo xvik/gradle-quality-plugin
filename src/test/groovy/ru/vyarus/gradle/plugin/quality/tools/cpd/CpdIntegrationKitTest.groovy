@@ -122,4 +122,42 @@ class CpdIntegrationKitTest extends AbstractKitTest {
         file('build/reports/cpd/cpdCheck.xml').exists()
         file('build/reports/cpd/cpdCheck.html').exists()
     }
+
+    def "Check groovy only sources detection"() {
+        setup:
+        build("""
+            plugins {
+                id 'groovy'
+                id 'de.aaschmid.cpd' version '3.0'
+                id 'ru.vyarus.quality'
+            }            
+
+            quality {
+                pmd false
+                checkstyle false
+                spotbugs false
+                codenarc = false
+                strict false
+            }                          
+
+            repositories {
+                jcenter() //required for testKit run
+            }
+            
+            dependencies {
+                implementation localGroovy()
+            }
+        """)
+
+        fileFromClasspath('src/main/groovy/sample/cpd/GStruct1.groovy', '/ru/vyarus/gradle/plugin/quality/groovy/sample/cpd/GStruct1.groovy')
+        fileFromClasspath('src/main/groovy/sample/cpd/GStruct2.groovy', '/ru/vyarus/gradle/plugin/quality/groovy/sample/cpd/GStruct2.groovy')
+
+        when: "run check task with groovy sources"
+        BuildResult result = run('cpdCheck')
+
+        then: "cpd detect violations"
+        result.task(":cpdCheck").outcome == TaskOutcome.SUCCESS
+        result.output.contains('1 groovy duplicates were found by CPD')
+        result.output.contains('sample.cpd.(GStruct1.groovy:6)')
+    }
 }
