@@ -16,7 +16,7 @@
     but quality plugin will bring it as a dependency (v 2.0.1) and activate automatically.
     To use newer spotbugs plugin version simply enable plugin manually (in `plugins` section).    
     
-By default, plugin is activated if java sources available (`src/main/java`).    
+By default, plugin activates if java sources available (`src/main/java`).    
 
 SpotBugs configuration differ from other tools (checkstyle, pmd): instead of exact rules configuration
 it uses [efforts level](http://spotbugs.readthedocs.io/en/latest/effort.html). Deeper level could reveal more bugs, but with higher mistake possibility. 
@@ -98,7 +98,7 @@ You may add additional spotbugs checks by declaring spotbugs plugins in `spotbug
     Spotbugs is compatible with findbugs plugins.
 
 !!! warning
-    As, by default, spotbugs plugin is automatically applied after configuration read, `spotbugsPlugins` can't be used directly
+    As, by default, spotbugs plugin applied automatically after configuration read, `spotbugsPlugins` can't be used directly
 
 Either use afterEvaluate:
 
@@ -126,13 +126,13 @@ dependencies {
 [Find Security Bugs](http://find-sec-bugs.github.io/)
 
 ```groovy
-spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
+spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0'
 ```
 
 [fb-contrib: A FindBugs auxiliary detector plugin](http://fb-contrib.sourceforge.net/)
 
 ```groovy
-spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.2.0'
+spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.3'
 ```
 
 ## Annotations

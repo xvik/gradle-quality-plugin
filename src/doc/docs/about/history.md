@@ -1,3 +1,43 @@
+### [4.0.0](http://xvik.github.io/gradle-quality-plugin/4.0.0)  (unreleased)
+* Gradle 6.0 compatibility
+    - (breaking) Removed findbugs plugin support because it was removed in gradle 6 
+* Update spotbugs 3.1.11 -> 3.1.12
+* Update com.github.spotbugs plugin: 1.6.5 -> 2.0.1
+    - Note that plugin group changed: gradle.plugin.com.github.spotbugs -> com.github.spotbugs
+    - Minimal required gradle version is 5.1
+* Add spotbugs-related options:
+    - spotbugsMaxHeapSize setting may be used to increase default spotbugs memory ([reduced to 512mb in gradle 5](https://github.com/gradle/gradle/issues/6216)).
+        Option does not override maxHeapSize manually set on spotbugs task (to not break working builds) (#12)
+    - spotbugsMaxRank setting allows to filter low-ranked rules (ranks are different from priorities!) (#15)
+        Option modifies excludes.xml file (the only way to apply rank threshold)
+* Spotbugs report now shows not only rule priority, but also it's rank: `[priority 2 / rank 14]`           
+* Update codenarc 1.3 -> 1.4
+* Update checkstyle 8.17 -> 8.26
+* Update checkstyle config:
+    - Disable [TrailingComment](https://checkstyle.sourceforge.io/config_misc.html#TrailingComment)
+        as not useful and contradicting with PMD suppression syntax (`// NOPMD`)
+    - Add new checks:
+        * [MissingJavadocMethod](https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocMethod)
+        * [MissingJavadocPackage](https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocPackage)
+        * [MissingJavadocType](https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocType)
+        * [UnnecessarySemicolonInTryWithResources](https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonInTryWithResources)
+        * [UnnecessarySemicolonInEnumeration](https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonInEnumeration)
+        * [UnnecessarySemicolonAfterTypeMemberDeclaration](https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonAfterTypeMemberDeclaration)
+        * [InvalidJavadocPosition](https://checkstyle.sourceforge.io/config_javadoc.html#InvalidJavadocPosition)        
+        * [JavadocBlockTagLocation](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocBlockTagLocation)
+    - Disable new check [OrderedProperties](https://checkstyle.sourceforge.io/config_misc.html#OrderedProperties)
+* Update pmd 6.11.0 -> 6.18.0   
+* Update pmd config:
+    - Add 1 as allowed "magic number" for [AvoidLiteralsInIfCondition](https://pmd.github.io/pmd-6.11.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition)
+* Add `pmdIncremental` option - shortcut for gradle's `pmd.incrementalAnalysis` option. Disabled by default.    
+* Add PMD's CPD tool support through [de.aaschmid.cpd](https://github.com/aaschmid/gradle-cpd-plugin) plugin. (#4) 
+    - CPD gradle plugin must be applied manually: no automatic plugin enabling  
+    - Sets pmd version and silent mode. 
+    - Sources configured according to quality configuration. Exclusions (source and pattern) are supported too 
+    - Html report generated (using style recommended by pmd; style file added as overridable config)
+    - Full console report (like for other quality plugins)  
+    - Support for multi-module projects (where cpd plugin applied in root project and quality in subprojects)
+
 ### [3.4.0](http://xvik.github.io/gradle-quality-plugin/3.4.0)  (2019-02-16)
 * Fix source files root detection (#13)
 * Set spotbugs tasks default heap size to 1g to mimic old behaviour in [gradle 5](https://docs.gradle.org/5.0/userguide/upgrading_version_4.html#rel5.0:default_memory_settings) (#12)

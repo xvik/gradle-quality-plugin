@@ -4,7 +4,7 @@ import groovy.transform.CompileStatic
 import org.gradle.api.Project
 
 /**
- * Responsible for html report generation for plugins not supporting that directly (findbugs).
+ * Responsible for html report generation for plugins not supporting that directly.
  *
  * @author Vyacheslav Rusakov
  * @since 01.09.2016

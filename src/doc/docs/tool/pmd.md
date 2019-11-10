@@ -6,7 +6,7 @@
     [Release Notes](https://pmd.github.io/latest/pmd_release_notes.html) | 
     [Plugin](https://docs.gradle.org/current/userguide/pmd_plugin.html)  
     
-By default, plugin is activated if java sources available (`src/main/java`).    
+By default, plugin activates if java sources available (`src/main/java`).    
 
 [Default config](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/pmd/pmd.xml)
 contains all java checks, but some of them are disabled. Remove exclusion to enable disabled rule.

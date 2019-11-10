@@ -24,7 +24,7 @@ quality {
      
     checkstyle = true
     pmd = true
-    // when spotbugs disabled, findbugs plugin is used by default
+    cpd = true
     spotbugs = true
     codenarc = true     
 
@@ -33,8 +33,17 @@ quality {
      * This is a shortcut for pmd plugin's {@code pmd.incrementalAnalysis } configuration option.
      * Option is disabled by default due to possible side effects with build gradle cache or incremental builds.
      */
-    boolean pmdIncremental = false
+    pmdIncremental = false
     
+    /**
+     * By default, cpd looks in all sources (cpd gradle plugin behaviour). When option enabled, quality plugin will
+     * exclude all not configured source sets from cpd task sources. In case of multi-module build, where
+     * cpd project declared in root project, all subprojects with quality plugin will exclude their sourceSets not
+     * configured for quality checks. Also, all custom exclusions ({@link #exclude}, {@link #excludeSources})
+     * will also be excluded.
+     */
+    cpdUnifySources = true
+
     /**
      * The analysis effort level. The value specified should be one of min, default, or max.
      * Higher levels increase precision and find more bugs at the expense of running time and
@@ -62,7 +71,7 @@ quality {
      * additional rule in your exclude filter or in default one. But it may conflict with manual rank rule declaration
      * (in case if you edit exclude filter manually), so be careful when enabling this option.
      */
-    int spotbugsMaxRank = 20
+    spotbugsMaxRank = 20
 
     /**
      * Max memory available for spotbugs task. Note that in gradle 4 spotbugs task maximum memory was
@@ -77,7 +86,7 @@ quality {
      * See: https://github.com/gradle/gradle/issues/6216 (Reduce default memory settings for daemon and
      * workers).
      */
-    String spotbugsMaxHeapSize = '1g'
+    spotbugsMaxHeapSize = '1g'
 
     /**
      * Javac lint options to show compiler warnings, not visible by default.
@@ -126,7 +135,7 @@ quality {
      * Animalsniffer is not affected because
      * it's a different kind of check (and, also, it operates on classes so source patterns may not comply).
      * 
-     * Spotbugs (Findbugs) does not support exclusion directly, but plugin will resolve excluded classes and apply
+     * Spotbugs does not support exclusion directly, but plugin will resolve excluded classes and apply
      * them to xml exclude file (default one or provided by user).
      * 
      * By default nothing is excluded.
@@ -145,7 +154,7 @@ quality {
       * to create initial collections and apply filter on it (using
       * {@link org.gradle.api.file.FileTree#matching(groovy.lang.Closure)}).
       * 
-      * Plugin will include files into spotbugs (findbugs) exclusion filter xml (default one or provided by user).
+      * Plugin will include files into spotbugs exclusion filter xml (default one or provided by user).
       * 
       * Note: this must be used when excluded classes can't be extracted to different source set and
       * filter by package and filename is not sufficient.
@@ -156,13 +165,6 @@ quality {
      * User configuration files directory. Files in this directory will be used instead of default (bundled) configs.
      */
     configDir = 'gradle/config/'
-    
-    
-    // Deprecated due to switch to SpotBugs by default
-    findbugsVersion = '3.0.1'
-    findbugs = true
-    findbugsEffort = 'max'
-    findbugsLevel = 'medium'
 }
 ```
 
@@ -265,6 +267,5 @@ For plugins configuration options look:
 * [CheckstyleExtension](https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html)
 * [PmdExtension](https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.PmdExtension.html)
 * [SpotBugsExtension](http://spotbugs.readthedocs.io/en/latest/gradle.html#configure-gradle-plugin)
-* [FindBugsExtension](https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.FindBugsExtension.html)
 * [CodeNarcExtension](https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CodeNarcExtension.html)
 

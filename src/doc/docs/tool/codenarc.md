@@ -6,7 +6,7 @@
     [Release Notes](https://github.com/CodeNarc/CodeNarc/blob/master/CHANGELOG.md) |
     [Plugin](https://docs.gradle.org/current/userguide/codenarc_plugin.html)     
     
-By default, plugin is activated if groovy sources available (`src/main/groovy`).    
+By default, plugin activates if groovy sources available (`src/main/groovy`).    
 
 
 ## Output

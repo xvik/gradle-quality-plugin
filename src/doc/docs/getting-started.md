@@ -15,7 +15,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:3.4.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:4.0.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -25,16 +25,15 @@ OR
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '3.4.0'
+    id 'ru.vyarus.quality' version '4.0.0'
 }
 ```
 
 !!! warning
-    Plugin must be applied after `java` or `groovy` plugins. Otherwise it will do nothing.
+    Plugin must be applied after `java`, `java-library` or `groovy` plugins. Otherwise it will do nothing.
 
 !!! note
-    Plugin itself is compiled for java 7, but java quality tools require java 8 so, by default, 
-    you will need java 8 for java. Groovy project will work on java 7. 
+    Requires java 8 and gradle >= 5.1
 
 If you are using lower java versions use previous plugin releases.
 

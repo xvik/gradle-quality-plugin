@@ -7,7 +7,7 @@ By default, plugin works in automatic mode an does not require configuration to 
 Java quality tool plugins will be activated if java sources are present (`src/main/java`):
 [Checkstyle](../tool/checkstyle.md), 
 [PMD](../tool/pmd.md) and 
-[SpotBugs](../tool/spotbugs.md) (or [FindBugs](../tool/findbugs.md)).
+[SpotBugs](../tool/spotbugs.md).
 
 Groovy quality plugins will be activated if groovy sources are present (`src/main/groovy`):
 [CodeNarc](../tool/codenarc.md)
@@ -16,6 +16,9 @@ If you have both java and groovy sources then all plugins will be enabled (and t
 
 If [animalsniffer](../tool/animalsniffer.md) plugin was manually registered then it would be 
 configured the same way as other quality plugins (quality configuration unification).
+
+If [cpd](../tool/cpd.md) plugin was manually registered then it would be configured (but note 
+that cpd plugin differ from other plugins in behaviour)
 
 ## Scope
 
@@ -54,7 +57,7 @@ plugins {
 }
 ```
 
-Then quality plugin will register checkstyle, pmd and spotbugs (findbugs) plugins and configure codenarc plugin (which is not supposed to be used according to current sources). 
+Then quality plugin will register checkstyle, pmd and spotbugs plugins and configure codenarc plugin (which is not supposed to be used according to current sources). 
 
 To prevent manually registered plugin configuration use referenced quality option. For example, to prevent codenarc plugin configuration in example above:
 

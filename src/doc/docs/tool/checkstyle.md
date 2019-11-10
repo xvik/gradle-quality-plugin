@@ -6,7 +6,7 @@
     [Release Notes](http://checkstyle.sourceforge.net/releasenotes.html) |
     [Plugin](https://docs.gradle.org/current/userguide/checkstyle_plugin.html)     
     
-By default, plugin is activated if java sources available (`src/main/java`).    
+By default, plugin activates if java sources available (`src/main/java`).    
 
 [Default config](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/checkstyle/checkstyle.xml)
 contains all possible checks, but some of them are disabled (note that some checkstyle rules are opposite and 

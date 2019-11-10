@@ -18,8 +18,8 @@ quality {
     use it's own configuration [to configure exclusions](https://github.com/xvik/gradle-animalsniffer-plugin#extend-signature).
 
 !!! info 
-    Spotbugs (findbugs) task does not support exclusions on task level, so plugin manually resolve all excluded
-    classes and add them to spotbugs (findbugs) excludes filter xml file (default or custom user file).
+    Spotbugs task does not support exclusions on task level, so plugin manually resolve all excluded
+    classes and add them to spotbugs excludes filter xml file (default or custom user file).
     As a result, exclusion works the same way for all plugins.
 
 !!! note 
@@ -97,7 +97,7 @@ Instead, specify ignored files directly, using rich
 This will exclude all files in 'generated' directory from quality tools checks.
 
 !!! note
-    As with patterns exclude, this will not affect animalsniffer. For spotbugs (findbugs), plugin will
+    As with patterns exclude, this will not affect animalsniffer. For spotbugs, plugin will
     add excluded classes to exclude filter.
 
 Another example, just to show how flexible it could be configured:

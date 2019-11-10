@@ -22,18 +22,14 @@ gradle\
             checkstyle.xml		
         codenarc\
             codenarc.xml		
-        findbugs\
-            exclude.xml			
-            html-report-style.xsl	
+        cpd\		
+            cpdhtml.xslt	
         pmd\
             pmd.xml	
         spotbugs\
             exclude.xml			
             html-report-style.xsl	    		
 ```
-
-!!! note
-    Only one of spotbugs or findbugs folder will be copied (depends on what plugin is enabled - by default SpotBugs).
 
 Task copies all configs, but you may remove all files you don't want to customize (plugin will use default versions for them).
 File names are important: if you rename files plugin will not find them and use defaults.
