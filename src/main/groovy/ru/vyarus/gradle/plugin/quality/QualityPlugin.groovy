@@ -307,11 +307,6 @@ class QualityPlugin implements Plugin<Project> {
                 CpdUtils.unifyCpdSources(project, cpdCheck, extension.sourceSets)
             }
 
-            // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
-            // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
-            // For single module projects simply make sure check will trigger cpd
-            project.check.dependsOn << cpdCheck
-
             // STAGE2 for multi-module project everything below must be applied just once
             if (CpdUtils.isCpdAlreadyConfigured(prj)) {
                 return
@@ -325,6 +320,10 @@ class QualityPlugin implements Plugin<Project> {
                 doFirst {
                     configLoader.resolveCpdXsl()
                 }
+                // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
+                // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
+                // For single module projects simply make sure check will trigger cpd
+                project.check.dependsOn << it
                 // console reporting for each cpd task
                 applyReporter(prj, it.name, new CpdReporter(configLoader),
                         extension.consoleReporting, extension.htmlReports)

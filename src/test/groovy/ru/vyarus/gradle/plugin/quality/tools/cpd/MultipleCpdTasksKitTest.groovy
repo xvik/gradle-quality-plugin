@@ -33,7 +33,6 @@ class MultipleCpdTasksKitTest extends AbstractKitTest {
                 language = 'groovy'
                 source = sourceSets.main.allGroovy 
             }
-            tasks.check.dependsOn groovyCpdCheck
 
             repositories {
                 jcenter() //required for testKit run
