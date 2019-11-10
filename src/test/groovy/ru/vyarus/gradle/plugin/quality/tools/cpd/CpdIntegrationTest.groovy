@@ -33,6 +33,7 @@ class CpdIntegrationTest extends AbstractTest {
         CpdExtension extension = project.extensions.cpd
         extension.ignoreFailures
         extension.toolVersion == project.extensions.quality.pmdVersion
+        extension.language == 'java'
         def task = project.tasks.cpdCheck
         task.source.files.collect { it.name } == ['Sample.java']
         task.ignoreFailures
@@ -63,6 +64,7 @@ class CpdIntegrationTest extends AbstractTest {
         CpdExtension extension = project.extensions.cpd
         extension.ignoreFailures
         extension.toolVersion == project.extensions.quality.pmdVersion
+        extension.language == 'java'
         def task = project.tasks.cpdCheck
         task.source.files.collect { it.name } == ['Sample.java', 'SampleTest.java']
         task.ignoreFailures
@@ -154,6 +156,7 @@ class CpdIntegrationTest extends AbstractTest {
         CpdExtension extension = project.extensions.cpd
         !extension.ignoreFailures
         extension.toolVersion != project.extensions.quality.pmdVersion
+        extension.language == 'java'
         def task = project.tasks.cpdCheck
         task.source.files.collect { it.name } == ['Sample.java', 'SampleTest.java']
         !task.ignoreFailures
@@ -227,5 +230,27 @@ class CpdIntegrationTest extends AbstractTest {
         task.source.files.collect { it.name } == ['Sample.java']
         task.ignoreFailures
         project.project(':subroot:sub').tasks.check.dependsOn.contains task
+    }
+
+    def "Check groovy only source detection"() {
+
+        when: "apply plugin"
+        file('src/main/groovy').mkdirs()
+
+        file('src/main/groovy/Sample.groovy').createNewFile()
+
+        Project project = project {
+            apply plugin: 'groovy'
+            apply plugin: 'de.aaschmid.cpd'
+            apply plugin: 'ru.vyarus.quality'
+
+            quality {
+                strict = false
+            }
+        }
+
+        then: "cpd language changed"
+        project.extensions.cpd.language == 'groovy'
+        project.tasks.cpdCheck.language == 'groovy'
     }
 }

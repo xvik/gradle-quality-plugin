@@ -79,7 +79,8 @@ class QualityPlugin implements Plugin<Project> {
                 applyPMD(project, extension, configLoader, context.registerJavaPlugins)
                 applySpotbugs(project, extension, configLoader, context.registerJavaPlugins)
                 configureAnimalSniffer(project, extension)
-                configureCpdPlugin(project, extension, configLoader)
+                configureCpdPlugin(project, extension, configLoader,
+                        !context.registerJavaPlugins && context.registerGroovyPlugins)
                 applyCodeNarc(project, extension, configLoader, context.registerGroovyPlugins)
             }
         }
@@ -275,15 +276,21 @@ class QualityPlugin implements Plugin<Project> {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings('MethodSize')
-    private void configureCpdPlugin(Project project, QualityExtension extension, ConfigLoader configLoader) {
+    private void configureCpdPlugin(Project project, QualityExtension extension, ConfigLoader configLoader,
+                                    boolean onlyGroovy) {
         if (!extension.cpd) {
             return
         }
 
         CpdUtils.findAndConfigurePlugin(project) { Project prj ->
-            // STAGE1 for multi-module project this part applies by all modules with quality plugin enabled
+            boolean sameModuleDeclaration = prj == project
+                    // STAGE1 for multi-module project this part applies by all modules with quality plugin enabled
             prj.configure(prj) {
                 cpd {
+                    // special case for single-module projects
+                    if (sameModuleDeclaration && onlyGroovy) {
+                        language = 'groovy'
+                    }
                     toolVersion = extension.pmdVersion
                     // assuming that in case of multi-module project quality plugin is applied in subprojects section
                     // and so it is normal that subproject configures root project
