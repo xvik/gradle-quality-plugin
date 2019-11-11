@@ -30,6 +30,8 @@
     NOTE: 6.18 or 6.19 can't be used due to [regression](https://github.com/pmd/pmd/issues/2098) (should be fixed in 6.20) 
 * Update pmd config:
     - Add 1 as allowed "magic number" for [AvoidLiteralsInIfCondition](https://pmd.github.io/pmd-6.11.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition)
+    - Disable new rule [AvoidUncheckedExceptionsInSignatures](https://pmd.github.io/pmd-6.17.0/pmd_rules_java_design.html#avoiduncheckedexceptionsinsignatures)
+        because it produce false positives for implemented interfaces (and generally not useful)
 * Add `pmdIncremental` option - shortcut for gradle's `pmd.incrementalAnalysis` option. Disabled by default.    
 * Add PMD's CPD tool support through [de.aaschmid.cpd](https://github.com/aaschmid/gradle-cpd-plugin) plugin. (#4) 
     - CPD gradle plugin must be applied manually: no automatic plugin enabling  

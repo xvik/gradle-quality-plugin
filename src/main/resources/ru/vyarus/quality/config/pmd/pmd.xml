@@ -57,6 +57,7 @@
     <!-- Design (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_design.html) -->
     <rule ref="category/java/design.xml">
         <exclude name="AvoidCatchingGenericException"/>
+        <exclude name="AvoidUncheckedExceptionsInSignatures"/>
         <exclude name="DataClass"/>
         <exclude name="ExcessiveClassLength"/> <!-- replaced by NcssCount -->
         <exclude name="ExcessiveMethodLength"/> <!-- replaced by NcssCount -->
