@@ -3,6 +3,7 @@ package ru.vyarus.gradle.plugin.quality.report
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
+import org.gradle.api.plugins.quality.CodeNarc
 import ru.vyarus.gradle.plugin.quality.util.FileUtils
 
 /**
@@ -12,53 +13,51 @@ import ru.vyarus.gradle.plugin.quality.util.FileUtils
  * @since 13.11.2015
  */
 @CompileStatic
-class CodeNarcReporter implements Reporter {
+class CodeNarcReporter implements Reporter<CodeNarc> {
 
     @Override
     @SuppressWarnings('DuplicateStringLiteral')
     @CompileStatic(TypeCheckingMode.SKIP)
-    void report(Project project, String type) {
-        project.with {
-            File reportFile = file("${extensions.codenarc.reportsDir}/${type}.xml")
-            if (!reportFile.exists()) {
-                return
+    void report(CodeNarc task, String type) {
+        File reportFile = task.reports.xml.destination
+        if (!reportFile.exists()) {
+            return
+        }
+        Node result = new XmlParser().parse(reportFile)
+        Node summary = result.PackageSummary[0]
+        int fileCnt = summary.@filesWithViolations as Integer
+        if (fileCnt > 0) {
+            Integer p1 = summary.@priority1 as Integer
+            Integer p2 = summary.@priority2 as Integer
+            Integer p3 = summary.@priority3 as Integer
+            Integer count = p1 + p2 + p3
+            task.logger.error "$NL$count ($p1 / $p2 / $p3) CodeNarc violations were found in ${fileCnt} files$NL"
+
+            Map<String, String> desc = [:]
+            result.Rules.Rule.each {
+                desc[it.@name] = ReportUtils.unescapeHtml(it.Description.text())
             }
-            Node result = new XmlParser().parse(reportFile)
-            Node summary = result.PackageSummary[0]
-            int fileCnt = summary.@filesWithViolations as Integer
-            if (fileCnt > 0) {
-                Integer p1 = summary.@priority1 as Integer
-                Integer p2 = summary.@priority2 as Integer
-                Integer p3 = summary.@priority3 as Integer
-                Integer count = p1 + p2 + p3
-                logger.error "$NL$count ($p1 / $p2 / $p3) CodeNarc violations were found in ${fileCnt} files$NL"
 
-                Map<String, String> desc = [:]
-                result.Rules.Rule.each {
-                    desc[it.@name] = ReportUtils.unescapeHtml(it.Description.text())
-                }
+            Properties props = loadCodenarcProperties(task.project)
 
-                Properties props = loadCodenarcProperties(project)
-
-                result.Package.each {
-                    String pkg = it.@path.replaceAll('/', '.')
-                    it.File.each {
-                        String src = it.@name
-                        it.Violation.each {
-                            String rule = it.@ruleName
-                            String[] path = props[rule].split('\\.')
-                            String group = path[path.length - 2]
-                            String priority = it.@priority
-                            String srcLine = ReportUtils.unescapeHtml(it.SourceLine.text())
-                            String message = ReportUtils.unescapeHtml(it.Message.text())
-                            // part in braces recognized by intellij IDEA and shown as link
-                            logger.error "[${group.capitalize()} | ${rule}] ${pkg}.($src:${it.@lineNumber})  " +
-                                    "[priority ${priority}]" +
-                                    "$NL\t>> ${srcLine}" +
-                                    "$NL  ${message}" +
-                                    "$NL  ${desc[rule]}" +
-                                    "$NL  http://codenarc.sourceforge.net/codenarc-rules-${group}.html#$rule$NL"
-                        }
+            result.Package.each {
+                String pkg = it.@path.replaceAll('/', '.')
+                it.File.each {
+                    String src = it.@name
+                    it.Violation.each {
+                        String rule = it.@ruleName
+                        String[] path = props[rule].split('\\.')
+                        String group = path[path.length - 2]
+                        String priority = it.@priority
+                        String srcLine = ReportUtils.unescapeHtml(it.SourceLine.text())
+                        String message = ReportUtils.unescapeHtml(it.Message.text())
+                        // part in braces recognized by intellij IDEA and shown as link
+                        task.logger.error "[${group.capitalize()} | ${rule}] ${pkg}.($src:${it.@lineNumber})  " +
+                                "[priority ${priority}]" +
+                                "$NL\t>> ${srcLine}" +
+                                "$NL  ${message}" +
+                                "$NL  ${desc[rule]}" +
+                                "$NL  http://codenarc.sourceforge.net/codenarc-rules-${group}.html#$rule$NL"
                     }
                 }
             }

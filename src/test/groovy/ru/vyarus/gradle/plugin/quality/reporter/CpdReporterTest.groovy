@@ -24,7 +24,7 @@ class CpdReporterTest extends AbstractKitTest {
                 doLast {
                     new ru.vyarus.gradle.plugin.quality.report.CpdReporter(
                         new ru.vyarus.gradle.plugin.quality.ConfigLoader(project)
-                    ).report(project, 'cpdCheck')
+                    ).report(cpdCheck, 'cpdCheck')
                 }
             }
         """)
@@ -99,7 +99,7 @@ sample.cpd.(Struct1.java:6)
                 doLast {
                     new ru.vyarus.gradle.plugin.quality.report.CpdReporter(
                         new ru.vyarus.gradle.plugin.quality.ConfigLoader(project)
-                    ).report(project, 'cpdCheck')
+                    ).report(cpdCheck, 'cpdCheck')
                 }
             }
         """)

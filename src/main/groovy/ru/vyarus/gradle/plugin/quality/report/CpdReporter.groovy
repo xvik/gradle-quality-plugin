@@ -3,6 +3,7 @@ package ru.vyarus.gradle.plugin.quality.report
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
+import org.gradle.api.tasks.SourceTask
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
 
 /**
@@ -12,7 +13,7 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
  * @since 08.11.2019
  */
 @CompileStatic
-class CpdReporter implements Reporter, HtmlReportGenerator {
+class CpdReporter implements Reporter<SourceTask>, HtmlReportGenerator<SourceTask> {
 
     private static final String CODE_INDENT = '│'
 
@@ -24,62 +25,61 @@ class CpdReporter implements Reporter, HtmlReportGenerator {
 
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
-    void report(Project project, String type) {
-        project.with {
-            File reportFile = file("${extensions.cpd.reportsDir}/${type}.xml")
+    void report(SourceTask task, String type) {
+        File reportFile = task.reports.xml.destination
 
-            if (!reportFile.exists()) {
-                return
-            }
-            Node result = new XmlParser().parse(reportFile)
-            int cnt = result.duplication.size()
-            if (cnt > 0) {
-                logger.error "$NL$cnt ${project.tasks[type].language} duplicates were found by CPD$NL"
-                result.duplication.each { dupl ->
-                    int lines = dupl.@lines as Integer
-                    int start = 0
-                    boolean first = true
-                    StringBuilder msg = new StringBuilder()
-                    dupl.file.each { file ->
-                        String filePath = file.@path
-                        String sourceFile = ReportUtils.extractFile(filePath)
-                        String name = ReportUtils.extractJavaPackage(project, filePath)
-                        msg << "$name.($sourceFile:${file.@line})"
-                        if (first) {
-                            start = file.@line as Integer
-                            msg << "  [${lines} lines / ${dupl.@tokens} tokens]$NL"
-                            first = false
-                        } else {
-                            msg << NL
-                        }
+        if (!reportFile.exists()) {
+            return
+        }
+        Node result = new XmlParser().parse(reportFile)
+        int cnt = result.duplication.size()
+        if (cnt > 0) {
+            task.logger.error "$NL$cnt ${task.language} duplicates were found by CPD$NL"
+            result.duplication.each { dupl ->
+                int lines = dupl.@lines as Integer
+                int start = 0
+                boolean first = true
+                StringBuilder msg = new StringBuilder()
+                dupl.file.each { file ->
+                    String filePath = file.@path
+                    String sourceFile = ReportUtils.extractFile(filePath)
+                    String name = ReportUtils.extractJavaPackage(task.project, filePath)
+                    msg << "$name.($sourceFile:${file.@line})"
+                    if (first) {
+                        start = file.@line as Integer
+                        msg << "  [${lines} lines / ${dupl.@tokens} tokens]$NL"
+                        first = false
+                    } else {
+                        msg << NL
                     }
-                    String maxNbSpace = String.valueOf(start + lines).replaceAll('.', ' ')
-                    String nbFmt = "%${maxNbSpace.length()}s"
-                    // identify code block
-                    msg << "$maxNbSpace$CODE_INDENT$NL"
-
-                    int codePos = start
-                    dupl.codefragment.text().eachLine {
-                        msg << "${String.format(nbFmt, codePos++)}$CODE_INDENT    $it$NL"
-                    }
-
-                    logger.error "${msg.toString()}$NL"
                 }
-                // html report will be generated before console reporting
-                String htmlReportUrl = ReportUtils.toConsoleLink(project
-                        .file("${project.extensions.cpd.reportsDir}/${type}.html"))
-                project.logger.error "CPD HTML report: $htmlReportUrl"
+                String maxNbSpace = String.valueOf(start + lines).replaceAll('.', ' ')
+                String nbFmt = "%${maxNbSpace.length()}s"
+                // identify code block
+                msg << "$maxNbSpace$CODE_INDENT$NL"
+
+                int codePos = start
+                dupl.codefragment.text().eachLine {
+                    msg << "${String.format(nbFmt, codePos++)}$CODE_INDENT    $it$NL"
+                }
+
+                task.logger.error "${msg.toString()}$NL"
             }
+            // html report will be generated before console reporting
+            String htmlReportUrl = ReportUtils.toConsoleLink(task.project
+                    .file("${task.project.extensions.cpd.reportsDir}/${type}.html"))
+            task.logger.error "CPD HTML report: $htmlReportUrl"
         }
     }
 
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
-    void generateHtmlReport(Project project, String type) {
-        File reportFile = project.file("${project.extensions.cpd.reportsDir}/${type}.xml")
+    void generateHtmlReport(SourceTask task, String type) {
+        File reportFile = task.reports.xml.destination
         if (!reportFile.exists()) {
             return
         }
+        Project project = task.project
         // html report
         String htmlReportPath = "${project.extensions.cpd.reportsDir}/${type}.html"
         File htmlReportFile = project.file(htmlReportPath)

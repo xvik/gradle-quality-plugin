@@ -24,7 +24,7 @@ class CheckstyleReporterTest extends AbstractKitTest {
                 doLast {
                     new ru.vyarus.gradle.plugin.quality.report.CheckstyleReporter(
                         new ru.vyarus.gradle.plugin.quality.ConfigLoader(project)
-                    ).report(project, 'main')
+                    ).report(checkstyleMain, 'main')
                 }
             }
         """)

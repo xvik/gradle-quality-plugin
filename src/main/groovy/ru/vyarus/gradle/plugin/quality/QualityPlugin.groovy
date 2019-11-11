@@ -355,11 +355,11 @@ class QualityPlugin implements Plugin<Project> {
                 // special case for cpd where single task used for all source sets
                 String taskType = task.name == type ? type : task.name[type.length()..-1].toLowerCase()
                 if (generatesHtmlReport) {
-                    (reporter as HtmlReportGenerator).generateHtmlReport(project, taskType)
+                    (reporter as HtmlReportGenerator).generateHtmlReport(task, taskType)
                 }
                 if (consoleReport) {
                     long start = System.currentTimeMillis()
-                    reporter.report(task.project, taskType)
+                    reporter.report(task, taskType)
                     String duration = DurationFormatter.format(System.currentTimeMillis() - start)
                     task.project.logger.info("[plugin:quality] $type reporting executed in $duration")
                 }

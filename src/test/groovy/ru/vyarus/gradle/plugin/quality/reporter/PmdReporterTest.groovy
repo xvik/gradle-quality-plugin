@@ -21,7 +21,7 @@ class PmdReporterTest extends AbstractKitTest {
 
             task testReport() {
                 doLast {
-                    new ru.vyarus.gradle.plugin.quality.report.PmdReporter().report(project, 'main')
+                    new ru.vyarus.gradle.plugin.quality.report.PmdReporter().report(pmdMain, 'main')
                 }
             }
         """)

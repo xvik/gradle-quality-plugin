@@ -24,7 +24,7 @@ class SpotbugsReporterTest extends AbstractKitTest {
                 doLast {
                     new ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter(
                         new ru.vyarus.gradle.plugin.quality.ConfigLoader(project)
-                    ).report(project, 'main')
+                    ).report(spotbugsMain, 'main')
                 }
             }
         """)
