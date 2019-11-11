@@ -48,6 +48,44 @@ class CpdIntegrationKitTest extends AbstractKitTest {
         file('build/reports/cpd/cpdCheck.html').exists()
     }
 
+    def "Check source scope reduce"() {
+        setup:
+        build("""
+            plugins {
+                id 'java'
+                id 'de.aaschmid.cpd' version '3.0'
+                id 'ru.vyarus.quality'
+            }            
+
+            quality {
+                pmd false
+                checkstyle false
+                spotbugs false
+                strict false
+            }
+
+            repositories {            
+                jcenter(); mavenCentral();
+            }
+        """)
+
+        fileFromClasspath('src/main/java/sample/cpd/Struct1.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/Struct1.java')
+        fileFromClasspath('src/main/java/sample/cpd/Struct2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/Struct2.java')
+        fileFromClasspath('src/test/java/sample/cpd/OtherStruct1.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/OtherStruct1.java')
+        fileFromClasspath('src/test/java/sample/cpd/OtherStruct2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/cpd/OtherStruct2.java')
+
+        when: "run check task with java sources"
+        BuildResult result = run('check')
+
+        then: "cpd detect violations"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('1 java duplicates were found by CPD')
+
+        and: "xml report generated"
+        file('build/reports/cpd/cpdCheck.xml').exists()
+        file('build/reports/cpd/cpdCheck.html').exists()
+    }
+
     def "Check cpd disable"() {
         setup:
         build("""
