@@ -134,6 +134,12 @@
             <property name="ignoreMagicNumbers" value="-1,0,1"/>
         </properties>
     </rule>
+    <rule ref="category/java/errorprone.xml/CloseResource">
+        <properties>
+            <!-- AutoClosable removed from value because it produces too many false positives -->
+            <property name="types" value="java.sql.Connection,java.sql.Statement,java.sql.ResultSet" />
+        </properties>
+    </rule>
 
 
     <!-- Error prone (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_multithreading.html) -->
