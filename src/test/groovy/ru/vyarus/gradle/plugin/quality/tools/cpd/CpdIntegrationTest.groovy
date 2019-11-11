@@ -40,6 +40,30 @@ class CpdIntegrationTest extends AbstractTest {
         project.check.dependsOn.contains task
     }
 
+    def "Check cpd groovy sources cleanup"() {
+
+        when: "apply plugin"
+        file('src/main/groovy').mkdirs()
+        file('src/test/groovy').mkdirs()
+
+        file('src/main/groovy/GSample.groovy').createNewFile()
+        file('src/test/groovy/GSampleTest.groovy').createNewFile()
+
+        Project project = project {
+            apply plugin: 'groovy'
+            apply plugin: 'de.aaschmid.cpd'
+            apply plugin: 'ru.vyarus.quality'
+
+            quality {
+                strict = false
+            }
+        }
+
+        then: "cpd sources cleared"
+        project.tasks.cpdCheck.source.files.collect { it.name } == ['GSample.groovy']
+    }
+
+
     def "Check disabled cpd sources override"() {
 
         when: "apply plugin"

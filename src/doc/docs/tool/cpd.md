@@ -115,6 +115,17 @@ Also, all cpd tasks would be disabled with `quality.enabled = false`
     }
     ```
     
+!!! warning
+    CPD will try to check all files in enabled source sets. For example, if you have
+    both java and groovy sources in main source set then CPD will try to check both
+    and, most likely, will fail with groovy parse error (as language is java by default).
+    
+    To solve such cases either manually exclude additional sources:
+    ```java
+    cpdCheck.exclude '*.groovy'
+    ```
+    Or split check in multiple tasks, where each task checks only one language (see below),           
+    
 ### Multiple file types support
 
 If you need to check more than one type of files (for example, java and groovy sources), you'll
