@@ -16,7 +16,6 @@
     - Disable [TrailingComment](https://checkstyle.sourceforge.io/config_misc.html#TrailingComment)
         as not useful and contradicting with PMD suppression syntax (`// NOPMD`)
     - Add new checks:
-        * [MissingJavadocMethod](https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocMethod)
         * [MissingJavadocPackage](https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocPackage)
         * [MissingJavadocType](https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocType)
         * [UnnecessarySemicolonInTryWithResources](https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonInTryWithResources)
@@ -24,8 +23,11 @@
         * [UnnecessarySemicolonAfterTypeMemberDeclaration](https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonAfterTypeMemberDeclaration)
         * [InvalidJavadocPosition](https://checkstyle.sourceforge.io/config_javadoc.html#InvalidJavadocPosition)        
         * [JavadocBlockTagLocation](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocBlockTagLocation)
-    - Disable new check [OrderedProperties](https://checkstyle.sourceforge.io/config_misc.html#OrderedProperties)
-* Update pmd 6.11.0 -> 6.18.0   
+    - Disable new checks:
+        * [OrderedProperties](https://checkstyle.sourceforge.io/config_misc.html#OrderedProperties)
+        * [MissingJavadocMethod](https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocMethod)             
+* Update pmd 6.11.0 -> 6.17.0  
+    NOTE: 6.18 or 6.19 can't be used due to [regression](https://github.com/pmd/pmd/issues/2098) (should be fixed in 6.20) 
 * Update pmd config:
     - Add 1 as allowed "magic number" for [AvoidLiteralsInIfCondition](https://pmd.github.io/pmd-6.11.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition)
 * Add `pmdIncremental` option - shortcut for gradle's `pmd.incrementalAnalysis` option. Disabled by default.    
