@@ -48,10 +48,10 @@ class MultiModuleUseKitTest extends AbstractKitTest {
 > Task :mod1:checkstyleMain
 Checkstyle rule violations were found. See the report at: file:///tmp/junit6300057182805361069/mod1/build/reports/checkstyle/main.html
 Checkstyle files with violations: 1
-Checkstyle violations by severity: [error:4]
+Checkstyle violations by severity: [error:2]
 
 
-4 Checkstyle rule violations were found in 1 files
+2 Checkstyle rule violations were found in 1 files
 
 [Misc | NewlineAtEndOfFile] sample.(Sample.java:1)
   File does not end with a newline.
@@ -60,14 +60,6 @@ Checkstyle violations by severity: [error:4]
 [Javadoc | MissingJavadocType] sample.(Sample.java:6)
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#MissingJavadocType
-
-[Javadoc | MissingJavadocMethod] sample.(Sample.java:10)
-  Missing a Javadoc comment.
-  http://checkstyle.sourceforge.net/config_javadoc.html#MissingJavadocMethod
-
-[Javadoc | MissingJavadocMethod] sample.(Sample.java:14)
-  Missing a Javadoc comment.
-  http://checkstyle.sourceforge.net/config_javadoc.html#MissingJavadocMethod
 
 
 > Task :mod1:compileTestJava NO-SOURCE
@@ -82,10 +74,10 @@ Checkstyle violations by severity: [error:4]
 > Task :mod2:checkstyleMain
 Checkstyle rule violations were found. See the report at: file:///tmp/junit6300057182805361069/mod2/build/reports/checkstyle/main.html
 Checkstyle files with violations: 1
-Checkstyle violations by severity: [error:4]
+Checkstyle violations by severity: [error:2]
 
 
-4 Checkstyle rule violations were found in 1 files
+2 Checkstyle rule violations were found in 1 files
 
 [Misc | NewlineAtEndOfFile] sample.(Sample.java:1)
   File does not end with a newline.
@@ -94,14 +86,6 @@ Checkstyle violations by severity: [error:4]
 [Javadoc | MissingJavadocType] sample.(Sample.java:6)
   Missing a Javadoc comment.
   http://checkstyle.sourceforge.net/config_javadoc.html#MissingJavadocType
-
-[Javadoc | MissingJavadocMethod] sample.(Sample.java:10)
-  Missing a Javadoc comment.
-  http://checkstyle.sourceforge.net/config_javadoc.html#MissingJavadocMethod
-
-[Javadoc | MissingJavadocMethod] sample.(Sample.java:14)
-  Missing a Javadoc comment.
-  http://checkstyle.sourceforge.net/config_javadoc.html#MissingJavadocMethod
 
 
 > Task :mod2:compileTestJava NO-SOURCE

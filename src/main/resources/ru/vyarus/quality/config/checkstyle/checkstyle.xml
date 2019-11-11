@@ -8,6 +8,8 @@
 
     <!-- Filters (http://checkstyle.sourceforge.net/config_filters.html) -->
     <module name="SuppressWarningsFilter"/>
+    <!-- https://checkstyle.sourceforge.io/config_filters.html#SuppressWithPlainTextCommentFilter -->
+    <!--<module name="SuppressWithPlainTextCommentFilter"/>--> <!-- may be enabled in cases when SuppressionCommentFilter can't handle comments -->
 
     <module name="LineLength">
         <property name="max" value="120"/>
@@ -148,7 +150,7 @@
         <!--<module name="JavadocTagContinuationIndentation"/>-->
         <module name="JavadocType"/>
         <!--<module name="JavadocVariable"/>-->
-        <module name="MissingJavadocMethod"/>
+<!--        <module name="MissingJavadocMethod"/>-->
         <module name="MissingJavadocPackage"/>
         <module name="MissingJavadocType"/>
         <module name="NonEmptyAtclauseDescription"/>
