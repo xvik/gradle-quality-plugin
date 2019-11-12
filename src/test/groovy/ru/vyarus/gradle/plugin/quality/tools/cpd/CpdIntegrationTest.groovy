@@ -2,6 +2,9 @@ package ru.vyarus.gradle.plugin.quality.tools.cpd
 
 import de.aaschmid.gradle.plugins.cpd.CpdExtension
 import org.gradle.api.Project
+import org.gradle.api.Task
+import org.gradle.api.tasks.TaskCollection
+import org.gradle.api.tasks.TaskProvider
 import ru.vyarus.gradle.plugin.quality.AbstractTest
 
 /**
@@ -37,7 +40,7 @@ class CpdIntegrationTest extends AbstractTest {
         def task = project.tasks.cpdCheck
         task.source.files.collect { it.name } == ['Sample.java']
         task.ignoreFailures
-        project.check.dependsOn.contains task
+        dependsOn(project.check).contains task.name
     }
 
     def "Check cpd groovy sources cleanup"() {
@@ -217,7 +220,7 @@ class CpdIntegrationTest extends AbstractTest {
         // sources were not re-configured for root project
         task.source.files.collect { it.name } == ['Sample.java']
         task.ignoreFailures
-        project.project(':sub').tasks.check.dependsOn.contains task
+        dependsOn(project.project(':sub').tasks.check).contains task.name
     }
 
     def "Check multi-module cpd middle integration"() {
@@ -253,7 +256,7 @@ class CpdIntegrationTest extends AbstractTest {
         // sources were not re-configured for root project
         task.source.files.collect { it.name } == ['Sample.java']
         task.ignoreFailures
-        project.project(':subroot:sub').tasks.check.dependsOn.contains task
+        dependsOn(project.project(':subroot:sub').tasks.check).contains task.name
     }
 
     def "Check groovy only source detection"() {
@@ -276,5 +279,23 @@ class CpdIntegrationTest extends AbstractTest {
         then: "cpd language changed"
         project.extensions.cpd.language == 'groovy'
         project.tasks.cpdCheck.language == 'groovy'
+    }
+
+    private Set<String> dependsOn(Task task) {
+        // dependsOn also contains implicit dependency to task sources
+        task.dependsOn.collect { extractDependencies(it)}.flatten().findAll{it} as Set
+    }
+
+    private Set<String> extractDependencies(Object dependency) {
+        if (dependency instanceof Task) {
+            return [dependency.name]
+        }
+        if (dependency instanceof TaskProvider) {
+            return [dependency.get().name]
+        }
+        if (dependency instanceof TaskCollection) {
+            return dependency.names
+        }
+        return null
     }
 }

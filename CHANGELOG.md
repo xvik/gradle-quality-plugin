@@ -1,9 +1,9 @@
 * Gradle 6.0 compatibility
-    - (breaking) Removed findbugs plugin support because it was removed in gradle 6 
+    - (breaking) Removed findbugs plugin support because it was removed in gradle 6
+* (breaking) Minimal required gradle is now 5.1     
 * Update spotbugs 3.1.11 -> 3.1.12
 * Update com.github.spotbugs plugin: 1.6.5 -> 2.0.1
     - Note that plugin group changed: gradle.plugin.com.github.spotbugs -> com.github.spotbugs
-    - Minimal required gradle version is 5.1
 * Add spotbugs-related options:
     - spotbugsMaxHeapSize setting may be used to increase default spotbugs memory ([reduced to 512mb in gradle 5](https://github.com/gradle/gradle/issues/6216)).
         Option does not override maxHeapSize manually set on spotbugs task (to not break working builds) (#12)
@@ -42,6 +42,7 @@
     - Html report generated (using style recommended by pmd; style file added as overridable config)
     - Full console report (like for other quality plugins)  
     - Support for multi-module projects (where cpd plugin applied in root project and quality in subprojects)
+* Use gradle configuration avoidance to prevent not used quality tasks creation
 
 ### 3.4.0 (2019-02-16)
 * Fix source files root detection (#13)

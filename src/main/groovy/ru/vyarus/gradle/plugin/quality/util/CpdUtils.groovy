@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceTask
+import org.gradle.api.tasks.TaskProvider
 
 /**
  * Cpd configuration helper utils.
@@ -25,7 +26,7 @@ class CpdUtils {
      * Checking all parent modules in case if cpd declared in some middle parent module.
      *
      * @param project project where quality plugin declared
-     * @param configuration cpd plugin configuration closure (accept cpd declaration project)
+     * @param configuration cpd plugin configuration closure (accept cpd declaration project and plugin instance)
      */
     static void findAndConfigurePlugin(Project project, Closure configuration) {
         // for single module projects this will execute once
@@ -33,7 +34,7 @@ class CpdUtils {
         Project current = project
         while (current != null) {
             current.plugins.withId('de.aaschmid.cpd') {
-                configuration.call(current)
+                configuration.call(current, it)
             }
             current = current.parent
         }
@@ -41,10 +42,10 @@ class CpdUtils {
 
     /**
      * @param project cpd plugin declaration project
-     * @return cpdCheck task
+     * @return cpdCheck task provider
      */
-    static SourceTask findCpdTask(Project project) {
-        return project.tasks.getByName('cpdCheck') as SourceTask
+    static TaskProvider<SourceTask> findCpdTask(Project project) {
+        return project.tasks.named('cpdCheck') as TaskProvider<SourceTask>
     }
 
     /**
@@ -61,16 +62,18 @@ class CpdUtils {
      * @param qualitySets configured source sets for quality tasks
      */
     @CompileStatic(TypeCheckingMode.SKIP)
-    static void unifyCpdSources(Project project, SourceTask cpdCheck, Collection<SourceSet> qualitySets) {
+    static void unifyCpdSources(Project project, TaskProvider<SourceTask> cpdCheck, Collection<SourceSet> qualitySets) {
         project.plugins.withType(JavaBasePlugin) {
-            project.sourceSets.all {
-                if (!qualitySets.contains(it)) {
+            project.sourceSets.all { sourceSet ->
+                if (!qualitySets.contains(sourceSet)) {
                     project.logger.info('Removing {}/{} source set directories from CPD: {}',
-                            project.name, it.name, it.allSource.srcDirs)
+                            project.name, sourceSet.name, sourceSet.allSource.srcDirs)
                     // by default task configure all source set contents, so just remove not needed sets
                     // note that it is important to use allSource and not allJava because otherwise only java
                     // files will be excluded and other files (e.g. groovy) will remain causing troubles
-                    cpdCheck.source = cpdCheck.source - it.allSource
+                    cpdCheck.configure {
+                        it.source = it.source - sourceSet.allSource
+                    }
                 }
             }
         }

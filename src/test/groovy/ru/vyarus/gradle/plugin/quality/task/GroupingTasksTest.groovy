@@ -2,6 +2,8 @@ package ru.vyarus.gradle.plugin.quality.task
 
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.tasks.TaskCollection
+import org.gradle.api.tasks.TaskProvider
 import ru.vyarus.gradle.plugin.quality.AbstractTest
 
 
@@ -113,6 +115,19 @@ class GroupingTasksTest extends AbstractTest {
 
     private Set<String> dependsOn(Task task) {
         // dependsOn also contains implicit dependency to task sources
-        task.dependsOn.collect { it instanceof Task ? it.name: null}.findAll{it} as Set
+        task.dependsOn.collect { extractDependencies(it)}.flatten().findAll{it} as Set
+    }
+
+    private Set<String> extractDependencies(Object dependency) {
+        if (dependency instanceof Task) {
+            return [dependency.name]
+        }
+        if (dependency instanceof TaskProvider) {
+            return [dependency.get().name]
+        }
+        if (dependency instanceof TaskCollection) {
+            return dependency.names
+        }
+        return null
     }
 }

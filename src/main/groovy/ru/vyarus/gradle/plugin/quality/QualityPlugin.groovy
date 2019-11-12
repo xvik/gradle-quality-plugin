@@ -12,7 +12,7 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.*
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceTask
-import org.gradle.api.tasks.TaskCollection
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
 import ru.vyarus.gradle.plugin.quality.report.*
@@ -87,7 +87,7 @@ class QualityPlugin implements Plugin<Project> {
     }
 
     private void addInitConfigTask(Project project) {
-        project.tasks.create('initQualityConfig', InitQualityConfigTask)
+        project.tasks.register('initQualityConfig', InitQualityConfigTask)
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -96,9 +96,11 @@ class QualityPlugin implements Plugin<Project> {
         // using all source sets and not just declared in extension to be able to run quality plugins
         // on source sets which are not included in check task run (e.g. run quality on tests time to time)
         project.sourceSets.each { SourceSet set ->
-            project.tasks.create(set.getTaskName(QUALITY_TASK, null)).with {
-                group = 'verification'
-                description = "Run quality plugins for $set.name source set"
+            project.tasks.register(set.getTaskName(QUALITY_TASK, null)) {
+                it.with {
+                    group = 'verification'
+                    description = "Run quality plugins for $set.name source set"
+                }
             }
         }
     }
@@ -107,7 +109,7 @@ class QualityPlugin implements Plugin<Project> {
         if (!extension.lintOptions) {
             return
         }
-        project.tasks.withType(JavaCompile) { JavaCompile t ->
+        project.tasks.withType(JavaCompile).configureEach { JavaCompile t ->
             // .collect not used because of incompatibility of groovy 2.5 method with 2.4
             for (String option : extension.lintOptions) {
                 t.options.compilerArgs.add("-Xlint:$option" as String)
@@ -130,7 +132,7 @@ class QualityPlugin implements Plugin<Project> {
                     configFile = configLoader.resolveCheckstyleConfig(false)
                     sourceSets = extension.sourceSets
                 }
-                tasks.withType(Checkstyle) {
+                tasks.withType(Checkstyle).configureEach {
                     doFirst {
                         configLoader.resolveCheckstyleConfig()
                         applyExcludes(it, extension)
@@ -168,7 +170,7 @@ class QualityPlugin implements Plugin<Project> {
                                 + 'supported only from gradle 5.6')
                     }
                 }
-                tasks.withType(Pmd) {
+                tasks.withType(Pmd).configureEach {
                     doFirst {
                         configLoader.resolvePmdConfig()
                         applyExcludes(it, extension)
@@ -202,7 +204,7 @@ class QualityPlugin implements Plugin<Project> {
                     sourceSets = extension.sourceSets
                 }
 
-                tasks.withType(SpotBugsTask) {
+                tasks.withType(SpotBugsTask).configureEach {
                     doFirst {
                         configLoader.resolveSpotbugsExclude()
                         // spotbugs does not support exclude of SourceTask, so appending excluded classes to
@@ -241,7 +243,7 @@ class QualityPlugin implements Plugin<Project> {
                     configFile = configLoader.resolveCodenarcConfig(false)
                     sourceSets = extension.sourceSets
                 }
-                tasks.withType(CodeNarc) {
+                tasks.withType(CodeNarc).configureEach {
                     doFirst {
                         configLoader.resolveCodenarcConfig()
                         applyExcludes(it, extension)
@@ -282,9 +284,9 @@ class QualityPlugin implements Plugin<Project> {
             return
         }
 
-        CpdUtils.findAndConfigurePlugin(project) { Project prj ->
+        CpdUtils.findAndConfigurePlugin(project) { Project prj, Plugin plugin ->
             boolean sameModuleDeclaration = prj == project
-                    // STAGE1 for multi-module project this part applies by all modules with quality plugin enabled
+            // STAGE1 for multi-module project this part applies by all modules with quality plugin enabled
             prj.configure(prj) {
                 cpd {
                     // special case for single-module projects
@@ -299,7 +301,7 @@ class QualityPlugin implements Plugin<Project> {
                     ignoreFailures = !extension.strict
                 }
                 // only default task is affected
-                cpdCheck {
+                tasks.named('cpdCheck').configure {
                     doFirst {
                         if (extension.cpdUnifySources) {
                             applyExcludes(it, extension)
@@ -308,7 +310,7 @@ class QualityPlugin implements Plugin<Project> {
                 }
             }
             // cpdCheck is always declared by cpd plugin
-            SourceTask cpdCheck = CpdUtils.findCpdTask(prj)
+            TaskProvider<SourceTask> cpdCheck = CpdUtils.findCpdTask(prj)
             if (extension.cpdUnifySources) {
                 // exclude sources, not declared for quality checks in quality plugin declaration project
                 CpdUtils.unifyCpdSources(project, cpdCheck, extension.sourceSets)
@@ -319,26 +321,28 @@ class QualityPlugin implements Plugin<Project> {
                 return
             }
 
+            Class<Task> cpdTasksType = plugin.class.classLoader.loadClass('de.aaschmid.gradle.plugins.cpd.Cpd')
             // reports applied for all registered cpd tasks
-            prj.tasks.withType(cpdCheck.class) {
+            prj.tasks.withType(cpdTasksType).configureEach { task ->
                 reports {
                     xml.enabled = true
                 }
                 doFirst {
                     configLoader.resolveCpdXsl()
                 }
-                // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
-                // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
-                // For single module projects simply make sure check will trigger cpd
-                project.check.dependsOn << it
                 // console reporting for each cpd task
-                applyReporter(prj, it.name, new CpdReporter(configLoader),
+                applyReporter(prj, task.name, new CpdReporter(configLoader),
                         extension.consoleReporting, extension.htmlReports)
             }
+            // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
+            // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
+            // For single module projects simply make sure check will trigger cpd
+            project.tasks.named('check').configure { it.dependsOn prj.tasks.withType(cpdTasksType) }
+
             // cpd disabled together with all quality plugins
             // yes, it's not completely normal that module could disable root project task, but it would be much
             // simpler to use like that (because quality plugin assumed to be applied in subprojects section)
-            applyEnabledState(prj, extension, cpdCheck.class)
+            applyEnabledState(prj, extension, cpdTasksType)
         }
     }
 
@@ -447,7 +451,7 @@ class QualityPlugin implements Plugin<Project> {
         if (!extension.enabled) {
             project.gradle.taskGraph.whenReady {
                 Task called = project.gradle.taskGraph.allTasks.last()
-                (project.tasks.withType(task) as TaskCollection<Task>).each { t ->
+                project.tasks.withType(task).configureEach { Task t ->
                     // enable task only if it's called directly or through grouping task
                     t.enabled = called == t || called.name.startsWith(QUALITY_TASK)
                 }
@@ -486,9 +490,9 @@ class QualityPlugin implements Plugin<Project> {
         // each quality plugin generate separate tasks for each source set
         // assign plugin tasks to source set grouping quality task
         project.sourceSets.each {
-            Task pluginTask = project.tasks.findByName(it.getTaskName(task, null))
+            TaskProvider pluginTask = project.tasks.named(it.getTaskName(task, null))
             if (pluginTask) {
-                project.tasks.getByName(it.getTaskName(QUALITY_TASK, null)).dependsOn << pluginTask
+                project.tasks.named(it.getTaskName(QUALITY_TASK, null)).configure { it.dependsOn pluginTask }
             }
         }
     }
