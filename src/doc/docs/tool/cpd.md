@@ -10,16 +10,12 @@ gradle plugin applied manually:
 
 ```groovy
 plugins {        
-    id 'de.aaschmid.cpd' version '3.0'
+    id 'de.aaschmid.cpd' version '3.1'
     id 'ru.vyarus.quality' version '4.0.0'
 }
 ```    
 
-CPD is a part of [PMD](pmd.md) project and so there is no need for additional version configuration (pmd version used).
-
-!!! warning
-    CPD plugin version 3.0 is [not compatible](https://github.com/aaschmid/gradle-cpd-plugin/issues/36) with gradle 6.
-    3.1 will be.     
+CPD is a part of [PMD](pmd.md) project and so there is no need for additional version configuration (pmd version used). 
 
 !!! note
     Special [xsl file](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/cpd/hcpdhtml.xslt) 
@@ -180,7 +176,7 @@ Expected root project configuration looks like this:
 
 ```groovy
 plugins {
-    id 'de.aaschmid.cpd' version '3.0'
+    id 'de.aaschmid.cpd' version '3.1'
     id 'ru.vyarus.quality' version '4.0.0' apply false
 }
 cpd {
