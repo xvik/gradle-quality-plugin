@@ -143,6 +143,15 @@ class QualityExtension {
     String spotbugsMaxHeapSize = '1g'
 
     /**
+     * Shortcut for spotbugs plugins declaration without using afterEvaluate block. All registered plugins will
+     * be simply added to spotbugsPlugins configuration. May be used together with direct configuration (default way).
+     * <p>
+     * Property is not supposed to be used directly. Instead, plugins should be registered using
+     * {@link #spotbugsPlugin(java.lang.String)} to mimic default spotbugs configuration.
+     */
+    Set<String> spotbugsPlugins = []
+
+    /**
      * Javac lint options to show compiler warnings, not visible by default.
      * By default enables deprecation and unchecked options. Applies to all JavaCompile tasks.
      * Full list of options: http://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCJCABJ
@@ -236,5 +245,16 @@ class QualityExtension {
     @SuppressWarnings('ConfusingMethodName')
     void exclude(String... patterns) {
         exclude.addAll(patterns)
+    }
+
+    /**
+     * Shortcut for spotbugs plugin registration ({@link #spotbugsPlugins}).
+     * Essentially equivalent to normal plugin declaration directly in
+     * 'spotbugsPlugins` configuration (as dependency).
+     *
+     * @param plugin plugin dependency
+     */
+    void spotbugsPlugin(String plugin) {
+        spotbugsPlugins << plugin
     }
 }

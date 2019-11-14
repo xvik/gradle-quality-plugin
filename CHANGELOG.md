@@ -9,6 +9,7 @@
         Option does not override maxHeapSize manually set on spotbugs task (to not break working builds) (#12)
     - spotbugsMaxRank setting allows to filter low-ranked rules (ranks are different from priorities!) (#15)
         Option modifies excludes.xml file (the only way to apply rank threshold)
+    - spotbugsPlugin shortcut method to simplify plugins declaration (without afterEvaluate block or manual spotbugs plugin declaration)    
 * Spotbugs report now shows not only rule priority, but also it's rank: `[priority 2 / rank 14]`           
 * Update codenarc 1.3 -> 1.4
 * Update checkstyle 8.17 -> 8.26

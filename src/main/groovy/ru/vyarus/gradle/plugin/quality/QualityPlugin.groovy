@@ -203,6 +203,12 @@ class QualityPlugin implements Plugin<Project> {
                     excludeFilter = configLoader.resolveSpotbugsExclude(false)
                     sourceSets = extension.sourceSets
                 }
+                // plugins shortcut
+                extension.spotbugsPlugins?.each {
+                    project.configurations.getByName('spotbugsPlugins').dependencies.add(
+                            project.dependencies.create(it)
+                    )
+                }
 
                 tasks.withType(SpotBugsTask).configureEach {
                     doFirst {

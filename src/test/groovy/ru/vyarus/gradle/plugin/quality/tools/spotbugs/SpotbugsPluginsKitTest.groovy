@@ -27,7 +27,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
 
             repositories { mavenCentral() }
             dependencies {
-                spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.6.0'
+                spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
             }
         """)
 
@@ -59,7 +59,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
             repositories { mavenCentral() }
             afterEvaluate {
                 dependencies {
-                    spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:6.6.0'
+                    spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
                 }
             }
         """)
@@ -73,5 +73,39 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('SpotBugs rule violations were found')
+    }
+
+    def "Check spotbugs plugins shortcyt syntax"() {
+        setup:
+        build("""
+            plugins {
+                id 'java'
+                id 'ru.vyarus.quality'
+            }
+
+            quality {
+                checkstyle false
+                pmd false
+                strict false
+                
+                spotbugsPlugin 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0'
+                spotbugsPlugin 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
+            }
+
+            repositories { mavenCentral() }            
+        """)
+
+        fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
+        fileFromClasspath('src/main/java/sample/Sample2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample2.java')
+
+        when: "run check task with java sources"
+        BuildResult result = run('check')
+
+        then: "all plugins detect violations"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('SpotBugs rule violations were found')
+
+        cleanup:
+        new File("spotbugs.xml") << file('build/reports/spotbugs/main.xml').text
     }
 }

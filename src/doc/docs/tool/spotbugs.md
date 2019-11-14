@@ -92,47 +92,61 @@ Or you can use annotations. SpotBugs use custom annotations and so you need to a
 
 ## Plugins
 
-You may add additional spotbugs checks by declaring spotbugs plugins in `spotbugsPlugins` dependency configuration.
-
-!!! note
-    Spotbugs is compatible with findbugs plugins.
+You may add additional spotbugs checks by declaring [spotbugs plugins](https://spotbugs.readthedocs.io/en/latest/gradle.html#introduce-spotbugs-plugin).
 
 !!! warning
-    As, by default, spotbugs plugin applied automatically after configuration read, `spotbugsPlugins` can't be used directly
+    As, by default, spotbugs plugin applied automatically after configuration read, `spotbugsPlugins` configuration can't be used directly
+    
+You can register plugins using quality extension shortcut:
 
-Either use afterEvaluate:
+```groovy
+quality {
+    spotbugsPlugin 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0'
+    spotbugsPlugin 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'        
+}
+```
+
+Or you can use afterEvaluate to register directly in `spotbugsPlugins` configuration:
 
 ```groovy
 afterEvaluate {
     dependencies {
-        spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.2.0'
+        spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
     }
 }
 ```
 
-Or declare spotbugs plugin manually (it will be configured by quality plugin):
+Or declare spotbugs plugin manually (it will be still configured by quality plugin)
+and then use `spotbugsPlugins` configuration directly :
 
 ```groovy
 plugins {
     id 'com.github.spotbugs' version '2.0.1'
 }
 dependencies {
-    spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.2.0'
+    spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
 }
-```
+```      
+
+!!! tip
+    All these approaches could work together, but better stick to one.
 
 ### Available plugins
 
-[Find Security Bugs](http://find-sec-bugs.github.io/)
+[Find Security Bugs](https://github.com/find-sec-bugs/find-sec-bugs) ([site](https://find-sec-bugs.github.io/))
 
-```groovy
-spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0'
+```groovy   
+quality {
+    spotbugsPlugin 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0'
+}
 ```
 
-[fb-contrib: A FindBugs auxiliary detector plugin](http://fb-contrib.sourceforge.net/)
+[fb-contrib: A FindBugs auxiliary detector plugin](https://github.com/mebigfatguy/fb-contrib) ([site](http://fb-contrib.sourceforge.net/))
 
-```groovy
-spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.3'
+```groovy         
+qualtiy {
+    spotbugsPlugin 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
+}
 ```
 
 ## Annotations
