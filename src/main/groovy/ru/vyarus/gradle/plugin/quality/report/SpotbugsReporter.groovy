@@ -5,6 +5,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
+import ru.vyarus.gradle.plugin.quality.util.FileUtils
 
 /**
  * Prints spotbugs errors (from xml report) into console and generates html report using custom xsl.
@@ -41,16 +42,19 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
 
             Map<String, String> desc = buildDescription(result)
             Map<String, String> cat = buildCategories(result)
+            Map<String, String> plugins = resolvePluginsChecks(task.project)
             result.BugInstance.each { bug ->
                 Node msg = bug.LongMessage[0]
                 Node src = bug.SourceLine[0]
-                String description = ReportUtils.unescapeHtml(desc[bug.@type])
+                String bugType = bug.@type
+                String description = ReportUtils.unescapeHtml(desc[bugType])
                 String srcPosition = src.@start
                 String classname = src.@classname
                 String pkg = classname[0..classname.lastIndexOf('.')]
                 String cls = src.@sourcefile
+                String plugin = plugins[bugType] ?: ''
                 // part in braces recognized by intellij IDEA and shown as link
-                task.logger.error "[${cat[bug.@category]} | ${bug.@type}] $pkg(${cls}:${srcPosition})  " +
+                task.logger.error "[${plugin}${cat[bug.@category]} | ${bugType}] $pkg(${cls}:${srcPosition})  " +
                         "[priority ${bug.@priority} / rank ${bug.@rank}]" +
                         "$NL\t>> ${msg.text()}" +
                         "$NL  ${description}$NL"
@@ -106,5 +110,28 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
             cat[category.@category] = category.Description.text()
         }
         return cat
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    @SuppressWarnings('CatchException')
+    private Map<String, String> resolvePluginsChecks(Project project) {
+        Map<String, String> res = [:]
+        project.configurations.getByName('spotbugsPlugins').resolve().each { jar ->
+            try {
+                FileUtils.loadFileFromJar(jar, 'findbugs.xml') { InputStream desc ->
+                    Node result = new XmlParser().parse(desc)
+                    // to simplify reporting
+                    String provider = result.@provider + ' | '
+                    result.Detector.each {
+                        it.@reports.split(',').each { String name ->
+                            res.put(name, provider)
+                        }
+                    }
+                }
+            } catch (Exception ignore) {
+                // it may be dependencies jars or format could suddenly change
+            }
+        }
+        res
     }
 }

@@ -104,9 +104,21 @@ quality {
     spotbugsPlugin 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0'
     spotbugsPlugin 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'        
 }
-```
+```     
 
-Or you can use afterEvaluate to register directly in `spotbugsPlugins` configuration:
+!!! note
+    Rules from plugins would be identified in console output:
+    
+    ```
+    [fb-contrib project | Correctness | FCBL_FIELD_COULD_BE_LOCAL] sample.(Sample.java:11)  [priority 2 / rank 7]
+        >> Class sample.Sample defines fields that are used only as locals
+      This class defines fields that are used in a locals only fashion,
+      specifically private fields or protected fields in final classes that are accessed
+      first in each method with a store vs. a load. This field could be replaced by one
+      or more local variables.
+    ```
+
+Alternatively, you can use `afterEvaluate` to register directly in `spotbugsPlugins` configuration:
 
 ```groovy
 afterEvaluate {
@@ -117,7 +129,7 @@ afterEvaluate {
 ```
 
 Or declare spotbugs plugin manually (it will be still configured by quality plugin)
-and then use `spotbugsPlugins` configuration directly :
+and use `spotbugsPlugins` configuration directly:
 
 ```groovy
 plugins {

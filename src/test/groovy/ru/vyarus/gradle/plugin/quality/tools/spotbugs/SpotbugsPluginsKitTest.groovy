@@ -75,7 +75,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
         result.output.contains('SpotBugs rule violations were found')
     }
 
-    def "Check spotbugs plugins shortcyt syntax"() {
+    def "Check spotbugs plugins shortcut syntax"() {
         setup:
         build("""
             plugins {

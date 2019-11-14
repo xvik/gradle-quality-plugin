@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="3.1.12" sequence="0" timestamp="1573701107094" analysisTimestamp="1573701107139" release="unspecified">
+  <Project projectName="root project &apos;junit3119039851464431516&apos; (main)">
+    <Jar>/tmp/junit3119039851464431516/build/classes/java/main/sample/Sample.class</Jar>
+    <Jar>/tmp/junit3119039851464431516/build/classes/java/main/sample/Sample2.class</Jar>
+    <AuxClasspathEntry>/tmp/junit3119039851464431516/build/classes/java/main</AuxClasspathEntry>
+    <SrcDir>/tmp/junit3119039851464431516/src/main/java</SrcDir>
+    <SrcDir>/tmp/junit3119039851464431516/src/main/java/sample/Sample.java</SrcDir>
+    <SrcDir>/tmp/junit3119039851464431516/src/main/java/sample/Sample2.java</SrcDir>
+    <Plugin id="com.h3xstream.findsecbugs" enabled="true"/>
+    <Plugin id="com.mebigfatguy.fbcontrib" enabled="true"/>
+  </Project>
+  <BugInstance type="FCBL_FIELD_COULD_BE_LOCAL" priority="2" rank="7" abbrev="FCBL" category="CORRECTNESS" instanceHash="d6b67f5c720357d1f7d777a78af1c4e5" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Class defines fields that are used only as locals</ShortMessage>
+    <LongMessage>Class sample.Sample defines fields that are used only as locals</LongMessage>
+    <Class classname="sample.Sample" primary="true">
+      <SourceLine classname="sample.Sample" start="10" end="17" sourcefile="Sample.java" sourcepath="sample/Sample.java" relSourcepath="sample/Sample.java">
+        <Message>At Sample.java:[lines 10-17]</Message>
+      </SourceLine>
+      <Message>In class sample.Sample</Message>
+    </Class>
+    <Field classname="sample.Sample" name="sample" signature="Ljava/lang/String;" isStatic="false" primary="true">
+      <SourceLine classname="sample.Sample" sourcefile="Sample.java" sourcepath="sample/Sample.java" relSourcepath="sample/Sample.java">
+        <Message>In Sample.java</Message>
+      </SourceLine>
+      <Message>Field sample.Sample.sample</Message>
+    </Field>
+    <SourceLine classname="sample.Sample" primary="true" start="11" end="11" startBytecode="6" endBytecode="6" sourcefile="Sample.java" sourcepath="sample/Sample.java" relSourcepath="sample/Sample.java">
+      <Message>At Sample.java:[line 11]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="URF_UNREAD_FIELD" priority="2" rank="18" abbrev="UrF" category="PERFORMANCE" instanceHash="d9109f00300f1d923bdd3c348e1b1b97" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Unread field</ShortMessage>
+    <LongMessage>Unread field: sample.Sample.sample</LongMessage>
+    <Class classname="sample.Sample" primary="true">
+      <SourceLine classname="sample.Sample" start="10" end="17" sourcefile="Sample.java" sourcepath="sample/Sample.java" relSourcepath="sample/Sample.java">
+        <Message>At Sample.java:[lines 10-17]</Message>
+      </SourceLine>
+      <Message>In class sample.Sample</Message>
+    </Class>
+    <Field classname="sample.Sample" name="sample" signature="Ljava/lang/String;" isStatic="false" primary="true">
+      <SourceLine classname="sample.Sample" sourcefile="Sample.java" sourcepath="sample/Sample.java" relSourcepath="sample/Sample.java">
+        <Message>In Sample.java</Message>
+      </SourceLine>
+      <Message>Field sample.Sample.sample</Message>
+    </Field>
+    <SourceLine classname="sample.Sample" primary="true" start="11" end="11" startBytecode="6" endBytecode="6" sourcefile="Sample.java" sourcepath="sample/Sample.java" relSourcepath="sample/Sample.java">
+      <Message>At Sample.java:[line 11]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="FCBL_FIELD_COULD_BE_LOCAL" priority="2" rank="7" abbrev="FCBL" category="CORRECTNESS" instanceHash="d2ab03e2fbeaaf0aabf06cf71ac2ef39" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Class defines fields that are used only as locals</ShortMessage>
+    <LongMessage>Class sample.Sample2 defines fields that are used only as locals</LongMessage>
+    <Class classname="sample.Sample2" primary="true">
+      <SourceLine classname="sample.Sample2" start="10" end="17" sourcefile="Sample2.java" sourcepath="sample/Sample2.java" relSourcepath="sample/Sample2.java">
+        <Message>At Sample2.java:[lines 10-17]</Message>
+      </SourceLine>
+      <Message>In class sample.Sample2</Message>
+    </Class>
+    <Field classname="sample.Sample2" name="sample" signature="Ljava/lang/String;" isStatic="false" primary="true">
+      <SourceLine classname="sample.Sample2" sourcefile="Sample2.java" sourcepath="sample/Sample2.java" relSourcepath="sample/Sample2.java">
+        <Message>In Sample2.java</Message>
+      </SourceLine>
+      <Message>Field sample.Sample2.sample</Message>
+    </Field>
+    <SourceLine classname="sample.Sample2" primary="true" start="11" end="11" startBytecode="6" endBytecode="6" sourcefile="Sample2.java" sourcepath="sample/Sample2.java" relSourcepath="sample/Sample2.java">
+      <Message>At Sample2.java:[line 11]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugInstance type="URF_UNREAD_FIELD" priority="2" rank="18" abbrev="UrF" category="PERFORMANCE" instanceHash="ee5c8c405df22f91e7fc5f0fb853049c" instanceOccurrenceNum="0" instanceOccurrenceMax="0">
+    <ShortMessage>Unread field</ShortMessage>
+    <LongMessage>Unread field: sample.Sample2.sample</LongMessage>
+    <Class classname="sample.Sample2" primary="true">
+      <SourceLine classname="sample.Sample2" start="10" end="17" sourcefile="Sample2.java" sourcepath="sample/Sample2.java" relSourcepath="sample/Sample2.java">
+        <Message>At Sample2.java:[lines 10-17]</Message>
+      </SourceLine>
+      <Message>In class sample.Sample2</Message>
+    </Class>
+    <Field classname="sample.Sample2" name="sample" signature="Ljava/lang/String;" isStatic="false" primary="true">
+      <SourceLine classname="sample.Sample2" sourcefile="Sample2.java" sourcepath="sample/Sample2.java" relSourcepath="sample/Sample2.java">
+        <Message>In Sample2.java</Message>
+      </SourceLine>
+      <Message>Field sample.Sample2.sample</Message>
+    </Field>
+    <SourceLine classname="sample.Sample2" primary="true" start="11" end="11" startBytecode="6" endBytecode="6" sourcefile="Sample2.java" sourcepath="sample/Sample2.java" relSourcepath="sample/Sample2.java">
+      <Message>At Sample2.java:[line 11]</Message>
+    </SourceLine>
+  </BugInstance>
+  <BugCategory category="CORRECTNESS">
+    <Description>Correctness</Description>
+  </BugCategory>
+  <BugCategory category="PERFORMANCE">
+    <Description>Performance</Description>
+  </BugCategory>
+  <BugPattern type="FCBL_FIELD_COULD_BE_LOCAL" abbrev="FCBL" category="CORRECTNESS">
+    <ShortDescription>Class defines fields that are used only as locals</ShortDescription>
+    <Details><![CDATA[
+			
+			<p>This class defines fields that are used in a locals only fashion,
+			specifically private fields or protected fields in final classes that are accessed
+			first in each method with a store vs. a load. This field could be replaced by one
+			or more local variables.</p>
+			
+		]]></Details>
+  </BugPattern>
+  <BugPattern type="URF_UNREAD_FIELD" abbrev="UrF" category="PERFORMANCE">
+    <ShortDescription>Unread field</ShortDescription>
+    <Details><![CDATA[
+
+  <p> This field is never read.&nbsp; Consider removing it from the class.</p>
+
+    ]]></Details>
+  </BugPattern>
+  <BugCode abbrev="FCBL">
+    <Description>Field Could Be Local</Description>
+  </BugCode>
+  <BugCode abbrev="UrF">
+    <Description>Unread field</Description>
+  </BugCode>
+  <Errors errors="0" missingClasses="0"></Errors>
+  <FindBugsSummary timestamp="Thu, 14 Nov 2019 10:11:47 +0700" total_classes="2" referenced_classes="14" total_bugs="4" total_size="20" num_packages="1" java_version="1.8.0_171" vm_version="25.171-b11" cpu_seconds="7.17" clock_seconds="1.74" peak_mbytes="203.59" alloc_mbytes="910.50" gc_seconds="0.13" priority_2="4">
+    <FileStats path="sample/Sample.java" bugCount="2" size="10" bugHash="2041b6eb0d1c70f8ad172ab279dbc106"/>
+    <FileStats path="sample/Sample2.java" bugCount="2" size="10" bugHash="af70e1060ba37e670cc6b63a6a99109b"/>
+    <PackageStats package="sample" total_bugs="4" total_types="2" total_size="20" priority_2="4">
+      <ClassStats class="sample.Sample" sourceFile="Sample.java" interface="false" size="10" bugs="2" priority_2="2"/>
+      <ClassStats class="sample.Sample2" sourceFile="Sample2.java" interface="false" size="10" bugs="2" priority_2="2"/>
+    </PackageStats>
+    <FindBugsProfile>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassInfoAnalysisEngine" totalMilliseconds="211" invocations="340" avgMicrosecondsPerInvocation="620" maxMicrosecondsPerInvocation="18281" standardDeviationMicrosecondsPerInvocation="1524"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassDataAnalysisEngine" totalMilliseconds="74" invocations="356" avgMicrosecondsPerInvocation="208" maxMicrosecondsPerInvocation="12083" standardDeviationMicrosecondsPerInvocation="647"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.JavaClassAnalysisEngine" totalMilliseconds="63" invocations="100" avgMicrosecondsPerInvocation="630" maxMicrosecondsPerInvocation="18629" standardDeviationMicrosecondsPerInvocation="2567"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FieldItemSummary" totalMilliseconds="57" invocations="14" avgMicrosecondsPerInvocation="4098" maxMicrosecondsPerInvocation="17304" standardDeviationMicrosecondsPerInvocation="5109"/>
+      <ClassProfile name="com.mebigfatguy.fbcontrib.collect.CollectStatistics" totalMilliseconds="56" invocations="14" avgMicrosecondsPerInvocation="4032" maxMicrosecondsPerInvocation="22783" standardDeviationMicrosecondsPerInvocation="6010"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.MethodGenFactory" totalMilliseconds="56" invocations="4" avgMicrosecondsPerInvocation="14005" maxMicrosecondsPerInvocation="55427" standardDeviationMicrosecondsPerInvocation="23915"/>
+      <ClassProfile name="edu.umd.cs.findbugs.util.TopologicalSort" totalMilliseconds="44" invocations="308" avgMicrosecondsPerInvocation="143" maxMicrosecondsPerInvocation="2128" standardDeviationMicrosecondsPerInvocation="276"/>
+      <ClassProfile name="edu.umd.cs.findbugs.OpcodeStack$JumpInfoFactory" totalMilliseconds="40" invocations="68" avgMicrosecondsPerInvocation="599" maxMicrosecondsPerInvocation="4441" standardDeviationMicrosecondsPerInvocation="715"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNoSideEffectMethods" totalMilliseconds="40" invocations="14" avgMicrosecondsPerInvocation="2878" maxMicrosecondsPerInvocation="14055" standardDeviationMicrosecondsPerInvocation="3728"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.NoteDirectlyRelevantTypeQualifiers" totalMilliseconds="25" invocations="14" avgMicrosecondsPerInvocation="1818" maxMicrosecondsPerInvocation="9955" standardDeviationMicrosecondsPerInvocation="2570"/>
+      <ClassProfile name="com.mebigfatguy.fbcontrib.collect.CollectNullableMethodStatus" totalMilliseconds="24" invocations="14" avgMicrosecondsPerInvocation="1767" maxMicrosecondsPerInvocation="6849" standardDeviationMicrosecondsPerInvocation="2235"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.OverridingEqualsNotSymmetrical" totalMilliseconds="19" invocations="14" avgMicrosecondsPerInvocation="1399" maxMicrosecondsPerInvocation="11573" standardDeviationMicrosecondsPerInvocation="2914"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FunctionsThatMightBeMistakenForProcedures" totalMilliseconds="19" invocations="14" avgMicrosecondsPerInvocation="1363" maxMicrosecondsPerInvocation="7494" standardDeviationMicrosecondsPerInvocation="2054"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.BuildObligationPolicyDatabase" totalMilliseconds="16" invocations="14" avgMicrosecondsPerInvocation="1179" maxMicrosecondsPerInvocation="3823" standardDeviationMicrosecondsPerInvocation="1287"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.BuildStringPassthruGraph" totalMilliseconds="14" invocations="14" avgMicrosecondsPerInvocation="1032" maxMicrosecondsPerInvocation="4746" standardDeviationMicrosecondsPerInvocation="1382"/>
+      <ClassProfile name="com.h3xstream.findsecbugs.taintanalysis.TaintDataflowEngine" totalMilliseconds="13" invocations="4" avgMicrosecondsPerInvocation="3483" maxMicrosecondsPerInvocation="12443" standardDeviationMicrosecondsPerInvocation="5174"/>
+      <ClassProfile name="com.mebigfatguy.fbcontrib.collect.CollectMethodsReturningImmutableCollections" totalMilliseconds="13" invocations="14" avgMicrosecondsPerInvocation="965" maxMicrosecondsPerInvocation="5665" standardDeviationMicrosecondsPerInvocation="1532"/>
+    </FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>
