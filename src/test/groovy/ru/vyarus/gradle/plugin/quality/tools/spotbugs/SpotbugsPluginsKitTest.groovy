@@ -105,7 +105,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('SpotBugs rule violations were found')
 
-        cleanup:
-        new File("spotbugs.xml") << file('build/reports/spotbugs/main.xml').text
+//        cleanup:
+//        new File("spotbugs.xml") << file('build/reports/spotbugs/main.xml').text
     }
 }
