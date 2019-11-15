@@ -163,17 +163,43 @@ qualtiy {
 
 ## Annotations
 
-Use spotbugs-annotations to guide spotbugs nullability checks (`#!java @Nonnull` and `#!java @Nullable`).
-Add ``com.github.spotbugs:spotbugs-annotations:3.1.2`` dependency (with provided scope if possible).
+Use spotbugs-annotations to guide spotbugs nullability checks (`#!java @NonNull` and `#!java @Nullable`).
+Add `com.github.spotbugs:spotbugs-annotations:3.1.2` dependency (with provided scope if possible).
 
 !!! warning
     Before,  annotations from Jsr-305 [were used](http://findbugs.sourceforge.net/manual/annotations.html) 
     (`com.google.code.findbugs:jsr305`), but now it is dead.
     Remove jsr-305 jar if it were used and use [undeprecated](https://github.com/spotbugs/spotbugs/issues/130)
-    `#!java @Nonnull` and `#!java @Nullable`
+    `#!java @edu.umd.cs.findbugs.annotations.NonNull` and `#!java @edu.umd.cs.findbugs.annotations.Nullable`
 
-In some cases you will have to use it.
-For example, you may face issues with guava functions or predicates:
+    Pay attention becuase libraries still bring-in jsr-305 jar (e.g. guava does): do not use
+    `javax.annotation.Nullable` because it may lead to split package problem on java9 and above
+    ([not always](https://github.com/google/guava/issues/2960#issuecomment-546713529))  
+
+Another alternative is [chaker framework](https://checkerframework.org/) annotations:
+`org.checkerframework:checker-qual:3.0.0`. Guava [already switched](https://github.com/google/guava/issues/2960) 
+to use them, so if you use it you may already have these annotations.
+
+Using checker framework annotations should be preferable because it's on the track to community acceptance as
+default jsr-305 replacement. Besides, it's the only advanced java types system extension and validation tool. 
+
+!!! hint
+    Even if you will use other annotations, people using checker framework with your library
+    would still benefit from your annotations because checker framework understands [almost all of them](https://checkerframework.org/manual/#nullness-related-work). 
+
+Summary:
+
+* If checker framework available (`org.checkerframework:checker-qual`) use it: 
+    `org.checkerframework.checker.nullness.qual.Nullable`
+* Otherwise, use spotbugs-annotations (`com.github.spotbugs:spotbugs-annotations`):
+    `edu.umd.cs.findbugs.annotations.Nullable`  
+* **Avoid** using jsr-305 directly (`com.google.code.findbugs:jsr305`): `javax.annotation.Nullable`     
+    
+### Example
+
+Here is an example, which will force you to use nullability annotations.
+
+When you use guava functions or predicates you may receive this:
 
 ```
 [NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE] input must be nonnull but is marked as nullable 
@@ -182,14 +208,11 @@ For example, you may face issues with guava functions or predicates:
 The reason for this is that guava use `@Nullable` annotation, which is `@Inherited`, so
 even if you not set annotation on your own function or predicate it will still be visible.
 
-The simplest workaround is to set `@Nonnull` annotation on your function or predicate:
+The simplest workaround is to set `@NonNull` annotation on your function or predicate:
 
 ```java
-public boolean apply(@Nonnull final Object input) {
+public boolean apply(@NonNull final Object input) {
 ```
 
 !!! hint
     `NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION` check was disabled because it does not allow this workaround to work
-
-!!! abstract
-    Guava is now using checker framework [instead of jsr-305](https://github.com/google/guava/issues/2960).
