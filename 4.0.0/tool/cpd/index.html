@@ -703,11 +703,11 @@
                 
                 <h1 id="cpd-copypaste-detector">CPD (Copy/Paste Detector)<a class="headerlink" href="#cpd-copypaste-detector" title="Permanent link">&para;</a></h1>
 <div class="admonition summary">
-<p>Java | 
-<a href="https://pmd.github.io/latest/pmd_userdocs_cpd.html">Home</a> |   <br />
+<p>Java by default, suitable for anything (groovy, jsp, simple text etc.) | 
+<a href="https://pmd.github.io/latest/pmd_userdocs_cpd.html">Home</a> |
 <a href="https://github.com/aaschmid/gradle-cpd-plugin">Plugin</a>   </p>
 </div>
-<p>CPD support activates only when (de.aaschmid.cpd)[<a href="https://github.com/aaschmid/gradle-cpd-plugin">https://github.com/aaschmid/gradle-cpd-plugin</a>] 
+<p>CPD support activates only when <a href="https://github.com/aaschmid/gradle-cpd-plugin">de.aaschmid.cpd</a> 
 gradle plugin applied manually:</p>
 <div class="codehilite"><pre><span></span><span class="n">plugins</span> <span class="o">{</span>        
     <span class="n">id</span> <span class="s1">&#39;de.aaschmid.cpd&#39;</span> <span class="n">version</span> <span class="s1">&#39;3.1&#39;</span>
@@ -718,7 +718,7 @@ gradle plugin applied manually:</p>
 <p>CPD is a part of <a href="../pmd/">PMD</a> project and so there is no need for additional version configuration (pmd version used). </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Special <a href="https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/cpd/hcpdhtml.xslt">xsl file</a> 
+<p>Special <a href="https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/cpd/cpdhtml.xslt">xsl file</a> 
 used for manual html report generation because plugin does not support html report. This is <a href="https://github.com/pmd/pmd/blob/master/pmd-core/etc/xslt/cpdhtml.xslt">official pmd style</a>,
 but modified to show all duplicates (original script shows only duplicates &gt; 30 lines).</p>
 </div>
@@ -746,7 +746,7 @@ sample.cpd.(OtherStruct2.java:3)
 18│        public void differentMethod1() {
 </pre></div>
 
-<p>Shows all files with duplicate and source sample from the first file.</p>
+<p>Shows all files with duplicate parts and source sample from the first file.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Order of files may vary on different environments and so you may see sources from different files
@@ -755,7 +755,7 @@ in the resulted report. It doesn't matter much, just don't be surprised. </p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Tool does not search for exact matches, instead it tries to find very common blocks:
-for example, some code block copied and slightly modified - cpd will be able to match it.</p>
+for example, some code block could be copied and slightly modified and cpd will be able to match it.</p>
 </div>
 <h2 id="config">Config<a class="headerlink" href="#config" title="Permanent link">&para;</a></h2>
 <p>Config options with defaults:</p>
@@ -767,7 +767,7 @@ for example, some code block copied and slightly modified - cpd will be able to 
 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>CPD itself must be configured with plugin's <a href="https://github.com/aaschmid/gradle-cpd-plugin#options"><code>cpd</code> closure</a></p>
+<p>CPD itself may be configured with plugin's <a href="https://github.com/aaschmid/gradle-cpd-plugin#options"><code>cpd</code> closure</a></p>
 </div>
 <p>Configurations applied by plugin:</p>
 <div class="codehilite"><pre><span></span><span class="n">cpd</span> <span class="o">{</span>
@@ -788,7 +788,7 @@ modify <code>chpdCheck.source</code>:</p>
 This way cpd scope is unified with other quality plugins scope. </li>
 <li>Global <a href="../../guide/exclusion/">excludes</a> are also applied. </li>
 </ul>
-<p>Sources modifications could be disabled with <code>quality.cpdUnifySources = false</code> </p>
+<p>Source modifications could be disabled with <code>quality.cpdUnifySources = false</code> </p>
 <p>If multiple cpd tasks would be registered (other tasks declared manually), sources would be modified only
 for default <code>cpdCheck</code> task. But console reporting and HTML report will be added for all tasks.
 Also, all cpd tasks would be disabled with <code>quality.enabled = false</code>    </p>
@@ -824,9 +824,9 @@ need to configure separate tasks per each required type. For example:</p>
 
 <p>Here groovy sources excluded from default <code>cpdCheck</code> task (because cpd plugin by default covers all source sets).
 Now the default task will search duplicates only in java files (and only within sources configured in quality plugin).</p>
-<p>New task is declared for searching groovy duplicates (groovyCpdCheck).</p>
+<p>New task declared for searching groovy duplicates (groovyCpdCheck).</p>
 <p>Both tasks will be assigned to <code>check</code>, so by calling <code>gradlew check</code> you'll run both checks.
-Condole report will be shown for both tasks (and HTML reports generated).</p>
+Console report will be shown for both tasks (and HTML reports generated).</p>
 <p>Note that task language will be also mentioned in console report:</p>
 <div class="codehilite"><pre><span></span>:check
 :cpdCheck
@@ -841,7 +841,7 @@ Condole report will be shown for both tasks (and HTML reports generated).</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>CPD understands <a href="https://pmd.github.io/latest/pmd_userdocs_cpd.html#supported-languages">many source languages</a>.
-But, if a specified language cannot be found, a fallback mechanism uses <code>net.sourceforge.pmd.cpd.AnyLanguage</code> instead. 
+But if specified language cannot be found, a fallback mechanism uses <code>net.sourceforge.pmd.cpd.AnyLanguage</code> instead. 
 This fallback language does not run ANTLR and therefore also checks duplicates in comments.</p>
 <p>This way you can use cpd for searching for duplicates even in pure text files, web templates or other resources.</p>
 </div>
@@ -905,13 +905,13 @@ mod2/sample.cpd.(OtherStruct2.java:3)
 
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Quality plugin actually search CPD plugin not in the root-most project but in all
+<p>Quality plugin actually search CPD plugin not in the root-most project but in entire
 parent chain. So if you have complex gradle project and cpd plugin declared somewhere
 in the middle of projects hierarchy, everything will still be properly configured.  </p>
 </div>
 <h2 id="suppress">Suppress<a class="headerlink" href="#suppress" title="Permanent link">&para;</a></h2>
 <p>CPD violations could be <a href="https://pmd.github.io/latest/pmd_userdocs_cpd.html#suppression">suppressed</a>
-only for some languages (ava, C/C++, Dart, Go, Javascript, Kotlin, Lua, Matlab, Objective-C, PL/SQL, Python and Swift)
+only for some languages (Java, C/C++, Dart, Go, Javascript, Kotlin, Lua, Matlab, Objective-C, PL/SQL, Python and Swift)
 with comments containing CPD-OFF and CPD-ON:</p>
 <div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="n">Object</span> <span class="nf">someParameterizedFactoryMethod</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
     <span class="c1">// some unignored code</span>
