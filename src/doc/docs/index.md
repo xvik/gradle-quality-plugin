@@ -19,12 +19,13 @@
 
 ## Main Features
 
+* Zero configuration by default: provided opinionated configs applied to all quality plugins
+    - Default configuration files may be customized
 * Adds extra javac lint options to see more warnings
-* Complete and unified console output for all quality plugins
-* Html and xml reports configured for all plugins
-* Zero configuration by default: provided opinionated configs will make it work out of the box
-* Easy configs customization 
-* Grouping tasks to run registered quality plugins for exact source set
+* Complete console output for all quality plugins
+* Html and xml reports for all plugins (custom xsl used for findbugs html report because it can't generate both xml and html reports)
+* Grouping tasks to run registered quality plugins for exact source set (e.g. checkQualityMain)
+
 
 ## How to use docs
 

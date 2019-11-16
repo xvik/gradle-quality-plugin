@@ -8,16 +8,18 @@
 
 ### About
 
-Static code analysis for Java and Groovy projects using Checkstyle, PMD, SpotBugs (FindBugs) and CodeNarc.
-Plugin implements unified console output for all quality plugins which greatly simplifies developer workflow: 
-only console is required for working with violations and makes it feel the same as java compiler errors.
+Static code analysis for Java and Groovy projects using [Checkstyle](https://checkstyle.sourceforge.io/), 
+[PMD](https://pmd.github.io/), [CPD](https://pmd.github.io/), [SpotBugs](https://spotbugs.github.io/) 
+and [CodeNarc](http://codenarc.sourceforge.net/).
+Plugin implements unified console output for all quality plugins, which greatly simplifies developer workflow: 
+only console required for working with violations and makes it feel the same as java compiler errors.
 
 Features:
+* Zero configuration by default: provided opinionated configs applied to all quality plugins
+    - Default configuration files may be customized
 * Adds extra javac lint options to see more warnings
 * Complete console output for all quality plugins
 * Html and xml reports for all plugins (custom xsl used for findbugs html report because it can't generate both xml and html reports)
-* Zero configuration by default: provided opinionated configs will make it work out of the box
-* Task to copy default configs for customization
 * Grouping tasks to run registered quality plugins for exact source set (e.g. checkQualityMain)
 
 ##### Summary
@@ -29,7 +31,6 @@ Features:
 * Enable plugins: [Checkstyle](https://docs.gradle.org/current/userguide/checkstyle_plugin.html),
 [PMD](https://docs.gradle.org/current/userguide/pmd_plugin.html),
 [SpotBugs](http://spotbugs.readthedocs.io/en/latest/gradle.html),
-[FindBugs](https://docs.gradle.org/current/userguide/findbugs_plugin.html),
 [CodeNarc](https://docs.gradle.org/current/userguide/codenarc_plugin.html)
 
 
@@ -37,7 +38,7 @@ Features:
 
 NOTE: when updating plugin version in your project don't forget to call `clean` task to remove cached configs from previous plugin version
 
-Releases are published to [bintray jcenter](https://bintray.com/vyarus/xvik/gradle-quality-plugin/), 
+Releases published to [bintray jcenter](https://bintray.com/vyarus/xvik/gradle-quality-plugin/), 
 [maven central](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/gradle-quality-plugin) and 
 [gradle plugins portal](https://plugins.gradle.org/plugin/ru.vyarus.quality).
 
@@ -51,7 +52,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:3.4.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:4.0.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -61,16 +62,11 @@ OR
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '3.4.0'
+    id 'ru.vyarus.quality' version '4.0.0'
 }
 ```
 
-Plugin must be applied after `java` or `groovy` plugins. Otherwise it will do nothing.
-
-**IMPORTANT** Plugin itself is compiled for java 7, but java quality tools require java 8 so, by default, 
-you will need java 8 for java projects. Groovy project will work on java 7.
-
-If you are using lower java versions use previous plugin releases.
+Minimal requirements: java 8, gradle 5.1 
 
 ### Usage
 

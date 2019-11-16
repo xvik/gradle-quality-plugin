@@ -1,3 +1,4 @@
+### 4.0.0 (2019-11-16)
 * Gradle 6.0 compatibility
     - (breaking) Removed findbugs plugin support because it was removed in gradle 6
 * (breaking) Minimal required gradle is now 5.1     
