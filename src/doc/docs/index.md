@@ -7,8 +7,8 @@
     [CPD](tool/cpd.md),
     [SpotBugs](tool/spotbugs.md),     
     [CodeNarc](tool/codenarc.md). 
-    Plugin unifies console output for all quality plugins which greatly simplifies developer workflow: 
-    only console is required for working with violations and makes it feel the same as java compiler errors.
+    Plugin unifies console output for all quality plugins, which greatly simplifies developer workflow: 
+    only console required for working with violations and makes it feel the same as java compiler errors.
     
 !!! note
     Google's [error-prone](http://errorprone.info/) is not included because checkstyle and pmd covers all

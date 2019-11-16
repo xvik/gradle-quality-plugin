@@ -1,11 +1,11 @@
 # CPD (Copy/Paste Detector)
 
 !!! summary ""
-    Java | 
-    [Home](https://pmd.github.io/latest/pmd_userdocs_cpd.html) |     
+    Java by default, suitable for anything (groovy, jsp, simple text etc.) | 
+    [Home](https://pmd.github.io/latest/pmd_userdocs_cpd.html) |
     [Plugin](https://github.com/aaschmid/gradle-cpd-plugin)   
    
-CPD support activates only when (de.aaschmid.cpd)[https://github.com/aaschmid/gradle-cpd-plugin] 
+CPD support activates only when [de.aaschmid.cpd](https://github.com/aaschmid/gradle-cpd-plugin) 
 gradle plugin applied manually:
 
 ```groovy
@@ -18,7 +18,7 @@ plugins {
 CPD is a part of [PMD](pmd.md) project and so there is no need for additional version configuration (pmd version used). 
 
 !!! note
-    Special [xsl file](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/cpd/hcpdhtml.xslt) 
+    Special [xsl file](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/cpd/cpdhtml.xslt) 
     used for manual html report generation because plugin does not support html report. This is [official pmd style](https://github.com/pmd/pmd/blob/master/pmd-core/etc/xslt/cpdhtml.xslt),
     but modified to show all duplicates (original script shows only duplicates > 30 lines).
     
@@ -48,7 +48,7 @@ sample.cpd.(OtherStruct2.java:3)
 18│        public void differentMethod1() {
 ```
 
-Shows all files with duplicate and source sample from the first file.
+Shows all files with duplicate parts and source sample from the first file.
 
 !!! note
     Order of files may vary on different environments and so you may see sources from different files
@@ -56,7 +56,7 @@ Shows all files with duplicate and source sample from the first file.
     
 !!! warning
     Tool does not search for exact matches, instead it tries to find very common blocks:
-    for example, some code block copied and slightly modified - cpd will be able to match it.
+    for example, some code block could be copied and slightly modified and cpd will be able to match it.
 
 ## Config
 
@@ -70,7 +70,7 @@ quality {
 ```
 
 !!! note
-    CPD itself must be configured with plugin's [`cpd` closure](https://github.com/aaschmid/gradle-cpd-plugin#options)
+    CPD itself may be configured with plugin's [`cpd` closure](https://github.com/aaschmid/gradle-cpd-plugin#options)
 
 Configurations applied by plugin:
 
@@ -96,7 +96,7 @@ modify `chpdCheck.source`:
 This way cpd scope is unified with other quality plugins scope. 
 * Global [excludes](../guide/exclusion.md) are also applied. 
 
-Sources modifications could be disabled with `quality.cpdUnifySources = false` 
+Source modifications could be disabled with `quality.cpdUnifySources = false` 
 
 If multiple cpd tasks would be registered (other tasks declared manually), sources would be modified only
 for default `cpdCheck` task. But console reporting and HTML report will be added for all tasks.
@@ -139,10 +139,10 @@ task groovyCpdCheck(type:de.aaschmid.gradle.plugins.cpd.Cpd) {
 Here groovy sources excluded from default `cpdCheck` task (because cpd plugin by default covers all source sets).
 Now the default task will search duplicates only in java files (and only within sources configured in quality plugin).
 
-New task is declared for searching groovy duplicates (groovyCpdCheck).
+New task declared for searching groovy duplicates (groovyCpdCheck).
 
 Both tasks will be assigned to `check`, so by calling `gradlew check` you'll run both checks.
-Condole report will be shown for both tasks (and HTML reports generated).
+Console report will be shown for both tasks (and HTML reports generated).
 
 Note that task language will be also mentioned in console report:
 
@@ -159,7 +159,7 @@ Note that task language will be also mentioned in console report:
 
 !!! tip
     CPD understands [many source languages](https://pmd.github.io/latest/pmd_userdocs_cpd.html#supported-languages).
-    But, if a specified language cannot be found, a fallback mechanism uses `net.sourceforge.pmd.cpd.AnyLanguage` instead. 
+    But if specified language cannot be found, a fallback mechanism uses `net.sourceforge.pmd.cpd.AnyLanguage` instead. 
     This fallback language does not run ANTLR and therefore also checks duplicates in comments.
     
     This way you can use cpd for searching for duplicates even in pure text files, web templates or other resources.
@@ -234,14 +234,14 @@ mod2/sample.cpd.(OtherStruct2.java:3)
 ```    
 
 !!! tip
-    Quality plugin actually search CPD plugin not in the root-most project but in all
+    Quality plugin actually search CPD plugin not in the root-most project but in entire
     parent chain. So if you have complex gradle project and cpd plugin declared somewhere
     in the middle of projects hierarchy, everything will still be properly configured.  
 
 ## Suppress
 
 CPD violations could be [suppressed](https://pmd.github.io/latest/pmd_userdocs_cpd.html#suppression)
-only for some languages (ava, C/C++, Dart, Go, Javascript, Kotlin, Lua, Matlab, Objective-C, PL/SQL, Python and Swift)
+only for some languages (Java, C/C++, Dart, Go, Javascript, Kotlin, Lua, Matlab, Objective-C, PL/SQL, Python and Swift)
 with comments containing CPD-OFF and CPD-ON:
 
 ```java
