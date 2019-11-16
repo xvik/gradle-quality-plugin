@@ -19,8 +19,8 @@ class JavaLintOptionsApplyTest extends AbstractTest {
         }
 
         then: "lint options applied"
-        project.tasks.compileJava.options.compilerArgs == ["-Xlint:deprecation", "-Xlint:unchecked"]
-        project.tasks.compileTestJava.options.compilerArgs == ["-Xlint:deprecation", "-Xlint:unchecked"]
+        project.tasks.compileJava.options.allCompilerArgs == ["-Xlint:deprecation", "-Xlint:unchecked"]
+        project.tasks.compileTestJava.options.allCompilerArgs == ["-Xlint:deprecation", "-Xlint:unchecked"]
     }
 
     def "Check lint options applied with configuration"() {
@@ -38,7 +38,7 @@ class JavaLintOptionsApplyTest extends AbstractTest {
         }
 
         then: "lint options applied"
-        project.tasks.compileJava.options.compilerArgs == ["-Xlint:unchecked"]
-        project.tasks.compileTestJava.options.compilerArgs == ["-Xlint:unchecked"]
+        project.tasks.compileJava.options.allCompilerArgs == ["-Xlint:unchecked"]
+        project.tasks.compileTestJava.options.allCompilerArgs == ["-Xlint:unchecked"]
     }
 }

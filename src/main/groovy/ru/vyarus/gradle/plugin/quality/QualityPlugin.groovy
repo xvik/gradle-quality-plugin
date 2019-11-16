@@ -15,6 +15,7 @@ import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.process.CommandLineArgumentProvider
 import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.util.CpdUtils
@@ -110,10 +111,8 @@ class QualityPlugin implements Plugin<Project> {
             return
         }
         project.tasks.withType(JavaCompile).configureEach { JavaCompile t ->
-            // .collect not used because of incompatibility of groovy 2.5 method with 2.4
-            for (String option : extension.lintOptions) {
-                t.options.compilerArgs.add("-Xlint:$option" as String)
-            }
+            t.options.compilerArgumentProviders
+                    .add({ extension.lintOptions.collect { "-Xlint:$it" as String } } as CommandLineArgumentProvider)
         }
     }
 

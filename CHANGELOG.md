@@ -46,6 +46,8 @@
     - Full console report (like for other quality plugins)  
     - Support for multi-module projects (where cpd plugin applied in root project and quality in subprojects)
 * Use gradle configuration avoidance to prevent not used quality tasks creation
+* Use compilerArgumentProviders instead of direct options modification (JavaCompile.options.compilerArgs) to workaround 
+    possible immutable list usage in options (#19)
 
 ### 3.4.0 (2019-02-16)
 * Fix source files root detection (#13)
