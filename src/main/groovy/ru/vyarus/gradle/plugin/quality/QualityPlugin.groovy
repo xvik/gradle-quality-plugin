@@ -381,8 +381,8 @@ class QualityPlugin implements Plugin<Project> {
      * what sources are available: groovy, java or both. Based on that knowledge
      * appropriate plugins could be registered.
      *
-     * @param project
-     * @param extension
+     * @param project project instance
+     * @param extension extension instance
      * @return context instance
      */
     @CompileStatic(TypeCheckingMode.SKIP)
