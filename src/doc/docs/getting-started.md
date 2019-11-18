@@ -5,8 +5,17 @@
 !!! note
     When updating plugin version in your project don't forget to call `clean` task to remove cached configs from previous plugin version
 
-Plugin is available from maven central, [bintray jcenter](https://bintray.com/bintray/jcenter)
-and [gradle plugins portal](https://plugins.gradle.org).
+Plugin is available from [maven central](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/gradle-quality-plugin),
+[bintray jcenter](https://bintray.com/vyarus/xvik/gradle-quality-plugin/_latestVersion)
+and [gradle plugins portal](https://plugins.gradle.org/plugin/ru.vyarus.quality).
+
+```groovy
+plugins {
+    id 'ru.vyarus.quality' version '4.0.0'
+}
+```
+
+OR
 
 ```groovy
 buildscript {
@@ -19,14 +28,6 @@ buildscript {
     }
 }
 apply plugin: 'ru.vyarus.quality'
-```
-
-OR
-
-```groovy
-plugins {
-    id 'ru.vyarus.quality' version '4.0.0'
-}
 ```
 
 !!! warning
