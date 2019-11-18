@@ -40,7 +40,7 @@ NOTE: when updating plugin version in your project don't forget to call `clean` 
 
 [![JCenter](https://img.shields.io/bintray/v/vyarus/xvik/gradle-quality-plugin.svg?label=jcenter)](https://bintray.com/vyarus/xvik/gradle-quality-plugin/_latestVersion)
 [![Maven Central](https://img.shields.io/maven-central/v/ru.vyarus/gradle-quality-plugin.svg)](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/gradle-quality-plugin)
-[![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/ru.vyarus/quality/ru.vyarus.quality.gradle.plugin/maven-metadata.xml.svg?colorB=007ec6&label=plugins%20portal)](https://plugins.gradle.org/plugin/ru.vyarus.quality)
+[![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/ru/vyarus/quality/ru.vyarus.quality.gradle.plugin/maven-metadata.xml.svg?colorB=007ec6&label=plugins%20portal)](https://plugins.gradle.org/plugin/ru.vyarus.quality)
 
 ```groovy
 plugins {
