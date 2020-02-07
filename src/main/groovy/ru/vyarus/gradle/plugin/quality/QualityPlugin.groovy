@@ -7,6 +7,7 @@ import groovy.transform.TypeCheckingMode
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.*
@@ -454,9 +455,10 @@ class QualityPlugin implements Plugin<Project> {
      */
     private void applyEnabledState(Project project, QualityExtension extension, Class task) {
         if (!extension.enabled) {
-            project.gradle.taskGraph.whenReady {
-                Task called = project.gradle.taskGraph.allTasks.last()
+            project.gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
                 project.tasks.withType(task).configureEach { Task t ->
+                    // last task onm stack obtained only on actual task usage
+                    Task called = graph.allTasks?.last()
                     // enable task only if it's called directly or through grouping task
                     t.enabled = called == t || called.name.startsWith(QUALITY_TASK)
                 }

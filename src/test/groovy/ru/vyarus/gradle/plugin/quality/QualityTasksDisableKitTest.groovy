@@ -105,4 +105,34 @@ class QualityTasksDisableKitTest extends AbstractKitTest {
         result.task(":checkstyleMain").outcome == TaskOutcome.FAILED
         result.output.contains('Checkstyle rule violations were found')
     }
+
+    def "Check tasks disable with raw initialization"() {
+        setup:
+        build("""
+            plugins {
+                id 'java'
+                id 'ru.vyarus.quality'
+            }
+
+            quality {
+                enabled = false
+            }
+
+            repositories {
+                jcenter() //required for testKit run
+            }
+
+            dependencies {
+                implementation localGroovy()
+            }
+        """)
+
+        fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
+
+        when: "run gradle configuration without tasks execition"
+        BuildResult result = run('build', '-x', 'build')
+
+        then: "gradle initialized"
+        result.tasks().isEmpty()
+    }
 }

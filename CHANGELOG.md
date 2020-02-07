@@ -1,3 +1,5 @@
+* Fix disabled plugin execution with no-tasks gradle run (pure initialization) (#21)
+
 ### 4.0.0 (2019-11-16)
 * Gradle 6.0 compatibility
     - (breaking) Removed findbugs plugin support because it was removed in gradle 6

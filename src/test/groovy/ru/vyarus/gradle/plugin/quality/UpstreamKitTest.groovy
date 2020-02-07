@@ -11,6 +11,9 @@ import org.gradle.testkit.runner.TaskOutcome
  */
 class UpstreamKitTest extends AbstractKitTest {
 
+
+    public static final String GRADLE = '6.1.1'
+
     def "Check java checks"() {
         setup:
         build("""
@@ -36,7 +39,7 @@ class UpstreamKitTest extends AbstractKitTest {
         fileFromClasspath('src/main/java/sample/Sample2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample2.java')
 
         when: "run check task"
-        BuildResult result = runVer('6.0','check')
+        BuildResult result = runVer(GRADLE,'check')
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
@@ -72,7 +75,7 @@ class UpstreamKitTest extends AbstractKitTest {
         fileFromClasspath('src/main/groovy/sample/GSample2.groovy', '/ru/vyarus/gradle/plugin/quality/groovy/sample/GSample2.groovy')
 
         when: "run check task with both sources"
-        BuildResult result = runVer('6.0','check')
+        BuildResult result = runVer(GRADLE,'check')
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
