@@ -70,4 +70,5 @@ nav:
       - Group: task/group.md
   - About:
       - Release notes: about/history.md
+      - Compatibility: about/compatibility.md
       - License: about/license.md
