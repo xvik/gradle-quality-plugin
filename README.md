@@ -65,6 +65,72 @@ apply plugin: 'ru.vyarus.quality'
 
 Minimal requirements: java 8, gradle 5.1 
 
+#### Compatibility
+
+Plugin compiled for java 8, compatible with java 11
+
+Gradle | Version
+--------|-------
+5.1     | 4.0.0
+4.1     | [3.4.0](http://xvik.github.io/gradle-quality-plugin/3.4.0)
+older   | [2.4.0](http://xvik.github.io/gradle-quality-plugin/2.4.0)
+
+Java tools require `sourceCompatibility=1.8` (or above).
+ 
+Version [3.3.0](http://xvik.github.io/gradle-quality-plugin/3.3.0) is the latest supporting `sourceCompatibility=1.6`  
+
+#### Snapshots
+
+<details>
+      <summary>Snapshots may be used through JitPack</summary>
+
+* Go to [JitPack project page](https://jitpack.io/#ru.vyarus/gradle-quality-plugin)
+* Select `Commits` section and click `Get it` on commit you want to use (you may need to wait while version builds if no one requested it before)
+    or use `master-SNAPSHOT` to use the most recent snapshot
+
+For gradle before 6.0 use `buildscript` block with required commit hash as version:
+
+```groovy
+buildscript {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+        classpath 'ru.vyarus:gradle-quality-plugin:b9474cab84'
+    }
+}
+apply plugin: 'ru.vyarus.quality'
+```
+
+For gradle 6.0 and above:
+
+* Add to `settings.gradle` (top most!) with required commit hash as version:
+
+  ```groovy
+  pluginManagement {
+      resolutionStrategy {
+          eachPlugin {
+              if (requested.id.namespace == 'ru.vyarus.quality') {
+                  useModule('ru.vyarus:gradle-quality-plugin:b9474cab84')
+              }
+          }
+      }
+      repositories {
+          maven { url 'https://jitpack.io' }
+          gradlePluginPortal()          
+      }
+  }    
+  ``` 
+* Use plugin without declaring version: 
+
+  ```groovy
+  plugins {
+      id 'ru.vyarus.quality'
+  }
+  ```  
+
+</details>  
+
 ### Usage
 
 Read [documentation](http://xvik.github.io/gradle-quality-plugin)
