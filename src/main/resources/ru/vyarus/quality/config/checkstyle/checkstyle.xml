@@ -66,6 +66,7 @@
         <!-- Coding (http://checkstyle.sourceforge.net/config_coding.html) -->
         <module name="ArrayTrailingComma"/>
         <!--<module name="AvoidInlineConditionals"/>-->
+        <module name="AvoidNoArgumentSuperConstructorCall"/>
         <module name="CovariantEquals"/>
         <module name="DeclarationOrder"/>
         <module name="DefaultComesLast"/>
@@ -98,7 +99,9 @@
         <module name="NestedTryDepth">
             <property name="max" value="2"/>
         </module>
+        <module name="NoArrayTrailingComma"/>
         <module name="NoClone"/>
+        <module name="NoEnumTrailingComma"/>
         <module name="NoFinalizer"/>
         <module name="OneStatementPerLine"/>
         <module name="OverloadMethodsDeclarationOrder"/>
@@ -143,6 +146,7 @@
         <!--<module name="AtclauseOrder"/>-->
         <module name="InvalidJavadocPosition"/>
         <module name="JavadocBlockTagLocation"/>
+        <module name="JavadocContentLocation"/>
         <!--<module name="JavadocMethod"/>-->
         <!--<module name="JavadocPackage"/>-->
         <!--<module name="JavadocParagraph"/>-->
@@ -150,7 +154,7 @@
         <!--<module name="JavadocTagContinuationIndentation"/>-->
         <module name="JavadocType"/>
         <!--<module name="JavadocVariable"/>-->
-<!--        <module name="MissingJavadocMethod"/>-->
+        <!--<module name="MissingJavadocMethod"/>-->
         <module name="MissingJavadocPackage"/>
         <module name="MissingJavadocType"/>
         <module name="NonEmptyAtclauseDescription"/>

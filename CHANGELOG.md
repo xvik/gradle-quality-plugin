@@ -1,4 +1,12 @@
 * Fix disabled plugin execution with no-tasks gradle run (pure initialization) (#21)
+* Update checkstyle 8.26 -> 8.29
+* Update checkstyle config:
+    - Add new checks:
+        * [AvoidNoArgumentSuperConstructorCall](https://checkstyle.sourceforge.io/config_coding.html#AvoidNoArgumentSuperConstructorCall)
+        * [NoEnumTrailingComma](https://checkstyle.sourceforge.io/config_coding.html#NoEnumTrailingComma)
+        * [NoArrayTrailingComma](https://checkstyle.sourceforge.io/config_coding.html#NoArrayTrailingComma)
+        * [JavadocContentLocation](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocContentLocation)
+* Update pmd 6.17.0 -> 6.21.0 
 
 ### 4.0.0 (2019-11-16)
 * Gradle 6.0 compatibility
