@@ -7,7 +7,9 @@
         * [NoArrayTrailingComma](https://checkstyle.sourceforge.io/config_coding.html#NoArrayTrailingComma)
         * [JavadocContentLocation](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocContentLocation)
 * Update pmd 6.17.0 -> 6.21.0 
-
+* Update pmd config:
+    - Disabled rule `InvalidSlf4jMessageFormat` name changed to `InvalidLogMessageFormat`
+    
 ### 4.0.0 (2019-11-16)
 * Gradle 6.0 compatibility
     - (breaking) Removed findbugs plugin support because it was removed in gradle 6
