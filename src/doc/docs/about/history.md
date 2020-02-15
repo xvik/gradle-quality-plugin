@@ -1,3 +1,4 @@
+### [4.1.0](http://xvik.github.io/gradle-quality-plugin/4.1.0) (2020-02-15)
 * Fix disabled plugin execution with no-tasks gradle run (pure initialization) (#21)
 * Update checkstyle 8.26 -> 8.29
 * Update checkstyle config:
