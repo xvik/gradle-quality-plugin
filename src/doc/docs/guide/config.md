@@ -8,8 +8,8 @@ quality {
     
     // Tools versions
     
-    checkstyleVersion = '8.26'
-    pmdVersion = '6.17.0'    
+    checkstyleVersion = '8.29'
+    pmdVersion = '6.21.0'    
     spotbugsVersion = '3.1.12'
     codenarcVersion = '1.4'
     animalsnifferVersion
