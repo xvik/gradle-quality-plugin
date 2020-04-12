@@ -65,6 +65,7 @@
 
         <!-- Coding (http://checkstyle.sourceforge.net/config_coding.html) -->
         <module name="ArrayTrailingComma"/>
+        <!--<module name="AvoidDoubleBraceInitialization"/>-->
         <!--<module name="AvoidInlineConditionals"/>-->
         <module name="AvoidNoArgumentSuperConstructorCall"/>
         <module name="CovariantEquals"/>
@@ -118,6 +119,7 @@
         <!--<module name="SuperClone"/>-->
         <!--<module name="SuperFinalize"/>-->
         <module name="UnnecessaryParentheses"/>
+        <module name="UnnecessarySemicolonAfterOuterTypeDeclaration"/>
         <module name="UnnecessarySemicolonAfterTypeMemberDeclaration"/>
         <module name="UnnecessarySemicolonInEnumeration"/>
         <module name="UnnecessarySemicolonInTryWithResources"/>
