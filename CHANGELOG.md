@@ -1,5 +1,8 @@
 * Fix gradle configuration fail: "Cannot access last() element from an empty List"
   (project with explicit quality configuration fails to open in the new IDEA)
+* Update spotbugs 3.1.12 -> 4.0.1
+   NOTE: I know, there is a [new spotbugs plugin](https://github.com/spotbugs/spotbugs-gradle-plugin) 4.0.5
+   but it breaks too many things (conceptually), so old version would be used for some time
 
 ### 4.1.0 (2020-02-15)
 * Fix disabled plugin execution with no-tasks gradle run (pure initialization) (#21)
