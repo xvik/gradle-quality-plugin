@@ -1,3 +1,6 @@
+* Fix gradle configuration fail: "Cannot access last() element from an empty List"
+  (project with explicit quality configuration fails to open in the new IDEA)
+
 ### 4.1.0 (2020-02-15)
 * Fix disabled plugin execution with no-tasks gradle run (pure initialization) (#21)
 * Update checkstyle 8.26 -> 8.29

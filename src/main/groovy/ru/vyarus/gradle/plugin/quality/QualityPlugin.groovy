@@ -457,10 +457,11 @@ class QualityPlugin implements Plugin<Project> {
         if (!extension.enabled) {
             project.gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
                 project.tasks.withType(task).configureEach { Task t ->
-                    // last task onm stack obtained only on actual task usage
-                    Task called = graph.allTasks?.last()
+                    // last task on stack obtained only on actual task usage
+                    List<Task> tasks = graph.allTasks
+                    Task called = tasks != null && !tasks.empty ? tasks.last() : null
                     // enable task only if it's called directly or through grouping task
-                    t.enabled = called == t || called.name.startsWith(QUALITY_TASK)
+                    t.enabled = called != null && (called == t || called.name.startsWith(QUALITY_TASK))
                 }
             }
         }
