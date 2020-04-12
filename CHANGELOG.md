@@ -3,6 +3,9 @@
 * Update spotbugs 3.1.12 -> 4.0.1
    NOTE: I know, there is a [new spotbugs plugin](https://github.com/spotbugs/spotbugs-gradle-plugin) 4.0.5
    but it breaks too many things (conceptually), so old version would be used for some time
+* Update codenarc 1.4 -> 1.5
+* Fix codenarc link in console report (docs moved from sourceforge to github)
+* Fix checkstyle link in console report (sourceforge.net changed to sourceforge.io to avoid redirect)    
 
 ### 4.1.0 (2020-02-15)
 * Fix disabled plugin execution with no-tasks gradle run (pure initialization) (#21)

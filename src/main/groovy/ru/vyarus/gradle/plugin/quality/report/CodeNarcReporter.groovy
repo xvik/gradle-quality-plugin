@@ -57,7 +57,8 @@ class CodeNarcReporter implements Reporter<CodeNarc> {
                                 "$NL\t>> ${srcLine}" +
                                 "$NL  ${message}" +
                                 "$NL  ${desc[rule]}" +
-                                "$NL  http://codenarc.sourceforge.net/codenarc-rules-${group}.html#$rule$NL"
+                                "$NL  https://codenarc.github.io/CodeNarc/codenarc-rules-" +
+                                "${group.toLowerCase()}.html#${rule.toLowerCase()}-rule$NL"
                     }
                 }
             }

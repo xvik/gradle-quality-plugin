@@ -55,11 +55,11 @@ Checkstyle violations by severity: [error:2]
 
 [Misc | NewlineAtEndOfFile] sample.(Sample.java:1)
   File does not end with a newline.
-  http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
+  http://checkstyle.sourceforge.io/config_misc.html#NewlineAtEndOfFile
 
 [Javadoc | MissingJavadocType] sample.(Sample.java:6)
   Missing a Javadoc comment.
-  http://checkstyle.sourceforge.net/config_javadoc.html#MissingJavadocType
+  http://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocType
 
 
 > Task :mod1:compileTestJava NO-SOURCE
@@ -81,11 +81,11 @@ Checkstyle violations by severity: [error:2]
 
 [Misc | NewlineAtEndOfFile] sample.(Sample.java:1)
   File does not end with a newline.
-  http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
+  http://checkstyle.sourceforge.io/config_misc.html#NewlineAtEndOfFile
 
 [Javadoc | MissingJavadocType] sample.(Sample.java:6)
   Missing a Javadoc comment.
-  http://checkstyle.sourceforge.net/config_javadoc.html#MissingJavadocType
+  http://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocType
 
 
 > Task :mod2:compileTestJava NO-SOURCE

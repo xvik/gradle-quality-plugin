@@ -46,19 +46,19 @@ class CheckstyleReporterTest extends AbstractKitTest {
 
 [Misc | NewlineAtEndOfFile] sample.(Sample.java:0)
   File does not end with a newline.
-  http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
+  http://checkstyle.sourceforge.io/config_misc.html#NewlineAtEndOfFile
 
 [Javadoc | JavadocType] sample.(Sample.java:6)
   Missing a Javadoc comment.
-  http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
+  http://checkstyle.sourceforge.io/config_javadoc.html#JavadocType
 
 [Misc | NewlineAtEndOfFile] sample.(Sample2.java:0)
   File does not end with a newline.
-  http://checkstyle.sourceforge.net/config_misc.html#NewlineAtEndOfFile
+  http://checkstyle.sourceforge.io/config_misc.html#NewlineAtEndOfFile
 
 [Javadoc | JavadocType] sample.(Sample2.java:6)
   Missing a Javadoc comment.
-  http://checkstyle.sourceforge.net/config_javadoc.html#JavadocType
+  http://checkstyle.sourceforge.io/config_javadoc.html#JavadocType
 """ as String
     }
 }
