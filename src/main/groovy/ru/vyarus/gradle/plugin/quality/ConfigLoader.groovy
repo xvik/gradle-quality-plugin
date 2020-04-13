@@ -83,19 +83,27 @@ class ConfigLoader {
         }
     }
 
+    @SuppressWarnings('SynchronizedOnThis') // internal class so no monitor steal possible
     private File copyConfig(File parent, String path, boolean override) {
         File target = new File(parent, path)
         if (target.exists() && !override) {
             return target
         }
-        if (!target.parentFile.exists() && !target.parentFile.mkdirs()) {
-            throw new IllegalStateException("Failed to create directories: $target.parentFile.absolutePath")
+        synchronized (this) {
+            if (!target.exists() || override) {
+                if (target.exists() && override) {
+                    target.delete()
+                }
+                if (!target.parentFile.exists() && !target.parentFile.mkdirs()) {
+                    throw new IllegalStateException("Failed to create directories: $target.parentFile.absolutePath")
+                }
+                InputStream stream = getClass().getResourceAsStream("/ru/vyarus/quality/config/$path")
+                if (stream == null) {
+                    throw new IllegalStateException("Default config file not found in classpath: $path")
+                }
+                target << stream.text
+            }
+            return target
         }
-        InputStream stream = getClass().getResourceAsStream("/ru/vyarus/quality/config/$path")
-        if (stream == null) {
-            throw new IllegalStateException("Default config file not found in classpath: $path")
-        }
-        target << stream.text
-        return target
     }
 }

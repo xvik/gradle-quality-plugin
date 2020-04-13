@@ -10,7 +10,8 @@
     * New rule disabled [AvoidDoubleBraceInitialization](https://checkstyle.sourceforge.io/config_coding.html#AvoidDoubleBraceInitialization)
 * Fix codenarc link in console report (docs moved from sourceforge to github)
 * Fix checkstyle link in console report (sourceforge.net changed to sourceforge.io to avoid redirect)
-* Update pmd 6.21 -> 6.22    
+* Update pmd 6.21 -> 6.22   
+* Fix concurrent default configs initialization clash (#22) 
 
 ### 4.1.0 (2020-02-15)
 * Fix disabled plugin execution with no-tasks gradle run (pure initialization) (#21)
