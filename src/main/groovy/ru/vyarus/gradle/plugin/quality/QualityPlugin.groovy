@@ -186,6 +186,7 @@ class QualityPlugin implements Plugin<Project> {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
+    @SuppressWarnings('MethodSize')
     private void applySpotbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
                                boolean register) {
         SpotbugsUtils.validateRankSetting(extension.spotbugsMaxRank)
@@ -210,7 +211,7 @@ class QualityPlugin implements Plugin<Project> {
                     spotbugs "com.github.spotbugs:spotbugs:$extension.spotbugsVersion"
                     // for some reason gradle selects asm 7.2 (don't know why); this will force correct asm version
                     // In the future more recent asm versions should win (in theory)
-                    spotbugs "org.ow2.asm:asm:7.3.1"
+                    spotbugs 'org.ow2.asm:asm:7.3.1'
                 }
                 // plugins shortcut
                 extension.spotbugsPlugins?.each {
