@@ -10,6 +10,8 @@
 * Update checkstyle rules:
     * New rule [UnnecessarySemicolonAfterOuterTypeDeclaration](https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonAfterOuterTypeDeclaration)
     * Disable new rule [AvoidDoubleBraceInitialization](https://checkstyle.sourceforge.io/config_coding.html#AvoidDoubleBraceInitialization)
+    * Update [NewlineAtEndOfFile](https://checkstyle.sourceforge.io/config_misc.html#NewlineAtEndOfFile) 
+        lineSeparator configuration to default (lf_cr_crlf) because rule fixed in 8.30 and now may cause too many violations 
 * Fix codenarc link in console report (docs moved from sourceforge to github)
 * Fix checkstyle link in console report (sourceforge.net changed to sourceforge.io to avoid redirect)
 * Update pmd 6.21 -> 6.22   

@@ -14,9 +14,7 @@
     <module name="LineLength">
         <property name="max" value="120"/>
     </module>
-    <module name="NewlineAtEndOfFile">
-        <property name="lineSeparator" value="lf"/>
-    </module>
+    <module name="NewlineAtEndOfFile"/>
     <!-- disabled in favour of PMD ExcessiveClassLength check, which correctly checks class length not file length -->
     <!--<module name="FileLength">-->
         <!--<property name="max" value="500"/>-->
