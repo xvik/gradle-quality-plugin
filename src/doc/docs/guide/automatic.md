@@ -1,6 +1,6 @@
 # Automatic mode
 
-By default, plugin works in automatic mode an does not require configuration to run.
+By default, plugin works in automatic mode and does not require configuration to run.
 
 ## Plugins
 

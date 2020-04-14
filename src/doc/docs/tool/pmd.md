@@ -33,7 +33,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    pmdVersion = '6.21.0'
+    pmdVersion = '6.22.0'
     pmd = true // false to disable automatic plugin activation  
     pmdIncremental = false // true to enable pmd incremental analysis
 }

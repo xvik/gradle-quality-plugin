@@ -3,7 +3,7 @@
 * Fix concurrent default configs initialization clash (#22) 
 * Update spotbugs 3.1.12 -> 4.0.1   
 * Spotbugs classpath changes ("spotbugs" configuration):
-    - Removed `sl4j-simple` dependency from: you will see default slf4j warnings
+    - Removed `sl4j-simple` dependency: you will see default slf4j warnings
        but everything will work in all cases and will no more fail due to sl4j version class with gradle's own sl4j (#20)
     - `asm` 7.3.1 is directly specified to force 7.3.1 because otherwise gradle (5.6) downgrades it to 7.2 (which leads to execution fails "no class def found").         
 * Update codenarc 1.4 -> 1.5

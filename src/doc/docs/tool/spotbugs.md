@@ -55,7 +55,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    spotbugsVersion = '3.1.12'
+    spotbugsVersion = '4.0.1'
     spotbugs = true // false to disable automatic plugin activation
     spotbugsEffort = 'max'  // min, less, more or max
     spotbugsLevel = 'medium' // low, medium, high

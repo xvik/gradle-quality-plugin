@@ -11,7 +11,7 @@ gradle plugin applied manually:
 ```groovy
 plugins {        
     id 'de.aaschmid.cpd' version '3.1'
-    id 'ru.vyarus.quality' version '4.0.0'
+    id 'ru.vyarus.quality' version '4.2.0'
 }
 ```    
 
@@ -177,7 +177,7 @@ Expected root project configuration looks like this:
 ```groovy
 plugins {
     id 'de.aaschmid.cpd' version '3.1'
-    id 'ru.vyarus.quality' version '4.0.0' apply false
+    id 'ru.vyarus.quality' version '4.2.0' apply false
 }
 cpd {
     // cpd configuration, if required
