@@ -1,3 +1,4 @@
+### 4.2.0 (2020-04-15)
 * Fix gradle configuration fail: "Cannot access last() element from an empty List"
   (project with explicit quality configuration fails to open in the new IDEA)
 * Fix concurrent default configs initialization clash (#22) 
