@@ -46,6 +46,7 @@
         <exclude name="ShortVariable"/>
         <exclude name="TooManyStaticImports"/>
         <exclude name="UselessParentheses"/>
+        <exclude name="UseDiamondOperator"/> <!-- temporary disable because 6.22 false positives -->
     </rule>
     <rule ref="category/java/codestyle.xml/FieldNamingConventions">
         <properties>

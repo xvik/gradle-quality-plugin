@@ -17,7 +17,10 @@
     * Update [NewlineAtEndOfFile](https://checkstyle.sourceforge.io/config_misc.html#NewlineAtEndOfFile) 
         lineSeparator configuration to default (lf_cr_crlf) because rule fixed in 8.30 and now may cause too many violations 
 * Fix checkstyle link in console report (sourceforge.net changed to sourceforge.io to avoid redirect)
-* Update pmd 6.21 -> 6.22   
+* Update pmd 6.21 -> 6.22 
+* Update pmd config:
+    - Disable (temporary) [UseDiamondOperator](https://pmd.github.io/pmd-6.22.0/pmd_rules_java_codestyle.html#usediamondoperator)
+       because of false-positives on java 6 projects   
 
 WARNING (spotbugs related): 
 1. If you want to downgrade spotbugs version (with `quality.spotbugsVersion = ..`) then you'll have
