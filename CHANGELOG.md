@@ -1,21 +1,34 @@
 * Fix gradle configuration fail: "Cannot access last() element from an empty List"
   (project with explicit quality configuration fails to open in the new IDEA)
-* Update spotbugs 3.1.12 -> 4.0.1
-   NOTE: I know, there is a [new spotbugs plugin](https://github.com/spotbugs/spotbugs-gradle-plugin) 4.0.5
-   but it breaks too many things (conceptually), so old version would be used for some time
+* Fix concurrent default configs initialization clash (#22) 
+* Update spotbugs 3.1.12 -> 4.0.1   
+* Spotbugs classpath changes ("spotbugs" configuration):
+    - Removed `sl4j-simple` dependency from: you will see default slf4j warnings
+       but everything will work in all cases and will no more fail due to sl4j version class with gradle's own sl4j (#20)
+    - `asm` 7.3.1 is directly specified to force 7.3.1 because otherwise gradle (5.6) downgrades it to 7.2 (which leads to execution fails "no class def found").         
 * Update codenarc 1.4 -> 1.5
 * Update codenarc config:
     - Disable new rule [ImplicitClosureParameter](https://codenarc.github.io/CodeNarc/codenarc-rules-convention.html#implicitclosureparameter-rule)
+* Fix codenarc link in console report (docs moved from sourceforge to github)
 * Update checkstyle 8.29 -> 8.31
 * Update checkstyle rules:
     * New rule [UnnecessarySemicolonAfterOuterTypeDeclaration](https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonAfterOuterTypeDeclaration)
     * Disable new rule [AvoidDoubleBraceInitialization](https://checkstyle.sourceforge.io/config_coding.html#AvoidDoubleBraceInitialization)
     * Update [NewlineAtEndOfFile](https://checkstyle.sourceforge.io/config_misc.html#NewlineAtEndOfFile) 
         lineSeparator configuration to default (lf_cr_crlf) because rule fixed in 8.30 and now may cause too many violations 
-* Fix codenarc link in console report (docs moved from sourceforge to github)
 * Fix checkstyle link in console report (sourceforge.net changed to sourceforge.io to avoid redirect)
 * Update pmd 6.21 -> 6.22   
-* Fix concurrent default configs initialization clash (#22) 
+
+WARNING (spotbugs related): 
+1. If you want to downgrade spotbugs version (with `quality.spotbugsVersion = ..`) then you'll have
+   to also force correct asm version on spotbugs configuration.
+2. If you need to see spotbugs logs, then manually add `slf4j-simple` dependency to spotbugs configuration.
+   (normally, spotbugs logs are not important and removing dependency fixes some environments)
+3. If you don't want to see sl4j default warnings then simply put `slf4j-nop` dependency into spotbugs
+    configuration. I can't do it automatically because I may introduce new sl4j compatibility problems due to incorrect version.       
+4. I know, there is a [new spotbugs plugin](https://github.com/spotbugs/spotbugs-gradle-plugin) 4.0.5,
+   but it is conceptually different, so old version would be used for some time. (I tried to upgrade, but it requires time to resolve all issues)
+5. BUT with all this, spotbugs 4 should work without problems for everyone!        
 
 ### 4.1.0 (2020-02-15)
 * Fix disabled plugin execution with no-tasks gradle run (pure initialization) (#21)

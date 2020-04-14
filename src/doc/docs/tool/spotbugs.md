@@ -216,3 +216,105 @@ public boolean apply(@NonNull final Object input) {
 
 !!! hint
     `NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION` check was disabled because it does not allow this workaround to work
+
+## Problems resolution
+
+### Asm
+
+If you specify older (prior 4.0.1) spotbugs verson, you may face asm problem as plugin
+forces asm 7.3.1 (for spotbugs 4.0.1):
+
+```groovy
+dependencies {
+    spotbugs "com.github.spotbugs:spotbugs:$extension.spotbugsVersion"
+    spotbugs "org.ow2.asm:asm:7.3.1"
+}
+```
+
+This is required because gradle (5.x) downgrades asm:
+
+```
+gradlew dependencyInsight --configuration spotbugs --dependency org.ow2.asm:asm
+
+org.ow2.asm:asm:7.2 (selected by rule)
+...
+org.ow2.asm:asm:7.3.1 -> 7.2
+```  
+
+Which may cause (not always!) execution errors like:
+
+```
+Execution failed for task ':spotbugsMain'.
+> Failed to run Gradle SpotBugs Worker
+   > org/objectweb/asm/RecordComponentVisitor
+```
+
+So if you use older gradle simply set correct asm version:
+
+```groovy
+afterEvaluate {
+    dependencies {
+        spotbugs "org.ow2.asm:asm:$requiredVersion"
+    }
+}
+``` 
+
+### Slf4j
+
+Spotbugs plugin use slf4j for logging and by default applies slf4j-simple into spotbugs worker
+classpath. Sometimes this [cause problems](https://github.com/xvik/gradle-quality-plugin/issues/20) 
+due to used sl4j version mismatch with gradl slf4j.
+
+To avoid such situations, quality plugin removes "sl4j-simple" dependency from "spotbugs" configuration.
+
+As downside, you will see warnings:
+
+```
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+```
+
+You can easily remove them by specifying sl4j-nop dependency:
+
+```groovy
+afterEvaluate {
+    dependencies {
+        spotbugs "org.slf4j:slf4j-nop:1.7.25"
+    }
+}
+``` 
+
+!!! note """
+    It wasn't provided by plugin in order to not introduce new problems with slf4j versions mismatch.
+
+And, in case if you need to see spotbugs logs, then get back slf4j-simple dependency:
+
+```groovy
+afterEvaluate {
+    dependencies {
+        spotbugs "org.slf4j:slf4j-simple:1.7.25"
+    }
+}
+``` 
+
+!!! warning
+    Slf4j 1.7.25 is correct version for gradle 5.6.4, for your gradle different version may be required.
+    
+### New gradle plugin
+
+Plugin still uses old [spotbugs plugin](https://github.com/spotbugs/spotbugs-gradle-plugin) 2.0.1
+and new version 4.0.5 already available. But, 4.0 was almost complete plugin rewrite and
+it conceptually changes some things. Eventually, I will support this new plugin, but for now
+old one is working and is good enough.    
+
+New spotbugs plugin has different maven coordinates and different package, so it doesn't override old one.
+
+If you will try to activate new spotbugs plugin manually then you will need to disable spotbubgs
+in quality plugin so old plugin would not be activated automatically:
+
+```groovy
+quality.spotbugs = false
+```
+
+After disabling old plugin, configure new spotbugs plugin manually. 
