@@ -4,10 +4,12 @@
    NOTE: I know, there is a [new spotbugs plugin](https://github.com/spotbugs/spotbugs-gradle-plugin) 4.0.5
    but it breaks too many things (conceptually), so old version would be used for some time
 * Update codenarc 1.4 -> 1.5
+* Update codenarc config:
+    - Disable new rule [ImplicitClosureParameter](https://codenarc.github.io/CodeNarc/codenarc-rules-convention.html#implicitclosureparameter-rule)
 * Update checkstyle 8.29 -> 8.31
 * Update checkstyle rules:
     * New rule [UnnecessarySemicolonAfterOuterTypeDeclaration](https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonAfterOuterTypeDeclaration)
-    * New rule disabled [AvoidDoubleBraceInitialization](https://checkstyle.sourceforge.io/config_coding.html#AvoidDoubleBraceInitialization)
+    * Disable new rule [AvoidDoubleBraceInitialization](https://checkstyle.sourceforge.io/config_coding.html#AvoidDoubleBraceInitialization)
 * Fix codenarc link in console report (docs moved from sourceforge to github)
 * Fix checkstyle link in console report (sourceforge.net changed to sourceforge.io to avoid redirect)
 * Update pmd 6.21 -> 6.22   
