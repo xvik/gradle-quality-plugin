@@ -17,6 +17,7 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.process.CommandLineArgumentProvider
+import org.slf4j.impl.StaticLoggerBinder
 import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.util.CpdUtils
@@ -204,12 +205,20 @@ class QualityPlugin implements Plugin<Project> {
                     excludeFilter = configLoader.resolveSpotbugsExclude(false)
                     sourceSets = extension.sourceSets
                 }
-                // manual configuration to override defaults and exclude slf4j-simple which may cause problems
-                // due to incompatibility with gradle's own slf4j version
-                // https://github.com/xvik/gradle-quality-plugin/issues/20
+                // manual dependencies initialization to override slf4j-simple version and force the same version as
+                // gradle's own slf4j (to avoid problems of incompatibility:
+                // https://github.com/xvik/gradle-quality-plugin/issues/20)
                 dependencies {
                     spotbugs "com.github.spotbugs:spotbugs:$extension.spotbugsVersion"
+                    spotbugs ('org.slf4j:slf4j-simple') {
+                        // no transitives to prevent rising slf4j-api version
+                        transitive = false
+                        version {
+                            strictly StaticLoggerBinder.REQUESTED_API_VERSION
+                        }
+                    }
                 }
+
                 // plugins shortcut
                 extension.spotbugsPlugins?.each {
                     project.configurations.getByName('spotbugsPlugins').dependencies.add(
