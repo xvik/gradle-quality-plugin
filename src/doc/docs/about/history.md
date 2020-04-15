@@ -1,3 +1,14 @@
+### [4.2.0](http://xvik.github.io/gradle-quality-plugin/4.2.1) (2020-04-16)
+* Update spotbugs 4.0.1 -> 4.0.2
+* Revert (and change) spotbugs configuration customizations:
+    - Remove explicit asm dependency for "spotbugs" configuration
+      It was added by mistake: dependency-management plugin applied for all configurations 
+      was actually guilty of incorrect asm version (case description added to documentation)
+    - Force correct version of sl4j-simple instead of removing dependency
+      (nasty warnings introduced in previous release will disappear now)
+      
+Warnings from the previous version are no more actual (except new plugin version (4)).           
+
 ### [4.2.0](http://xvik.github.io/gradle-quality-plugin/4.2.0) (2020-04-15)
 * Fix gradle configuration fail: "Cannot access last() element from an empty List"
   (project with explicit quality configuration fails to open in the new IDEA)

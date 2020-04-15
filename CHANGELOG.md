@@ -1,3 +1,4 @@
+### 4.2.1 (2020-04-16)
 * Update spotbugs 4.0.1 -> 4.0.2
 * Revert (and change) spotbugs configuration customizations:
     - Remove explicit asm dependency for "spotbugs" configuration
