@@ -1,3 +1,8 @@
+* Update spotbugs 4.0.1 -> 4.0.2
+* Remove explicit asm dependency for "spotbugs" configuration
+  It was added by mistake: dependency-management plugin applied for all configurations 
+  was actually guilty of incorrect asm version (case description added to documentation)  
+
 ### 4.2.0 (2020-04-15)
 * Fix gradle configuration fail: "Cannot access last() element from an empty List"
   (project with explicit quality configuration fails to open in the new IDEA)

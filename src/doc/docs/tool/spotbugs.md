@@ -55,7 +55,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    spotbugsVersion = '4.0.1'
+    spotbugsVersion = '4.0.2'
     spotbugs = true // false to disable automatic plugin activation
     spotbugsEffort = 'max'  // min, less, more or max
     spotbugsLevel = 'medium' // low, medium, high
@@ -221,17 +221,17 @@ public boolean apply(@NonNull final Object input) {
 
 ### Asm
 
-If you specify older (prior 4.0.1) spotbugs verson, you may face asm problem as plugin
-forces asm 7.3.1 (for spotbugs 4.0.1):
+If you have problems executing spotbugs tasks like
 
-```groovy
-dependencies {
-    spotbugs "com.github.spotbugs:spotbugs:$extension.spotbugsVersion"
-    spotbugs "org.ow2.asm:asm:7.3.1"
-}
+```
+Execution failed for task ':spotbugsMain'.
+> Failed to run Gradle SpotBugs Worker
+   > org/objectweb/asm/RecordComponentVisitor
 ```
 
-This is required because gradle (5.x) downgrades asm:
+(NoClassDefFoundException in stacktrace)
+
+Then it is possible that you have incorrect asm:
 
 ```
 gradlew dependencyInsight --configuration spotbugs --dependency org.ow2.asm:asm
@@ -241,23 +241,43 @@ org.ow2.asm:asm:7.2 (selected by rule)
 org.ow2.asm:asm:7.3.1 -> 7.2
 ```  
 
-Which may cause (not always!) execution errors like:
-
-```
-Execution failed for task ':spotbugsMain'.
-> Failed to run Gradle SpotBugs Worker
-   > org/objectweb/asm/RecordComponentVisitor
-```
-
-So if you use older gradle simply set correct asm version:
+This may be caused by incorrect BOM usage. For example, [spring dependency-management plugin](https://github.com/spring-gradle-plugins/dependency-management-plugin) 
+configured like this:
 
 ```groovy
-afterEvaluate {
-    dependencies {
-        spotbugs "org.ow2.asm:asm:$requiredVersion"
+dependencyManagement {
+    imports {
+        mavenBom "com.google.inject:guice-bom:4.2.3"
+    }        
+}
+```
+
+would apply to ALL configurations, including "spotbugs". In this example, guice bom will force asm 7.2
+which will lead to fail.
+
+To fix this apply BOM only to some configurations:
+
+```groovy
+dependencyManagement {
+    configurations(implementation, testImplementation, provided) {
+        imports {
+            mavenBom "com.google.inject:guice-bom:4.2.3"
+        }        
     }
 }
-``` 
+```
+
+!!! warning
+    But, in this case, generated pom will lack "dependencyManagement" section (as it use only globally applied BOMs),
+    so if resulted pom is important for you, then simply force correct asm version for spotbugs:
+    ```groovy
+    afterEvaluate {
+        dependencies {
+            spotbugs "org.ow2.asm:asm:8.0.1"
+        }  
+    }          
+    ```    
+      
 
 ### Slf4j
 
