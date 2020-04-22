@@ -17,7 +17,6 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.process.CommandLineArgumentProvider
-import org.slf4j.impl.StaticLoggerBinder
 import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.util.CpdUtils
