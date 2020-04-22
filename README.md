@@ -44,7 +44,7 @@ NOTE: when updating plugin version in your project don't forget to call `clean` 
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '4.2.1'
+    id 'ru.vyarus.quality' version '4.2.2'
 }
 ```
 
@@ -57,7 +57,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:4.2.1'
+        classpath 'ru.vyarus:gradle-quality-plugin:4.2.2'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -71,7 +71,7 @@ Plugin compiled for java 8, compatible with java 11
 
 Gradle | Version
 --------|-------
-5.1     | 4.2.1
+5.1     | 4.2.2
 4.1     | [3.4.0](http://xvik.github.io/gradle-quality-plugin/3.4.0)
 older   | [2.4.0](http://xvik.github.io/gradle-quality-plugin/2.4.0)
 

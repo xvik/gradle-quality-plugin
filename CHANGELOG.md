@@ -1,3 +1,7 @@
+### 4.2.2 (2020-04-23)
+* Remove spotbugs configuration "tuning" (added in the last version) because it eventually works incorrectly (often causing warnings).
+  Spotbugs 4.0.2 depends on slf4j 1.8 which should avoid compatibility problems (at least for some time).
+
 ### 4.2.1 (2020-04-16)
 * Update spotbugs 4.0.1 -> 4.0.2
 * Revert (and change) spotbugs configuration customizations:
