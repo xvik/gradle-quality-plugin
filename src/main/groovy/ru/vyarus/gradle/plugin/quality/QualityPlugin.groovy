@@ -205,19 +205,6 @@ class QualityPlugin implements Plugin<Project> {
                     excludeFilter = configLoader.resolveSpotbugsExclude(false)
                     sourceSets = extension.sourceSets
                 }
-                // manual dependencies initialization to override slf4j-simple version and force the same version as
-                // gradle's own slf4j (to avoid problems of incompatibility:
-                // https://github.com/xvik/gradle-quality-plugin/issues/20)
-                dependencies {
-                    spotbugs "com.github.spotbugs:spotbugs:$extension.spotbugsVersion"
-                    spotbugs ('org.slf4j:slf4j-simple') {
-                        // no transitives to prevent rising slf4j-api version
-                        transitive = false
-                        version {
-                            strictly StaticLoggerBinder.REQUESTED_API_VERSION
-                        }
-                    }
-                }
 
                 // plugins shortcut
                 extension.spotbugsPlugins?.each {
