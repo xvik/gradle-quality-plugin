@@ -41,7 +41,7 @@ class ConsoleReportsDisableKitTest extends AbstractKitTest {
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('CodeNarc rule violations were found')
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('SpotBugs reported failures')
         result.output.contains('PMD rule violations were found')
 
         then: "no console reporting performed"

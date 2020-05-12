@@ -48,6 +48,7 @@ class PmdIncrementalAnalysisKitTest extends AbstractKitTest {
 
             quality {
                 strict false
+                spotbugs = false
             
                 pmdIncremental = true
             }

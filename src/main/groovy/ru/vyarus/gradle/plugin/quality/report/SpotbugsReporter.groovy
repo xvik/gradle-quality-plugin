@@ -1,6 +1,6 @@
 package ru.vyarus.gradle.plugin.quality.report
 
-import com.github.spotbugs.SpotBugsTask
+import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
@@ -17,6 +17,8 @@ import ru.vyarus.gradle.plugin.quality.util.FileUtils
  */
 @CompileStatic
 class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<SpotBugsTask> {
+    private static final String XML = 'XML'
+
     ConfigLoader configLoader
 
     SpotbugsReporter(ConfigLoader configLoader) {
@@ -26,8 +28,8 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     void report(SpotBugsTask task, String type) {
-        File reportFile = task.reports.xml.destination
-        if (!reportFile.exists()) {
+        File reportFile = task.reports.findByName(XML)?.destination
+        if (reportFile == null || !reportFile.exists()) {
             return
         }
         Node result = new XmlParser().parse(reportFile)
@@ -61,7 +63,7 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
             }
             // html report will be generated before console reporting
             String htmlReportUrl = ReportUtils.toConsoleLink(task.project
-                    .file("${task.project.extensions.spotbugs.reportsDir}/${type}.html"))
+                    .file("${task.project.extensions.spotbugs.reportsDir.get()}/${type}.html"))
             task.logger.error "SpotBugs HTML report: $htmlReportUrl"
         }
     }
@@ -69,13 +71,13 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     void generateHtmlReport(SpotBugsTask task, String type) {
-        File reportFile = task.reports.xml.destination
-        if (!reportFile.exists()) {
+        File reportFile = task.reports.findByName(XML)?.destination
+        if (reportFile == null || !reportFile.exists()) {
             return
         }
         Project project = task.project
         // html report
-        String htmlReportPath = "${project.extensions.spotbugs.reportsDir}/${type}.html"
+        String htmlReportPath = "${project.extensions.spotbugs.reportsDir.get()}/${type}.html"
         File htmlReportFile = project.file(htmlReportPath)
         // avoid redundant re-generation
         if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {

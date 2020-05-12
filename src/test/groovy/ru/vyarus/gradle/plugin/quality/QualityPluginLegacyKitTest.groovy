@@ -9,7 +9,10 @@ import org.gradle.testkit.runner.TaskOutcome
  */
 class QualityPluginLegacyKitTest extends AbstractKitTest {
 
-    def "Check java and groovy checks with gradle 5.1 (previous)"() {
+    // 5.6 only because of spotbugs, other plugins works with 5.1
+    public static final String GRADLE_VERSION = '5.6'
+
+    def "Check java and groovy checks with gradle 5.6 (previous)"() {
         setup:
         build("""
             plugins {
@@ -36,13 +39,13 @@ class QualityPluginLegacyKitTest extends AbstractKitTest {
         fileFromClasspath('src/main/groovy/sample/GSample2.groovy', '/ru/vyarus/gradle/plugin/quality/groovy/sample/GSample2.groovy')
 
         when: "run check task with both sources"
-        BuildResult result = runVer('5.1','check')
+        BuildResult result = runVer(GRADLE_VERSION,'check')
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('CodeNarc rule violations were found')
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('SpotBugs reported failures')
         result.output.contains('PMD rule violations were found')
     }
 }

@@ -40,7 +40,7 @@ class QualityTasksDisableKitTest extends AbstractKitTest {
         result.task(":check").outcome == TaskOutcome.UP_TO_DATE
         !result.output.contains('CodeNarc rule violations were found')
         !result.output.contains('Checkstyle rule violations were found')
-        !result.output.contains('SpotBugs rule violations were found')
+        !result.output.contains('SpotBugs reported failures')
         !result.output.contains('PMD rule violations were found')
     }
 

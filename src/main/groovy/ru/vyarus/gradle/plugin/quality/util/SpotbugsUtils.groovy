@@ -1,6 +1,6 @@
 package ru.vyarus.gradle.plugin.quality.util
 
-import com.github.spotbugs.SpotBugsTask
+import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlUtil
@@ -40,26 +40,27 @@ class SpotbugsUtils {
      * @param logger project logger for error messages
      */
     @CompileStatic(TypeCheckingMode.SKIP)
-    static void replaceExcludeFilter(SpotBugsTask task, QualityExtension extension, Logger logger) {
+    static File replaceExcludeFilter(SpotBugsTask task, File excludeFile, QualityExtension extension, Logger logger) {
         // setting means max allowed rank, but filter evicts all ranks >= specified (so +1)
         Integer rank = extension.spotbugsMaxRank < MAX_RANK ? extension.spotbugsMaxRank + 1 : null
-        Set<File> ignored = FileUtils.resolveIgnoredFiles(task.source, extension.exclude)
+        // NOTE no support for new classDirs property!
+        Set<File> ignored = FileUtils.resolveIgnoredFiles(task.sourceDirs.asFileTree, extension.exclude)
         if (extension.excludeSources) {
             // add directly excluded files
             ignored.addAll(extension.excludeSources.asFileTree.matching { include '**/*.java' }.files)
         }
         if (!ignored && !rank) {
             // no custom excludes required
-            return
+            return excludeFile
         }
         SourceSet set = FileUtils.findMatchingSet('spotbugs', task.name, extension.sourceSets)
         if (!set) {
             logger.error("[SpotBugs] Failed to find source set for task ${task.name}: exclusions " +
                     ' will not be applied')
-            return
+            return excludeFile
         }
 
-        task.excludeFilter = mergeExcludes(task.excludeFilter, ignored, set.allJava.srcDirs, rank)
+        return mergeExcludes(excludeFile, ignored, set.allJava.srcDirs, rank)
     }
 
     /**

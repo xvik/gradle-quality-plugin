@@ -43,7 +43,7 @@ class GroupingTasksKitTest extends AbstractKitTest {
         result.task(":checkQualityMain").outcome == TaskOutcome.SUCCESS
         result.output.contains('CodeNarc rule violations were found')
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('SpotBugs reported failures')
         result.output.contains('PMD rule violations were found')
 
         when: "run test quality check"

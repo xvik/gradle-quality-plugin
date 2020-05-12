@@ -35,7 +35,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('SpotBugs reported failures')
         result.output.contains('PMD rule violations were found')
 
         then: "all html reports generated"
@@ -49,7 +49,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         then: "ok"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('SpotBugs reported failures')
         result.output.contains('PMD rule violations were found')
     }
 
@@ -79,7 +79,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('SpotBugs reported failures')
         result.output.contains('PMD rule violations were found')
 
         then: "all html reports generated"
@@ -93,7 +93,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         then: "ok"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('SpotBugs reported failures')
         result.output.contains('PMD rule violations were found')
     }
 
@@ -215,7 +215,7 @@ class QualityPluginKitTest extends AbstractKitTest {
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('CodeNarc rule violations were found')
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('SpotBugs reported failures')
         result.output.contains('PMD rule violations were found')
 
 //        cleanup:
@@ -236,6 +236,9 @@ class QualityPluginKitTest extends AbstractKitTest {
             repositories {
                 jcenter() //required for testKit run
             }
+            
+            // because spotbugs plugin configuration approach changed 
+            quality.spotbugs = false
 
             afterEvaluate {
                 checkstyle {
@@ -243,10 +246,7 @@ class QualityPluginKitTest extends AbstractKitTest {
                 }
                 pmd {
                     sourceSets = []
-                }
-                spotbugs {
-                    sourceSets = []
-                }
+                }                
             }
         """)
 
@@ -256,10 +256,9 @@ class QualityPluginKitTest extends AbstractKitTest {
         when: "run check task with java sources"
         BuildResult result = run('check')
 
-        then: "all plugins detect violations"
+        then: "no violations"
         result.task(":check").outcome == TaskOutcome.UP_TO_DATE
         !result.output.contains('Checkstyle rule violations were found')
-        !result.output.contains('SpotBugs rule violations were found')
         !result.output.contains('PMD rule violations were found')
     }
 }

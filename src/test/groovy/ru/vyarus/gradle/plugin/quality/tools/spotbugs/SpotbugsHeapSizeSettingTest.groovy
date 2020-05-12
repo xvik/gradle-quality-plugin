@@ -21,7 +21,7 @@ class SpotbugsHeapSizeSettingTest extends AbstractTest {
         }
 
         then: "maxHeapSize set"
-        project.tasks.spotbugsMain.maxHeapSize == '1g'
+        project.tasks.spotbugsMain.maxHeapSize.get() == '1g'
     }
 
 
@@ -41,6 +41,6 @@ class SpotbugsHeapSizeSettingTest extends AbstractTest {
         }
 
         then: "maxHeapSize not overridden"
-        project.tasks.spotbugsMain.maxHeapSize == '2g'
+        project.tasks.spotbugsMain.maxHeapSize.get() == '2g'
     }
 }

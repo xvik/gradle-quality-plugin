@@ -15,6 +15,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'java'
+                // NOTE it will activate standard plugin which assign all spotbugs tasks to check
                 id 'com.github.spotbugs'
                 id 'ru.vyarus.quality'
             }
@@ -39,7 +40,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('SpotBugs reported failures')
     }
 
     def "Check spotbugs plugins 2"() {
@@ -72,7 +73,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('SpotBugs reported failures')
     }
 
     def "Check spotbugs plugins shortcut syntax"() {
@@ -103,7 +104,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.output.contains('SpotBugs rule violations were found')
+        result.output.contains('SpotBugs reported failures')
 
 //        cleanup:
 //        new File("spotbugs.xml") << file('build/reports/spotbugs/main.xml').text

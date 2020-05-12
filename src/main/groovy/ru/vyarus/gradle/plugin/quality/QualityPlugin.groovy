@@ -1,7 +1,6 @@
 package ru.vyarus.gradle.plugin.quality
 
-import com.github.spotbugs.SpotBugsPlugin
-import com.github.spotbugs.SpotBugsTask
+import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Plugin
@@ -18,9 +17,11 @@ import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.process.CommandLineArgumentProvider
 import ru.vyarus.gradle.plugin.quality.report.*
+import ru.vyarus.gradle.plugin.quality.spotbugs.CustomSpotBugsPlugin
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.util.CpdUtils
 import ru.vyarus.gradle.plugin.quality.util.DurationFormatter
+import ru.vyarus.gradle.plugin.quality.util.SpotbugsExclusionConfigProvider
 import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
 
 /**
@@ -55,7 +56,7 @@ import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
  * @see CodeNarcPlugin
  * @see CheckstylePlugin
  * @see PmdPlugin
- * @see com.github.spotbugs.SpotBugsPlugin
+ * @see com.github.spotbugs.snom.SpotBugsPlugin
  * @see de.aaschmid.gradle.plugins.cpd.CpdPlugin
  */
 @CompileStatic
@@ -194,15 +195,19 @@ class QualityPlugin implements Plugin<Project> {
         configurePlugin(project,
                 extension.spotbugs,
                 register,
-                SpotBugsPlugin) {
+                CustomSpotBugsPlugin) {
             project.configure(project) {
                 spotbugs {
                     toolVersion = extension.spotbugsVersion
                     ignoreFailures = !extension.strict
                     effort = extension.spotbugsEffort
                     reportLevel = extension.spotbugsLevel
-                    excludeFilter = configLoader.resolveSpotbugsExclude(false)
-                    sourceSets = extension.sourceSets
+                    // note: default excludeFilter is not set not set in extension, instead it is directly
+                    // set to all tasks. If you try to set it in extension, value will be ignored
+
+                    // in gradle 5 default 1g was changed and so spotbugs fails on large projects (recover behaviour),
+                    // but not if value set manually
+                    maxHeapSize.convention(extension.spotbugsMaxHeapSize)
                 }
 
                 // plugins shortcut
@@ -212,27 +217,19 @@ class QualityPlugin implements Plugin<Project> {
                     )
                 }
 
-                tasks.withType(SpotBugsTask).configureEach {
-                    doFirst {
-                        configLoader.resolveSpotbugsExclude()
-                        // spotbugs does not support exclude of SourceTask, so appending excluded classes to
-                        // xml exclude filter
-                        // for custom rank appending extra rank exclusion rule
-                        if (extension.exclude || extension.excludeSources || extension.spotbugsMaxRank < 20) {
-                            SpotbugsUtils.replaceExcludeFilter(it, extension, logger)
-                        }
-                    }
+                tasks.withType(SpotBugsTask).configureEach { task ->
+                    // have to use this way instead of doFirst hook, because nothing else will work (damn props!)
+                    excludeFilter.set(project.provider(new SpotbugsExclusionConfigProvider(
+                            configLoader, extension, task, logger
+                    )))
                     reports {
                         xml {
                             enabled true
-                            withMessages true
                         }
                     }
-                    // in gradle 5 default 1g was changed and so spotbugs fails on large projects (recover behaviour),
-                    // but not if value set manually
-                    maxHeapSize = maxHeapSize ?: extension.spotbugsMaxHeapSize
                 }
             }
+
             configurePluginTasks(project, extension, SpotBugsTask, 'spotbugs', new SpotbugsReporter(configLoader))
         }
     }
