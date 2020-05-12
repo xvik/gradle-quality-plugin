@@ -4,8 +4,9 @@
       makes it work as before, so you shouldn't see any difference.
     - Minimal supported gradle is now 5.6 (due to spotbugs plugin)  
     - New spotbugs plugin can generate html report itself, but this option is not used
+* Update spotbugs 4.0.2 -> 4.0.3    
 
-WARNING:
+NOTE:
     * New spotbugs plugin does not support build cache (https://github.com/spotbugs/spotbugs-gradle-plugin/issues/244)
     * Spotbugs task always show an exception when violations found (not a problem, just confusing)
 
