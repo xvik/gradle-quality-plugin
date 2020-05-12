@@ -4,7 +4,10 @@
       makes it work as before, so you shouldn't see any difference.
     - Minimal supported gradle is now 5.6 (due to spotbugs plugin)  
     - New spotbugs plugin can generate html report itself, but this option is not used
-* Update spotbugs 4.0.2 -> 4.0.3    
+* Update spotbugs 4.0.2 -> 4.0.3
+* Update checkstyle 8.31 -> 8.32
+* Update checkstyle config:
+    - New rule [JavadocMissingWhitespaceAfterAsterisk](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocMissingWhitespaceAfterAsterisk)    
 
 NOTE:
     * New spotbugs plugin does not support build cache (https://github.com/spotbugs/spotbugs-gradle-plugin/issues/244)

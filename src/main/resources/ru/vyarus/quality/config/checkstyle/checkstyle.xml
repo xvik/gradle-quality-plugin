@@ -148,6 +148,7 @@
         <module name="JavadocBlockTagLocation"/>
         <module name="JavadocContentLocation"/>
         <!--<module name="JavadocMethod"/>-->
+        <module name="JavadocMissingWhitespaceAfterAsterisk"/>
         <!--<module name="JavadocPackage"/>-->
         <!--<module name="JavadocParagraph"/>-->
         <module name="JavadocStyle"/>
