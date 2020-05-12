@@ -7,7 +7,8 @@
 * Update spotbugs 4.0.2 -> 4.0.3
 * Update checkstyle 8.31 -> 8.32
 * Update checkstyle config:
-    - New rule [JavadocMissingWhitespaceAfterAsterisk](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocMissingWhitespaceAfterAsterisk)    
+    - New rule [JavadocMissingWhitespaceAfterAsterisk](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocMissingWhitespaceAfterAsterisk)
+* Update pmd 6.22 -> 6.23        
 
 NOTE:
     * New spotbugs plugin does not support build cache (https://github.com/spotbugs/spotbugs-gradle-plugin/issues/244)
