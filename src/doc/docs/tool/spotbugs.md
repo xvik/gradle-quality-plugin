@@ -9,12 +9,12 @@
 !!! info
     SpotBugs is a successor project to [deprecated FindBugs](https://github.com/findbugsproject/findbugs) project.
     [Migration guide](http://spotbugs.readthedocs.io/en/latest/migration.html). If you were using custom 
-    findbugs config before then rename it's folder to `spotbugs`.
+    findbugs config before then rename its folder to `spotbugs`.
     
 !!! warning
     In contrast to other plugins, [spotbugs plugin](http://spotbugs.readthedocs.io/en/latest/gradle.html) is not bundled with gradle,
-    but quality plugin will bring it as a dependency (v 2.0.1) and activate automatically.
-    To use newer spotbugs plugin version simply enable plugin manually (in `plugins` section).    
+    but quality plugin will bring it as a dependency (v 4.0.8) and activate automatically.    
+    If you will activate newer spotbugs plugin manually [behaviour may change](#spotbugs-plugin-specifics).
     
 By default, plugin activates if java sources available (`src/main/java`).    
 
@@ -25,7 +25,8 @@ Default settings (`max` effort and `medium` level) are perfect for most cases. S
 
 !!! note
     Special [xsl file](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/spotbugs/html-report-style.xsl) 
-    used for manual html report generation because spotbugs plugin could generate either xml or html report and not both. 
+    used for manual html report generation. Spotbugs plugin can generate both xml and html reports, but
+    this ability is not used (for more stable and legacy-compatible behaviour).  
 
 ## Output
 
@@ -55,7 +56,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    spotbugsVersion = '4.0.2'
+    spotbugsVersion = '4.0.3'
     spotbugs = true // false to disable automatic plugin activation
     spotbugsEffort = 'max'  // min, less, more or max
     spotbugsLevel = 'medium' // low, medium, high
@@ -127,21 +128,6 @@ afterEvaluate {
     }
 }
 ```
-
-Or declare spotbugs plugin manually (it will be still configured by quality plugin)
-and use `spotbugsPlugins` configuration directly:
-
-```groovy
-plugins {
-    id 'com.github.spotbugs' version '2.0.1'
-}
-dependencies {
-    spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
-}
-```      
-
-!!! tip
-    All these approaches could work together, but better stick to one.
 
 ### Available plugins
 
@@ -216,6 +202,52 @@ public boolean apply(@NonNull final Object input) {
 
 !!! hint
     `NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION` check was disabled because it does not allow this workaround to work
+
+## Spotbugs plugin specifics
+
+Spotbugs plugin 4 is a plugin re-write. Now it does not follow other gradle quality plugin
+conventions. The main difference is: there is no target source sets configuration anymore,
+so by default, all spotbugs tasks will be executed with `check`.
+
+To recover old spotbugs plugin behaviour (and unify it with other plugins) quality plugin 
+activates customized spotbugs plugin with legacy behaviour (the difference is only in what tasks
+attached to `check`).
+
+!!! warning
+    If you will activate spotbugs plugin manually
+    ```groovy    
+    plugins {
+        id 'com.github.spotbugs' version '4.0.8'
+    }     
+    ```
+    Then default spotbugs plugin will be used and so `check` will call all spotbugs tasks
+    (`spotbugsMain`, `spotbugsTest`).
+    
+    Still, everything else will work as before: the difference is only in check task dependencies. 
+
+If you would like to update bundled spotbugs plugin version use:
+
+```groovy
+plugins {
+    id 'com.github.spotbugs' version '4.0.8' apply false
+}     
+```
+
+If you want to apply plugin manually to activtate it earlier and be able to apply configurations
+without `afterEvaluate` block:
+
+```groovy
+apply plugin: ru.vyarus.gradle.plugin.quality.spotbugs.CustomSpotBugsPlugin
+```
+
+### Spotbugs plugin issues
+
+New spotbugs plugin [does not support build cache](https://github.com/spotbugs/spotbugs-gradle-plugin/issues/244), 
+so spotbugs tasks will always run, even with enabled build cache. 
+
+Spotbugs plugin always throws an exception when violations found, so even in non strict mode
+(`quality.strict = false`) you will see an exception in logs when violations found (build will not be failed).
+Not critical, just confusing.
 
 ## Problems resolution
 
@@ -357,20 +389,3 @@ afterEvaluate {
 `afterEvaluate` required because spotbugs plugin applied after configuration and `findByName` 
 forces task initialization (for lazy tasks). 
     
-### New gradle plugin
-
-Plugin still uses old [spotbugs plugin](https://github.com/spotbugs/spotbugs-gradle-plugin) 2.0.1
-and new version 4.0.5 is already available. But, spotbugs plugin 4.0 was almost complete plugin rewrite, and
-it conceptually changes some things. Eventually, I will support this new plugin, but for now
-old one is working and is good enough.    
-
-New spotbugs plugin has different maven coordinates and different package, so it doesn't override old one.
-
-If you will try to activate new spotbugs plugin manually then you will need to disable spotbubgs
-in quality plugin so old plugin would not be activated automatically:
-
-```groovy
-quality.spotbugs = false
-```
-
-After disabling old plugin, configure new spotbugs plugin manually. 
