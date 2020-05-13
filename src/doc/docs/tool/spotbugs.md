@@ -13,7 +13,7 @@
     
 !!! warning
     In contrast to other plugins, [spotbugs plugin](http://spotbugs.readthedocs.io/en/latest/gradle.html) is not bundled with gradle,
-    but quality plugin will bring it as a dependency (v 4.0.8) and activate automatically.    
+    but quality plugin will bring it as a dependency (v 4.1.0) and activate automatically.    
     If you will activate newer spotbugs plugin manually [behaviour may change](#spotbugs-plugin-specifics).
     
 By default, plugin activates if java sources available (`src/main/java`).    
@@ -217,7 +217,7 @@ attached to `check`).
     If you will activate spotbugs plugin manually
     ```groovy    
     plugins {
-        id 'com.github.spotbugs' version '4.0.8'
+        id 'com.github.spotbugs' version '4.1.0'
     }     
     ```
     Then default spotbugs plugin will be used and so `check` will call all spotbugs tasks
@@ -229,7 +229,7 @@ If you would like to update bundled spotbugs plugin version use:
 
 ```groovy
 plugins {
-    id 'com.github.spotbugs' version '4.0.8' apply false
+    id 'com.github.spotbugs' version '4.1.0' apply false
 }     
 ```
 

@@ -1,5 +1,5 @@
 ### [4.3.0](http://xvik.github.io/gradle-quality-plugin/4.3.0) (2020-05-13)
-* Update spotbugs plugin to 4.0.8 (#26)
+* Update spotbugs plugin to 4.1.0 (#26)
     - Fixes gradle 6.4 compatibility.
     - The new plugin is a re-write of the original spotbugs plugin. But quality plugin 
       makes it work as before, so you shouldn't see any difference.
