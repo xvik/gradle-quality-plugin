@@ -252,13 +252,12 @@ Not critical, just confusing.
 ## Problems resolution
 
 Most problems appear with `spotbugs` configuration. Plugin by default configures only default dependencies for it,
-so if you modify this configuration you will have to specify all dependencies:
+so if you modify this configuration you will have to specify dependencies explicitly:
 
 ```groovy
 afterEvaluate {
     dependencies {
         spotbugs "com.github.spotbugs:spotbugs:${quality.spotbugsVersion}"
-        spotbugs "org.slf4j:slf4j-simple:1.8.0-beta4"
     }
 }
 ```
@@ -331,37 +330,10 @@ dependencyManagement {
     afterEvaluate {
         dependencies {
             spotbugs "com.github.spotbugs:spotbugs:${quality.spotbugsVersion}"
-            spotbugs "org.slf4j:slf4j-simple:1.7.30"
             spotbugs "org.ow2.asm:asm:8.0.1"
         }  
     }  
-    ```
-    Spotbugs 4.0.2 depends on slf4j-simple 1.8.0-beta4, but dependency-management plugin could lower
-    slf4-api version too and so you must choose slf4j-simple version accordingly.               
-
-### Slf4j
-
-There were [some problems](https://github.com/xvik/gradle-quality-plugin/issues/20) 
-due to sl4j version used by spotbugs plugin mismatch with gradle's slf4j.
-
-!!! note ""
-    As in ASM case above the problem could be caused by dependency-management plugin (or something 
-    affecting all configurations). 
-
-To workaround this, plugin forces the same version of "sl4j-simple" in "spotbugs" configuration
-as sl4j in gradle. Like this:
-
-```groovy
-afterEvaluate {
-    dependencies {
-        spotbugs "com.github.spotbugs:spotbugs:${quality.spotbugsVersion}"
-        spotbugs "org.slf4j:slf4j-simple:1.7.30"
-    }  
-} 
-```
-
-Spotbugs 4.0.2 depends on slf4j-simple 1.8.0-beta4, but you can specify lower version if required
-(for compatibility).
+    ```               
 
 ### Build dashboard plugin
 
