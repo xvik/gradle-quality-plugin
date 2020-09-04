@@ -1,5 +1,12 @@
-* Update codenarc 1.5 -> 1.6.1
-* Update pmd 6.23 -> 6.27
+* Update codenarc 1.5 -> 1.6.1 (groovy 3 support)
+* Update pmd 6.23 -> 6.27 (java 15 support, text block syntax)
+* Update checkstyle 8.32 -> 8.36 (java 14 records support, text block syntax)
+* Update checkstyle config
+    * Add [NoCodeInFile](https://checkstyle.sourceforge.io/config_misc.html#NoCodeInFile)
+    * Add [IllegalIdentifierName](https://checkstyle.sourceforge.io/config_naming.html#IllegalIdentifierName)
+    * Add [RecordComponentNumber](https://checkstyle.sourceforge.io/config_sizes.html#RecordComponentNumber)
+    * Add [RecordTypeParameterName](https://checkstyle.sourceforge.io/config_naming.html#RecordTypeParameterName)
+    * Add [PatternVariableName](https://checkstyle.sourceforge.io/config_naming.html#PatternVariableName)
 
 ### 4.3.0 (2020-05-13)
 * Update spotbugs plugin to 4.1.0 (#26)

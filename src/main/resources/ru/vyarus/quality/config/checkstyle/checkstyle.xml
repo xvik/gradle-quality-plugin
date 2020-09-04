@@ -180,6 +180,7 @@
         <module name="DescendantToken"/>
         <!--<module name="FinalParameters"/>-->  <!-- DISABLED in favor of less restricted ParameterAssignment -->
         <module name="Indentation"/>
+        <module name="NoCodeInFile"/>
         <module name="OuterTypeFilename"/>
         <!--<module name="OrderedProperties"/>-->
         <!--<module name="TodoComment"/>-->
@@ -203,6 +204,7 @@
             <property name="format" value="^[A-Z]*$"/>
         </module>
         <module name="ConstantName"/>
+        <module name="IllegalIdentifierName"/>
         <module name="InterfaceTypeParameterName">
             <property name="format" value="^[A-Z]*$"/>
         </module>
@@ -216,6 +218,8 @@
         </module>
         <module name="PackageName"/>
         <module name="ParameterName"/>
+        <module name="PatternVariableName"/>
+        <module name="RecordTypeParameterName"/>
         <module name="StaticVariableName"/>
         <module name="TypeName"/>
 
@@ -235,6 +239,7 @@
         <module name="MethodLength"/>
         <module name="OuterTypeNumber"/>
         <module name="ParameterNumber"/>
+        <module name="RecordComponentNumber"/>
 
 
         <!-- Whitespace (http://checkstyle.sourceforge.net/config_whitespace.html) -->
