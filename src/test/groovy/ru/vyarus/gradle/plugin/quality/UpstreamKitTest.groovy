@@ -44,7 +44,7 @@ class UpstreamKitTest extends AbstractKitTest {
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('SpotBugs reported failures')
+        result.output.contains('SpotBugs violations were found')
         result.output.contains('PMD rule violations were found')
     }
 
@@ -81,7 +81,7 @@ class UpstreamKitTest extends AbstractKitTest {
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('CodeNarc rule violations were found')
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('SpotBugs reported failures')
+        result.output.contains('SpotBugs violations were found')
         result.output.contains('PMD rule violations were found')
     }
 }

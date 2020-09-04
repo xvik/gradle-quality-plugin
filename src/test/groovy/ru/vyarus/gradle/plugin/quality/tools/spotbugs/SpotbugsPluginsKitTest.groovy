@@ -40,7 +40,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.output.contains('SpotBugs reported failures')
+        result.output.contains('SpotBugs violations were found')
     }
 
     def "Check spotbugs plugins 2"() {
@@ -73,7 +73,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.output.contains('SpotBugs reported failures')
+        result.output.contains('SpotBugs violations were found')
     }
 
     def "Check spotbugs plugins shortcut syntax"() {
@@ -104,7 +104,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        result.output.contains('SpotBugs reported failures')
+        result.output.contains('SpotBugs violations were found')
 
 //        cleanup:
 //        new File("spotbugs.xml") << file('build/reports/spotbugs/main.xml').text
