@@ -24,7 +24,7 @@ class QualityExtension {
     String checkstyleVersion = '8.32'
     String pmdVersion = '6.23.0'
     String spotbugsVersion = '4.0.3'
-    String codenarcVersion = '1.5'
+    String codenarcVersion = '1.6.1'
 
     /**
      * Sets AnimalSniffer version.

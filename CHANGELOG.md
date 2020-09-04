@@ -1,3 +1,5 @@
+* Update codenarc 1.5 -> 1.6.1
+
 ### 4.3.0 (2020-05-13)
 * Update spotbugs plugin to 4.1.0 (#26)
     - Fixes gradle 6.4 compatibility.
