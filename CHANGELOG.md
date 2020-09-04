@@ -1,4 +1,5 @@
 * Update codenarc 1.5 -> 1.6.1
+* Update pmd 6.23 -> 6.27
 
 ### 4.3.0 (2020-05-13)
 * Update spotbugs plugin to 4.1.0 (#26)
