@@ -255,7 +255,7 @@ But will work like this:
 
 !!! success
     ```groovy
-    afterEvaluation {
+    afterEvaluate {
         checkstyle { // will be applied after plugin and override configuration
             ...
         }
