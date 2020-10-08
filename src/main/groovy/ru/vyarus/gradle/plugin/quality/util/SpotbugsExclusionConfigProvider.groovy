@@ -1,9 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.util
 
-import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
 import org.gradle.api.file.RegularFile
-import org.slf4j.Logger
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
 import ru.vyarus.gradle.plugin.quality.QualityExtension
 
@@ -18,6 +16,11 @@ import java.util.concurrent.Callable
  * One side effect of this shift caused by clean task which removes temporary copied configs, so we have now to
  * always check for already generated config existence and re-create it if removed. Overall, callback tries to
  * avoid redundant actions as much as possible.
+ * <p>
+ * Temporary exclusion file is generated ahead of time (when it can't be checked for sure) because
+ * it is called too early (so rely only on specified exclusions and not on how they apply).
+ * In warse case temporary exclusion would be a copy of default exclusion file (if no actual exclusions
+ * performed).
  *
  * @author Vyacheslav Rusakov
  * @since 12.05.2020
@@ -25,19 +28,17 @@ import java.util.concurrent.Callable
 @CompileStatic
 class SpotbugsExclusionConfigProvider implements Callable<RegularFile> {
 
+    String taskName
     ConfigLoader loader
     QualityExtension extension
-    SpotBugsTask task
-    Logger logger
 
     // required to avoid duplicate calculations (because provider would be called multiple times)
     File computed
 
-    SpotbugsExclusionConfigProvider(ConfigLoader loader, QualityExtension extension, SpotBugsTask task, Logger logger) {
+    SpotbugsExclusionConfigProvider(String taskName, ConfigLoader loader, QualityExtension extension) {
+        this.taskName = taskName
         this.loader = loader
         this.extension = extension
-        this.task = task
-        this.logger = logger
     }
 
     @Override
@@ -45,15 +46,11 @@ class SpotbugsExclusionConfigProvider implements Callable<RegularFile> {
         // exists condition required because of possible clean task which will remove prepared
         // default file and so it must be created again (damn props!!!)
         if (computed == null || !computed.exists()) {
-            File excludeFile = loader.resolveSpotbugsExclude()
-            // spotbugs does not support exclude of SourceTask, so appending excluded classes to
-            // xml exclude filter
-            // for custom rank appending extra rank exclusion rule
-            if (extension.exclude || extension.excludeSources || extension.spotbugsMaxRank < 20) {
-                excludeFile = SpotbugsUtils.replaceExcludeFilter(task, excludeFile, extension, logger)
-            }
-
-            computed = excludeFile
+            // if any exclusions configured, tmp file would be created ahead of time (most likely it would be required)
+            computed = SpotbugsUtils.excludesFile(
+                    // NOTE: here we can't check if task has pre-configured custom file because it would lock property
+                    // so have to always use default file
+                    taskName, extension, loader.resolveSpotbugsExclude(true))
         }
         return { -> computed } as RegularFile
     }

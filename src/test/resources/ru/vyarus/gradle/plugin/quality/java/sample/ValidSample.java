@@ -1,0 +1,8 @@
+package sample;
+
+public class ValidSample {
+
+    public static void main(String[] args) {
+        System.out.println("Hello world");
+    }
+}

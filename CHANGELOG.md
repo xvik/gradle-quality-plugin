@@ -8,7 +8,8 @@
     * Add [RecordTypeParameterName](https://checkstyle.sourceforge.io/config_naming.html#RecordTypeParameterName)
     * Add [PatternVariableName](https://checkstyle.sourceforge.io/config_naming.html#PatternVariableName)
 * Update spotbugs 4.0.3 -> 4.1.2
-* Update spotbugs plugin 4.1.0 -> 4.5.0    
+* Update spotbugs plugin 4.1.0 -> 4.5.0   
+* Fix exclusions apply for spotbugs, support apt-generated sources exclusion (#27)   
 
 ### 4.3.0 (2020-05-13)
 * Update spotbugs plugin to 4.1.0 (#26)

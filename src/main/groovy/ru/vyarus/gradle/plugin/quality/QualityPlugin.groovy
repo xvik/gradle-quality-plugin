@@ -202,8 +202,6 @@ class QualityPlugin implements Plugin<Project> {
                     ignoreFailures = !extension.strict
                     effort = extension.spotbugsEffort
                     reportLevel = extension.spotbugsLevel
-                    // note: default excludeFilter is not set not set in extension, instead it is directly
-                    // set to all tasks. If you try to set it in extension, value will be ignored
 
                     // in gradle 5 default 1g was changed and so spotbugs fails on large projects (recover behaviour),
                     // but not if value set manually
@@ -218,9 +216,15 @@ class QualityPlugin implements Plugin<Project> {
                 }
 
                 tasks.withType(SpotBugsTask).configureEach { task ->
+                    doFirst {
+                        configLoader.resolveSpotbugsExclude()
+                        // it is not possible to substitute filter file here (due to locked Property)
+                        // but possible to update already configured file (it must be already a temp file here)
+                        SpotbugsUtils.replaceExcludeFilter(task, extension, logger)
+                    }
                     // have to use this way instead of doFirst hook, because nothing else will work (damn props!)
                     excludeFilter.set(project.provider(new SpotbugsExclusionConfigProvider(
-                            configLoader, extension, task, logger
+                            task.name, configLoader, extension
                     )))
                     reports {
                         xml {

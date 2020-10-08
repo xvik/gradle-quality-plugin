@@ -6,6 +6,7 @@ import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlUtil
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.compile.JavaCompile
 import org.slf4j.Logger
 import ru.vyarus.gradle.plugin.quality.QualityExtension
 
@@ -33,34 +34,70 @@ class SpotbugsUtils {
     }
 
     /**
-     * Replace exclusion file with extended one when exclusions are required.
+     * Spotbugs task properties may be configured only once. At that time it is too early to compute exact file,
+     * but we can assume that if excludes configured then temp file would be required. So preparing temp file
+     * ahead of time. Later, it would be filled with actual exclusions (if anything matches).
+     *
+     * @param taskName spotbugs task name
+     * @param extension extension
+     * @param configured configured exclusions file (most likely default one)
+     * @return excludes file for task configuration
+     */
+    @SuppressWarnings('FileCreateTempFile')
+    static File excludesFile(String taskName, QualityExtension extension, File configured) {
+        // spotbugs does not support exclude of SourceTask, so appending excluded classes to
+        // xml exclude filter
+        // for custom rank appending extra rank exclusion rule
+        if (extension.exclude || extension.excludeSources || extension.spotbugsMaxRank < MAX_RANK) {
+            File tmp = File.createTempFile(taskName + '-extended-exclude', '.xml')
+            tmp.deleteOnExit()
+            tmp << configured.text
+            return tmp
+        }
+        return configured
+    }
+
+    /**
+     * Extend exclusions filter file with when exclusions are required. Note: it is assumed that tmp file was already
+     * created (because it is impossible to configure different file on this stage).
+     * <p>
+     * Apt sources are also counted (to be able to ignore apt sources).
      *
      * @param task spotbugs task
      * @param extension extension instance
      * @param logger project logger for error messages
      */
     @CompileStatic(TypeCheckingMode.SKIP)
-    static File replaceExcludeFilter(SpotBugsTask task, File excludeFile, QualityExtension extension, Logger logger) {
+    static void replaceExcludeFilter(SpotBugsTask task, QualityExtension extension, Logger logger) {
         // setting means max allowed rank, but filter evicts all ranks >= specified (so +1)
         Integer rank = extension.spotbugsMaxRank < MAX_RANK ? extension.spotbugsMaxRank + 1 : null
-        // NOTE no support for new classDirs property!
+
+        SourceSet set = FileUtils.findMatchingSet('spotbugs', task.name, extension.sourceSets)
+        if (!set) {
+            logger.error("[SpotBugs] Failed to find source set for task ${task.name}: exclusions " +
+                    ' will not be applied')
+            return
+        }
+        // apt is a special dir, not mentioned in sources!
+        File aptGenerated = (task.project.tasks.findByName(set.compileJavaTaskName) as JavaCompile)
+                .options.annotationProcessorGeneratedSourcesDirectory
+
         Set<File> ignored = FileUtils.resolveIgnoredFiles(task.sourceDirs.asFileTree, extension.exclude)
+        ignored.addAll(FileUtils.resolveIgnoredFiles(task.project.fileTree(aptGenerated), extension.exclude))
         if (extension.excludeSources) {
             // add directly excluded files
             ignored.addAll(extension.excludeSources.asFileTree.matching { include '**/*.java' }.files)
         }
         if (!ignored && !rank) {
             // no custom excludes required
-            return excludeFile
-        }
-        SourceSet set = FileUtils.findMatchingSet('spotbugs', task.name, extension.sourceSets)
-        if (!set) {
-            logger.error("[SpotBugs] Failed to find source set for task ${task.name}: exclusions " +
-                    ' will not be applied')
-            return excludeFile
+            return
         }
 
-        return mergeExcludes(excludeFile, ignored, set.allJava.srcDirs, rank)
+        Collection<File> sources = []
+        sources.addAll(set.allJava.srcDirs)
+        sources.add(aptGenerated)
+
+        mergeExcludes(task.excludeFilter.get().asFile, ignored, sources, rank)
     }
 
     /**
@@ -69,13 +106,13 @@ class SpotbugsUtils {
      * <p>
      * Also, rank-based filtering is only possible through exclusions file.
      *
-     * @param src original excludes file (default of user defined)
+     * @param exclusions file to be extended (already tmp file)
      * @param exclude files to exclude (may be empty)
      * @param roots source directories (to resolve class files)
      * @param rank custom rank value (optional)
      */
     @SuppressWarnings('FileCreateTempFile')
-    static File mergeExcludes(File src, Collection<File> exclude, Collection<File> roots, Integer rank = null) {
+    static void mergeExcludes(File src, Collection<File> exclude, Collection<File> roots, Integer rank = null) {
         Node xml = new XmlParser().parse(src)
 
         exclude.each {
@@ -89,10 +126,9 @@ class SpotbugsUtils {
             xml.appendNode(MATCH).appendNode('Rank', ['value': rank])
         }
 
-        File tmp = File.createTempFile('spotbugs-extended-exclude', '.xml')
-        tmp.deleteOnExit()
-        tmp.withWriter { XmlUtil.serialize(xml, it) }
-        return tmp
+        Writer writer = src.newWriter()
+        XmlUtil.serialize(xml, writer)
+        writer.flush()
     }
 
     /**

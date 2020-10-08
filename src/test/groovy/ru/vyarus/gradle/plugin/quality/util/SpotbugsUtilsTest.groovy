@@ -3,6 +3,8 @@ package ru.vyarus.gradle.plugin.quality.util
 import org.gradle.api.Project
 import ru.vyarus.gradle.plugin.quality.AbstractTest
 
+import java.nio.file.Files
+
 import static ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils.mergeExcludes
 
 /**
@@ -137,10 +139,15 @@ class SpotbugsUtilsTest extends AbstractTest {
     }
 
     private String merge(Collection<File> exclude, Collection<File> roots, Integer rank = null) {
-        return mergeExcludes(new File(getClass().getResource('/ru/vyarus/quality/config/spotbugs/exclude.xml').toURI()),
+        File tmp = Files.createTempFile("test", "spotbugs").toFile()
+        tmp.text = new File(getClass().getResource('/ru/vyarus/quality/config/spotbugs/exclude.xml').toURI()).text
+        mergeExcludes(tmp,
                 exclude,  roots, rank)
-                .text.replace('\r', '')
+
+        def res = tmp.text.replace('\r', '')
                 // on java 11 groovy inserts blank lines between tags
                 .replaceAll('\n {1,}\n', '\n')
+        tmp.delete()
+        return res
     }
 }
