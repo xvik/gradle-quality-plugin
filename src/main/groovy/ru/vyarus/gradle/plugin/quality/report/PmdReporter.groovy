@@ -17,7 +17,7 @@ class PmdReporter implements Reporter<Pmd> {
     @CompileStatic(TypeCheckingMode.SKIP)
     void report(Pmd task, String type) {
         File reportFile = task.reports.xml.destination
-        if (!reportFile.exists()) {
+        if (!reportFile.exists() || reportFile.length() == 0) {
             return
         }
         Node result = new XmlParser().parse(reportFile)

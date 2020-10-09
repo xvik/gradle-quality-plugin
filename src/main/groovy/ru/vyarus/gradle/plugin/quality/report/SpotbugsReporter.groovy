@@ -29,7 +29,7 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
     @CompileStatic(TypeCheckingMode.SKIP)
     void report(SpotBugsTask task, String type) {
         File reportFile = task.reports.findByName(XML)?.destination
-        if (reportFile == null || !reportFile.exists()) {
+        if (reportFile == null || !reportFile.exists() || reportFile.length() == 0) {
             return
         }
         Node result = new XmlParser().parse(reportFile)

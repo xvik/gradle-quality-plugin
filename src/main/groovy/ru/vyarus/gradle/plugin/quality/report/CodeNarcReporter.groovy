@@ -20,7 +20,7 @@ class CodeNarcReporter implements Reporter<CodeNarc> {
     @CompileStatic(TypeCheckingMode.SKIP)
     void report(CodeNarc task, String type) {
         File reportFile = task.reports.xml.destination
-        if (!reportFile.exists()) {
+        if (!reportFile.exists() || reportFile.length() == 0) {
             return
         }
         Node result = new XmlParser().parse(reportFile)
