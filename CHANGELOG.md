@@ -9,7 +9,9 @@
     * Add [PatternVariableName](https://checkstyle.sourceforge.io/config_naming.html#PatternVariableName)
 * Update spotbugs 4.0.3 -> 4.1.3
 * Update spotbugs plugin 4.1.0 -> 4.5.1   
-* Fix exclusions apply for spotbugs, support apt-generated sources exclusion (#27)   
+* Fix exclusions apply for spotbugs (#27)
+* Automatically exclude apt-generated sources for spotbugs 
+  (apt processor(s) assumed to be specified with annotationProcessor configuration)   
 
 ### 4.3.0 (2020-05-13)
 * Update spotbugs plugin to 4.1.0 (#26)

@@ -38,18 +38,21 @@ class SpotbugsUtils {
      * but we can assume that if excludes configured then temp file would be required. So preparing temp file
      * ahead of time. Later, it would be filled with actual exclusions (if anything matches).
      *
+     * @param task target task
      * @param taskName spotbugs task name
      * @param extension extension
      * @param configured configured exclusions file (most likely default one)
      * @return excludes file for task configuration
      */
     @SuppressWarnings('FileCreateTempFile')
-    static File excludesFile(String taskName, QualityExtension extension, File configured) {
+    static File excludesFile(SpotBugsTask task, QualityExtension extension, File configured) {
+        Project project = task.project
         // spotbugs does not support exclude of SourceTask, so appending excluded classes to
         // xml exclude filter
         // for custom rank appending extra rank exclusion rule
-        if (extension.exclude || extension.excludeSources || extension.spotbugsMaxRank < MAX_RANK) {
-            File tmp = File.createTempFile(taskName + '-extended-exclude', '.xml')
+        if (extension.exclude || extension.excludeSources || extension.spotbugsMaxRank < MAX_RANK
+                || !task.project.configurations.findByName('annotationProcessor').empty) {
+            File tmp = File.createTempFile("$project.name-$task.name-excludes", '.xml')
             tmp.deleteOnExit()
             tmp << configured.text
             return tmp
@@ -83,7 +86,8 @@ class SpotbugsUtils {
                 .options.annotationProcessorGeneratedSourcesDirectory
 
         Set<File> ignored = FileUtils.resolveIgnoredFiles(task.sourceDirs.asFileTree, extension.exclude)
-        ignored.addAll(FileUtils.resolveIgnoredFiles(task.project.fileTree(aptGenerated), extension.exclude))
+        // exclude all apt-generated files
+        ignored.addAll(task.project.fileTree(aptGenerated).filter { it.path.endsWith('.java') }.files)
         if (extension.excludeSources) {
             // add directly excluded files
             ignored.addAll(extension.excludeSources.asFileTree.matching { include '**/*.java' }.files)

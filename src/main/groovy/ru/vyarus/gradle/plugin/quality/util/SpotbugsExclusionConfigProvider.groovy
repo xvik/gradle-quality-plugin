@@ -1,5 +1,6 @@
 package ru.vyarus.gradle.plugin.quality.util
 
+import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
 import org.gradle.api.file.RegularFile
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
@@ -28,15 +29,15 @@ import java.util.concurrent.Callable
 @CompileStatic
 class SpotbugsExclusionConfigProvider implements Callable<RegularFile> {
 
-    String taskName
+    SpotBugsTask task
     ConfigLoader loader
     QualityExtension extension
 
     // required to avoid duplicate calculations (because provider would be called multiple times)
     File computed
 
-    SpotbugsExclusionConfigProvider(String taskName, ConfigLoader loader, QualityExtension extension) {
-        this.taskName = taskName
+    SpotbugsExclusionConfigProvider(SpotBugsTask task, ConfigLoader loader, QualityExtension extension) {
+        this.task = task
         this.loader = loader
         this.extension = extension
     }
@@ -50,7 +51,7 @@ class SpotbugsExclusionConfigProvider implements Callable<RegularFile> {
             computed = SpotbugsUtils.excludesFile(
                     // NOTE: here we can't check if task has pre-configured custom file because it would lock property
                     // so have to always use default file
-                    taskName, extension, loader.resolveSpotbugsExclude(true))
+                    task, extension, loader.resolveSpotbugsExclude(true))
         }
         return { -> computed } as RegularFile
     }

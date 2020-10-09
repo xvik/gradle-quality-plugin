@@ -224,7 +224,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                     // have to use this way instead of doFirst hook, because nothing else will work (damn props!)
                     excludeFilter.set(project.provider(new SpotbugsExclusionConfigProvider(
-                            task.name, configLoader, extension
+                            task, configLoader, extension
                     )))
                     reports {
                         xml {
