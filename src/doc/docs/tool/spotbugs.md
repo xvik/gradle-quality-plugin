@@ -91,6 +91,43 @@ Or you can use annotations. SpotBugs use custom annotations and so you need to a
     Spotbugs can't use default `@SuppressWarnings` annotation because it's a source annotation
     and not available in bytecode. 
 
+## Excludes
+
+Spotbugs is the only quality tool which works on classes rather than on sources. By default,
+spotbugs task configured with all compiles classes which may include auto-generated sources too
+(more than just a source set).
+
+Generic [exclusions mechanism](../guide/exclusion.md) configures source exclusions and,
+in order to properly apply these exclusions to spotbugs, quality plugin generates extended
+exclusions (xml) file. So spotbugs should (seem to) work the same as other plugins.
+
+!!! note
+    Apt-generated sources excluded automatically (if you use gradle's `annotationProcessor` configuration).
+    
+!!! tip
+    If you need to customize default exclusions file, just put custom file in [the configs
+    directory](../task/config.md) and plugin will extend it with additional excludes if required.
+    
+    But do not try to set custom excludes file directly into spotbugs task!
+
+### Manual exclusion
+
+If, for some reason, exclusions, configured in quality extension not applied (for example, due to implementation bug), 
+you can always put exclusions directly into exclusions filter file (tip above) or filter compiled classes:
+
+```groovy
+afterEvaluate {
+    tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
+        classes = classes.filter { 
+            !it.path.contains('com/mycompany/serialize/protobuf/gen/') 
+        }
+    }
+}
+```
+
+Pay attention that this trick filters compiled files (.class), not sources! Whatever custom 
+filtering logic could be used.
+
 ## Plugins
 
 You may add additional spotbugs checks by declaring [spotbugs plugins](https://spotbugs.readthedocs.io/en/latest/gradle.html#introduce-spotbugs-plugin).
