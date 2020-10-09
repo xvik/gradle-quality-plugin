@@ -108,7 +108,7 @@ exclusions (xml) file. So spotbugs should (seem to) work the same as other plugi
     If you need to customize default exclusions file, just put custom file in [the configs
     directory](../task/config.md) and plugin will extend it with additional excludes if required.
     
-    But do not try to set custom excludes file directly into spotbugs task!
+    But do not set custom excludes file directly (with `spotbugs.excludeFilter`)!
 
 ### Manual exclusion
 
