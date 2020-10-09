@@ -17,6 +17,7 @@
     <!-- Convention (http://codenarc.sourceforge.net/codenarc-rules-convention.html) -->
     <ruleset-ref path='rulesets/convention.xml'>
         <exclude name="ImplicitClosureParameter"/>
+        <exclude name="ImplicitReturnStatement"/>
         <exclude name="NoJavaUtilDate"/>
     </ruleset-ref>
 
