@@ -115,7 +115,6 @@ class SpotbugsUtils {
      * @param roots source directories (to resolve class files)
      * @param rank custom rank value (optional)
      */
-    @SuppressWarnings('FileCreateTempFile')
     static void mergeExcludes(File src, Collection<File> exclude, Collection<File> roots, Integer rank = null) {
         Node xml = new XmlParser().parse(src)
 

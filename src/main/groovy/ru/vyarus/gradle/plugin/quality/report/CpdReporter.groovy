@@ -63,7 +63,7 @@ class CpdReporter implements Reporter<SourceTask>, HtmlReportGenerator<SourceTas
                     msg << "${String.format(nbFmt, codePos++)}$CODE_INDENT    $it$NL"
                 }
 
-                task.logger.error "${msg.toString()}$NL"
+                task.logger.error "$msg$NL"
             }
             // html report will be generated before console reporting
             String htmlReportUrl = ReportUtils.toConsoleLink(task.project

@@ -1,4 +1,4 @@
-* Update codenarc 1.5 -> 1.6.1 (groovy 3 support)
+* Update codenarc 1.5 -> 2.0.0 (groovy 3 and java 14 support, requires java 7)
 * Update codenarc config:
     * Disable new rule [ImplicitReturnStatement](https://codenarc.org/codenarc-rules-convention.html#implicitreturnstatement-rule)
         because it will cause too many warnings on typical projects and sometimes don't see existing return
