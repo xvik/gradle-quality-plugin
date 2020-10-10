@@ -11,7 +11,7 @@ and [gradle plugins portal](https://plugins.gradle.org/plugin/ru.vyarus.quality)
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '4.3.0'
+    id 'ru.vyarus.quality' version '4.4.0'
 }
 ```
 
@@ -24,14 +24,14 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:4.3.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:4.4.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
 ```
 
 !!! warning
-    Plugin must be applied after `java`, `java-library` or `groovy` plugins. Otherwise it will do nothing.
+    Plugin must be applied after `java`, `java-library` or `groovy` plugins. Otherwise, it will do nothing.
 
 !!! note
     Requires java 8 and gradle >= 5.6

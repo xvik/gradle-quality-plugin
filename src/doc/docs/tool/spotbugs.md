@@ -13,7 +13,7 @@
     
 !!! warning
     In contrast to other plugins, [spotbugs plugin](http://spotbugs.readthedocs.io/en/latest/gradle.html) is not bundled with gradle,
-    but quality plugin will bring it as a dependency (v 4.1.0) and activate automatically.    
+    but quality plugin will bring it as a dependency (v 4.5.1) and activate automatically.    
     If you will activate newer spotbugs plugin manually [behaviour may change](#spotbugs-plugin-specifics).
     
 By default, plugin activates if java sources available (`src/main/java`).    
@@ -56,7 +56,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    spotbugsVersion = '4.0.3'
+    spotbugsVersion = '4.1.3'
     spotbugs = true // false to disable automatic plugin activation
     spotbugsEffort = 'max'  // min, less, more or max
     spotbugsLevel = 'medium' // low, medium, high

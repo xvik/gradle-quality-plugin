@@ -1,3 +1,22 @@
+### [4.4.0](http://xvik.github.io/gradle-quality-plugin/4.4.0) (2020-10-11)
+* Update codenarc 1.5 -> 2.0.0 (groovy 3 and java 14 support, requires java 7)
+* Update codenarc config:
+    * Disable new rule [ImplicitReturnStatement](https://codenarc.org/codenarc-rules-convention.html#implicitreturnstatement-rule)
+        because it will cause too many warnings on typical projects and sometimes don't see existing return
+* Update pmd 6.23 -> 6.28 (java 15 support, text block syntax)
+* Update checkstyle 8.32 -> 8.36.2 (java 14 records support, text block syntax)
+* Update checkstyle config
+    * Add [NoCodeInFile](https://checkstyle.sourceforge.io/config_misc.html#NoCodeInFile)
+    * Add [IllegalIdentifierName](https://checkstyle.sourceforge.io/config_naming.html#IllegalIdentifierName)
+    * Add [RecordComponentNumber](https://checkstyle.sourceforge.io/config_sizes.html#RecordComponentNumber)
+    * Add [RecordTypeParameterName](https://checkstyle.sourceforge.io/config_naming.html#RecordTypeParameterName)
+    * Add [PatternVariableName](https://checkstyle.sourceforge.io/config_naming.html#PatternVariableName)
+* Update spotbugs 4.0.3 -> 4.1.3
+* Update spotbugs plugin 4.1.0 -> 4.5.1   
+* Fix exclusions apply for spotbugs (#27)
+* Automatically exclude apt-generated sources for spotbugs 
+  (apt processor(s) assumed to be specified with annotationProcessor configuration)   
+
 ### [4.3.0](http://xvik.github.io/gradle-quality-plugin/4.3.0) (2020-05-13)
 * Update spotbugs plugin to 4.1.0 (#26)
     - Fixes gradle 6.4 compatibility.
