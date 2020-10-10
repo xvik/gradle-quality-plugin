@@ -14,7 +14,7 @@ and [CodeNarc](http://codenarc.sourceforge.net/).
 Plugin implements unified console output for all quality plugins, which greatly simplifies developer workflow: 
 only console required for working with violations and makes it feel the same as java compiler errors.
 
-For example, in InteliJidea it would look like: 
+For example, in IntelliJ Idea it would look like: 
 ![](img/in-action.gif)
 
 Features:
