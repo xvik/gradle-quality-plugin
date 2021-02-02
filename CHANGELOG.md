@@ -5,6 +5,10 @@
     - Add [RecordComponentName](https://checkstyle.sourceforge.io/config_naming.html#RecordComponentName)
     - Add [JavadocMissingLeadingAsterisk](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocMissingLeadingAsterisk)
     - Add [LambdaBodyLength](https://checkstyle.sourceforge.io/config_sizes.html#LambdaBodyLength)
+* Update pmd 6.28 -> 6.31    
+* Update pmd config:
+    - Remove [AvoidInstantiatingObjectsInLoops](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_performance.html#avoidinstantiatingobjectsinloops)
+        because its useless most of the time 
 
 ### 4.4.0 (2020-10-11)
 * Update codenarc 1.5 -> 2.0.0 (groovy 3 and java 14 support, requires java 7)
