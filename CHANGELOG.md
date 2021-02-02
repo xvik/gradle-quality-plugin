@@ -9,6 +9,12 @@
 * Update pmd config:
     - Remove [AvoidInstantiatingObjectsInLoops](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_performance.html#avoidinstantiatingobjectsinloops)
         because its useless most of the time
+    - Remove [AssignmentInOperand](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_errorprone.html#assignmentinoperand)
+        because its quite common technique 
+    - Remove [AvoidUsingVolatile](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_multithreading.html#avoidusingvolatile)
+        because it's not an issue but attention pointer
+    - Update [NcssCount](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_design.html#ncsscount)
+        methodReportLevel from 30 to 40, classReportLevel from 300 to 500
 * Update spotbugs 4.1.3 -> 4.2.0  
 * Update spotbugs plugin 4.5.1 -> 4.6.0
 
