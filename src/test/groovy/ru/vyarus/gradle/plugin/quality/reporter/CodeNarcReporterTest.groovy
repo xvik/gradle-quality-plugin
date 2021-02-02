@@ -36,7 +36,7 @@ class CodeNarcReporterTest extends AbstractKitTest {
 
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
-        error.replaceAll("\r", '').contains """
+        unifyString(error).contains """
 28 (0 / 10 / 18) CodeNarc violations were found in 2 files
 
 [Comments | ClassJavadoc] sample.(GSample.groovy:3)  [priority 2]

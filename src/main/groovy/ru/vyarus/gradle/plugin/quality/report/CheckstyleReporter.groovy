@@ -33,7 +33,7 @@ class CheckstyleReporter implements Reporter<Checkstyle> {
         int cnt = result.file.error.size()
         if (cnt > 0) {
             int filesCnt = result.file.findAll { it.error.size() > 0 }.size()
-            task.logger.error "$NL$cnt Checkstyle rule violations were found in $filesCnt files$NL"
+            task.logger.error "$NO_TRIM$NL$cnt Checkstyle rule violations were found in $filesCnt files$NL$NO_TRIM"
 
             result.file.each { file ->
                 String filePath = file.@name
@@ -47,7 +47,7 @@ class CheckstyleReporter implements Reporter<Checkstyle> {
                     // part in braces recognized by intellij IDEA and shown as link
                     task.logger.error "[${group.capitalize()} | $check] $name.($sourceFile:$srcPointer)" +
                             "$NL  ${it.@message}" +
-                            "$NL  http://checkstyle.sourceforge.io/config_${group}.html#$check$NL"
+                            "$NL  http://checkstyle.sourceforge.io/config_${group}.html#$check$NL$NO_TRIM"
                 }
             }
         }

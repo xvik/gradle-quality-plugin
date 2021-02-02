@@ -40,7 +40,8 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
             int p1 = summary.@priority_1 == null ? 0 : summary.@priority_1 as Integer
             int p2 = summary.@priority_2 == null ? 0 : summary.@priority_2 as Integer
             int p3 = summary.@priority_3 == null ? 0 : summary.@priority_3 as Integer
-            task.logger.error "$NL$cnt ($p1 / $p2 / $p3) SpotBugs violations were found in ${fileCnt} files$NL"
+            task.logger.error "$NO_TRIM$NL$cnt ($p1 / $p2 / $p3) SpotBugs violations were found in ${fileCnt} " +
+                    "files$NL$NO_TRIM"
 
             Map<String, String> desc = buildDescription(result)
             Map<String, String> cat = buildCategories(result)
@@ -59,7 +60,7 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
                 task.logger.error "[${plugin}${cat[bug.@category]} | ${bugType}] $pkg(${cls}:${srcPosition})  " +
                         "[priority ${bug.@priority} / rank ${bug.@rank}]" +
                         "$NL\t>> ${msg.text()}" +
-                        "$NL  ${description}$NL"
+                        "$NL  ${description}$NL$NO_TRIM"
             }
             // html report will be generated before console reporting
             String htmlReportUrl = ReportUtils.toConsoleLink(task.project
@@ -96,7 +97,7 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
             //remove html tags
                     .replaceAll('<(.|\n)*?>', '')
             // remove empty lines after tags remove (only one separator line remain)
-                    .replaceAll('([ \t]*\n){3,}', "$NL$NL")
+                    .replaceAll('([ \t]*\n){3,}', "$NL$NO_TRIM$NL")
             // reduce left indents
                     .replaceAll('\n\t+', "$NL  ").replaceAll(' {2,}', '  ')
             // indent all not indented lines

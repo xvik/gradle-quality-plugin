@@ -1,3 +1,6 @@
+* Fix report separating lines remove in intellij IDEA output (appears when gradle output recognized as junit test output).
+  Extra zero-width space symbol used to prevent trims.
+
 ### 4.4.0 (2020-10-11)
 * Update codenarc 1.5 -> 2.0.0 (groovy 3 and java 14 support, requires java 7)
 * Update codenarc config:

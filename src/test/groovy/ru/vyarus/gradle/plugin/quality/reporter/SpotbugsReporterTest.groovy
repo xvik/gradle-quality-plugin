@@ -37,7 +37,7 @@ class SpotbugsReporterTest extends AbstractKitTest {
 
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
-        error.replaceAll("\r", '').contains """
+        unifyString(error).contains """
 2 (0 / 2 / 0) SpotBugs violations were found in 2 files
 
 [Performance | URF_UNREAD_FIELD] sample.(Sample.java:11)  [priority 2 / rank 18]
@@ -87,7 +87,7 @@ SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir.root)}
 
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
-        error.replaceAll("\r", '').contains """
+        unifyString(error).contains """
 4 (0 / 4 / 0) SpotBugs violations were found in 2 files
 
 [fb-contrib project | Correctness | FCBL_FIELD_COULD_BE_LOCAL] sample.(Sample.java:11)  [priority 2 / rank 7]

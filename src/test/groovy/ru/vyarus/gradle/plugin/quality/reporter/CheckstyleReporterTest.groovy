@@ -41,7 +41,7 @@ class CheckstyleReporterTest extends AbstractKitTest {
 
         then: "output valid"
         result.task(':testReport').outcome == TaskOutcome.SUCCESS
-       error.replaceAll("\r", '').contains """
+        unifyString(error).contains """
 4 Checkstyle rule violations were found in 2 files
 
 [Misc | NewlineAtEndOfFile] sample.(Sample.java:0)

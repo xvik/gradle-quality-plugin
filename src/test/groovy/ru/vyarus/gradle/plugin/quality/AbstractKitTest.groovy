@@ -4,6 +4,7 @@ import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import ru.vyarus.gradle.plugin.quality.report.Reporter
 import spock.lang.Specification
 
 /**
@@ -77,5 +78,13 @@ abstract class AbstractKitTest extends Specification {
 
     BuildResult runFailedVer(String gradleVersion, String... commands) {
         return gradle(commands).withGradleVersion(gradleVersion).buildAndFail()
+    }
+
+    protected String unifyString(String input) {
+        return input
+                // cleanup win line break for simpler comparisons
+                .replaceAll("\r", '')
+                // remove invisible symbols to simplify comparison
+                .replaceAll(Reporter.NO_TRIM, '')
     }
 }

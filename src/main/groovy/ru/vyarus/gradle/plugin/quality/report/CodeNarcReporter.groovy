@@ -31,7 +31,8 @@ class CodeNarcReporter implements Reporter<CodeNarc> {
             Integer p2 = summary.@priority2 as Integer
             Integer p3 = summary.@priority3 as Integer
             Integer count = p1 + p2 + p3
-            task.logger.error "$NL$count ($p1 / $p2 / $p3) CodeNarc violations were found in ${fileCnt} files$NL"
+            task.logger.error "$NO_TRIM$NL$count ($p1 / $p2 / $p3) CodeNarc violations were found in ${fileCnt} " +
+                    "files$NL$NO_TRIM"
 
             Map<String, String> desc = [:]
             result.Rules.Rule.each {
@@ -58,7 +59,7 @@ class CodeNarcReporter implements Reporter<CodeNarc> {
                                 "$NL  ${message}" +
                                 "$NL  ${desc[rule]}" +
                                 "$NL  https://codenarc.github.io/CodeNarc/codenarc-rules-" +
-                                "${group.toLowerCase()}.html#${rule.toLowerCase()}-rule$NL"
+                                "${group.toLowerCase()}.html#${rule.toLowerCase()}-rule$NL$NO_TRIM"
                     }
                 }
             }
