@@ -148,6 +148,7 @@
         <module name="JavadocBlockTagLocation"/>
         <module name="JavadocContentLocation"/>
         <!--<module name="JavadocMethod"/>-->
+        <module name="JavadocMissingLeadingAsterisk"/>
         <module name="JavadocMissingWhitespaceAfterAsterisk"/>
         <!--<module name="JavadocPackage"/>-->
         <!--<module name="JavadocParagraph"/>-->
@@ -219,6 +220,7 @@
         <module name="PackageName"/>
         <module name="ParameterName"/>
         <module name="PatternVariableName"/>
+        <module name="RecordComponentName"/>
         <module name="RecordTypeParameterName"/>
         <module name="StaticVariableName"/>
         <module name="TypeName"/>
@@ -235,6 +237,7 @@
         <!-- Size Violations (http://checkstyle.sourceforge.net/config_sizes.html) -->
         <module name="AnonInnerLength"/>
         <module name="ExecutableStatementCount"/>
+        <module name="LambdaBodyLength"/>
         <module name="MethodCount"/>
         <module name="MethodLength"/>
         <module name="OuterTypeNumber"/>

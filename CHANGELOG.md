@@ -1,5 +1,10 @@
-* Fix report separating lines remove in intellij IDEA output (appears when gradle output recognized as junit test output).
+* Fix report separating lines disappear in intellij IDEA output (appears when gradle output recognized as junit test output).
   Extra zero-width space symbol used to prevent trims.
+* Update checkstyle 8.36.2 -> 8.40
+* Update checkstyle config:
+    - Add [RecordComponentName](https://checkstyle.sourceforge.io/config_naming.html#RecordComponentName)
+    - Add [JavadocMissingLeadingAsterisk](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocMissingLeadingAsterisk)
+    - Add [LambdaBodyLength](https://checkstyle.sourceforge.io/config_sizes.html#LambdaBodyLength)
 
 ### 4.4.0 (2020-10-11)
 * Update codenarc 1.5 -> 2.0.0 (groovy 3 and java 14 support, requires java 7)
