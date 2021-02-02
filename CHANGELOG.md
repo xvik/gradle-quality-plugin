@@ -8,7 +8,9 @@
 * Update pmd 6.28 -> 6.31    
 * Update pmd config:
     - Remove [AvoidInstantiatingObjectsInLoops](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_performance.html#avoidinstantiatingobjectsinloops)
-        because its useless most of the time 
+        because its useless most of the time
+* Update spotbugs 4.1.3 -> 4.2.0  
+* Update spotbugs plugin 4.5.1 -> 4.6.0
 
 ### 4.4.0 (2020-10-11)
 * Update codenarc 1.5 -> 2.0.0 (groovy 3 and java 14 support, requires java 7)
