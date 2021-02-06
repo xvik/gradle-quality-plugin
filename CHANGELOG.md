@@ -1,3 +1,4 @@
+### 4.5.0 (2021-02-06)
 * Fix report separating lines disappear in intellij IDEA output (appears when gradle output recognized as junit test output).
   Extra zero-width space symbol used to prevent trims.
 * Update checkstyle 8.36.2 -> 8.39 (not 8.40 due to Indentation check regression)
