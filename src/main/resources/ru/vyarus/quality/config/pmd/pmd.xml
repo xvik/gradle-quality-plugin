@@ -110,7 +110,7 @@
         <exclude name="AvoidCatchingThrowable"/>
         <exclude name="BeanMembersShouldSerialize"/>
         <exclude name="DataflowAnomalyAnalysis"/>
-        <exclude name="DoNotCallSystemExit"/> <!-- earlier j2ee group-->
+        <exclude name="DoNotTerminateVM"/> <!-- earlier j2ee group; before 6.29 DoNotCallSystemExit-->
         <exclude name="EmptyFinalizer"/>
         <exclude name="FinalizeOnlyCallsSuperFinalize"/>
         <exclude name="FinalizeDoesNotCallSuperFinalize"/>
