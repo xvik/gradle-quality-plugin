@@ -17,7 +17,7 @@
         because it's not an issue but attention pointer
     - Update [NcssCount](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_design.html#ncsscount)
         methodReportLevel from 30 to 40, classReportLevel from 300 to 500
-* Update spotbugs 4.1.3 -> 4.2.0  
+* Update spotbugs 4.1.3 -> 4.2.1  
 * Update spotbugs plugin 4.5.1 -> 4.6.0
 * Set checkstyle.configDirectory property: required for ${config_loc} variable (#29)
 
