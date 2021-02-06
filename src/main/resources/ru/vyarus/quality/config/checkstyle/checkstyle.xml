@@ -11,6 +11,13 @@
     <!-- https://checkstyle.sourceforge.io/config_filters.html#SuppressWithPlainTextCommentFilter -->
     <!--<module name="SuppressWithPlainTextCommentFilter"/>--> <!-- may be enabled in cases when SuppressionCommentFilter can't handle comments -->
 
+    <!-- https://checkstyle.sourceforge.io/config_filters.html#SuppressionFilter -->
+    <!-- External suppressions file support enabled by default, but file not provided: just create gradle/config/checkstyle/suppressions.xml-->
+    <module name="SuppressionFilter">
+        <property name="file" value="${config_loc}/suppressions.xml"/>
+        <property name="optional" value="true"/>
+    </module>
+
     <module name="LineLength">
         <property name="max" value="120"/>
     </module>

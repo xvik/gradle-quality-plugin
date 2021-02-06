@@ -16,6 +16,7 @@ import org.gradle.api.Project
 @CompileStatic
 class ConfigLoader {
     private final String checkstyle = 'checkstyle/checkstyle.xml'
+    private final String checkstyleSuppressions = 'checkstyle/suppressions.xml'
     private final String pmd = 'pmd/pmd.xml'
     private final String cpdXsl = 'cpd/cpdhtml.xslt'
     private final String spotbugsExclude = 'spotbugs/exclude.xml'
@@ -32,6 +33,11 @@ class ConfigLoader {
 
     File resolveCheckstyleConfig(boolean copyDefaultFile = true) {
         resolve(checkstyle, copyDefaultFile)
+    }
+
+    File resolveCheckstyleConfigDir() {
+        // used for ${config_loc} property definition (through checkstyle.configDirectory property)
+        return new File(configDir, checkstyle).parentFile
     }
 
     File resolvePmdConfig(boolean copyDefaultFile = true) {
@@ -61,7 +67,7 @@ class ConfigLoader {
      */
     void initUserConfigs(boolean override) {
         init()
-        [checkstyle, pmd, cpdXsl, codenarc, spotbugsExclude, spotbugsXsl].each {
+        [checkstyle, checkstyleSuppressions, pmd, cpdXsl, codenarc, spotbugsExclude, spotbugsXsl].each {
             copyConfig(configDir, it, override)
         }
     }
@@ -70,7 +76,12 @@ class ConfigLoader {
         init()
         // look custom user file first
         File target = new File(configDir, path)
-        return target.exists() ?
+        boolean userFile = target.exists()
+        // show message only just before task execution, not during configuration phase (avoid duplicate message)
+        if (userFile && copyDefaultFile) {
+            project.logger.info('[plugin:quality] Using custom quality configuration: {}', project.relativePath(target))
+        }
+        return userFile ?
                 target
                 : (copyDefaultFile ? copyConfig(tmpConfigDir, path, false) : new File(tmpConfigDir, path)) as File
     }

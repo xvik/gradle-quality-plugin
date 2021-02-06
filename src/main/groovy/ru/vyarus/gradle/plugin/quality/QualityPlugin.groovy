@@ -16,6 +16,7 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.process.CommandLineArgumentProvider
+import org.gradle.util.GradleVersion
 import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.spotbugs.CustomSpotBugsPlugin
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
@@ -130,11 +131,24 @@ class QualityPlugin implements Plugin<Project> {
                     showViolations = false
                     toolVersion = extension.checkstyleVersion
                     ignoreFailures = !extension.strict
+                    // this may be custom user file (gradle/config/checkstyle/checkstyle.xml) or default one
+                    // (in different location)
                     configFile = configLoader.resolveCheckstyleConfig(false)
+                    // this is required for ${config_loc} variable, but this will ALWAYS point to
+                    // gradle/config/checkstyle/ (or other configured config location dir) because custom
+                    // configuration files may be only there
+                    configDirectory = configLoader.resolveCheckstyleConfigDir()
                     sourceSets = extension.sourceSets
                 }
                 tasks.withType(Checkstyle).configureEach {
                     doFirst {
+                        if (GradleVersion.current() < GradleVersion.version('6.0')) {
+                            // required for gradle < 6 because it will not set config_loc if target dir does not exists
+                            // https://github.com/gradle/gradle/issues/11058
+                            String propName = 'config_loc'
+                            configProperties[propName] = configProperties[propName]
+                                    ?: configLoader.resolveCheckstyleConfigDir().absolutePath
+                        }
                         configLoader.resolveCheckstyleConfig()
                         applyExcludes(it, extension)
                     }

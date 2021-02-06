@@ -5,6 +5,8 @@
     - Add [RecordComponentName](https://checkstyle.sourceforge.io/config_naming.html#RecordComponentName)
     - Add [JavadocMissingLeadingAsterisk](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocMissingLeadingAsterisk)
     - Add [LambdaBodyLength](https://checkstyle.sourceforge.io/config_sizes.html#LambdaBodyLength)
+    - Add optional [external suppressions file support](https://checkstyle.sourceforge.io/config_filters.html#SuppressionFilter): 
+        just create gradle/config/checkstyle/suppressions.xml and it will be used automatically with the default config
 * Update pmd 6.28 -> 6.31    
 * Update pmd config:
     - Remove [AvoidInstantiatingObjectsInLoops](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_performance.html#avoidinstantiatingobjectsinloops)
@@ -17,6 +19,7 @@
         methodReportLevel from 30 to 40, classReportLevel from 300 to 500
 * Update spotbugs 4.1.3 -> 4.2.0  
 * Update spotbugs plugin 4.5.1 -> 4.6.0
+* Set checkstyle.configDirectory property: required for ${config_loc} variable (#29)
 
 ### 4.4.0 (2020-10-11)
 * Update codenarc 1.5 -> 2.0.0 (groovy 3 and java 14 support, requires java 7)
