@@ -19,7 +19,7 @@ class CodeNarcReporterTest extends AbstractKitTest {
                 id 'ru.vyarus.quality'
             }
 
-            repositories {jcenter()}
+            repositories {mavenCentral()}
 
             task testReport() {
                 doLast {

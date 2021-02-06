@@ -23,7 +23,7 @@ class HtmlReportsDisableKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
 
             dependencies {

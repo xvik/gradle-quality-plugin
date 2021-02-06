@@ -19,7 +19,7 @@ wrapper {
     gradleVersion = '6.3'
 }
 
-repositories { jcenter(); gradlePluginPortal() }
+repositories { mavenCentral(); gradlePluginPortal() }
 dependencies {
     implementation 'gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.6.0'
 

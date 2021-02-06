@@ -27,7 +27,7 @@ class UpstreamKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
 
             dependencies {
@@ -61,7 +61,7 @@ class UpstreamKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
 
             dependencies {

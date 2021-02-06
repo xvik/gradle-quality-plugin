@@ -39,7 +39,7 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
 
             dependencies {
@@ -110,7 +110,7 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
 
             dependencies {

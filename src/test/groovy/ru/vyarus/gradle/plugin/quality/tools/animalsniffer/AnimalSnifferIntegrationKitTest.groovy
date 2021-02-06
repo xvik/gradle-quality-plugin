@@ -29,7 +29,7 @@ class AnimalSnifferIntegrationKitTest extends AbstractKitTest {
             }
 
             repositories {            
-                jcenter(); mavenCentral();
+                mavenCentral();
             }
             dependencies {
                 signature 'org.codehaus.mojo.signature:java15:1.0@signature'
@@ -61,7 +61,7 @@ class AnimalSnifferIntegrationKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
         """)
 

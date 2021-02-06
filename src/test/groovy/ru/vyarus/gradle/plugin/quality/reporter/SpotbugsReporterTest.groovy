@@ -67,7 +67,7 @@ SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir.root)}
             }
             
             repositories {
-                jcenter()
+                mavenCentral()
             }
             
             task testReport() {

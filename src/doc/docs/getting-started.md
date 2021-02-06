@@ -20,7 +20,7 @@ OR
 ```groovy
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         gradlePluginPortal()
     }
     dependencies {

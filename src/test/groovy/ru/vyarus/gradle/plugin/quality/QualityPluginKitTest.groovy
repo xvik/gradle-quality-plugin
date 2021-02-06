@@ -22,7 +22,7 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
         """)
 
@@ -66,7 +66,7 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
         """)
 
@@ -110,7 +110,7 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
 
             dependencies {
@@ -153,7 +153,7 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
 
             dependencies {
@@ -195,7 +195,7 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
 
             dependencies {
@@ -234,7 +234,7 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             repositories {
-                jcenter() //required for testKit run
+                mavenCentral() //required for testKit run
             }
             
             // because spotbugs plugin configuration approach changed 

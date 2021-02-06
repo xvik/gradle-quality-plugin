@@ -29,7 +29,7 @@ class CpdReportsDisableTest extends AbstractKitTest {
             }
 
             repositories {            
-                jcenter(); mavenCentral();
+                mavenCentral();
             }
         """)
 
