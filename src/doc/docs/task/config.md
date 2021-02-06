@@ -19,7 +19,8 @@ It will copy all configs into configured (`quality.configDir`) folder (will not 
 gradle\
     config\
         checkstyle\
-            checkstyle.xml		
+            checkstyle.xml
+            suppressions.xml		
         codenarc\
             codenarc.xml		
         cpd\		

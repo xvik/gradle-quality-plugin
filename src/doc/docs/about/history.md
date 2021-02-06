@@ -1,3 +1,27 @@
+### [4.5.0](http://xvik.github.io/gradle-quality-plugin/4.5.0) (2021-02-06)
+* Fix report separating lines disappear in intellij IDEA output (appears when gradle output recognized as junit test output).
+  Extra zero-width space symbol used to prevent trims.
+* Update checkstyle 8.36.2 -> 8.40
+* Update checkstyle config:
+    - Add [RecordComponentName](https://checkstyle.sourceforge.io/config_naming.html#RecordComponentName)
+    - Add [JavadocMissingLeadingAsterisk](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocMissingLeadingAsterisk)
+    - Add [LambdaBodyLength](https://checkstyle.sourceforge.io/config_sizes.html#LambdaBodyLength)
+    - Add optional [external suppressions file support](https://checkstyle.sourceforge.io/config_filters.html#SuppressionFilter):
+      just create gradle/config/checkstyle/suppressions.xml and it will be used automatically with the default config
+* Update pmd 6.28 -> 6.31
+* Update pmd config:
+    - Remove [AvoidInstantiatingObjectsInLoops](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_performance.html#avoidinstantiatingobjectsinloops)
+      because its useless most of the time
+    - Remove [AssignmentInOperand](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_errorprone.html#assignmentinoperand)
+      because its quite common technique
+    - Remove [AvoidUsingVolatile](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_multithreading.html#avoidusingvolatile)
+      because it's not an issue but attention pointer
+    - Update [NcssCount](https://pmd.github.io/pmd-6.28.0/pmd_rules_java_design.html#ncsscount)
+      methodReportLevel from 30 to 40, classReportLevel from 300 to 500
+* Update spotbugs 4.1.3 -> 4.2.1
+* Update spotbugs plugin 4.5.1 -> 4.6.0
+* Set checkstyle.configDirectory property: required for ${config_loc} variable (#29)
+
 ### [4.4.0](http://xvik.github.io/gradle-quality-plugin/4.4.0) (2020-10-11)
 * Update codenarc 1.5 -> 2.0.0 (groovy 3 and java 14 support, requires java 7)
 * Update codenarc config:

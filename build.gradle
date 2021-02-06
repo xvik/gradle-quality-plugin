@@ -39,7 +39,7 @@ github {
 }
 
 mkdocs.publish {
-    docPath = '4.4.0'
+    docPath = '4.5.0'
     rootRedirect = true
 }
 

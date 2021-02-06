@@ -11,7 +11,7 @@ and [gradle plugins portal](https://plugins.gradle.org/plugin/ru.vyarus.quality)
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '4.4.0'
+    id 'ru.vyarus.quality' version '4.5.0'
 }
 ```
 
@@ -24,7 +24,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:4.4.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:4.5.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -41,7 +41,10 @@ If you are using lower java versions use previous plugin releases.
 ## Usage
 
 Plugin will auto detect java and groovy sources and activate required quality plugins.
-All tools will be configured with the default opinionated configs. 
+All tools will be configured with the default opinionated configs.
+
+!!! tip ""
+    See [init configs task](task/config.md) to modify default configs 
 
 ```bash
 $ gradlew check
@@ -84,5 +87,14 @@ You will still see all violations in the output.
 
 ## Suppress
 
-Sometimes (quite rare) tool could be wrong or your situation
-could require violation break. In this case violation could be suppressed: see exact tool page for suppression hints.
+Sometimes tool could be wrong, or your specific situation
+could imply such code as normal. In this case violation could be suppressed: see exact tool page for suppression hints
+(e.g. [checstyle suppress](tool/checkstyle.md#suppress)).
+
+!!! note ""
+    It is completely normal to suppress some warnings! But don't do it too much often.
+    Note that check name is always printed in square braces:
+    ```
+    [Comments | CommentRequired] sample.(Sample.java:3)
+    ```
+    Use it for suppression (e.g. `@SuppressWarnings("PMD.CommentRequired")` in case of PMD.

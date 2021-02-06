@@ -11,7 +11,7 @@ repo_url: http://github.com/xvik/gradle-quality-plugin
 edit_uri: edit/master/src/doc/docs/
 
 #Copyright (shown at the footer)
-copyright: 'Copyright &copy; 2015-2020 Vyacheslav Rusakov'
+copyright: 'Copyright &copy; 2015-2021 Vyacheslav Rusakov'
 
 # Meterial theme
 theme: 'material'
