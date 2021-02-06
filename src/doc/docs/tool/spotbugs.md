@@ -367,7 +367,7 @@ dependencyManagement {
     afterEvaluate {
         dependencies {
             spotbugs "com.github.spotbugs:spotbugs:${quality.spotbugsVersion}"
-            spotbugs "org.ow2.asm:asm:8.0.1"
+            spotbugs "org.ow2.asm:asm:9.0"
         }  
     }  
     ```               
