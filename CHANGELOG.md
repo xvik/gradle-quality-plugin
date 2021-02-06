@@ -4,7 +4,8 @@
 * Update checkstyle config:
     - Add [RecordComponentName](https://checkstyle.sourceforge.io/config_naming.html#RecordComponentName)
     - Add [JavadocMissingLeadingAsterisk](https://checkstyle.sourceforge.io/config_javadoc.html#JavadocMissingLeadingAsterisk)
-    - Add [LambdaBodyLength](https://checkstyle.sourceforge.io/config_sizes.html#LambdaBodyLength)
+    - Disable [LambdaBodyLength](https://checkstyle.sourceforge.io/config_sizes.html#LambdaBodyLength)
+        as method length check is enough
     - Add optional [external suppressions file support](https://checkstyle.sourceforge.io/config_filters.html#SuppressionFilter): 
         just create gradle/config/checkstyle/suppressions.xml and it will be used automatically with the default config
 * Update pmd 6.28 -> 6.31    

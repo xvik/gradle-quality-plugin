@@ -244,7 +244,7 @@
         <!-- Size Violations (http://checkstyle.sourceforge.net/config_sizes.html) -->
         <module name="AnonInnerLength"/>
         <module name="ExecutableStatementCount"/>
-        <module name="LambdaBodyLength"/>
+        <!--<module name="LambdaBodyLength"/>-->
         <module name="MethodCount"/>
         <module name="MethodLength"/>
         <module name="OuterTypeNumber"/>

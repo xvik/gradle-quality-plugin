@@ -62,7 +62,7 @@ class CheckstyleReporter implements Reporter<Checkstyle> {
     private String extractGroupName(String source) {
         String[] path = source.split('\\.')
         String group = path[path.length - 2]
-        if (group == 'checks') {
+        if (group == 'checks' || group == 'indentation') {
             group = 'misc'
         }
         return group
