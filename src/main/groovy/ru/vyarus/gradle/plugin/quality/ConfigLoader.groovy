@@ -37,7 +37,11 @@ class ConfigLoader {
 
     File resolveCheckstyleConfigDir() {
         // used for ${config_loc} property definition (through checkstyle.configDirectory property)
-        return new File(configDir, checkstyle).parentFile
+        File path = new File(configDir, checkstyle).parentFile
+        // if custom directory exists, use it, otherwise fall back to generated directory
+        // because gradle 7 requires configured directory existence
+        // (default file copying forced to create checkstyle directory and avoid gradle complains)
+        return path.exists() ? path : resolveCheckstyleConfig(true).parentFile
     }
 
     File resolvePmdConfig(boolean copyDefaultFile = true) {
