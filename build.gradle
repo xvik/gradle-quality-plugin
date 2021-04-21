@@ -1,5 +1,5 @@
 plugins {
-    id 'com.gradle.plugin-publish' version '0.12.0'
+    id 'com.gradle.plugin-publish' version '0.14.0'
     id 'java-gradle-plugin'
     id 'groovy'
     id 'jacoco'
@@ -8,8 +8,8 @@ plugins {
     id 'com.jfrog.bintray' version '1.8.5'
     id 'ru.vyarus.java-lib' version '2.1.0'
     id 'ru.vyarus.github-info' version '1.2.0'
-    id 'com.github.ben-manes.versions' version '0.33.0'
-    id "pl.droidsonroids.jacoco.testkit" version "1.0.7"
+    id 'com.github.ben-manes.versions' version '0.38.0'
+    id "pl.droidsonroids.jacoco.testkit" version "1.0.8"
     id 'ru.vyarus.mkdocs' version '2.0.1'
 }
 
@@ -21,13 +21,13 @@ wrapper {
 
 repositories { mavenCentral(); gradlePluginPortal() }
 dependencies {
-    implementation 'gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.6.0'
+    implementation 'gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0'
 
     testImplementation('org.spockframework:spock-core:1.3-groovy-2.5') {
         exclude group: 'org.codehaus.groovy'
     }
-    testImplementation 'ru.vyarus:gradle-animalsniffer-plugin:1.5.1'
-    testImplementation 'de.aaschmid:gradle-cpd-plugin:3.1'
+    testImplementation 'ru.vyarus:gradle-animalsniffer-plugin:1.5.3'
+    testImplementation 'de.aaschmid:gradle-cpd-plugin:3.2'
 }
 
 group = 'ru.vyarus'
