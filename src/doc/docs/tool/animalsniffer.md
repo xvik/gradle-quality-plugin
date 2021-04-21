@@ -7,7 +7,13 @@
     
 In contrast to other tools, animalsniffer plugin is never activated automatically. Plugin will only 
 apply common configuration (used source sets, strict mode) if [ru.vyarus.animalsniffer](https://github.com/xvik/gradle-animalsniffer-plugin) 
-plugin manually applied.
+plugin manually applied:
+
+```groovy
+plugins {
+    id 'ru.vyarus.animalsniffer' version '{{ gradle.animalsnifferPlugin }}'
+}
+```
 
 ## Config
 

@@ -13,6 +13,10 @@ edit_uri: edit/master/src/doc/docs/
 #Copyright (shown at the footer)
 copyright: 'Copyright &copy; 2015-2021 Vyacheslav Rusakov'
 
+plugins:
+  - search
+  - markdownextradata
+
 # Meterial theme
 theme: 'material'
 extra:
@@ -21,10 +25,10 @@ extra:
 #    accent: 'indigo'
 
   social:
-    - type: 'github'
-      link: 'https://github.com/xvik'
-    - type: 'twitter'
-      link: 'https://twitter.com/vyarus'
+    - icon: fontawesome/brands/github
+      link: https://github.com/xvik
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/vyarus
 
 
 # Google Analytics
@@ -39,6 +43,7 @@ markdown_extensions:
       guess_lang: false
   - footnotes
   - meta
+  - def_list
   - toc:
       permalink: true
   - pymdownx.betterem:

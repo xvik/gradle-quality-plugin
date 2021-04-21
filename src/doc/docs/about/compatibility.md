@@ -4,7 +4,7 @@ Plugin compiled for java 8, compatible with java 11
 
 Gradle | Version
 --------|-------
-5.6     | 4.5.0
+5.6     | 4.6.0
 5.1     | [4.2.2](http://xvik.github.io/gradle-quality-plugin/4.2.2)
 4.1     | [3.4.0](http://xvik.github.io/gradle-quality-plugin/3.4.0)
 older   | [2.4.0](http://xvik.github.io/gradle-quality-plugin/2.4.0)

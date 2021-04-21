@@ -10,8 +10,8 @@ gradle plugin applied manually:
 
 ```groovy
 plugins {        
-    id 'de.aaschmid.cpd' version '3.1'
-    id 'ru.vyarus.quality' version '4.5.0'
+    id 'de.aaschmid.cpd' version '{{ gradle.cpd }}'
+    id 'ru.vyarus.quality' version '{{ gradle.version }}'
 }
 ```    
 

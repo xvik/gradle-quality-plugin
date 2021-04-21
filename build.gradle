@@ -4,13 +4,13 @@ plugins {
     id 'groovy'
     id 'jacoco'
     id 'net.researchgate.release' version '2.8.1'
-    id 'ru.vyarus.quality' version '4.4.0'
+    id 'ru.vyarus.quality' version '4.5.0'
     id 'com.jfrog.bintray' version '1.8.5'
     id 'ru.vyarus.java-lib' version '2.1.0'
     id 'ru.vyarus.github-info' version '1.2.0'
     id 'com.github.ben-manes.versions' version '0.38.0'
     id "pl.droidsonroids.jacoco.testkit" version "1.0.8"
-    id 'ru.vyarus.mkdocs' version '2.0.1'
+    id 'ru.vyarus.mkdocs' version '2.1.1'
 }
 
 sourceCompatibility = 1.8
@@ -19,15 +19,22 @@ wrapper {
     gradleVersion = '6.3'
 }
 
+ext {
+    animalsnifferVersion = '1.5.3'
+    cpdVersion = '3.2'
+    spotbugsPluginVersion = '4.7.0'
+    docVersion = '4.6.0'
+}
+
 repositories { mavenCentral(); gradlePluginPortal() }
 dependencies {
-    implementation 'gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0'
+    implementation "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:$spotbugsPluginVersion"
 
     testImplementation('org.spockframework:spock-core:1.3-groovy-2.5') {
         exclude group: 'org.codehaus.groovy'
     }
-    testImplementation 'ru.vyarus:gradle-animalsniffer-plugin:1.5.3'
-    testImplementation 'de.aaschmid:gradle-cpd-plugin:3.2'
+    testImplementation "ru.vyarus:gradle-animalsniffer-plugin:$animalsnifferVersion"
+    testImplementation "de.aaschmid:gradle-cpd-plugin:$cpdVersion"
 }
 
 group = 'ru.vyarus'
@@ -38,9 +45,21 @@ github {
     license 'MIT'
 }
 
-mkdocs.publish {
-    docPath = '4.5.0'
-    rootRedirect = true
+mkdocs {
+    publish {
+        docPath = project.docVersion
+        rootRedirect = true
+    }
+    extras = [
+            'version': project.docVersion,
+            'checkstyle': '8.41.1',
+            'pmd': '6.33.0',
+            'spotbugs': '4.2.3',
+            'codenarc': '2.1.0',
+            'spotbugsPlugin': project.spotbugsPluginVersion,
+            'cpd': project.cpdVersion,
+            'animalsnifferPlugin': project.animalsnifferVersion,
+    ]
 }
 
 pom {

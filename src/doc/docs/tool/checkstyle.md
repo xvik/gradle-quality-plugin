@@ -34,7 +34,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    checkstyleVersion = '8.39'
+    checkstyleVersion = '{{ gradle.checkstyle }}'
     checkstyle = true // false to disable automatic plugin activation
 }
 ```

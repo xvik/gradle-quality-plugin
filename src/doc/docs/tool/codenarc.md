@@ -31,7 +31,7 @@ Tool config options with defaults:
 
 ```groovy
 quality {
-    codenarcVersion = '2.0.0'
+    codenarcVersion = '{{ gradle.codenarc }}'
     codenarc = true // false to disable automatic plugin activation
 }
 ```

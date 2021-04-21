@@ -1,3 +1,13 @@
+### [4.6.0](http://xvik.github.io/gradle-quality-plugin/4.6.0) (2021-04-22)
+* Fix gradle 7 compatibility (for checkstyle plugin)
+* Update checkstyle 8.39 -> 8.41.1
+* Update checkstyle config:
+    - Add [RecordComponentName](https://checkstyle.sourceforge.io/config_naming.html#RecordComponentName)
+* Update pmd 6.31 -> 6.33 (java 16 support)
+* Update spotbugs 4.2.1 -> 4.2.3
+* Update spotbugs plugin 4.6.0 -> 4.7.0
+* Update codenarc 2.0.0 -> 2.1.0
+
 ### [4.5.0](http://xvik.github.io/gradle-quality-plugin/4.5.0) (2021-02-06)
 * Fix report separating lines disappear in intellij IDEA output (appears when gradle output recognized as junit test output).
   Extra zero-width space symbol used to prevent trims.

@@ -8,10 +8,12 @@ quality {
     
     // Tools versions
     
-    checkstyleVersion = '8.39'
-    pmdVersion = '6.31.0'    
-    spotbugsVersion = '4.2.1'
-    codenarcVersion = '2.0.0'
+    checkstyleVersion = '{{ gradle.checkstyle }}'
+    pmdVersion = '{{ gradle.pmd }}'    
+    spotbugsVersion = '{{ gradle.spotbugs }}'
+    codenarcVersion = '{{ gradle.codenarc }}'
+    
+    // works only if animalsniffer plugin applied
     animalsnifferVersion
 
     /**
