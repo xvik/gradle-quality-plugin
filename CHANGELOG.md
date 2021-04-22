@@ -2,6 +2,8 @@
 * Update checkstyle 8.39 -> 8.41.1
 * Update checkstyle config:
     - Add [RecordComponentName](https://checkstyle.sourceforge.io/config_naming.html#RecordComponentName)
+    - Disable [Indentation](http://checkstyle.sourceforge.io/config_misc.html#Indentation) as causing problems too often
+      (currently in regression since 8.40)
 * Update pmd 6.31 -> 6.33 (java 16 support)
 * Update spotbugs 4.2.1 -> 4.2.3
 * Update spotbugs plugin 4.6.0 -> 4.7.0

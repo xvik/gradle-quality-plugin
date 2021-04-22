@@ -187,7 +187,7 @@
         <module name="CommentsIndentation"/>
         <module name="DescendantToken"/>
         <!--<module name="FinalParameters"/>-->  <!-- DISABLED in favor of less restricted ParameterAssignment -->
-        <module name="Indentation"/>
+        <!--<module name="Indentation"/>-->  <!-- DISABLED due to many problems (breaks often), regression since 8.40 -->
         <module name="NoCodeInFile"/>
         <module name="OuterTypeFilename"/>
         <!--<module name="OrderedProperties"/>-->
