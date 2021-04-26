@@ -3,9 +3,10 @@ plugins {
     id 'java-gradle-plugin'
     id 'groovy'
     id 'jacoco'
+    id 'signing'
     id 'net.researchgate.release' version '2.8.1'
     id 'ru.vyarus.quality' version '4.5.0'
-    id 'com.jfrog.bintray' version '1.8.5'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
     id 'ru.vyarus.java-lib' version '2.1.0'
     id 'ru.vyarus.github-info' version '1.2.0'
     id 'com.github.ben-manes.versions' version '0.38.0'
@@ -72,32 +73,6 @@ pom {
     }
 }
 
-bintray {
-    user = findProperty('bintrayUser')
-    key = findProperty('bintrayKey')
-    publications = ['maven']
-    dryRun = false
-    publish = true
-    pkg {
-        repo = 'xvik'
-        name = project.name
-        desc = project.description
-        labels = ['gradle', 'java', 'groovy', 'quality', 'checkstyle', 'pmd', 'cpd', 'spotbugs', 'codenarc']
-        publicDownloadNumbers = true
-        version {
-            gpg {
-                sign = true
-                passphrase = findProperty('gpgPassphrase')
-            }
-            mavenCentralSync {
-                sync = true
-                user = findProperty('sonatypeUser')
-                password = findProperty('sonatypePassword')
-            }
-        }
-    }
-}
-
 gradlePlugin {
     plugins {
         qualityPlugin {
@@ -117,8 +92,30 @@ pluginBundle {
     }
 }
 
+nexusPublishing {
+    repositories {
+        sonatype {
+            username = findProperty('sonatypeUser')
+            password = findProperty('sonatypePassword')
+        }
+    }
+}
+
+signing {
+    // properties must be specified in ~/.gradle/gradle.properties
+    // signing.keyId=24875D73
+    // signing.password=secret
+    // signing.secretKeyRingFile=/Users/me/.gnupg/secring.gpg
+
+    sign publishing.publications.maven
+}
+
 afterReleaseBuild {
-    dependsOn = [bintrayUpload, publishPlugins]
+    dependsOn = [
+            signMavenPublication,
+            'publishToSonatype',
+            'closeAndReleaseSonatypeStagingRepository',
+            publishPlugins]
     doLast {
         logger.warn "RELEASED $project.group:$project.name:$project.version"
     }
