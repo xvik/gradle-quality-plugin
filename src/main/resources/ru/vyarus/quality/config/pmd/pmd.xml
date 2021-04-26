@@ -21,6 +21,7 @@
         <exclude name="JUnit4TestShouldUseBeforeAnnotation"/>
         <exclude name="JUnit4TestShouldUseAfterAnnotation"/>
         <exclude name="JUnit4TestShouldUseTestAnnotation"/>
+        <exclude name="UnusedImports"/> <!-- deprecated in favour of UnnecessaryImport -->
     </rule>
 
 
@@ -33,6 +34,8 @@
         <exclude name="CommentDefaultAccessModifier"/>
         <exclude name="ConfusingTernary"/>
         <exclude name="ClassNamingConventions"/>
+        <exclude name="DontImportJavaLang"/> <!-- deprecated in favour of UnnecessaryImport -->
+        <exclude name="DuplicateImports"/> <!-- deprecated in favour of UnnecessaryImport -->
         <exclude name="LocalHomeNamingConvention"/> <!-- earlier j2ee group-->
         <exclude name="LocalInterfaceSessionNamingConvention"/> <!-- earlier j2ee group-->
         <exclude name="LocalVariableCouldBeFinal"/>
@@ -116,6 +119,7 @@
         <exclude name="FinalizeDoesNotCallSuperFinalize"/>
         <exclude name="JUnitSpelling"/>
         <exclude name="JUnitStaticSuite"/>
+        <exclude name="ImportFromSamePackage"/> <!-- deprecated in favour of UnnecessaryImport -->
         <exclude name="InvalidLogMessageFormat"/>
         <exclude name="LoggerIsNotStaticFinal"/>
         <exclude name="MissingSerialVersionUID"/>
