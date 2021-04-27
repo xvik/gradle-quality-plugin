@@ -92,6 +92,11 @@ pluginBundle {
     }
 }
 
+// disable gradle metadata publishing (because it confuse a lot)
+tasks.withType(GenerateModuleMetadata).configureEach {
+    enabled = false
+}
+
 nexusPublishing {
     repositories {
         sonatype {
@@ -102,17 +107,17 @@ nexusPublishing {
 }
 
 signing {
-    // properties must be specified in ~/.gradle/gradle.properties
-    // signing.keyId=24875D73
-    // signing.password=secret
-    // signing.secretKeyRingFile=/Users/me/.gnupg/secring.gpg
-
+    // https://docs.gradle.org/current/userguide/signing_plugin.html#sec:signatory_credentials
     sign publishing.publications.maven
+}
+
+// do not sign snapshots
+tasks.withType(Sign).configureEach {
+    onlyIf { !version.endsWith("SNAPSHOT") }
 }
 
 afterReleaseBuild {
     dependsOn = [
-            signMavenPublication,
             'publishToSonatype',
             'closeAndReleaseSonatypeStagingRepository',
             publishPlugins]
