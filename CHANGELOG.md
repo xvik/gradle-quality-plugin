@@ -14,7 +14,7 @@
       [DontImportJavaLang](https://pmd.github.io/pmd-6.34.0/pmd_rules_java_codestyle.html#dontimportjavalang)
       (replaced by new UnnecessaryImport rule)
 * Update spotbugs 4.2.1 -> 4.2.3
-* Update spotbugs plugin 4.6.0 -> 4.7.0
+* Update spotbugs plugin 4.6.0 -> 4.7.1
 * Update codenarc 2.0.0 -> 2.1.0
 
 ### 4.5.0 (2021-02-06)

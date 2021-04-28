@@ -1,11 +1,21 @@
-### [4.6.0](http://xvik.github.io/gradle-quality-plugin/4.6.0) (2021-04-22)
+### [4.6.0](http://xvik.github.io/gradle-quality-plugin/4.6.0) (2021-04-28)
 * Fix gradle 7 compatibility (for checkstyle plugin)
-* Update checkstyle 8.39 -> 8.41.1
+* Update checkstyle 8.39 -> 8.42
 * Update checkstyle config:
     - Add [RecordComponentName](https://checkstyle.sourceforge.io/config_naming.html#RecordComponentName)
-* Update pmd 6.31 -> 6.33 (java 16 support)
+    - Disable [Indentation](http://checkstyle.sourceforge.io/config_misc.html#Indentation) as causing problems too often
+      (currently in regression since 8.40)
+    - Disable [UnnecessaryParentheses](https://checkstyle.sourceforge.io/config_coding.html#UnnecessaryParentheses) due
+      to often false complains in if statements (especially many misses in 8.42)
+* Update pmd 6.31 -> 6.34 (java 16 support)
+* Update pmd config:
+    - Disable deprecated [UnusedImports](https://pmd.github.io/pmd-6.34.0/pmd_rules_java_bestpractices.html#unusedimports),
+      [DuplicateImports](https://pmd.github.io/pmd-6.34.0/pmd_rules_java_codestyle.html#duplicateimports),
+      [ImportFromSamePackage](https://pmd.github.io/pmd-6.34.0/pmd_rules_java_errorprone.html#importfromsamepackage),
+      [DontImportJavaLang](https://pmd.github.io/pmd-6.34.0/pmd_rules_java_codestyle.html#dontimportjavalang)
+      (replaced by new UnnecessaryImport rule)
 * Update spotbugs 4.2.1 -> 4.2.3
-* Update spotbugs plugin 4.6.0 -> 4.7.0
+* Update spotbugs plugin 4.6.0 -> 4.7.1
 * Update codenarc 2.0.0 -> 2.1.0
 
 ### [4.5.0](http://xvik.github.io/gradle-quality-plugin/4.5.0) (2021-02-06)
