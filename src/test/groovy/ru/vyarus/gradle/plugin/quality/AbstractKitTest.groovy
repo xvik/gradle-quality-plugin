@@ -84,7 +84,5 @@ abstract class AbstractKitTest extends Specification {
         return input
                 // cleanup win line break for simpler comparisons
                 .replaceAll("\r", '')
-                // remove invisible symbols to simplify comparison
-                .replaceAll(Reporter.NO_TRIM, '')
     }
 }

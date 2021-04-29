@@ -1,4 +1,5 @@
 * Fix gradle 7 compatibility (for checkstyle plugin)
+* Fix console output on windows (remove special unicode separator characters, appearing incorrectly)  
 * Update checkstyle 8.39 -> 8.42
 * Update checkstyle config:
     - Add [RecordComponentName](https://checkstyle.sourceforge.io/config_naming.html#RecordComponentName)

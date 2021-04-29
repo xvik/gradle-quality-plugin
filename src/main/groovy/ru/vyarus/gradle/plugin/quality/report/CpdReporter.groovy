@@ -34,7 +34,7 @@ class CpdReporter implements Reporter<SourceTask>, HtmlReportGenerator<SourceTas
         Node result = new XmlParser().parse(reportFile)
         int cnt = result.duplication.size()
         if (cnt > 0) {
-            task.logger.error "$NO_TRIM$NL$cnt ${task.language} duplicates were found by CPD$NL$NO_TRIM"
+            task.logger.error "$NL$cnt ${task.language} duplicates were found by CPD$NL"
             result.duplication.each { dupl ->
                 int lines = dupl.@lines as Integer
                 int start = 0
@@ -63,7 +63,7 @@ class CpdReporter implements Reporter<SourceTask>, HtmlReportGenerator<SourceTas
                     msg << "${String.format(nbFmt, codePos++)}$CODE_INDENT    $it$NL"
                 }
 
-                task.logger.error "$msg$NL$NO_TRIM"
+                task.logger.error "$msg$NL"
             }
             // html report will be generated before console reporting
             String htmlReportUrl = ReportUtils.toConsoleLink(task.project

@@ -19,12 +19,6 @@ interface Reporter<T extends Task> {
     String NL = String.format('%n')
 
     /**
-     * Special invisible symbol (ZERO WIDTH SPACE) to prevent removing of empty separator lines in IDEA output.
-     * Should be used before NL at the beginning and after last NL.
-     */
-    String NO_TRIM = '\u200B'
-
-    /**
      * Called after quality tool task to report violations.
      *
      * @param task quality task with violations
