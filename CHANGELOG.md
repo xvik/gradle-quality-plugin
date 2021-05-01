@@ -1,3 +1,4 @@
+### 4.6.0 (2021-05-01)
 * Fix gradle 7 compatibility (for checkstyle plugin)
 * Fix console output on windows (remove special unicode separator characters, appearing incorrectly)  
 * Update checkstyle 8.39 -> 8.42
