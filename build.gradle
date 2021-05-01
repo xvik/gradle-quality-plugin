@@ -118,7 +118,7 @@ tasks.withType(Sign).configureEach {
 
 afterReleaseBuild {
     dependsOn = [
-            'publishToSonatype',
+            'publishMavenPublicationToSonatypeRepository',
             'closeAndReleaseSonatypeStagingRepository',
             publishPlugins]
     doLast {
