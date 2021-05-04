@@ -10,7 +10,7 @@ import ru.vyarus.gradle.plugin.quality.AbstractTest
  */
 class PmdIncrementalTest extends AbstractTest {
 
-    def "Check not enabled by default"() {
+    def "Check enabled by default"() {
 
         when: "apply plugin"
         file('src/main/java').mkdirs()
@@ -22,8 +22,8 @@ class PmdIncrementalTest extends AbstractTest {
             quality.pmdIncremental = false
         }
 
-        then: "value applied to pmd"
-        project.pmd.incrementalAnalysis.get() == false
+        then: "value not applied but true by default"
+        project.pmd.incrementalAnalysis.get() == true
 
     }
 

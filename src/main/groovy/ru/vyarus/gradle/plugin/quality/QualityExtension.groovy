@@ -83,7 +83,11 @@ class QualityExtension {
      * Enable PMD incremental analysis (cache results between builds to speed up processing).
      * This is a shortcut for pmd plugin's {@code pmd.incrementalAnalysis } configuration option.
      * Option is disabled by default due to possible side effects with build gradle cache or incremental builds.
+     * <p>
+     * @deprecated from gradle 6.4 incremental analysis is enabled by default in pmd plugin! This option will not
+     * disable it (property is useful only for enabling it in gradle 5.6 - 6.3).
      */
+    @Deprecated
     boolean pmdIncremental = false
 
     /**

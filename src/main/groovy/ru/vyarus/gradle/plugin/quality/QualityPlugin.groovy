@@ -178,6 +178,7 @@ class QualityPlugin implements Plugin<Project> {
                     sourceSets = extension.sourceSets
                 }
                 if (extension.pmdIncremental) {
+                    // block enables incremental analysis for gradle 5.6 - 6.4 (later it is enabled by default)
                     if (PmdExtension.metaClass.properties.any { it.name == 'incrementalAnalysis' }) {
                         pmd.incrementalAnalysis = true
                     } else {
