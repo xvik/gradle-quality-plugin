@@ -12,7 +12,7 @@ import org.gradle.testkit.runner.TaskOutcome
 class UpstreamKitTest extends AbstractKitTest {
 
 
-    public static final String GRADLE = '7.0'
+    public static final String GRADLE = '7.1'
 
     def "Check java checks"() {
         setup:
