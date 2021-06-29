@@ -94,6 +94,6 @@ Checkstyle violations by severity: [error:2]
 > Task :mod2:test NO-SOURCE
 > Task :mod2:check
 
-BUILD SUCCESSFUL""".replaceAll("tmp/junit6300057182805361069", ReportUtils.noRootFilePath(testProjectDir.root)))
+BUILD SUCCESSFUL""".replaceAll("tmp/junit6300057182805361069", ReportUtils.noRootFilePath(testProjectDir)))
     }
 }

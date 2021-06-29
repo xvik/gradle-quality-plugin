@@ -2,8 +2,7 @@ package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
+import spock.lang.TempDir
 
 /**
  * @author Vyacheslav Rusakov
@@ -11,10 +10,8 @@ import org.junit.rules.TemporaryFolder
  */
 class BuildCacheSupportKitTest extends AbstractKitTest {
 
-    @Rule
-    final TemporaryFolder cacheDir = new TemporaryFolder()
-    @Rule
-    final TemporaryFolder relocatedDir = new TemporaryFolder()
+    @TempDir File cacheDir
+    @TempDir File relocatedDir
 
     def "Check java and groovy checks"() {
         setup:
@@ -24,7 +21,7 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
             rootProject.name='my-project'
             buildCache {
                 local(DirectoryBuildCache) {
-                    directory = new File('${cacheDir.root.canonicalPath.replace('\\', '\\\\')}')
+                    directory = new File('${cacheDir.canonicalPath.replace('\\', '\\\\')}')
                 }
             }
 """
@@ -53,8 +50,8 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
         fileFromClasspath('src/main/groovy/sample/GSample2.groovy', '/ru/vyarus/gradle/plugin/quality/groovy/sample/GSample2.groovy')
 
         // create complete project copy
-        new AntBuilder().copy(todir: relocatedDir.root) {
-            fileset(dir: testProjectDir.root)
+        new AntBuilder().copy(todir: relocatedDir) {
+            fileset(dir: testProjectDir)
         }
 
         when: "run check task with both sources with build cache"
@@ -73,7 +70,7 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
 
 
         when: "run other project from cache"
-        result = gradle(relocatedDir.root, 'check', '--build-cache').build()
+        result = gradle(relocatedDir, 'check', '--build-cache').build()
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.UP_TO_DATE
@@ -95,7 +92,7 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
         file("settings.gradle") << """
             buildCache {
                 local(DirectoryBuildCache) {
-                    directory = new File('${cacheDir.root.canonicalPath.replace('\\', '\\\\')}')
+                    directory = new File('${cacheDir.canonicalPath.replace('\\', '\\\\')}')
                 }
             }
 """

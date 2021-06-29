@@ -48,7 +48,7 @@ class SpotbugsReporterTest extends AbstractKitTest {
 \t>> Unread field: sample.Sample2.sample
   This field is never read. Consider removing it from the class.
 
-SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir.root)}/build/reports/spotbugs/main.html
+SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir)}/build/reports/spotbugs/main.html
 """ as String
     }
 
@@ -112,7 +112,7 @@ SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir.root)}
 \t>> Unread field: sample.Sample2.sample
   This field is never read. Consider removing it from the class.
 
-SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir.root)}/build/reports/spotbugs/main.html
+SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir)}/build/reports/spotbugs/main.html
 """ as String
     }
 }

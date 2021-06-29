@@ -1,5 +1,5 @@
 plugins {
-    id 'com.gradle.plugin-publish' version '0.14.0'
+    id 'com.gradle.plugin-publish' version '0.15.0'
     id 'java-gradle-plugin'
     id 'groovy'
     id 'jacoco'
@@ -7,9 +7,9 @@ plugins {
     id 'net.researchgate.release' version '2.8.1'
     id 'ru.vyarus.quality' version '4.6.0'
     id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
-    id 'ru.vyarus.java-lib' version '2.1.0'
-    id 'ru.vyarus.github-info' version '1.2.0'
-    id 'com.github.ben-manes.versions' version '0.38.0'
+    id 'ru.vyarus.java-lib' version '2.2.0'
+    id 'ru.vyarus.github-info' version '1.3.0'
+    id 'com.github.ben-manes.versions' version '0.39.0'
     id "pl.droidsonroids.jacoco.testkit" version "1.0.8"
     id 'ru.vyarus.mkdocs' version '2.1.1'
 }
@@ -27,11 +27,11 @@ ext {
     docVersion = '4.6.0'
 }
 
-repositories { mavenCentral(); gradlePluginPortal() }
+repositories { mavenLocal(); mavenCentral(); gradlePluginPortal() }
 dependencies {
     implementation "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:$spotbugsPluginVersion"
 
-    testImplementation('org.spockframework:spock-core:1.3-groovy-2.5') {
+    testImplementation('org.spockframework:spock-core:2.0-groovy-2.5') {
         exclude group: 'org.codehaus.groovy'
     }
     testImplementation "ru.vyarus:gradle-animalsniffer-plugin:$animalsnifferVersion"
@@ -73,6 +73,24 @@ pom {
     }
 }
 
+nexusPublishing {
+    repositories {
+        sonatype {
+            username = findProperty('sonatypeUser')
+            password = findProperty('sonatypePassword')
+        }
+    }
+}
+
+// Required signing properties for release: signing.keyId, signing.password and signing.secretKeyRingFile
+// (https://docs.gradle.org/current/userguide/signing_plugin.html#sec:signatory_credentials)
+
+javaLib {
+    // don't publish gradle metadata artifact
+    withoutGradleMetadata()
+}
+
+
 gradlePlugin {
     plugins {
         qualityPlugin {
@@ -92,30 +110,6 @@ pluginBundle {
     }
 }
 
-// disable gradle metadata publishing (because it confuse a lot)
-tasks.withType(GenerateModuleMetadata).configureEach {
-    enabled = false
-}
-
-nexusPublishing {
-    repositories {
-        sonatype {
-            username = findProperty('sonatypeUser')
-            password = findProperty('sonatypePassword')
-        }
-    }
-}
-
-signing {
-    // https://docs.gradle.org/current/userguide/signing_plugin.html#sec:signatory_credentials
-    sign publishing.publications.maven
-}
-
-// do not sign snapshots
-tasks.withType(Sign).configureEach {
-    onlyIf { !version.endsWith("SNAPSHOT") }
-}
-
 afterReleaseBuild {
     dependsOn = [
             'publishMavenPublicationToSonatypeRepository',
@@ -127,16 +121,15 @@ afterReleaseBuild {
 }
 
 test {
+    useJUnitPlatform()
     testLogging {
-        events 'skipped', 'failed', 'standard_error'
+        events 'skipped', 'failed'
         exceptionFormat 'full'
     }
     maxHeapSize = '2g'
-    forkEvery = 4
     doLast {
         sleep(1000)
     }
 }
 
 dependencyUpdates.revision = 'release'
-jacocoTestReport.reports.xml.enabled = true
