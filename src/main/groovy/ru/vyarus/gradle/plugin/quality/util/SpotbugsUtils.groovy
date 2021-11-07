@@ -7,6 +7,7 @@ import groovy.xml.XmlUtil
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.util.GradleVersion
 import org.slf4j.Logger
 import ru.vyarus.gradle.plugin.quality.QualityExtension
 
@@ -82,8 +83,10 @@ class SpotbugsUtils {
             return
         }
         // apt is a special dir, not mentioned in sources!
-        File aptGenerated = (task.project.tasks.findByName(set.compileJavaTaskName) as JavaCompile)
-                .options.annotationProcessorGeneratedSourcesDirectory
+        JavaCompile javaCompile = task.project.tasks.findByName(set.compileJavaTaskName) as JavaCompile
+        File aptGenerated = GradleVersion.current() < GradleVersion.version('7.0')
+                ? javaCompile.options.annotationProcessorGeneratedSourcesDirectory
+                : javaCompile.options.generatedSourceOutputDirectory.get().asFile
 
         Set<File> ignored = FileUtils.resolveIgnoredFiles(task.sourceDirs.asFileTree, extension.exclude)
         // exclude all apt-generated files

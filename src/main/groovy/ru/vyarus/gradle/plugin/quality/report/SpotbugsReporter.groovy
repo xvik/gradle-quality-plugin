@@ -28,7 +28,8 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     void report(SpotBugsTask task, String type) {
-        File reportFile = task.reports.findByName(XML)?.destination
+        // report may not exists
+        File reportFile = ReportUtils.getReportFile(task.reports.findByName(XML))
         if (reportFile == null || !reportFile.exists() || reportFile.length() == 0) {
             return
         }
@@ -72,7 +73,7 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     void generateHtmlReport(SpotBugsTask task, String type) {
-        File reportFile = task.reports.findByName(XML)?.destination
+        File reportFile = ReportUtils.getReportFile(task.reports.findByName(XML))
         if (reportFile == null || !reportFile.exists()) {
             return
         }

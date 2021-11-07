@@ -4,7 +4,9 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
+import org.gradle.api.reporting.Report
 import org.gradle.api.tasks.SourceSet
+import org.gradle.util.GradleVersion
 
 /**
  * Reporting utils.
@@ -96,6 +98,21 @@ class ReportUtils {
      */
     static String toConsoleLink(File file) {
         return "file:///${noRootFilePath(file)}"
+    }
+
+    /**
+     * Required because destination property was deprecated since gradle 7, but it still must be used for
+     * older gradle versions.
+     *
+     * @param report report instance
+     * @return report destination file
+     */
+    static File getReportFile(Report report) {
+        if (report == null) {
+            return null
+        }
+        return GradleVersion.current() < GradleVersion.version('7.0')
+                ? report.destination : report.outputLocation.get().asFile
     }
 
     private static String matchRoot(SourceSet set, String filePath) {

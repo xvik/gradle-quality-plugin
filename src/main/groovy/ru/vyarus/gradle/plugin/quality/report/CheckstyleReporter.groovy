@@ -24,7 +24,7 @@ class CheckstyleReporter implements Reporter<Checkstyle> {
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     void report(Checkstyle task, String type) {
-        File reportFile = task.reports.xml.destination
+        File reportFile = ReportUtils.getReportFile(task.reports.xml)
         if (!reportFile.exists() || reportFile.length() == 0) {
             return
         }

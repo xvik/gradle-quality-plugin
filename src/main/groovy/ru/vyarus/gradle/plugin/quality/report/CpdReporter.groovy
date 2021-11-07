@@ -26,7 +26,7 @@ class CpdReporter implements Reporter<SourceTask>, HtmlReportGenerator<SourceTas
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     void report(SourceTask task, String type) {
-        File reportFile = task.reports.xml.destination
+        File reportFile = ReportUtils.getReportFile(task.reports.xml)
 
         if (!reportFile.exists() || reportFile.length() == 0) {
             return
@@ -75,7 +75,7 @@ class CpdReporter implements Reporter<SourceTask>, HtmlReportGenerator<SourceTas
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     void generateHtmlReport(SourceTask task, String type) {
-        File reportFile = task.reports.xml.destination
+        File reportFile = ReportUtils.getReportFile(task.reports.xml)
         if (!reportFile.exists()) {
             return
         }

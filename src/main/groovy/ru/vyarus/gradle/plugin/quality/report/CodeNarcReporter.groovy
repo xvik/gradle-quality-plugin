@@ -19,7 +19,7 @@ class CodeNarcReporter implements Reporter<CodeNarc> {
     @SuppressWarnings('DuplicateStringLiteral')
     @CompileStatic(TypeCheckingMode.SKIP)
     void report(CodeNarc task, String type) {
-        File reportFile = task.reports.xml.destination
+        File reportFile = ReportUtils.getReportFile(task.reports.xml)
         if (!reportFile.exists() || reportFile.length() == 0) {
             return
         }

@@ -1,3 +1,4 @@
+* Fix gradle 7 deprecation warnings (#30)
 * Update spotbugs plugin 4.7.1 -> 4.7.5
 * Deprecate quality.pmdIncremental property because incremental analysis is enabled by default
     since gradle 6.4 (property only useful for enabling it in gradle 5.6 - 6.3)
