@@ -43,7 +43,6 @@ public class CustomSpotBugsPlugin implements Plugin<Project> {
         project.getTasks().named(JavaBasePlugin.CHECK_TASK_NAME)
                 .configure(task -> task.dependsOn(requiredTasks));
 
-        final SpotBugsExtension extension = project.getExtensions().findByType(SpotBugsExtension.class);
-        new SpotBugsTaskFactory().generate(project, task -> task.init(extension));
+        new SpotBugsTaskFactory().generate(project);
     }
 }
