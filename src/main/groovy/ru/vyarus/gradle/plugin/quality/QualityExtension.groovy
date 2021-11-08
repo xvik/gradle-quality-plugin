@@ -103,6 +103,13 @@ class QualityExtension {
     boolean cpdUnifySources = true
 
     /**
+     * Shortcut for {@code spotbugs.showStackTraces}. Original spotbugs property is enabled by default, causing
+     * not pretty exception logs in non strict mode (when not fails on errors). This option was introduced to change
+     * the default to false not not show that nasty stacktrace, but still provide an easy way to revert default back.
+     */
+    boolean spotbugsShowStackTraces = false
+
+    /**
      * The analysis effort level. The value specified should be one of min, default, or max.
      * Higher levels increase precision and find more bugs at the expense of running time and
      * memory consumption. Default is 'max'.

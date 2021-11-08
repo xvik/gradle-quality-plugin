@@ -1,6 +1,9 @@
 * Fix gradle 7 deprecation warnings (#30)
 * Update spotbugs plugin 4.7.1 -> 4.7.9
   (maven group changed: gradle.plugin.com.github.spotbugs.snom -> com.github.spotbugs.snom)
+* Add spotbugsShowStackTraces option with default to false.
+    Option introduced to change the default for spotbug's showStackTraces option
+    to avoid additional stacktrace in logs in non-strict mode (when plugin not fails on errors)
 * Deprecate quality.pmdIncremental property because incremental analysis is enabled by default
     since gradle 6.4 (property only useful for enabling it in gradle 5.6 - 6.3)
 

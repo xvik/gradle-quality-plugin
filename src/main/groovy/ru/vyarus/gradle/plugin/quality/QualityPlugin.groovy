@@ -212,6 +212,8 @@ class QualityPlugin implements Plugin<Project> {
                 spotbugs {
                     toolVersion = extension.spotbugsVersion
                     ignoreFailures = !extension.strict
+                    // when enabled show an additional stacktrace in non strict mode (plugin default changed)
+                    showStackTraces = extension.spotbugsShowStackTraces
                     effort = extension.spotbugsEffort
                     reportLevel = extension.spotbugsLevel
 
