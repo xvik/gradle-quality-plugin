@@ -19,6 +19,17 @@
         <!-- Disabled as confusing check (very misleading description) and also not so useful -->
         <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
     </Match>
+    <Match>
+        <!-- Disabled as confusing check (very misleading description) and also not so useful -->
+        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+    </Match>
+    <Match>
+        <!-- Disabled due to confusing false positives -->
+        <Or>
+            <Bug pattern="EI_EXPOSE_REP"/>
+            <Bug pattern="EI_EXPOSE_REP2"/>
+        </Or>
+    </Match>
 
 
     <!-- Do not check class -->

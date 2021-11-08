@@ -4,8 +4,19 @@
 * Add spotbugsShowStackTraces option with default to false.
     Option introduced to change the default for spotbug's showStackTraces option
     to avoid additional stacktrace in logs in non-strict mode (when plugin not fails on errors)
+* Update spotbugs 4.2.3 -> 4.4.2
+* Update spotbugs exclusions:
+    - Exclude [EI_EXPOSE_REP](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#ei-may-expose-internal-representation-by-returning-reference-to-mutable-object-ei-expose-rep)
+      due to confusing false positives
+    - Exclude [EI_EXPOSE_REP2](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#ei2-may-expose-internal-representation-by-incorporating-reference-to-mutable-object-ei-expose-rep2)
+      due to confusing false positives
+* Update codenarc 2.1.0 -> 2.2.0
+* Update pmd 6.34 -> 6.40 (java 17 support)
 * Deprecate quality.pmdIncremental property because incremental analysis is enabled by default
     since gradle 6.4 (property only useful for enabling it in gradle 5.6 - 6.3)
+* Update checkstyle 8.42 -> 9.1
+* Update checkstyle config:
+  - Add [NoWhitespaceBeforeCaseDefaultColon](https://checkstyle.sourceforge.io/config_whitespace.html#NoWhitespaceBeforeCaseDefaultColon)
 
 ### 4.6.0 (2021-05-01)
 * Fix gradle 7 compatibility (for checkstyle plugin)
