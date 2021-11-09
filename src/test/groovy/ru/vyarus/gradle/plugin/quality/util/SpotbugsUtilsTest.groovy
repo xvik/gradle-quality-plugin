@@ -29,6 +29,12 @@ class SpotbugsUtilsTest extends AbstractTest {
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
   <Match>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+    </Or>
+  </Match>
+  <Match>
     <Class name="sample.Sample"/>
   </Match>
   <Match>
@@ -52,6 +58,12 @@ class SpotbugsUtilsTest extends AbstractTest {
   <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
+  <Match>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+    </Or>
+  </Match>
 </FindBugsFilter>
 """ as String
     }
@@ -71,6 +83,12 @@ class SpotbugsUtilsTest extends AbstractTest {
   <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
+  <Match>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+    </Or>
+  </Match>
 </FindBugsFilter>
 """ as String
     }
@@ -88,6 +106,12 @@ class SpotbugsUtilsTest extends AbstractTest {
   </Match>
   <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+    </Or>
   </Match>
   <Match>
     <Rank value="15"/>
@@ -111,6 +135,12 @@ class SpotbugsUtilsTest extends AbstractTest {
   </Match>
   <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+    </Or>
   </Match>
   <Match>
     <Class name="sample.Sample"/>
