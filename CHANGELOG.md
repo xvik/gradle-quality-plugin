@@ -1,3 +1,4 @@
+### 4.7.0 (2021-11-10)
 * Fix gradle 7 deprecation warnings (#30)
 * Update spotbugs plugin 4.7.1 -> 4.7.9
   (maven group changed: gradle.plugin.com.github.spotbugs.snom -> com.github.spotbugs.snom)
