@@ -1,0 +1,8 @@
+version: 4.7.0
+checkstyle: 9.1
+pmd: 6.40.0
+spotbugs: 4.4.2
+codenarc: 2.2.0
+spotbugsPlugin: 4.7.9
+cpd: 3.3
+animalsnifferPlugin: 1.5.4

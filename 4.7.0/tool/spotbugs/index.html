@@ -1,0 +1,1283 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Gradle quality plugin for Java and Groovy">
+      
+      
+      
+        <meta name="author" content="Vyacheslav Rusakov">
+      
+      
+        <link rel="canonical" href="https://xvik.github.io/gradle-quality-plugin/4.7.0/tool/spotbugs/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.6">
+    
+    
+      
+        <title>SpotBugs - Gradle quality plugin</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2c0c5eaf.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.7fa14f5b.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#spotbugs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Gradle quality plugin" class="md-header__button md-logo" aria-label="Gradle quality plugin" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Gradle quality plugin
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SpotBugs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="md-header__options">
+      
+    </div>
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="http://github.com/xvik/gradle-quality-plugin/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gradle-quality-plugin
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Gradle quality plugin" class="md-nav__button md-logo" aria-label="Gradle quality plugin" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Gradle quality plugin
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="http://github.com/xvik/gradle-quality-plugin/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gradle-quality-plugin
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        Getting started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        User guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/automatic/" class="md-nav__link">
+        Automatic mode
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/config/" class="md-nav__link">
+        Configuration
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/exclusion/" class="md-nav__link">
+        Exclusion
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/profile/" class="md-nav__link">
+        Profile
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        Tools
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tools" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Tools
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lint/" class="md-nav__link">
+        Javac lint
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checkstyle/" class="md-nav__link">
+        Checkstyle
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pmd/" class="md-nav__link">
+        PMD
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpd/" class="md-nav__link">
+        CPD
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          SpotBugs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        SpotBugs
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    Output
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    Config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suppress" class="md-nav__link">
+    Suppress
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#excludes" class="md-nav__link">
+    Excludes
+  </a>
+  
+    <nav class="md-nav" aria-label="Excludes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-exclusion" class="md-nav__link">
+    Manual exclusion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plugins" class="md-nav__link">
+    Plugins
+  </a>
+  
+    <nav class="md-nav" aria-label="Plugins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#available-plugins" class="md-nav__link">
+    Available plugins
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#annotations" class="md-nav__link">
+    Annotations
+  </a>
+  
+    <nav class="md-nav" aria-label="Annotations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spotbugs-plugin-specifics" class="md-nav__link">
+    Spotbugs plugin specifics
+  </a>
+  
+    <nav class="md-nav" aria-label="Spotbugs plugin specifics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotbugs-plugin-issues" class="md-nav__link">
+    Spotbugs plugin issues
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problems-resolution" class="md-nav__link">
+    Problems resolution
+  </a>
+  
+    <nav class="md-nav" aria-label="Problems resolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asm" class="md-nav__link">
+    Asm
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-dashboard-plugin" class="md-nav__link">
+    Build dashboard plugin
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../codenarc/" class="md-nav__link">
+        CodeNarc
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../animalsniffer/" class="md-nav__link">
+        Animalsniffer
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        Tasks
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tasks" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Tasks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task/config/" class="md-nav__link">
+        Copy config
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task/group/" class="md-nav__link">
+        Group
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        About
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="About" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/history/" class="md-nav__link">
+        Release notes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/compatibility/" class="md-nav__link">
+        Compatibility
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    Output
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    Config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suppress" class="md-nav__link">
+    Suppress
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#excludes" class="md-nav__link">
+    Excludes
+  </a>
+  
+    <nav class="md-nav" aria-label="Excludes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-exclusion" class="md-nav__link">
+    Manual exclusion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plugins" class="md-nav__link">
+    Plugins
+  </a>
+  
+    <nav class="md-nav" aria-label="Plugins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#available-plugins" class="md-nav__link">
+    Available plugins
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#annotations" class="md-nav__link">
+    Annotations
+  </a>
+  
+    <nav class="md-nav" aria-label="Annotations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spotbugs-plugin-specifics" class="md-nav__link">
+    Spotbugs plugin specifics
+  </a>
+  
+    <nav class="md-nav" aria-label="Spotbugs plugin specifics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotbugs-plugin-issues" class="md-nav__link">
+    Spotbugs plugin issues
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problems-resolution" class="md-nav__link">
+    Problems resolution
+  </a>
+  
+    <nav class="md-nav" aria-label="Problems resolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asm" class="md-nav__link">
+    Asm
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-dashboard-plugin" class="md-nav__link">
+    Build dashboard plugin
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="http://github.com/xvik/gradle-quality-plugin/edit/master/src/doc/docs/tool/spotbugs.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="spotbugs">SpotBugs<a class="headerlink" href="#spotbugs" title="Permanent link">&para;</a></h1>
+<div class="admonition summary">
+<p>Java | 
+<a href="https://spotbugs.github.io">Home</a> | 
+<a href="https://github.com/spotbugs/spotbugs/blob/master/CHANGELOG.md">Release Notes</a> |
+<a href="http://spotbugs.readthedocs.io/en/latest/gradle.html">Plugin</a>     </p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>SpotBugs is a successor project to <a href="https://github.com/findbugsproject/findbugs">deprecated FindBugs</a> project.
+<a href="http://spotbugs.readthedocs.io/en/latest/migration.html">Migration guide</a>. If you were using custom 
+findbugs config before then rename its folder to <code>spotbugs</code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In contrast to other plugins, <a href="http://spotbugs.readthedocs.io/en/latest/gradle.html">spotbugs plugin</a> is not bundled with gradle,
+but quality plugin will bring it as a dependency (v 4.7.9) and activate automatically.  <br />
+If you will activate newer spotbugs plugin manually <a href="#spotbugs-plugin-specifics">behaviour may change</a>.</p>
+</div>
+<p>By default, plugin activates if java sources available (<code>src/main/java</code>).    </p>
+<p>SpotBugs configuration differ from other tools (checkstyle, pmd): instead of exact rules configuration
+it uses <a href="http://spotbugs.readthedocs.io/en/latest/effort.html">efforts level</a>. Deeper level could reveal more bugs, but with higher mistake possibility. 
+Default settings (<code>max</code> effort and <code>medium</code> level) are perfect for most cases. Some checks were disabled in the default 
+<a href="https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/spotbugs/exclude.xml">filter file</a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Special <a href="https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/spotbugs/html-report-style.xsl">xsl file</a> 
+used for manual html report generation. Spotbugs plugin can generate both xml and html reports, but
+this ability is not used (for more stable and legacy-compatible behaviour).  </p>
+</div>
+<h2 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>2 (0 / 2 / 0) SpotBugs violations were found in 2 files
+
+[Performance | URF_UNREAD_FIELD] sample.(Sample.java:8) [priority 2 / rank 14]
+    &gt;&gt; Unread field: sample.Sample.sample
+  This field is never read. Consider removing it from the class.
+
+...  
+</code></pre></div>
+<p>Counts in braces show priorities (p1/p2/p3).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is no link to spotbugs site (like other tools), because report already contains <a href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html">everything from there</a>. </p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Both <a href="https://spotbugs.readthedocs.io/en/stable/filter.html#confidence">priority</a> 
+and <a href="https://spotbugs.readthedocs.io/en/stable/filter.html#rank">rank</a> are shown for violations: <code>[priority 2 / rank 14]</code>. 
+Priority relates to <code>spotbugsLevel</code> setting and rank to <code>spotbugsMaxRank</code>.   </p>
+</div>
+<h2 id="config">Config<a class="headerlink" href="#config" title="Permanent link">&para;</a></h2>
+<p>Tool config options with defaults:</p>
+<div class="highlight"><pre><span></span><code><span class="n">quality</span> <span class="o">{</span>
+    <span class="n">spotbugsVersion</span> <span class="o">=</span> <span class="s1">&#39;4.4.2&#39;</span>
+    <span class="n">spotbugs</span> <span class="o">=</span> <span class="kc">true</span> <span class="c1">// false to disable automatic plugin activation</span>
+    <span class="n">spotbugsShowStackTraces</span> <span class="o">=</span> <span class="kc">false</span> <span class="c1">// changes default for spotbugs.showStackTraces</span>
+    <span class="n">spotbugsEffort</span> <span class="o">=</span> <span class="s1">&#39;max&#39;</span>  <span class="c1">// min, less, more or max</span>
+    <span class="n">spotbugsLevel</span> <span class="o">=</span> <span class="s1">&#39;medium&#39;</span> <span class="c1">// low, medium, high</span>
+    <span class="n">spotbugsMaxRank</span> <span class="o">=</span> <span class="mi">20</span> <span class="c1">// 1-4 scariest, 5-9 scary, 10-14 troubling, 15-20 of concern  </span>
+    <span class="n">spotbugsMaxHeapSize</span> <span class="o">=</span> <span class="s1">&#39;1g&#39;</span>
+<span class="o">}</span>
+</code></pre></div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Gradle 5 <a href="https://github.com/gradle/gradle/issues/6216">reduced default memory settings</a> and so default memory for 
+spotbugs task become <code>512mb</code> (instead of <code>1/4 of physical memory</code> as it was before). 
+To reduce the impact (as spotbugs task is memory-consuming), quality plugin sets now default
+memory to <code>1g</code>. If your project requires more memory for spotbugs, increase it with <code>spotbugsMaxHeapSize</code> option:
+<code>spotbugsMaxHeapSize='2g'</code> </p>
+<p>Note that quality pligin setting is applied only if sotbugs task was not configured manually, for example, with
+<code>spotbugsMain.maxHeapSize = '2g'</code>.</p>
+</div>
+<h2 id="suppress">Suppress<a class="headerlink" href="#suppress" title="Permanent link">&para;</a></h2>
+<p>To suppress violations you can use <a href="http://spotbugs.readthedocs.io/en/latest/filter.html">filter file</a>.
+In this case you need to override <a href="https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/spotbugs/exclude.xml">default filter file</a>.</p>
+<p>Or you can use annotations. SpotBugs use custom annotations and so you need to add 
+<code>com.github.spotbugs:spotbugs-annotations:3.1.2</code> dependency (with provided scope if possible) and use:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@SuppressFBWarnings</span><span class="p">(</span><span class="s">&quot;URF_UNREAD_FIELD&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract</p>
+<p>Spotbugs can't use default <code>@SuppressWarnings</code> annotation because it's a source annotation
+and not available in bytecode. </p>
+</div>
+<h2 id="excludes">Excludes<a class="headerlink" href="#excludes" title="Permanent link">&para;</a></h2>
+<p>Spotbugs is the only quality tool which works on classes rather than on sources. By default,
+spotbugs task configured with all compiles classes which may include auto-generated sources too
+(more than just a source set).</p>
+<p>Generic <a href="../../guide/exclusion/">exclusions mechanism</a> configures source exclusions and,
+in order to properly apply these exclusions to spotbugs, quality plugin generates extended
+exclusions (xml) file. So spotbugs should (seem to) work the same as other plugins.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Apt-generated sources excluded automatically (if you use gradle's <code>annotationProcessor</code> configuration).</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you need to customize default exclusions file, just put custom file in <a href="../../task/config/">the configs
+directory</a> and plugin will extend it with additional excludes if required.</p>
+<p>But do not set custom excludes file directly (with <code>spotbugs.excludeFilter</code>)!</p>
+</div>
+<h3 id="manual-exclusion">Manual exclusion<a class="headerlink" href="#manual-exclusion" title="Permanent link">&para;</a></h3>
+<p>If, for some reason, exclusions, configured in quality extension not applied (for example, due to implementation bug), 
+you can always put exclusions directly into exclusions filter file (tip above) or filter compiled classes:</p>
+<div class="highlight"><pre><span></span><code><span class="n">afterEvaluate</span> <span class="o">{</span>
+    <span class="n">tasks</span><span class="o">.</span><span class="na">withType</span><span class="o">(</span><span class="n">com</span><span class="o">.</span><span class="na">github</span><span class="o">.</span><span class="na">spotbugs</span><span class="o">.</span><span class="na">snom</span><span class="o">.</span><span class="na">SpotBugsTask</span><span class="o">).</span><span class="na">configureEach</span> <span class="o">{</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="n">classes</span><span class="o">.</span><span class="na">filter</span> <span class="o">{</span> 
+            <span class="o">!</span><span class="n">it</span><span class="o">.</span><span class="na">path</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s1">&#39;com/mycompany/serialize/protobuf/gen/&#39;</span><span class="o">)</span> 
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>Pay attention that this trick filters compiled files (.class), not sources! Whatever custom 
+filtering logic could be used.</p>
+<h2 id="plugins">Plugins<a class="headerlink" href="#plugins" title="Permanent link">&para;</a></h2>
+<p>You may add additional spotbugs checks by declaring <a href="https://spotbugs.readthedocs.io/en/latest/gradle.html#introduce-spotbugs-plugin">spotbugs plugins</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>As, by default, spotbugs plugin applied automatically after configuration read, <code>spotbugsPlugins</code> configuration can't be used directly</p>
+</div>
+<p>You can register plugins using quality extension shortcut:</p>
+<div class="highlight"><pre><span></span><code><span class="n">quality</span> <span class="o">{</span>
+    <span class="n">spotbugsPlugin</span> <span class="s1">&#39;com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0&#39;</span>
+    <span class="n">spotbugsPlugin</span> <span class="s1">&#39;com.mebigfatguy.fb-contrib:fb-contrib:7.4.7&#39;</span>        
+<span class="o">}</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Rules from plugins would be identified in console output:</p>
+<div class="highlight"><pre><span></span><code>[fb-contrib project | Correctness | FCBL_FIELD_COULD_BE_LOCAL] sample.(Sample.java:11)  [priority 2 / rank 7]
+    &gt;&gt; Class sample.Sample defines fields that are used only as locals
+  This class defines fields that are used in a locals only fashion,
+  specifically private fields or protected fields in final classes that are accessed
+  first in each method with a store vs. a load. This field could be replaced by one
+  or more local variables.
+</code></pre></div>
+</div>
+<p>Alternatively, you can use <code>afterEvaluate</code> to register directly in <code>spotbugsPlugins</code> configuration:</p>
+<div class="highlight"><pre><span></span><code><span class="n">afterEvaluate</span> <span class="o">{</span>
+    <span class="n">dependencies</span> <span class="o">{</span>
+        <span class="n">spotbugsPlugins</span> <span class="s1">&#39;com.mebigfatguy.fb-contrib:fb-contrib:7.4.7&#39;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<h3 id="available-plugins">Available plugins<a class="headerlink" href="#available-plugins" title="Permanent link">&para;</a></h3>
+<p><a href="https://github.com/find-sec-bugs/find-sec-bugs">Find Security Bugs</a> (<a href="https://find-sec-bugs.github.io/">site</a>)</p>
+<div class="highlight"><pre><span></span><code><span class="n">quality</span> <span class="o">{</span>
+    <span class="n">spotbugsPlugin</span> <span class="s1">&#39;com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0&#39;</span>
+<span class="o">}</span>
+</code></pre></div>
+<p><a href="https://github.com/mebigfatguy/fb-contrib">fb-contrib: A FindBugs auxiliary detector plugin</a> (<a href="http://fb-contrib.sourceforge.net/">site</a>)</p>
+<div class="highlight"><pre><span></span><code><span class="n">qualtiy</span> <span class="o">{</span>
+    <span class="n">spotbugsPlugin</span> <span class="s1">&#39;com.mebigfatguy.fb-contrib:fb-contrib:7.4.7&#39;</span>
+<span class="o">}</span>
+</code></pre></div>
+<h2 id="annotations">Annotations<a class="headerlink" href="#annotations" title="Permanent link">&para;</a></h2>
+<p>Use spotbugs-annotations to guide spotbugs nullability checks (<code class="highlight"><span class="nd">@NonNull</span></code> and <code class="highlight"><span class="nd">@Nullable</span></code>).
+Add <code>com.github.spotbugs:spotbugs-annotations:3.1.2</code> dependency (with provided scope if possible).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Before,  annotations from Jsr-305 <a href="http://findbugs.sourceforge.net/manual/annotations.html">were used</a> 
+(<code>com.google.code.findbugs:jsr305</code>), but now it is dead.
+Remove jsr-305 jar if it were used and use <a href="https://github.com/spotbugs/spotbugs/issues/130">undeprecated</a>
+<code class="highlight"><span class="nd">@edu.umd.cs.findbugs.annotations.NonNull</span></code> and <code class="highlight"><span class="nd">@edu.umd.cs.findbugs.annotations.Nullable</span></code></p>
+<p>Pay attention becuase libraries still bring-in jsr-305 jar (e.g. guava does): do not use
+<code>javax.annotation.Nullable</code> because it may lead to split package problem on java9 and above
+(<a href="https://github.com/google/guava/issues/2960#issuecomment-546713529">not always</a>)  </p>
+</div>
+<p>Another alternative is <a href="https://checkerframework.org/">chaker framework</a> annotations:
+<code>org.checkerframework:checker-qual:3.0.0</code>. Guava <a href="https://github.com/google/guava/issues/2960">already switched</a> 
+to use them, so if you use it you may already have these annotations.</p>
+<p>Using checker framework annotations should be preferable because it's on the track to community acceptance as
+default jsr-305 replacement. Besides, it's the only advanced java types system extension and validation tool. </p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Even if you will use other annotations, people using checker framework with your library
+would still benefit from your annotations because checker framework understands <a href="https://checkerframework.org/manual/#nullness-related-work">almost all of them</a>. </p>
+</div>
+<p>Summary:</p>
+<ul>
+<li>If checker framework available (<code>org.checkerframework:checker-qual</code>) use it: 
+    <code>org.checkerframework.checker.nullness.qual.Nullable</code></li>
+<li>Otherwise, use spotbugs-annotations (<code>com.github.spotbugs:spotbugs-annotations</code>):
+    <code>edu.umd.cs.findbugs.annotations.Nullable</code>  </li>
+<li><strong>Avoid</strong> using jsr-305 directly (<code>com.google.code.findbugs:jsr305</code>): <code>javax.annotation.Nullable</code>     </li>
+</ul>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<p>Here is an example, which will force you to use nullability annotations.</p>
+<p>When you use guava functions or predicates you may receive this:</p>
+<div class="highlight"><pre><span></span><code>[NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE] input must be nonnull but is marked as nullable 
+</code></pre></div>
+<p>The reason for this is that guava use <code>@Nullable</code> annotation, which is <code>@Inherited</code>, so
+even if you not set annotation on your own function or predicate it will still be visible.</p>
+<p>The simplest workaround is to set <code>@NonNull</code> annotation on your function or predicate:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">apply</span><span class="p">(</span><span class="nd">@NonNull</span> <span class="kd">final</span> <span class="n">Object</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+</code></pre></div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p><code>NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION</code> check was disabled because it does not allow this workaround to work</p>
+</div>
+<h2 id="spotbugs-plugin-specifics">Spotbugs plugin specifics<a class="headerlink" href="#spotbugs-plugin-specifics" title="Permanent link">&para;</a></h2>
+<p>Spotbugs plugin 4 is a plugin re-write. Now it does not follow other gradle quality plugin
+conventions. The main difference is: there is no target source sets configuration anymore,
+so by default, all spotbugs tasks will be executed with <code>check</code>.</p>
+<p>To recover old spotbugs plugin behaviour (and unify it with other plugins) quality plugin 
+activates customized spotbugs plugin with legacy behaviour (the difference is only in what tasks
+attached to <code>check</code>).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you will activate spotbugs plugin manually
+<div class="highlight"><pre><span></span><code><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">&#39;com.github.spotbugs&#39;</span> <span class="n">version</span> <span class="s1">&#39;4.1.0&#39;</span>
+<span class="o">}</span>     
+</code></pre></div>
+Then default spotbugs plugin will be used and so <code>check</code> will call all spotbugs tasks
+(<code>spotbugsMain</code>, <code>spotbugsTest</code>).</p>
+<p>Still, everything else will work as before: the difference is only in check task dependencies. </p>
+</div>
+<p>If you would like to update bundled spotbugs plugin version use:</p>
+<div class="highlight"><pre><span></span><code><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">&#39;com.github.spotbugs&#39;</span> <span class="n">version</span> <span class="s1">&#39;4.1.0&#39;</span> <span class="n">apply</span> <span class="kc">false</span>
+<span class="o">}</span>     
+</code></pre></div>
+<p>If you want to apply plugin manually to activtate it earlier and be able to apply configurations
+without <code>afterEvaluate</code> block:</p>
+<div class="highlight"><pre><span></span><code><span class="n">apply</span> <span class="nl">plugin:</span> <span class="n">ru</span><span class="o">.</span><span class="na">vyarus</span><span class="o">.</span><span class="na">gradle</span><span class="o">.</span><span class="na">plugin</span><span class="o">.</span><span class="na">quality</span><span class="o">.</span><span class="na">spotbugs</span><span class="o">.</span><span class="na">CustomSpotBugsPlugin</span>
+</code></pre></div>
+<h3 id="spotbugs-plugin-issues">Spotbugs plugin issues<a class="headerlink" href="#spotbugs-plugin-issues" title="Permanent link">&para;</a></h3>
+<p>New spotbugs plugin <a href="https://github.com/spotbugs/spotbugs-gradle-plugin/issues/244">does not support build cache</a>, 
+so spotbugs tasks will always run, even with enabled build cache. </p>
+<p>Spotbugs plugin always throws an exception when violations found, so even in non strict mode
+(<code>quality.strict = false</code>) you will see an exception in logs when violations found (build will not be failed).
+Not critical, just confusing.</p>
+<h2 id="problems-resolution">Problems resolution<a class="headerlink" href="#problems-resolution" title="Permanent link">&para;</a></h2>
+<p>Most problems appear with <code>spotbugs</code> configuration. Plugin by default configures only default dependencies for it,
+so if you modify this configuration you will have to specify dependencies explicitly:</p>
+<div class="highlight"><pre><span></span><code><span class="n">afterEvaluate</span> <span class="o">{</span>
+    <span class="n">dependencies</span> <span class="o">{</span>
+        <span class="n">spotbugs</span> <span class="s2">&quot;com.github.spotbugs:spotbugs:${quality.spotbugsVersion}&quot;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Gradle will not show you dependencies tree for spotbugs configuration (because it doesn't show default 
+dependencies) so to be able to see conflicts, configure it manually (as shown above).
+After that you can investigate with:
+<div class="highlight"><pre><span></span><code>gradlew dependencies --configuration spotbugs
+</code></pre></div>
+or (for exact dependency tracking)
+<div class="highlight"><pre><span></span><code>gradlew dependencyInsight --configuration spotbugs --dependency asm
+</code></pre></div></p>
+</div>
+<h3 id="asm">Asm<a class="headerlink" href="#asm" title="Permanent link">&para;</a></h3>
+<p>If you have problems executing spotbugs tasks like</p>
+<div class="highlight"><pre><span></span><code>Execution failed for task &#39;:spotbugsMain&#39;.
+&gt; Failed to run Gradle SpotBugs Worker
+   &gt; org/objectweb/asm/RecordComponentVisitor
+</code></pre></div>
+<p>(NoClassDefFoundException in stacktrace)</p>
+<p>Then it is possible that you have incorrect asm:</p>
+<div class="highlight"><pre><span></span><code>gradlew dependencyInsight --configuration spotbugs --dependency org.ow2.asm:asm
+
+org.ow2.asm:asm:7.2 (selected by rule)
+...
+org.ow2.asm:asm:7.3.1 -&gt; 7.2
+</code></pre></div>
+<p>This may be caused by incorrect BOM usage. For example, <a href="https://github.com/spring-gradle-plugins/dependency-management-plugin">spring dependency-management plugin</a> 
+configured like this:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dependencyManagement</span> <span class="o">{</span>
+    <span class="n">imports</span> <span class="o">{</span>
+        <span class="n">mavenBom</span> <span class="s2">&quot;com.google.inject:guice-bom:4.2.3&quot;</span>
+    <span class="o">}</span>        
+<span class="o">}</span>
+</code></pre></div>
+<p>would apply to ALL configurations, including "spotbugs". In this example, guice bom will force asm 7.2
+which will lead to fail.</p>
+<p>To fix this apply BOM only to some configurations:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dependencyManagement</span> <span class="o">{</span>
+    <span class="n">configurations</span><span class="o">(</span><span class="n">implementation</span><span class="o">,</span> <span class="n">testImplementation</span><span class="o">,</span> <span class="n">provided</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">imports</span> <span class="o">{</span>
+            <span class="n">mavenBom</span> <span class="s2">&quot;com.google.inject:guice-bom:4.2.3&quot;</span>
+        <span class="o">}</span>        
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>But, in this case, generated pom will lack "dependencyManagement" section (as it use only globally applied BOMs),
+so if resulted pom is important for you, then simply force correct asm version for spotbugs:
+<div class="highlight"><pre><span></span><code><span class="n">afterEvaluate</span> <span class="o">{</span>
+    <span class="n">dependencies</span> <span class="o">{</span>
+        <span class="n">spotbugs</span> <span class="s2">&quot;com.github.spotbugs:spotbugs:${quality.spotbugsVersion}&quot;</span>
+        <span class="n">spotbugs</span> <span class="s2">&quot;org.ow2.asm:asm:9.0&quot;</span>
+    <span class="o">}</span>  
+<span class="o">}</span>  
+</code></pre></div></p>
+</div>
+<h3 id="build-dashboard-plugin">Build dashboard plugin<a class="headerlink" href="#build-dashboard-plugin" title="Permanent link">&para;</a></h3>
+<p>If you use <a href="https://docs.gradle.org/current/userguide/build_dashboard_plugin.html">build-dashboard</a> plugin,
+you may <a href="https://github.com/xvik/gradle-quality-plugin/issues/24">face an error</a>:</p>
+<div class="highlight"><pre><span></span><code>Execution failed for task &#39;:buildDashboard&#39;.
+&gt; Could not create task &#39;:spotbugsTest&#39;.
+   &gt; Cannot change dependencies of dependency configuration &#39;:spotbugs&#39; after it has been resolved.
+</code></pre></div>
+<p>This is due to a bug in build-dashboard plugin, forcing initialization of all project tasks.
+Spotbugs create lazy tasks for all source sets and each task configures defaults for <code>spotbugs</code> configuration.
+So when build-dashboard force initialization of not used tasks, they can't apply configurations.</p>
+<p>To workaround this simply initialize all not used spotbugs tasks manually:</p>
+<div class="highlight"><pre><span></span><code><span class="n">afterEvaluate</span> <span class="o">{</span>
+    <span class="n">tasks</span><span class="o">.</span><span class="na">findByName</span><span class="o">(</span><span class="s1">&#39;spotbugsTest&#39;</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div>
+<p><code>afterEvaluate</code> required because spotbugs plugin applied after configuration and <code>findByName</code> 
+forces task initialization (for lazy tasks). </p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../cpd/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              CPD
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../codenarc/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              CodeNarc
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2015-2021 Vyacheslav Rusakov
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/xvik" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/vyarus" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.fb4a9340.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a1c7c35e.min.js"></script>
+      
+    
+  </body>
+</html>

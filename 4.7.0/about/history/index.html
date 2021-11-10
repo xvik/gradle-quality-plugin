@@ -1,0 +1,1626 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Gradle quality plugin for Java and Groovy">
+      
+      
+      
+        <meta name="author" content="Vyacheslav Rusakov">
+      
+      
+        <link rel="canonical" href="https://xvik.github.io/gradle-quality-plugin/4.7.0/about/history/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.6">
+    
+    
+      
+        <title>Release notes - Gradle quality plugin</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2c0c5eaf.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.7fa14f5b.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#470-2021-11-10" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Gradle quality plugin" class="md-header__button md-logo" aria-label="Gradle quality plugin" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Gradle quality plugin
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Release notes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="md-header__options">
+      
+    </div>
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="http://github.com/xvik/gradle-quality-plugin/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gradle-quality-plugin
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Gradle quality plugin" class="md-nav__button md-logo" aria-label="Gradle quality plugin" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Gradle quality plugin
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="http://github.com/xvik/gradle-quality-plugin/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gradle-quality-plugin
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        Getting started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        User guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/automatic/" class="md-nav__link">
+        Automatic mode
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/config/" class="md-nav__link">
+        Configuration
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/exclusion/" class="md-nav__link">
+        Exclusion
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/profile/" class="md-nav__link">
+        Profile
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        Tools
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tools" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Tools
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tool/lint/" class="md-nav__link">
+        Javac lint
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tool/checkstyle/" class="md-nav__link">
+        Checkstyle
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tool/pmd/" class="md-nav__link">
+        PMD
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tool/cpd/" class="md-nav__link">
+        CPD
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tool/spotbugs/" class="md-nav__link">
+        SpotBugs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tool/codenarc/" class="md-nav__link">
+        CodeNarc
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tool/animalsniffer/" class="md-nav__link">
+        Animalsniffer
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        Tasks
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tasks" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Tasks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task/config/" class="md-nav__link">
+        Copy config
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task/group/" class="md-nav__link">
+        Group
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      <label class="md-nav__link" for="__nav_6">
+        About
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="About" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Release notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Release notes
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#470-2021-11-10" class="md-nav__link">
+    4.7.0 (2021-11-10)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#460-2021-05-01" class="md-nav__link">
+    4.6.0 (2021-05-01)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#450-2021-02-06" class="md-nav__link">
+    4.5.0 (2021-02-06)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#440-2020-10-11" class="md-nav__link">
+    4.4.0 (2020-10-11)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#430-2020-05-13" class="md-nav__link">
+    4.3.0 (2020-05-13)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#422-2020-04-23" class="md-nav__link">
+    4.2.2 (2020-04-23)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#421-2020-04-16" class="md-nav__link">
+    4.2.1 (2020-04-16)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#420-2020-04-15" class="md-nav__link">
+    4.2.0 (2020-04-15)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#410-2020-02-15" class="md-nav__link">
+    4.1.0 (2020-02-15)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#400-2019-11-16" class="md-nav__link">
+    4.0.0  (2019-11-16)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#340-2019-02-16" class="md-nav__link">
+    3.4.0  (2019-02-16)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#330-2018-11-23" class="md-nav__link">
+    3.3.0 (2018-11-23)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#320-2018-09-11" class="md-nav__link">
+    3.2.0 (2018-09-11)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#311-2018-07-22" class="md-nav__link">
+    3.1.1 (2018-07-22)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#310-2018-07-13" class="md-nav__link">
+    3.1.0 (2018-07-13)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#300-2018-03-25" class="md-nav__link">
+    3.0.0 (2018-03-25)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#240-2017-09-21" class="md-nav__link">
+    2.4.0 (2017-09-21)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#230-2017-07-24" class="md-nav__link">
+    2.3.0 (2017-07-24)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#220-2017-03-21" class="md-nav__link">
+    2.2.0 (2017-03-21)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#210-2017-01-24" class="md-nav__link">
+    2.1.0 (2017-01-24)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#200-2016-09-03" class="md-nav__link">
+    2.0.0 (2016-09-03)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#130-2016-03-30" class="md-nav__link">
+    1.3.0 (2016-03-30)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#120-2016-01-01" class="md-nav__link">
+    1.2.0 (2016-01-01)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111-2015-12-24" class="md-nav__link">
+    1.1.1 (2015-12-24)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#110-2015-12-21" class="md-nav__link">
+    1.1.0 (2015-12-21)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#103-2015-12-11" class="md-nav__link">
+    1.0.3 (2015-12-11)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#102-2015-12-06" class="md-nav__link">
+    1.0.2 (2015-12-06)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#101-2015-12-04" class="md-nav__link">
+    1.0.1 (2015-12-04)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#100-2015-11-19" class="md-nav__link">
+    1.0.0 (2015-11-19)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compatibility/" class="md-nav__link">
+        Compatibility
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#470-2021-11-10" class="md-nav__link">
+    4.7.0 (2021-11-10)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#460-2021-05-01" class="md-nav__link">
+    4.6.0 (2021-05-01)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#450-2021-02-06" class="md-nav__link">
+    4.5.0 (2021-02-06)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#440-2020-10-11" class="md-nav__link">
+    4.4.0 (2020-10-11)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#430-2020-05-13" class="md-nav__link">
+    4.3.0 (2020-05-13)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#422-2020-04-23" class="md-nav__link">
+    4.2.2 (2020-04-23)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#421-2020-04-16" class="md-nav__link">
+    4.2.1 (2020-04-16)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#420-2020-04-15" class="md-nav__link">
+    4.2.0 (2020-04-15)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#410-2020-02-15" class="md-nav__link">
+    4.1.0 (2020-02-15)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#400-2019-11-16" class="md-nav__link">
+    4.0.0  (2019-11-16)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#340-2019-02-16" class="md-nav__link">
+    3.4.0  (2019-02-16)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#330-2018-11-23" class="md-nav__link">
+    3.3.0 (2018-11-23)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#320-2018-09-11" class="md-nav__link">
+    3.2.0 (2018-09-11)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#311-2018-07-22" class="md-nav__link">
+    3.1.1 (2018-07-22)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#310-2018-07-13" class="md-nav__link">
+    3.1.0 (2018-07-13)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#300-2018-03-25" class="md-nav__link">
+    3.0.0 (2018-03-25)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#240-2017-09-21" class="md-nav__link">
+    2.4.0 (2017-09-21)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#230-2017-07-24" class="md-nav__link">
+    2.3.0 (2017-07-24)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#220-2017-03-21" class="md-nav__link">
+    2.2.0 (2017-03-21)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#210-2017-01-24" class="md-nav__link">
+    2.1.0 (2017-01-24)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#200-2016-09-03" class="md-nav__link">
+    2.0.0 (2016-09-03)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#130-2016-03-30" class="md-nav__link">
+    1.3.0 (2016-03-30)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#120-2016-01-01" class="md-nav__link">
+    1.2.0 (2016-01-01)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111-2015-12-24" class="md-nav__link">
+    1.1.1 (2015-12-24)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#110-2015-12-21" class="md-nav__link">
+    1.1.0 (2015-12-21)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#103-2015-12-11" class="md-nav__link">
+    1.0.3 (2015-12-11)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#102-2015-12-06" class="md-nav__link">
+    1.0.2 (2015-12-06)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#101-2015-12-04" class="md-nav__link">
+    1.0.1 (2015-12-04)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#100-2015-11-19" class="md-nav__link">
+    1.0.0 (2015-11-19)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="http://github.com/xvik/gradle-quality-plugin/edit/master/src/doc/docs/about/history.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>Release notes</h1>
+                
+                <h3 id="470-2021-11-10"><a href="http://xvik.github.io/gradle-quality-plugin/4.7.0">4.7.0</a> (2021-11-10)<a class="headerlink" href="#470-2021-11-10" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fix gradle 7 deprecation warnings (#30)</li>
+<li>Update spotbugs plugin 4.7.1 -&gt; 4.7.9
+  (maven group changed: gradle.plugin.com.github.spotbugs.snom -&gt; com.github.spotbugs.snom)</li>
+<li>Add spotbugsShowStackTraces option with default to false.
+  Option introduced to change the default for spotbug's showStackTraces option
+  to avoid additional stacktrace in logs in non-strict mode (when plugin not fails on errors)</li>
+<li>Update spotbugs 4.2.3 -&gt; 4.4.2</li>
+<li>Update spotbugs exclusions:<ul>
+<li>Exclude <a href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#ei-may-expose-internal-representation-by-returning-reference-to-mutable-object-ei-expose-rep">EI_EXPOSE_REP</a>
+  due to confusing false positives</li>
+<li>Exclude <a href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#ei2-may-expose-internal-representation-by-incorporating-reference-to-mutable-object-ei-expose-rep2">EI_EXPOSE_REP2</a>
+  due to confusing false positives</li>
+</ul>
+</li>
+<li>Update codenarc 2.1.0 -&gt; 2.2.0</li>
+<li>Update pmd 6.34 -&gt; 6.40 (java 17 support)</li>
+<li>Deprecate quality.pmdIncremental property because incremental analysis is enabled by default
+  since gradle 6.4 (property only useful for enabling it in gradle 5.6 - 6.3)</li>
+<li>Update checkstyle 8.42 -&gt; 9.1</li>
+<li>Update checkstyle config:<ul>
+<li>Add <a href="https://checkstyle.sourceforge.io/config_whitespace.html#NoWhitespaceBeforeCaseDefaultColon">NoWhitespaceBeforeCaseDefaultColon</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="460-2021-05-01"><a href="http://xvik.github.io/gradle-quality-plugin/4.6.0">4.6.0</a> (2021-05-01)<a class="headerlink" href="#460-2021-05-01" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fix gradle 7 compatibility (for checkstyle plugin)</li>
+<li>Fix console output on windows (remove special unicode separator characters, appearing incorrectly)</li>
+<li>Update checkstyle 8.39 -&gt; 8.42</li>
+<li>Update checkstyle config:<ul>
+<li>Add <a href="https://checkstyle.sourceforge.io/config_naming.html#RecordComponentName">RecordComponentName</a></li>
+<li>Disable <a href="http://checkstyle.sourceforge.io/config_misc.html#Indentation">Indentation</a> as causing problems too often
+  (currently in regression since 8.40)</li>
+<li>Disable <a href="https://checkstyle.sourceforge.io/config_coding.html#UnnecessaryParentheses">UnnecessaryParentheses</a> due
+  to often false complains in if statements (especially many misses in 8.42)</li>
+</ul>
+</li>
+<li>Update pmd 6.31 -&gt; 6.34 (java 16 support)</li>
+<li>Update pmd config:<ul>
+<li>Disable deprecated <a href="https://pmd.github.io/pmd-6.34.0/pmd_rules_java_bestpractices.html#unusedimports">UnusedImports</a>,
+  <a href="https://pmd.github.io/pmd-6.34.0/pmd_rules_java_codestyle.html#duplicateimports">DuplicateImports</a>,
+  <a href="https://pmd.github.io/pmd-6.34.0/pmd_rules_java_errorprone.html#importfromsamepackage">ImportFromSamePackage</a>,
+  <a href="https://pmd.github.io/pmd-6.34.0/pmd_rules_java_codestyle.html#dontimportjavalang">DontImportJavaLang</a>
+  (replaced by new UnnecessaryImport rule)</li>
+</ul>
+</li>
+<li>Update spotbugs 4.2.1 -&gt; 4.2.3</li>
+<li>Update spotbugs plugin 4.6.0 -&gt; 4.7.1</li>
+<li>Update codenarc 2.0.0 -&gt; 2.1.0</li>
+</ul>
+<h3 id="450-2021-02-06"><a href="http://xvik.github.io/gradle-quality-plugin/4.5.0">4.5.0</a> (2021-02-06)<a class="headerlink" href="#450-2021-02-06" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fix report separating lines disappear in intellij IDEA output (appears when gradle output recognized as junit test output).
+  Extra zero-width space symbol used to prevent trims.</li>
+<li>Update checkstyle 8.36.2 -&gt; 8.39 (not 8.40 due to Indentation check regression)</li>
+<li>Update checkstyle config:<ul>
+<li>Add <a href="https://checkstyle.sourceforge.io/config_javadoc.html#JavadocMissingLeadingAsterisk">JavadocMissingLeadingAsterisk</a></li>
+<li>Disable <a href="https://checkstyle.sourceforge.io/config_sizes.html#LambdaBodyLength">LambdaBodyLength</a>
+  as method length check is enough</li>
+<li>Add optional <a href="https://checkstyle.sourceforge.io/config_filters.html#SuppressionFilter">external suppressions file support</a>:
+  just create gradle/config/checkstyle/suppressions.xml and it will be used automatically with the default config</li>
+</ul>
+</li>
+<li>Update pmd 6.28 -&gt; 6.31</li>
+<li>Update pmd config:<ul>
+<li>Remove <a href="https://pmd.github.io/pmd-6.28.0/pmd_rules_java_performance.html#avoidinstantiatingobjectsinloops">AvoidInstantiatingObjectsInLoops</a>
+  because its useless most of the time</li>
+<li>Remove <a href="https://pmd.github.io/pmd-6.28.0/pmd_rules_java_errorprone.html#assignmentinoperand">AssignmentInOperand</a>
+  because its quite common technique</li>
+<li>Remove <a href="https://pmd.github.io/pmd-6.28.0/pmd_rules_java_multithreading.html#avoidusingvolatile">AvoidUsingVolatile</a>
+  because it's not an issue but attention pointer</li>
+<li>Update <a href="https://pmd.github.io/pmd-6.28.0/pmd_rules_java_design.html#ncsscount">NcssCount</a>
+  methodReportLevel from 30 to 40, classReportLevel from 300 to 500</li>
+</ul>
+</li>
+<li>Update spotbugs 4.1.3 -&gt; 4.2.1</li>
+<li>Update spotbugs plugin 4.5.1 -&gt; 4.6.0</li>
+<li>Set checkstyle.configDirectory property: required for ${config_loc} variable (#29)</li>
+</ul>
+<h3 id="440-2020-10-11"><a href="http://xvik.github.io/gradle-quality-plugin/4.4.0">4.4.0</a> (2020-10-11)<a class="headerlink" href="#440-2020-10-11" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update codenarc 1.5 -&gt; 2.0.0 (groovy 3 and java 14 support, requires java 7)</li>
+<li>Update codenarc config:<ul>
+<li>Disable new rule <a href="https://codenarc.org/codenarc-rules-convention.html#implicitreturnstatement-rule">ImplicitReturnStatement</a>
+    because it will cause too many warnings on typical projects and sometimes don't see existing return</li>
+</ul>
+</li>
+<li>Update pmd 6.23 -&gt; 6.28 (java 15 support, text block syntax)</li>
+<li>Update checkstyle 8.32 -&gt; 8.36.2 (java 14 records support, text block syntax)</li>
+<li>Update checkstyle config<ul>
+<li>Add <a href="https://checkstyle.sourceforge.io/config_misc.html#NoCodeInFile">NoCodeInFile</a></li>
+<li>Add <a href="https://checkstyle.sourceforge.io/config_naming.html#IllegalIdentifierName">IllegalIdentifierName</a></li>
+<li>Add <a href="https://checkstyle.sourceforge.io/config_sizes.html#RecordComponentNumber">RecordComponentNumber</a></li>
+<li>Add <a href="https://checkstyle.sourceforge.io/config_naming.html#RecordTypeParameterName">RecordTypeParameterName</a></li>
+<li>Add <a href="https://checkstyle.sourceforge.io/config_naming.html#PatternVariableName">PatternVariableName</a></li>
+</ul>
+</li>
+<li>Update spotbugs 4.0.3 -&gt; 4.1.3</li>
+<li>Update spotbugs plugin 4.1.0 -&gt; 4.5.1   </li>
+<li>Fix exclusions apply for spotbugs (#27)</li>
+<li>Automatically exclude apt-generated sources for spotbugs 
+  (apt processor(s) assumed to be specified with annotationProcessor configuration)   </li>
+</ul>
+<h3 id="430-2020-05-13"><a href="http://xvik.github.io/gradle-quality-plugin/4.3.0">4.3.0</a> (2020-05-13)<a class="headerlink" href="#430-2020-05-13" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update spotbugs plugin to 4.1.0 (#26)<ul>
+<li>Fixes gradle 6.4 compatibility.</li>
+<li>The new plugin is a re-write of the original spotbugs plugin. But quality plugin 
+  makes it work as before, so you shouldn't see any difference.</li>
+<li>Minimal supported gradle is now 5.6 (due to spotbugs plugin)  </li>
+<li>New spotbugs plugin can generate html report itself, but this option is not used</li>
+</ul>
+</li>
+<li>Update spotbugs 4.0.2 -&gt; 4.0.3</li>
+<li>Update checkstyle 8.31 -&gt; 8.32</li>
+<li>Update checkstyle config:<ul>
+<li>New rule <a href="https://checkstyle.sourceforge.io/config_javadoc.html#JavadocMissingWhitespaceAfterAsterisk">JavadocMissingWhitespaceAfterAsterisk</a></li>
+</ul>
+</li>
+<li>Update pmd 6.22 -&gt; 6.23        </li>
+</ul>
+<p>NOTE:
+    * New spotbugs plugin does not support build cache (<a href="https://github.com/spotbugs/spotbugs-gradle-plugin/issues/244">https://github.com/spotbugs/spotbugs-gradle-plugin/issues/244</a>)
+    * Spotbugs task always show an exception when violations found (not a problem, just confusing)</p>
+<h3 id="422-2020-04-23"><a href="http://xvik.github.io/gradle-quality-plugin/4.2.2">4.2.2</a> (2020-04-23)<a class="headerlink" href="#422-2020-04-23" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Remove spotbugs configuration "tuning" (added in the last version) because it eventually works incorrectly (causing warnings).
+  Spotbugs 4.0.2 depends on slf4j 1.8 which should avoid compatiblity problems (at least for some time).</li>
+</ul>
+<h3 id="421-2020-04-16"><a href="http://xvik.github.io/gradle-quality-plugin/4.2.1">4.2.1</a> (2020-04-16)<a class="headerlink" href="#421-2020-04-16" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update spotbugs 4.0.1 -&gt; 4.0.2</li>
+<li>Revert (and change) spotbugs configuration customizations:<ul>
+<li>Remove explicit asm dependency for "spotbugs" configuration
+  It was added by mistake: dependency-management plugin applied for all configurations 
+  was actually guilty of incorrect asm version (case description added to documentation)</li>
+<li>Force correct version of sl4j-simple instead of removing dependency
+  (nasty warnings introduced in previous release will disappear now)</li>
+</ul>
+</li>
+</ul>
+<p>Warnings from the previous version are no more actual (except new plugin version (4)).           </p>
+<h3 id="420-2020-04-15"><a href="http://xvik.github.io/gradle-quality-plugin/4.2.0">4.2.0</a> (2020-04-15)<a class="headerlink" href="#420-2020-04-15" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fix gradle configuration fail: "Cannot access last() element from an empty List"
+  (project with explicit quality configuration fails to open in the new IDEA)</li>
+<li>Fix concurrent default configs initialization clash (#22) </li>
+<li>Update spotbugs 3.1.12 -&gt; 4.0.1   </li>
+<li>Spotbugs classpath changes ("spotbugs" configuration):<ul>
+<li>Removed <code>sl4j-simple</code> dependency: you will see default slf4j warnings
+   but everything will work in all cases and will no more fail due to sl4j version class with gradle's own sl4j (#20)</li>
+<li><code>asm</code> 7.3.1 is directly specified to force 7.3.1 because otherwise gradle (5.6) downgrades it to 7.2 (which leads to execution fails "no class def found").         </li>
+</ul>
+</li>
+<li>Update codenarc 1.4 -&gt; 1.5</li>
+<li>Update codenarc config:<ul>
+<li>Disable new rule <a href="https://codenarc.github.io/CodeNarc/codenarc-rules-convention.html#implicitclosureparameter-rule">ImplicitClosureParameter</a></li>
+</ul>
+</li>
+<li>Fix codenarc link in console report (docs moved from sourceforge to github)</li>
+<li>Update checkstyle 8.29 -&gt; 8.31</li>
+<li>Update checkstyle rules:<ul>
+<li>New rule <a href="https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonAfterOuterTypeDeclaration">UnnecessarySemicolonAfterOuterTypeDeclaration</a></li>
+<li>Disable new rule <a href="https://checkstyle.sourceforge.io/config_coding.html#AvoidDoubleBraceInitialization">AvoidDoubleBraceInitialization</a></li>
+<li>Update <a href="https://checkstyle.sourceforge.io/config_misc.html#NewlineAtEndOfFile">NewlineAtEndOfFile</a> 
+    lineSeparator configuration to default (lf_cr_crlf) because rule fixed in 8.30 and now may cause too many violations </li>
+</ul>
+</li>
+<li>Fix checkstyle link in console report (sourceforge.net changed to sourceforge.io to avoid redirect)</li>
+<li>Update pmd 6.21 -&gt; 6.22 </li>
+</ul>
+<p>WARNING (spotbugs related): 
+1. If you want to downgrade spotbugs version (with <code>quality.spotbugsVersion = ..</code>) then you'll have
+   to also force correct asm version on spotbugs configuration.
+2. If you need to see spotbugs logs, then manually add <code>slf4j-simple</code> dependency to spotbugs configuration.
+   (normally, spotbugs logs are not important and removing dependency fixes some environments)
+3. If you don't want to see sl4j default warnings then simply put <code>slf4j-nop</code> dependency into spotbugs
+    configuration. I can't do it automatically because I may introduce new sl4j compatibility problems due to incorrect version.     <br />
+4. I know, there is a <a href="https://github.com/spotbugs/spotbugs-gradle-plugin">new spotbugs plugin</a> 4.0.5,
+   but it is conceptually different, so old version would be used for some time. (I tried to upgrade, but it requires time to resolve all issues)
+5. BUT with all this, spotbugs 4 should work without problems for everyone!    </p>
+<h3 id="410-2020-02-15"><a href="http://xvik.github.io/gradle-quality-plugin/4.1.0">4.1.0</a> (2020-02-15)<a class="headerlink" href="#410-2020-02-15" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fix disabled plugin execution with no-tasks gradle run (pure initialization) (#21)</li>
+<li>Update checkstyle 8.26 -&gt; 8.29</li>
+<li>Update checkstyle config:<ul>
+<li>Add new checks:<ul>
+<li><a href="https://checkstyle.sourceforge.io/config_coding.html#AvoidNoArgumentSuperConstructorCall">AvoidNoArgumentSuperConstructorCall</a></li>
+<li><a href="https://checkstyle.sourceforge.io/config_coding.html#NoEnumTrailingComma">NoEnumTrailingComma</a></li>
+<li><a href="https://checkstyle.sourceforge.io/config_coding.html#NoArrayTrailingComma">NoArrayTrailingComma</a></li>
+<li><a href="https://checkstyle.sourceforge.io/config_javadoc.html#JavadocContentLocation">JavadocContentLocation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Update pmd 6.17.0 -&gt; 6.21.0 </li>
+<li>Update pmd config:<ul>
+<li>Disabled rule <code>InvalidSlf4jMessageFormat</code> name changed to <code>InvalidLogMessageFormat</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="400-2019-11-16"><a href="http://xvik.github.io/gradle-quality-plugin/4.0.0">4.0.0</a>  (2019-11-16)<a class="headerlink" href="#400-2019-11-16" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Gradle 6.0 compatibility<ul>
+<li>(breaking) Removed findbugs plugin support because it was removed in gradle 6</li>
+</ul>
+</li>
+<li>(breaking) Minimal required gradle is now 5.1     </li>
+<li>Update spotbugs 3.1.11 -&gt; 3.1.12</li>
+<li>Update com.github.spotbugs plugin: 1.6.5 -&gt; 2.0.1<ul>
+<li>Note that plugin group changed: gradle.plugin.com.github.spotbugs -&gt; com.github.spotbugs</li>
+</ul>
+</li>
+<li>Add spotbugs-related options:<ul>
+<li>spotbugsMaxHeapSize setting may be used to increase default spotbugs memory (<a href="https://github.com/gradle/gradle/issues/6216">reduced to 512mb in gradle 5</a>).
+    Option does not override maxHeapSize manually set on spotbugs task (to not break working builds) (#12)</li>
+<li>spotbugsMaxRank setting allows to filter low-ranked rules (ranks are different from priorities!) (#15)
+    Option modifies excludes.xml file (the only way to apply rank threshold)</li>
+<li>spotbugsPlugin shortcut method to simplify plugins declaration (without afterEvaluate block or manual spotbugs plugin declaration)    </li>
+</ul>
+</li>
+<li>Spotbugs console report changes:<ul>
+<li>Show both rule rank and priority : <code>[priority 2 / rank 14]</code></li>
+<li>Identify rules from plugins: <code>[fb-contrib project | Correctness | FCBL_FIELD_COULD_BE_LOCAL]</code>            </li>
+</ul>
+</li>
+<li>Update codenarc 1.3 -&gt; 1.4</li>
+<li>Update checkstyle 8.17 -&gt; 8.26</li>
+<li>Update checkstyle config:<ul>
+<li>Disable <a href="https://checkstyle.sourceforge.io/config_misc.html#TrailingComment">TrailingComment</a>
+    as not useful and contradicting with PMD suppression syntax (<code>// NOPMD</code>)</li>
+<li>Add new checks:<ul>
+<li><a href="https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocPackage">MissingJavadocPackage</a></li>
+<li><a href="https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocType">MissingJavadocType</a></li>
+<li><a href="https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonInTryWithResources">UnnecessarySemicolonInTryWithResources</a></li>
+<li><a href="https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonInEnumeration">UnnecessarySemicolonInEnumeration</a></li>
+<li><a href="https://checkstyle.sourceforge.io/config_coding.html#UnnecessarySemicolonAfterTypeMemberDeclaration">UnnecessarySemicolonAfterTypeMemberDeclaration</a></li>
+<li><a href="https://checkstyle.sourceforge.io/config_javadoc.html#InvalidJavadocPosition">InvalidJavadocPosition</a>        </li>
+<li><a href="https://checkstyle.sourceforge.io/config_javadoc.html#JavadocBlockTagLocation">JavadocBlockTagLocation</a></li>
+</ul>
+</li>
+<li>Disable new checks:<ul>
+<li><a href="https://checkstyle.sourceforge.io/config_misc.html#OrderedProperties">OrderedProperties</a></li>
+<li><a href="https://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocMethod">MissingJavadocMethod</a>             </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Update pmd 6.11.0 -&gt; 6.17.0<br />
+    NOTE: 6.18 or 6.19 can't be used due to <a href="https://github.com/pmd/pmd/issues/2098">regression</a> (should be fixed in 6.20) </li>
+<li>Update pmd config:<ul>
+<li>Add 1 as allowed "magic number" for <a href="https://pmd.github.io/pmd-6.11.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition">AvoidLiteralsInIfCondition</a></li>
+<li>Disable new rule <a href="https://pmd.github.io/pmd-6.17.0/pmd_rules_java_design.html#avoiduncheckedexceptionsinsignatures">AvoidUncheckedExceptionsInSignatures</a>
+    because it produces false positives for implemented interfaces (and generally not useful)</li>
+<li>Remove <code>java.lang.AutoCloseable</code> in <a href="https://pmd.github.io/pmd-6.17.0/pmd_rules_java_errorprone.html#closeresource">CloseResource</a> rule
+    because it produces too many false positives    </li>
+</ul>
+</li>
+<li>Add <code>pmdIncremental</code> option - shortcut for gradle's <code>pmd.incrementalAnalysis</code> option. Disabled by default.    </li>
+<li>Add PMD's CPD tool support through <a href="https://github.com/aaschmid/gradle-cpd-plugin">de.aaschmid.cpd</a> plugin. (#4) <ul>
+<li>CPD gradle plugin must be applied manually: no automatic plugin enabling  </li>
+<li>Sets pmd version and silent mode. </li>
+<li>Sources configured according to quality configuration. Exclusions (source and pattern) are supported too </li>
+<li>Html report generated (using style recommended by pmd; style file added as overridable config)</li>
+<li>Full console report (like for other quality plugins)  </li>
+<li>Support for multi-module projects (where cpd plugin applied in root project and quality in subprojects)</li>
+</ul>
+</li>
+<li>Use gradle configuration avoidance to prevent not used quality tasks creation</li>
+<li>Use <code>compilerArgumentProviders</code> instead of direct options modification (<code>JavaCompile.options.compilerArgs</code>) to workaround 
+    possible immutable list usage in options (#19)</li>
+</ul>
+<h3 id="340-2019-02-16"><a href="http://xvik.github.io/gradle-quality-plugin/3.4.0">3.4.0</a>  (2019-02-16)<a class="headerlink" href="#340-2019-02-16" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fix source files root detection (#13)</li>
+<li>Set spotbugs tasks default heap size to 1g to mimic old behaviour in <a href="https://docs.gradle.org/5.0/userguide/upgrading_version_4.html#rel5.0:default_memory_settings">gradle 5</a> (#12)</li>
+<li>Update pmd 6.9.0 -&gt; 6.11.0   </li>
+<li>Update checkstyle 8.14 -&gt; 8.17</li>
+<li>Update spotbugs 3.1.9 -&gt; 3.1.11</li>
+<li>Update codenarc 1.2.1 -&gt; 1.3</li>
+<li>Update codenarc config:<ul>
+<li>Add new ruleset <a href="http://codenarc.sourceforge.net/codenarc-rules-comments.html">Comments</a></li>
+<li>Disable new rule <a href="http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassStartsWithBlankLine">ClassStartsWithBlankLine</a></li>
+<li>Disable new rule <a href="http://codenarc.sourceforge.net/codenarc-rules-formatting.html#ClassEndsWithBlankLine">ClassEndsWithBlankLine</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="330-2018-11-23"><a href="http://xvik.github.io/gradle-quality-plugin/3.3.0">3.3.0</a> (2018-11-23)<a class="headerlink" href="#330-2018-11-23" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update pmd config:<ul>
+<li>Allow camel cased enum constants for <a href="https://pmd.github.io/pmd-6.7.0/pmd_rules_java_codestyle.html#fieldnamingconventions">FieldNamingConventions</a></li>
+</ul>
+</li>
+<li>Update spotbugs 3.1.6 -&gt; 3.1.9</li>
+<li>Update com.github.spotbugs plugin 1.6.3 -&gt; 1.6.5 </li>
+<li>Update checkstyle 8.12 -&gt; 8.14</li>
+<li>Update pmd 6.7.0 -&gt; 6.9.0    </li>
+</ul>
+<h3 id="320-2018-09-11"><a href="http://xvik.github.io/gradle-quality-plugin/3.2.0">3.2.0</a> (2018-09-11)<a class="headerlink" href="#320-2018-09-11" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Gradle 4.10 compatibility:<ul>
+<li>updated com.github.spotbugs plugin 1.6.2 -&gt; 1.6.3  </li>
+</ul>
+</li>
+<li>Update checkstyle 8.11 -&gt; 8.12    </li>
+<li>Update pmd 6.5.0 -&gt; 6.7.0     </li>
+<li>Update codenarc 1.2 -&gt; 1.2.1</li>
+</ul>
+<h3 id="311-2018-07-22"><a href="http://xvik.github.io/gradle-quality-plugin/3.1.1">3.1.1</a> (2018-07-22)<a class="headerlink" href="#311-2018-07-22" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fix maven central and jcenter artifacts (missed dependency) (#9)</li>
+<li>Update spotbugs 3.1.5 -&gt; 3.1.6 </li>
+</ul>
+<h3 id="310-2018-07-13"><a href="http://xvik.github.io/gradle-quality-plugin/3.1.0">3.1.0</a> (2018-07-13)<a class="headerlink" href="#310-2018-07-13" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Gradle 4.8 compatibility:<ul>
+<li>updated com.github.spotbugs plugin 1.6.1 -&gt; 1.6.2  </li>
+<li>fix exclusions support </li>
+</ul>
+</li>
+<li>Update checkstyle 8.8 -&gt; 8.11</li>
+<li>Update checkstyle config:<ul>
+<li>New check <a href="http://checkstyle.sourceforge.net/config_naming.html#LambdaParameterName">LambdaParameterName</a>    </li>
+</ul>
+</li>
+<li>Update pmd 6.1.0 -&gt; 6.5.0 </li>
+<li>Update pmd config:<ul>
+<li>Disable <a href="https://pmd.github.io/pmd-6.5.0/pmd_rules_java_codestyle.html#classnamingconventions">ClassNamingConventions</a></li>
+</ul>
+</li>
+<li>Update spotbugs 3.1.2 -&gt; 3.1.5 </li>
+<li>Update codenarc 1.1 -&gt; 1.2</li>
+<li>Update codenarc config:<ul>
+<li>Disable new check <a href="http://codenarc.sourceforge.net/codenarc-rules-convention.html#NoJavaUtilDate">NoJavaUtilDate</a> </li>
+</ul>
+</li>
+<li>Option to disable html reports: quality.htmlReports=false (#5)</li>
+</ul>
+<h3 id="300-2018-03-25"><a href="http://xvik.github.io/gradle-quality-plugin/3.0.0">3.0.0</a> (2018-03-25)<a class="headerlink" href="#300-2018-03-25" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update codenarc 1.0 -&gt; 1.1</li>
+<li>Update checkstyle 8.2 -&gt; 8.8</li>
+<li>Update pmd 5.8.1 -&gt; 6.1.0</li>
+<li>Update pmd config:<ul>
+<li>(breaking) All rules reordered according to <a href="https://pmd.github.io/pmd-6.0.0/pmd_release_notes.html#rule-categories">new groups</a></li>
+<li>Disable <a href="https://pmd.github.io/pmd-6.1.0/pmd_rules_java_codestyle.html#commentdefaultaccessmodifier">CommentDefaultAccessModifier</a> as not useful</li>
+<li>Disable <a href="https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#excessiveclasslength">ExcessiveClassLength</a>
+    and <a href="https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#excessivemethodlength">ExcessiveMethodLength</a>
+    in favor of new rule <a href="https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#ncsscount">NcssCount</a> (which counts lengths without empty lines and comments)</li>
+<li>Defaults for <a href="https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#ncsscount">NcssCount</a> (which counts length without empty lines and comments) changed:
+    30 lines for method and 300 for class (with previous Excessive* rules it was 50 and 500 accordingly)</li>
+<li>Disable new rule <a href="https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#dataclass">DataClass</a> as too strict for general cases</li>
+<li>Switch from <a href="https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#modifiedcyclomaticcomplexity">ModifiedCyclomaticComplexity</a> (deprecated) to
+    <a href="https://pmd.github.io/pmd-6.1.0/pmd_rules_java_design.html#cyclomaticcomplexity">CyclomaticComplexity</a> with ignoreBooleanPaths option                 </li>
+</ul>
+</li>
+<li>(breaking) use Spotbugs (3.1.2) instead of Findbugs by default (as <a href="https://github.com/findbugsproject/findbugs">successor</a>)<ul>
+<li><a href="http://spotbugs.readthedocs.io/en/latest/gradle.html">com.github.spotbugs</a> external plugin applied (quality plugin brings it as a dependency)</li>
+<li>Spotbugs plugin will use configs from different folder (spotbugs/), so if custom findbugs configs were used move them to spotbugs/ folder    </li>
+<li>Findbugs support is deprecated and will be removed someday (but not soon). </li>
+<li>To use findbugs (as before): disable spotbugs support (quality.spotbugs = false) 
+   or enable findbugs plugin manually (in this case spotbugs plugin will not be registered)  </li>
+</ul>
+</li>
+<li>Update spotbugs exclusions:<ul>
+<li>Exclude <a href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#np-method-tightens-nullness-annotation-on-parameter-np-method-parameter-tightens-annotation">NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION</a> 
+    check as it prevents @Nullable override, which may be required for guava functions</li>
+<li>Exclude <a href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#np-possible-null-pointer-dereference-due-to-return-value-of-called-method-np-null-on-some-path-from-return-value">NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE</a> 
+    check as misleading and not useful </li>
+</ul>
+</li>
+</ul>
+<h3 id="240-2017-09-21"><a href="http://xvik.github.io/gradle-quality-plugin/2.4.0">2.4.0</a> (2017-09-21)<a class="headerlink" href="#240-2017-09-21" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Support gradle 4.2 (#3)    </li>
+<li>Update checkstyle 8.0 -&gt; 8.2</li>
+<li>Update codenarc 0.27.0 -&gt; 1.0</li>
+<li>Update checkstyle config:<ul>
+<li>Move SuppressionCommentFilter inside TreeWalker (8.1 breaking change)</li>
+<li>Remove FileContentsHolder (8.2 breaking change) </li>
+<li>New check <a href="http://checkstyle.sourceforge.net/config_annotation.html#AnnotationOnSameLine">AnnotationOnSameLine</a> (added in 8.2) added to config, but disabled</li>
+</ul>
+</li>
+</ul>
+<h3 id="230-2017-07-24"><a href="https://github.com/xvik/gradle-quality-plugin/tree/2.3.0">2.3.0</a> (2017-07-24)<a class="headerlink" href="#230-2017-07-24" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update checkstyle 7.6 -&gt; 8.0</li>
+<li>Update pmd 5.5.4 -&gt; 5.8.1</li>
+<li>Update pmd config:<ul>
+<li>Add description to avoid <a href="https://github.com/pmd/pmd/issues/470">warning</a></li>
+<li>Disable <a href="https://pmd.github.io/latest/pmd-java/rules/java/design.html#AccessorMethodGeneration">AccessorMethodGeneration</a>
+check as it makes sense for android projects and not so important for java. 
+Moreover, possible fixes will contradict with checkstyle's <a href="http://checkstyle.sourceforge.net/config_design.html#VisibilityModifier">VisibilityModifier</a>   </li>
+</ul>
+</li>
+</ul>
+<h3 id="220-2017-03-21"><a href="https://github.com/xvik/gradle-quality-plugin/tree/2.2.0">2.2.0</a> (2017-03-21)<a class="headerlink" href="#220-2017-03-21" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update checkstyle 7.4 -&gt; 7.6</li>
+<li>Update pmd 5.5.2 -&gt; 5.5.4</li>
+<li>Update codenarc 0.26.0 -&gt; 0.27.0</li>
+<li>Update pmd config:<ul>
+<li>Disable <a href="https://pmd.github.io/latest/pmd-java/rules/java/controversial.html#NullAssignment">NullAssignment</a>
+check due to false positives</li>
+</ul>
+</li>
+<li>Add unified exclusion patterns (glob) configuration: exclude (#2)<ul>
+<li>Does not affect animalsniffer because it's a different type of check</li>
+<li>Findbugs did not support direct exclusions, so plugin resolves excluded classes and adds them to exclusion xml (default or user defined)</li>
+</ul>
+</li>
+<li>Add configuration to directly exclude source files from check (for exceptional cases when pattern exclusion cant help): excludeSources<ul>
+<li>Does not affect animalsniffer</li>
+<li>For findbugs excluded classes will be added to exclusions xml filter   </li>
+</ul>
+</li>
+</ul>
+<h3 id="210-2017-01-24"><a href="https://github.com/xvik/gradle-quality-plugin/tree/2.1.0">2.1.0</a> (2017-01-24)<a class="headerlink" href="#210-2017-01-24" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update checkstyle 7.1 -&gt; 7.4</li>
+<li>Update pmd 5.5.1 -&gt; 5.5.2</li>
+<li>Update codenarc 0.25.2 -&gt; 0.26.0</li>
+<li>Update pmd config:<ul>
+<li>Disable junit4 migration rules which cause false positives for non test code:
+<a href="https://pmd.github.io/latest/pmd-java/rules/java/migrating.html#JUnit4TestShouldUseBeforeAnnotation">JUnit4TestShouldUseBeforeAnnotation</a>,
+<a href="https://pmd.github.io/latest/pmd-java/rules/java/migrating.html#JUnit4TestShouldUseAfterAnnotation">JUnit4TestShouldUseAfterAnnotation</a>,
+<a href="https://pmd.github.io/latest/pmd-java/rules/java/migrating.html#JUnit4TestShouldUseTestAnnotation">JUnit4TestShouldUseTestAnnotation</a>    </li>
+</ul>
+</li>
+</ul>
+<h3 id="200-2016-09-03"><a href="https://github.com/xvik/gradle-quality-plugin/tree/2.0.0">2.0.0</a> (2016-09-03)<a class="headerlink" href="#200-2016-09-03" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update checkstyle 6.17 -&gt; 7.1 (requires min jdk 8)</li>
+<li>Update checkstyle config:<ul>
+<li>Add <a href="http://checkstyle.sourceforge.net/config_whitespace.html#SingleSpaceSeparator">SingleSpaceSeparator</a> check (since 6.19)</li>
+<li>Disable <a href="http://checkstyle.sourceforge.net/config_sizes.html#FileLength">FileLength</a> check in favour of more correct PMD ExcessiveClassLength check (which checks actual class length not file)</li>
+<li>Enable <a href="http://checkstyle.sourceforge.net/config_coding.html#ReturnCount">ReturnCount</a> to replace pmd OnlyOneReturn check</li>
+</ul>
+</li>
+<li>Update pmd 5.4.1 -&gt; 5.5.1 (requires min jdk 7)</li>
+<li>Update pmd config:<ul>
+<li>Disable <a href="https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/unnecessary.html#UselessParentheses">UselessParentheses</a> because of too many false positives</li>
+<li>Disable <a href="https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/controversial.html#OnlyOneReturn">OnlyOneReturn</a> in favour of checkstyle ReturnCount</li>
+<li>Disable <a href="https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/logging-java.html#InvalidSlf4jMessageFormat">InvalidSlf4jMessageFormat</a> due to <a href="https://sourceforge.net/p/pmd/bugs/1509">known bug</a></li>
+<li>Disable <a href="https://pmd.github.io/pmd-5.5.1/pmd-java/rules/java/codesize.html#CyclomaticComplexity">CyclomaticComplexity</a> and <a href="https://pmd.github.io/pmd-5.5.0/pmd-java/rules/java/codesize.html#StdCyclomaticComplexity">StdCyclomaticComplexity</a> as duplicate rules for ModifiedCyclomaticComplexity</li>
+</ul>
+</li>
+<li>Update codenarc 0.25.1 -&gt; 0.25.2</li>
+<li>(breaking) quality.lintOptions configuration now applies to all JavaCompile tasks (not only to compileJava as before) </li>
+<li>Fix multi-module projects reporting (remove duplicate reports)</li>
+<li>Fix generated html reports links (redundant slash on linux)</li>
+<li>Fix newline in reporters (use platform specific)</li>
+<li>Change reporting format so intelliJ IDEA can recognize class reference and show link (eclipse will probably too). Reference line ranges are not shown anymore (pmd, findbugs and column in checkstyle) - always exact line.</li>
+<li>(breaking) configure manually registered plugins, even if plugin not supposed to be used due to sources auto detection. Configuration may be disabled using quality configuration flags.</li>
+<li>Add ability to disable automatic plugins registration: quality.autoRegistration = false. Only manually registered plugins will be configured.</li>
+<li>Add ability to disable quality tasks with configuration property: quality.enabled = false. Quality tasks will still work if called directly or through grouping task (e.g. checkQualityMain).</li>
+<li>(breaking) Remove checkstyle html report generation: gradle can generate html report since 2.10 and when gradle generates html report, it puts link to it into main error message</li>
+<li>Findbugs html report is always generated (not only when errors found like before)</li>
+<li>Add ability to disable console reporting with configuration property: quality.consoleReporting = false</li>
+<li>Add grouping tasks for registered quality plugins: checkQualityMain, checkQualityTest (per source set). Allows running quality tasks for exact source set or run quality tasks not enabled for 'check' task.</li>
+</ul>
+<h3 id="130-2016-03-30"><a href="https://github.com/xvik/gradle-quality-plugin/tree/1.3.0">1.3.0</a> (2016-03-30)<a class="headerlink" href="#130-2016-03-30" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update checkstyle 6.14.1 -&gt; 6.17</li>
+<li>Update codenarc 0.24.1 -&gt; 0.25.1 </li>
+<li>Disable default checkstyle html report (enabled in gradle &gt;=2.10) to avoid duplicate report generation</li>
+<li>Add reporting execution time logging (visible with --info option)</li>
+<li>Update default checkstyle config:<ul>
+<li>Disable <a href="http://checkstyle.sourceforge.net/config_misc.html#UncommentedMain">Misc/UncommentedMain</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="120-2016-01-01"><a href="https://github.com/xvik/gradle-quality-plugin/tree/1.2.0">1.2.0</a> (2016-01-01)<a class="headerlink" href="#120-2016-01-01" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Update default configs: <ul>
+<li>Disable <a href="https://pmd.github.io/pmd-5.4.1/pmd-java/rules/java/controversial.html#AvoidFinalLocalVariable">Pmd/Controversial/AvoidFinalLocalVariable</a></li>
+<li><a href="https://pmd.github.io/pmd-5.4.1/pmd-java/rules/java/design.html#AvoidDeeplyNestedIfStmts">Pmd/Design/AvoidDeeplyNestedIfStmts</a> default set to 4</li>
+<li><a href="http://checkstyle.sourceforge.net/config_coding.html#NestedIfDepth">Checkstyle/Coding/NestedIfDepth</a> default set to 3</li>
+<li>Add disabled check in config <a href="http://checkstyle.sourceforge.net/config_naming.html#CatchParameterName">Checkstyle/Naming/CatchParameterName</a>  </li>
+</ul>
+</li>
+<li>Update checkstyle 6.13 -&gt; 6.14.1     </li>
+</ul>
+<h3 id="111-2015-12-24"><a href="https://github.com/xvik/gradle-quality-plugin/tree/1.1.1">1.1.1</a> (2015-12-24)<a class="headerlink" href="#111-2015-12-24" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fix AnimalSniffer version configuration</li>
+</ul>
+<h3 id="110-2015-12-21"><a href="https://github.com/xvik/gradle-quality-plugin/tree/1.1.0">1.1.0</a> (2015-12-21)<a class="headerlink" href="#110-2015-12-21" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Add <a href="https://github.com/xvik/gradle-animalsniffer-plugin">ru.vyarus.animalsniffer</a> plugin configuration support</li>
+<li>Improve FindBugs console output</li>
+</ul>
+<h3 id="103-2015-12-11"><a href="https://github.com/xvik/gradle-quality-plugin/tree/1.0.3">1.0.3</a> (2015-12-11)<a class="headerlink" href="#103-2015-12-11" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Delay default configs copying to actual task execution to avoid problems with clean task</li>
+</ul>
+<h3 id="102-2015-12-06"><a href="https://github.com/xvik/gradle-quality-plugin/tree/1.0.2">1.0.2</a> (2015-12-06)<a class="headerlink" href="#102-2015-12-06" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Unescape CodeNarc messages</li>
+<li>Update checkstyle 6.12.1 -&gt; 6.13</li>
+<li>Update pmd 5.4.0 -&gt; 5.4.1</li>
+</ul>
+<h3 id="101-2015-12-04"><a href="https://github.com/xvik/gradle-quality-plugin/tree/1.0.1">1.0.1</a> (2015-12-04)<a class="headerlink" href="#101-2015-12-04" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Don't activate CodeNarc if groovy plugin enabled but no groovy sources folder exists</li>
+</ul>
+<h3 id="100-2015-11-19"><a href="https://github.com/xvik/gradle-quality-plugin/tree/1.0.0">1.0.0</a> (2015-11-19)<a class="headerlink" href="#100-2015-11-19" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Initial release</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../../task/group/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Group
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../compatibility/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Compatibility
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2015-2021 Vyacheslav Rusakov
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/xvik" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/vyarus" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.fb4a9340.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a1c7c35e.min.js"></script>
+      
+    
+  </body>
+</html>
