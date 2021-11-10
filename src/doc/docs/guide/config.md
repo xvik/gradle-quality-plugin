@@ -34,6 +34,8 @@ quality {
      * Enable PMD incremental analysis (cache results between builds to speed up processing).
      * This is a shortcut for pmd plugin's {@code pmd.incrementalAnalysis } configuration option.
      * Option is disabled by default due to possible side effects with build gradle cache or incremental builds.
+     * @deprecated from gradle 6.4 incremental analysis is enabled by default in pmd plugin! This option will not
+     * disable it (property is useful only for enabling it in gradle 5.6 - 6.3).
      */
     pmdIncremental = false
     
@@ -45,6 +47,13 @@ quality {
      * will also be excluded.
      */
     cpdUnifySources = true
+
+    /**
+     * Shortcut for spotbugs.showStackTraces. Original spotbugs property is enabled by default, causing
+     * not pretty exception logs in non strict mode (when not fails on errors). This option was introduced to change
+     * the default to false and not show that nasty stacktrace, but still provide an easy way to revert default back.
+     */
+    spotbugsShowStackTraces = false
 
     /**
      * The analysis effort level. The value specified should be one of min, default, or max.

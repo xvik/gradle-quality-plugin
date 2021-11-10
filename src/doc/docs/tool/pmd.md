@@ -35,6 +35,7 @@ Tool config options with defaults:
 quality {
     pmdVersion = '{{ gradle.pmd }}'
     pmd = true // false to disable automatic plugin activation  
+    // @deprecated enabled by default since gradle 6.4 (property only useful for enabling it in gradle 5.6 - 6.3)
     pmdIncremental = false // true to enable pmd incremental analysis
 }
 ```

@@ -58,6 +58,7 @@ Tool config options with defaults:
 quality {
     spotbugsVersion = '{{ gradle.spotbugs }}'
     spotbugs = true // false to disable automatic plugin activation
+    spotbugsShowStackTraces = false // changes default for spotbugs.showStackTraces
     spotbugsEffort = 'max'  // min, less, more or max
     spotbugsLevel = 'medium' // low, medium, high
     spotbugsMaxRank = 20 // 1-4 scariest, 5-9 scary, 10-14 troubling, 15-20 of concern  

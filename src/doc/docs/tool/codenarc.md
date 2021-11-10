@@ -43,3 +43,9 @@ To [suppress violation](http://codenarc.sourceforge.net/codenarc-configuring-rul
 ```java
 @SuppressWarnings("ClassJavadoc")
 ```
+
+Since [codenarc 2.2](https://github.com/CodeNarc/CodeNarc/pull/610) `CodeNarc.` prefix could be used to differentiate with pure java suppressions:
+
+```java
+@SuppressWarnings("CodeNarc.ClassJavadoc")
+```
