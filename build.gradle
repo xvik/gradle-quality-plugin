@@ -54,7 +54,7 @@ mkdocs {
     extras = [
             'version': project.docVersion,
             'checkstyle': '9.1',
-            'pmd': '6.40.0',
+            'pmd': '6.34.0',
             'spotbugs': '4.4.2',
             'codenarc': '2.2.0',
             'spotbugsPlugin': project.spotbugsPluginVersion,

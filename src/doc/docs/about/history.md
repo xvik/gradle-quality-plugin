@@ -12,7 +12,6 @@
     - Exclude [EI_EXPOSE_REP2](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#ei2-may-expose-internal-representation-by-incorporating-reference-to-mutable-object-ei-expose-rep2)
       due to confusing false positives
 * Update codenarc 2.1.0 -> 2.2.0
-* Update pmd 6.34 -> 6.40 (java 17 support)
 * Deprecate quality.pmdIncremental property because incremental analysis is enabled by default
   since gradle 6.4 (property only useful for enabling it in gradle 5.6 - 6.3)
 * Update checkstyle 8.42 -> 9.1
