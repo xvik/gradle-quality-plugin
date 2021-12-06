@@ -2,7 +2,7 @@
 
 !!! summary ""
     Groovy | 
-    [Home](http://codenarc.sourceforge.net) | 
+    [Home](https://codenarc.org/) | 
     [Release Notes](https://github.com/CodeNarc/CodeNarc/blob/master/CHANGELOG.md) |
     [Plugin](https://docs.gradle.org/current/userguide/codenarc_plugin.html)     
     
@@ -38,7 +38,7 @@ quality {
 
 ## Suppress
 
-To [suppress violation](http://codenarc.sourceforge.net/codenarc-configuring-rules.html#Suppressing_A_Rule_From_Within_Source_Code):
+To [suppress violation](https://codenarc.org/codenarc-configuring-rules.html#disabling-rules-using-suppresswarnings):
 
 ```java
 @SuppressWarnings("ClassJavadoc")
@@ -49,3 +49,12 @@ Since [codenarc 2.2](https://github.com/CodeNarc/CodeNarc/pull/610) `CodeNarc.` 
 ```java
 @SuppressWarnings("CodeNarc.ClassJavadoc")
 ```
+
+To suppress all violations use:
+
+```java
+@SuppressWarnings('CodeNarc')
+```
+
+Also, [comments may be used](https://codenarc.org/codenarc-configuring-rules.html#disabling-rules-from-comments) for disabling blocks of file.
+

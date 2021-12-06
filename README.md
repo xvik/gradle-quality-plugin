@@ -10,7 +10,7 @@
 
 Static code analysis for Java and Groovy projects using [Checkstyle](https://checkstyle.sourceforge.io/), 
 [PMD](https://pmd.github.io/), [CPD](https://pmd.github.io/), [SpotBugs](https://spotbugs.github.io/) 
-and [CodeNarc](http://codenarc.sourceforge.net/).
+and [CodeNarc](https://codenarc.org/).
 Plugin implements unified console output for all quality plugins, which greatly simplifies developer workflow: 
 only console required for working with violations and makes it feel the same as java compiler errors.
 
