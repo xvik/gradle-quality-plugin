@@ -2,6 +2,7 @@ package ru.vyarus.gradle.plugin.quality
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.SourceSet
@@ -21,7 +22,7 @@ class QualityExtension {
         sourceSets = [project.sourceSets.main] as Collection<SourceSet>
     }
 
-    String checkstyleVersion = '9.1'
+    String checkstyleVersion = '10.1'
     String pmdVersion = '6.34.0'
     String spotbugsVersion = '4.4.2'
     String codenarcVersion = '2.2.0'
@@ -78,6 +79,21 @@ class QualityExtension {
      * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
      */
     boolean codenarc = true
+
+    /**
+     * Since checkstyle 10, minimum required java is 11. Community (not checkstyle core team!) started a
+     * <a href="https://checkstyle.org/#Backport">backport</a> project - maintaining java 8 compatibility.
+     * Backport releases would be delayed relative to main checkstyle releases (see
+     * <a href="https://rnveach.github.io/checkstyle-backport-jre8/">checkstyle-backport-jre8</a>).
+     * <p>
+     * NOTE: additional repository would be configured to download backport (only when backport required). But the
+     * repository would be limited to checkstyle group only!
+     * <p>
+     * This property switches between backport and normal checkstyle versions. By default backport would be enabled
+     * on java 8-10, but you can manually enable it for all java versions if required. Or you can use false value
+     * to prevent backport behaviour and preventing new  repository registration.
+     */
+    boolean checkstyleBackport = !JavaVersion.current().java11Compatible
 
     /**
      * Enable PMD incremental analysis (cache results between builds to speed up processing).

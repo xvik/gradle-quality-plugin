@@ -1,3 +1,13 @@
+* Update checkstyle 9.1 -> 10.1
+  IMPORTANT: Checkstyle 10 requires java 11, but plugin will automatically switch to
+  [backports](https://checkstyle.org/#Backport) for lower jre.
+    Additional maven repository would be registered if required (LIMITED to checkstyle only)
+    Warning in log would clearly indicate when backport is used   
+* New option: quality.checkstyleBackport (by default true for jre < 11)
+    Option might be used to force backport for java >=11 or to disable backport at all
+* Update checkstyle config:
+    - Add [UnusedLocalVariable](https://checkstyle.sourceforge.io/config_coding.html#UnusedLocalVariable)
+
 ### 4.7.0 (2021-11-10)
 * Fix gradle 7 deprecation warnings (#30)
 * Update spotbugs plugin 4.7.1 -> 4.7.9

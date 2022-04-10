@@ -41,7 +41,10 @@ class MultiModuleUseKitTest extends AbstractKitTest {
         BuildResult result = run('check')
 
         then: "violations detected in module only"
-        unifyString(result.output).replaceAll("Total time: .*", "").trim().startsWith("""> Task :mod1:compileJava
+        unifyString(result.output).replaceAll("Total time: .*", "")
+                // only on jdk 8
+                .replaceAll("WARNING: checkstyle-backport-jre8 .*\n", "")
+                .trim().startsWith("""> Task :mod1:compileJava
 > Task :mod1:processResources NO-SOURCE
 > Task :mod1:classes
 

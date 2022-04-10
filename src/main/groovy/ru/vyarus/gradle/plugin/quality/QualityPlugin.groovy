@@ -9,7 +9,13 @@ import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.quality.*
+import org.gradle.api.plugins.quality.Checkstyle
+import org.gradle.api.plugins.quality.CheckstylePlugin
+import org.gradle.api.plugins.quality.CodeNarc
+import org.gradle.api.plugins.quality.CodeNarcPlugin
+import org.gradle.api.plugins.quality.Pmd
+import org.gradle.api.plugins.quality.PmdExtension
+import org.gradle.api.plugins.quality.PmdPlugin
 import org.gradle.api.reporting.Report
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceTask
@@ -18,7 +24,13 @@ import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.process.CommandLineArgumentProvider
 import org.gradle.util.GradleVersion
-import ru.vyarus.gradle.plugin.quality.report.*
+import ru.vyarus.gradle.plugin.quality.report.CheckstyleReporter
+import ru.vyarus.gradle.plugin.quality.report.CodeNarcReporter
+import ru.vyarus.gradle.plugin.quality.report.CpdReporter
+import ru.vyarus.gradle.plugin.quality.report.HtmlReportGenerator
+import ru.vyarus.gradle.plugin.quality.report.PmdReporter
+import ru.vyarus.gradle.plugin.quality.report.Reporter
+import ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter
 import ru.vyarus.gradle.plugin.quality.spotbugs.CustomSpotBugsPlugin
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.util.CpdUtils
@@ -121,6 +133,7 @@ class QualityPlugin implements Plugin<Project> {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
+    @SuppressWarnings(['MethodSize', 'NestedBlockDepth'])
     private void applyCheckstyle(Project project, QualityExtension extension, ConfigLoader configLoader,
                                  boolean register) {
         configurePlugin(project,
@@ -141,6 +154,19 @@ class QualityPlugin implements Plugin<Project> {
                     configDirectory = configLoader.resolveCheckstyleConfigDir()
                     sourceSets = extension.sourceSets
                 }
+                if (extension.checkstyleBackport) {
+                    repositories {
+                        maven {
+                            url 'https://rnveach.github.io/checkstyle-backport-jre8/'
+                            // use custom repository ONLY for checkstyle (just in case)
+                            content { includeGroup 'com.puppycrawl.tools' }
+                        }
+                    }
+                    dependencies {
+                        checkstyle "com.puppycrawl.tools:checkstyle-backport-jre8:${extension.checkstyleVersion}"
+                    }
+                }
+
                 tasks.withType(Checkstyle).configureEach {
                     doFirst {
                         if (GradleVersion.current() < GradleVersion.version('6.0')) {
@@ -149,6 +175,10 @@ class QualityPlugin implements Plugin<Project> {
                             String propName = 'config_loc'
                             configProperties[propName] = configProperties[propName]
                                     ?: configLoader.resolveCheckstyleConfigDir().absolutePath
+                        }
+                        if (extension.checkstyleBackport) {
+                            project.logger.warn("WARNING: checkstyle-backport-jre8 (${extension.checkstyleVersion})" +
+                                    ' used instead of regular checkstyle: https://checkstyle.org/#Backport')
                         }
                         configLoader.resolveCheckstyleConfig()
                         applyExcludes(it, extension)
