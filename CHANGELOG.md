@@ -8,6 +8,7 @@
 * Update checkstyle config:
     - Add [UnusedLocalVariable](https://checkstyle.sourceforge.io/config_coding.html#UnusedLocalVariable)
 * Update pmd 6.34 -> 6.43 (java 17 support)
+* Update codenarc 2.2.0 -> 3.0.0
 
 ### 4.7.0 (2021-11-10)
 * Fix gradle 7 deprecation warnings (#30)

@@ -58,7 +58,7 @@ mkdocs {
             'checkstyle': '10.1',
             'pmd': '6.43.0',
             'spotbugs': '4.4.2',
-            'codenarc': '2.2.0',
+            'codenarc': '3.0.0',
             'spotbugsPlugin': project.spotbugsPluginVersion,
             'cpd': project.cpdVersion,
             'animalsnifferPlugin': project.animalsnifferVersion,
