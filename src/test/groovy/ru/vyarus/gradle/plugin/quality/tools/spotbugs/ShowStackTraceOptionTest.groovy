@@ -95,6 +95,6 @@ class ShowStackTraceOptionTest extends AbstractKitTest {
         then: "spotbugs detect violations and print stack trace"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         def output = result.output
-        output.contains "org.gradle.api.GradleException: 1 SpotBugs violations were found. See the report at:"
+        output.contains "org.gradle.api.GradleException: 1 SpotBugs violations were found.See the report at:"
     }
 }
