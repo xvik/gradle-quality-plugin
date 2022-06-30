@@ -23,7 +23,7 @@ class QualityExtension {
     }
 
     String checkstyleVersion = '10.3.1'
-    String pmdVersion = '6.43.0'
+    String pmdVersion = '6.47.0'
     String spotbugsVersion = '4.7.0'
     String codenarcVersion = '3.0.0'
 

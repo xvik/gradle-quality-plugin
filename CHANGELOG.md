@@ -7,7 +7,7 @@
     Option might be used to force backport for java >=11 or to disable backport at all
 * Update checkstyle config:
     - Add [UnusedLocalVariable](https://checkstyle.sourceforge.io/config_coding.html#UnusedLocalVariable)
-* Update pmd 6.34 -> 6.43 (java 17 support)
+* Update pmd 6.34 -> 6.47 (java 17-18 support)
 * Update codenarc 2.2.0 -> 3.0.0
 * Update spotbugs 4.4.2 -> 4.7.0
 * Update spotbugs plugin 4.7.9 -> 4.8.0
