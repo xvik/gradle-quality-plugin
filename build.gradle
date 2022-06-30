@@ -24,7 +24,7 @@ ext {
     animalsnifferVersion = '1.5.4'
     cpdVersion = '3.3'
     spotbugsPluginVersion = '4.8.0'
-    docVersion = '4.7.0'
+    docVersion = '4.7.1'
 }
 
 repositories { mavenLocal(); mavenCentral(); gradlePluginPortal() }
