@@ -25,7 +25,7 @@ class QualityExtension {
     String checkstyleVersion = '10.3.1'
     String pmdVersion = '6.47.0'
     String spotbugsVersion = '4.7.1'
-    String codenarcVersion = '3.0.0'
+    String codenarcVersion = '3.1.0'
 
     /**
      * Sets AnimalSniffer version.
@@ -94,6 +94,13 @@ class QualityExtension {
      * to prevent backport behaviour and preventing new  repository registration.
      */
     boolean checkstyleBackport = !JavaVersion.current().java11Compatible
+
+    /**
+     * Since codenarc 3.1.0 there is a separate artifact for groovy 4 (CodeNarc-Groovy4). Gradle runs codenarc
+     * task with it's own groovy so by default groovy4 artifact is active. If you need to use earlier codenarc version
+     * then switch this option to false.
+     */
+    boolean codenarcGroovy4 = true
 
     /**
      * Enable PMD incremental analysis (cache results between builds to speed up processing).

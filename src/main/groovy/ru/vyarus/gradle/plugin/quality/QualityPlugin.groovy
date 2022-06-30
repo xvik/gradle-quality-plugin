@@ -9,13 +9,7 @@ import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.quality.Checkstyle
-import org.gradle.api.plugins.quality.CheckstylePlugin
-import org.gradle.api.plugins.quality.CodeNarc
-import org.gradle.api.plugins.quality.CodeNarcPlugin
-import org.gradle.api.plugins.quality.Pmd
-import org.gradle.api.plugins.quality.PmdExtension
-import org.gradle.api.plugins.quality.PmdPlugin
+import org.gradle.api.plugins.quality.*
 import org.gradle.api.reporting.Report
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceTask
@@ -24,13 +18,7 @@ import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.process.CommandLineArgumentProvider
 import org.gradle.util.GradleVersion
-import ru.vyarus.gradle.plugin.quality.report.CheckstyleReporter
-import ru.vyarus.gradle.plugin.quality.report.CodeNarcReporter
-import ru.vyarus.gradle.plugin.quality.report.CpdReporter
-import ru.vyarus.gradle.plugin.quality.report.HtmlReportGenerator
-import ru.vyarus.gradle.plugin.quality.report.PmdReporter
-import ru.vyarus.gradle.plugin.quality.report.Reporter
-import ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter
+import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.spotbugs.CustomSpotBugsPlugin
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.util.CpdUtils
@@ -295,6 +283,12 @@ class QualityPlugin implements Plugin<Project> {
                     ignoreFailures = !extension.strict
                     configFile = configLoader.resolveCodenarcConfig(false)
                     sourceSets = extension.sourceSets
+                }
+                if (extension.codenarcGroovy4) {
+                    // since codenarc 3.1 different groovy4-based jar could be used
+                    dependencies {
+                        codenarc "org.codenarc:CodeNarc-Groovy4:${extension.codenarcVersion}"
+                    }
                 }
                 tasks.withType(CodeNarc).configureEach {
                     doFirst {

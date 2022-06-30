@@ -24,7 +24,7 @@ ext {
     animalsnifferVersion = '1.5.4'
     cpdVersion = '3.3'
     spotbugsPluginVersion = '4.8.0'
-    docVersion = '4.7.1'
+    docVersion = '4.7.0'
 }
 
 repositories { mavenLocal(); mavenCentral(); gradlePluginPortal() }
@@ -57,8 +57,8 @@ mkdocs {
             'version': project.docVersion,
             'checkstyle': '10.3.1',
             'pmd': '6.47.0',
-            'spotbugs': '4.7.0',
-            'codenarc': '3.0.0',
+            'spotbugs': '4.7.1',
+            'codenarc': '3.1.0',
             'spotbugsPlugin': project.spotbugsPluginVersion,
             'cpd': project.cpdVersion,
             'animalsnifferPlugin': project.animalsnifferVersion,

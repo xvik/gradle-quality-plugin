@@ -8,7 +8,12 @@
 * Update checkstyle config:
     - Add [UnusedLocalVariable](https://checkstyle.sourceforge.io/config_coding.html#UnusedLocalVariable)
 * Update pmd 6.34 -> 6.47 (java 17-18 support)
-* Update codenarc 2.2.0 -> 3.0.0
+* Update codenarc 2.2.0 -> 3.1.0  (groovy 4 support)
+* New option: quality.codenarcGroovy4 (by default, true)
+    Since codenarc 3.1 separate groovy4-based codenarc jar produced (codenarc-groovy4)
+    It would be used by default because groovy 4 has better adoption for newer JDKs
+    (codenarc task started with its own groovy so it does not restrict gradle version)
+    If you need to use older codenarc version then switch this option off manually
 * Update spotbugs 4.4.2 -> 4.7.1
 * Update spotbugs plugin 4.7.9 -> 4.8.0
 
