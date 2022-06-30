@@ -163,7 +163,7 @@ class QualityPlugin implements Plugin<Project> {
                         }
                     }
                     dependencies {
-                        checkstyle "com.puppycrawl.tools:checkstyle-backport-jre8:${extension.checkstyleVersion}"
+                        checkstyle "com.puppycrawl.tools:checkstyle-backport-jre8:${extension.checkstyleVersion}:all"
                     }
                 }
 

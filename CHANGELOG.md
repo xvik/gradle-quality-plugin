@@ -1,4 +1,4 @@
-* Update checkstyle 9.1 -> 10.1
+* Update checkstyle 9.1 -> 10.3.1
   IMPORTANT: Checkstyle 10 requires java 11, but plugin will automatically switch to
   [backports](https://checkstyle.org/#Backport) for lower jre.
     Additional maven repository would be registered if required (LIMITED to checkstyle only)
