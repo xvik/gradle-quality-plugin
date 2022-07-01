@@ -145,7 +145,7 @@ class QualityPlugin implements Plugin<Project> {
                 if (extension.checkstyleBackport) {
                     repositories {
                         maven {
-                            url 'https://rnveach.github.io/checkstyle-backport-jre8/'
+                            url 'https://rnveach.github.io/checkstyle-backport-jre8/maven2/'
                             // use custom repository ONLY for checkstyle (just in case)
                             content { includeGroup 'com.puppycrawl.tools' }
                         }
