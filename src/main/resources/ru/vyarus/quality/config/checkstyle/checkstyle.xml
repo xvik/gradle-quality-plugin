@@ -94,7 +94,10 @@
         <!--<module name="MissingCtor"/>-->
         <module name="MissingSwitchDefault"/>
         <module name="ModifiedControlVariable"/>
-        <module name="MultipleStringLiterals"/>
+        <module name="MultipleStringLiterals">
+            <property name="allowedDuplicates" value="2"/>
+            <property name="ignoreStringsRegexp" value='^".{0,2}"$'/>
+        </module>
         <module name="MultipleVariableDeclarations"/>
         <module name="NestedForDepth">
             <property name="max" value="2"/>

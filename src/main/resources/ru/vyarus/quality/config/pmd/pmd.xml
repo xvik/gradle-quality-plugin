@@ -75,6 +75,11 @@
             <property name="problemDepth" value="4"/>
         </properties>
     </rule>
+    <rule ref="category/java/design.xml/CognitiveComplexity">
+        <properties>
+            <property name="reportLevel" value="21"/>
+        </properties>
+    </rule>
     <rule ref="category/java/design.xml/CyclomaticComplexity">
         <properties>
             <property name="cycloOptions" value="ignoreBooleanPaths"/>
@@ -110,6 +115,7 @@
     <!-- Error prone (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_errorprone.html) -->
     <rule ref="category/java/errorprone.xml">
         <exclude name="AssignmentInOperand"/>
+        <exclude name="AvoidAccessibilityAlteration"/>
         <exclude name="AvoidCatchingThrowable"/>
         <exclude name="BeanMembersShouldSerialize"/>
         <exclude name="DataflowAnomalyAnalysis"/>
@@ -124,6 +130,7 @@
         <exclude name="LoggerIsNotStaticFinal"/>
         <exclude name="MissingSerialVersionUID"/>
         <exclude name="NullAssignment"/> <!-- disabled due to false positive for initialization with ternary operator -->
+        <exclude name="ReturnEmptyArrayRatherThanNull"/>
         <exclude name="StaticEJBFieldShouldBeFinal"/> <!-- earlier j2ee group-->
         <exclude name="UseCorrectExceptionLogging"/>
         <exclude name="UseLocaleWithCaseConversions"/>
