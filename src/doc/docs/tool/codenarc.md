@@ -8,6 +8,12 @@
     
 By default, plugin activates if groovy sources available (`src/main/groovy`).    
 
+!!! warning
+    Since codenarc 3.1 there is a separate jar for groovy4 (codenarc-groovy4) and
+    plugin use it by default. If you need to use lower codenarc version set
+    `quality.codenarcGroovy4 = false` in order to switch to usual codenarc jar (groovy 3 based).
+    Note that it does not relate to your project's groovy version - codenarc will use its own
+    groovy version.
 
 ## Output
 
@@ -33,6 +39,8 @@ Tool config options with defaults:
 quality {
     codenarcVersion = '{{ gradle.codenarc }}'
     codenarc = true // false to disable automatic plugin activation
+    // use groovy4-based codenarc version; set to false to use groovy3-based version
+    codenarcGroovy4 = true
 }
 ```
 

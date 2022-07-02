@@ -1,3 +1,29 @@
+### [4.8.0](http://xvik.github.io/gradle-quality-plugin/4.8.0) (2022-07-02)
+* Update checkstyle 9.1 -> 10.3.1
+  IMPORTANT: Checkstyle 10 requires java 11, but plugin will automatically switch to
+  [backports](https://checkstyle.org/#Backport) for lower jre.
+  Additional maven repository would be registered if required (LIMITED to checkstyle only)
+  Warning in log would clearly indicate when backport is used
+* New option: quality.checkstyleBackport (by default true for jre < 11)
+  Option might be used to force backport for java >=11 or to disable backport at all
+* Update checkstyle config:
+    - Add [UnusedLocalVariable](https://checkstyle.sourceforge.io/config_coding.html#UnusedLocalVariable)
+    - Change [MultipleStringLiterals](https://checkstyle.org/config_coding.html#MultipleStringLiterals)
+      to react on strings more than 2 chars only and allow 2 duplicates (to avoid warning in trivial cases)
+* Update pmd 6.34 -> 6.47 (java 17-18 support)
+* Update pmd config:
+    - Disable [AvoidAccessibilityAlteration](https://pmd.github.io/pmd-6.47.0/pmd_rules_java_errorprone.html#avoidaccessibilityalteration)
+    - Change [CognitiveComplexity](https://pmd.github.io/pmd-6.47.0/pmd_rules_java_design.html#cognitivecomplexity) reportLevel to 21 (default 15)
+    - Disable [ReturnEmptyArrayRatherThanNull](https://pmd.github.io/pmd-6.47.0/pmd_rules_java_errorprone.html#returnemptyarrayratherthannull) as deprecated
+* Update codenarc 2.2.0 -> 3.1.0  (groovy 4 support)
+* New option: quality.codenarcGroovy4 (by default, true)
+  Since codenarc 3.1 separate groovy4-based codenarc jar produced (codenarc-groovy4)
+  It would be used by default because groovy 4 has better adoption for newer JDKs
+  (codenarc task started with its own groovy so it does not restrict gradle version)
+  If you need to use older codenarc version then switch this option off manually
+* Update spotbugs 4.4.2 -> 4.7.1
+* Update spotbugs plugin 4.7.9 -> 4.8.0
+
 ### [4.7.0](http://xvik.github.io/gradle-quality-plugin/4.7.0) (2021-11-10)
 * Fix gradle 7 deprecation warnings (#30)
 * Update spotbugs plugin 4.7.1 -> 4.7.9

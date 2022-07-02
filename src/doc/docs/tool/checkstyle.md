@@ -12,6 +12,13 @@ By default, plugin activates if java sources available (`src/main/java`).
 contains all possible checks, but some of them are disabled (note that some checkstyle rules are opposite and 
 never intended to be used together). Uncomment check to enable it.
 
+!!! warning
+    Checkstyle 10 requires java 11 or above. In order to preserve java 8 compatibility,
+    plugin would automatically switch to [backport](https://checkstyle.org/#Backport).
+    Such backport is loaded from *custom repository* (limited to checkstyle only!).
+    You'll see a warning in logs about backport activation.
+    If required, this behaviour could be disabled with `quality.checkstyleBackport` configuration option. 
+
 !!! note ""
     In case you will use a custom config: checkstyle config must describe all used rules. So when new version release with new rules,
     config must be manually updated to add new rules (otherwise they would not be used).
@@ -36,6 +43,8 @@ Tool config options with defaults:
 quality {
     checkstyleVersion = '{{ gradle.checkstyle }}'
     checkstyle = true // false to disable automatic plugin activation
+    // true for java 8-10 by default, set to false to disable fallback to backport
+    checkstyleBackport = !JavaVersion.current().java11Compatible
 }
 ```
 
