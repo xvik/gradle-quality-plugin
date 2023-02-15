@@ -1,3 +1,5 @@
+* Gradle 8 support (#77)
+
 ### 4.8.0 (2022-07-02)
 * Update checkstyle 9.1 -> 10.3.1
   IMPORTANT: Checkstyle 10 requires java 11, but plugin will automatically switch to

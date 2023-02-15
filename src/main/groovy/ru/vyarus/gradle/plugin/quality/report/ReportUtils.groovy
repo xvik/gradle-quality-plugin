@@ -107,12 +107,18 @@ class ReportUtils {
      * @param report report instance
      * @return report destination file
      */
+    @CompileStatic(TypeCheckingMode.SKIP)
     static File getReportFile(Report report) {
         if (report == null) {
             return null
         }
-        return GradleVersion.current() < GradleVersion.version('7.0')
-                ? report.destination : report.outputLocation.get().asFile
+        if (GradleVersion.current() < GradleVersion.version('7.0')) {
+            return report.destination
+        }
+        // Provider for gradle 7 and Property for gradle 8
+        // static compilation must be disabled for method!
+        Object output = report.outputLocation
+        return output.get().asFile
     }
 
     private static String matchRoot(SourceSet set, String filePath) {
