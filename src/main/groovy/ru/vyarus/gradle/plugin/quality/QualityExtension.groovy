@@ -22,10 +22,10 @@ class QualityExtension {
         sourceSets = [project.sourceSets.main] as Collection<SourceSet>
     }
 
-    String checkstyleVersion = '10.3.1'
-    String pmdVersion = '6.47.0'
-    String spotbugsVersion = '4.7.1'
-    String codenarcVersion = '3.1.0'
+    String checkstyleVersion = '10.6.0'
+    String pmdVersion = '6.54.0'
+    String spotbugsVersion = '4.7.3'
+    String codenarcVersion = '3.2.0'
 
     /**
      * Sets AnimalSniffer version.
@@ -96,7 +96,7 @@ class QualityExtension {
     boolean checkstyleBackport = !JavaVersion.current().java11Compatible
 
     /**
-     * Since codenarc 3.1.0 there is a separate artifact for groovy 4 (CodeNarc-Groovy4). Gradle runs codenarc
+     * Since codenarc 3.1.0 there is a separate artifact for groovy 4 (CodeNarc-x.x-groovy-4.0). Gradle runs codenarc
      * task with it's own groovy so by default groovy4 artifact is active. If you need to use earlier codenarc version
      * then switch this option to false.
      */

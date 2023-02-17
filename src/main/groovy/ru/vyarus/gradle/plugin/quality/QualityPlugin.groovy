@@ -65,6 +65,7 @@ import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
 class QualityPlugin implements Plugin<Project> {
 
     private static final String QUALITY_TASK = 'checkQuality'
+    private static final String CODENARC_GROOVY4 = '-groovy-4.0'
 
     @Override
     void apply(Project project) {
@@ -284,10 +285,10 @@ class QualityPlugin implements Plugin<Project> {
                     configFile = configLoader.resolveCodenarcConfig(false)
                     sourceSets = extension.sourceSets
                 }
-                if (extension.codenarcGroovy4) {
+                if (extension.codenarcGroovy4 && !extension.codenarcVersion.endsWith(CODENARC_GROOVY4)) {
                     // since codenarc 3.1 different groovy4-based jar could be used
                     dependencies {
-                        codenarc "org.codenarc:CodeNarc-Groovy4:${extension.codenarcVersion}"
+                        codenarc "org.codenarc:CodeNarc:${extension.codenarcVersion}$CODENARC_GROOVY4"
                     }
                 }
                 tasks.withType(CodeNarc).configureEach {

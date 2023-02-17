@@ -55,10 +55,10 @@ mkdocs {
     }
     extras = [
             'version': project.docVersion,
-            'checkstyle': '10.3.1',
-            'pmd': '6.47.0',
-            'spotbugs': '4.7.1',
-            'codenarc': '3.1.0',
+            'checkstyle': '10.6.0',
+            'pmd': '6.54.0',
+            'spotbugs': '4.7.3',
+            'codenarc': '3.2.0',
             'spotbugsPlugin': project.spotbugsPluginVersion,
             'cpd': project.cpdVersion,
             'animalsnifferPlugin': project.animalsnifferVersion,
