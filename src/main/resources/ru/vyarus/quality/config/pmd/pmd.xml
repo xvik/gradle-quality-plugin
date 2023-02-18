@@ -117,7 +117,6 @@
         <exclude name="AssignmentInOperand"/>
         <exclude name="AvoidAccessibilityAlteration"/>
         <exclude name="AvoidCatchingThrowable"/>
-        <exclude name="BeanMembersShouldSerialize"/>
         <exclude name="DataflowAnomalyAnalysis"/>
         <exclude name="DoNotTerminateVM"/> <!-- earlier j2ee group; before 6.29 DoNotCallSystemExit-->
         <exclude name="EmptyFinalizer"/>
@@ -129,9 +128,11 @@
         <exclude name="InvalidLogMessageFormat"/>
         <exclude name="LoggerIsNotStaticFinal"/>
         <exclude name="MissingSerialVersionUID"/>
+        <exclude name="NonSerializableClass"/>
         <exclude name="NullAssignment"/> <!-- disabled due to false positive for initialization with ternary operator -->
         <exclude name="ReturnEmptyArrayRatherThanNull"/>
         <exclude name="StaticEJBFieldShouldBeFinal"/> <!-- earlier j2ee group-->
+        <exclude name="TestClassWithoutTestCases"/>
         <exclude name="UseCorrectExceptionLogging"/>
         <exclude name="UseLocaleWithCaseConversions"/>
         <exclude name="UseProperClassLoader"/> <!-- earlier j2ee group-->
