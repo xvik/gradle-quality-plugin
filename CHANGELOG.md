@@ -1,3 +1,4 @@
+### 4.9.0 (2023-02-18)
 * Gradle 8 support (#77)
 * Update checkstyle 10.3.1 -> 10.6.0
 * Update pmd 6.47 -> 6.54 (java 19 support)

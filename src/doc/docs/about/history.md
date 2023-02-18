@@ -1,3 +1,14 @@
+### [4.9.0](http://xvik.github.io/gradle-quality-plugin/4.9.0) (2023-02-18)
+* Gradle 8 support (#77)
+* Update checkstyle 10.3.1 -> 10.6.0
+* Update pmd 6.47 -> 6.54 (java 19 support)
+* Update pmd config:
+    - Disable [TestClassWithoutTestCases](https://pmd.sourceforge.io/pmd-6.54.0/pmd_rules_java_errorprone.html#testclasswithouttestcases)
+    - Rename excluded rule [BeanMembersShouldSerialize](https://pmd.sourceforge.io/pmd-6.54.0/pmd_rules_java_errorprone.html#beanmembersshouldserialize) to NonSerializableClass
+* Update spotbugs 4.7.1 -> 4.7.3
+* Update codenarc 3.1.0 -> 3.2.0
+* Fix codenarc for groovy4 support: change to x.x-groovy-4.0 version instead of codenarc-groovy4 artifact
+
 ### [4.8.0](http://xvik.github.io/gradle-quality-plugin/4.8.0) (2022-07-02)
 * Update checkstyle 9.1 -> 10.3.1
   IMPORTANT: Checkstyle 10 requires java 11, but plugin will automatically switch to
