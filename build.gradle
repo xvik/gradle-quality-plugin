@@ -10,7 +10,7 @@ plugins {
     id 'ru.vyarus.java-lib' version '2.4.0'
     id 'ru.vyarus.github-info' version '1.5.0'
     id 'com.github.ben-manes.versions' version '0.46.0'
-    id "pl.droidsonroids.jacoco.testkit" version "1.0.9"
+    id "pl.droidsonroids.jacoco.testkit" version "1.0.12"
     id 'ru.vyarus.mkdocs' version '3.0.0'
 }
 
