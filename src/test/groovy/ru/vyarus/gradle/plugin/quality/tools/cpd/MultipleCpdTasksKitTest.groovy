@@ -15,7 +15,7 @@ class MultipleCpdTasksKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'groovy'
-                id 'de.aaschmid.cpd' version '3.1'
+                id 'de.aaschmid.cpd' version '3.3'
                 id 'ru.vyarus.quality'
             }            
 

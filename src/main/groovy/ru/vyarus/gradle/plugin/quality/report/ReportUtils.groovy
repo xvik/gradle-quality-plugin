@@ -6,7 +6,6 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.reporting.Report
 import org.gradle.api.tasks.SourceSet
-import org.gradle.util.GradleVersion
 
 /**
  * Reporting utils.
@@ -111,9 +110,6 @@ class ReportUtils {
     static File getReportFile(Report report) {
         if (report == null) {
             return null
-        }
-        if (GradleVersion.current() < GradleVersion.version('7.0')) {
-            return report.destination
         }
         // Provider for gradle 7 and Property for gradle 8
         // static compilation must be disabled for method!

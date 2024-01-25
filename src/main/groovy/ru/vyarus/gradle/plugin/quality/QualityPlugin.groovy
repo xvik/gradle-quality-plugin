@@ -10,14 +10,12 @@ import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.*
-import org.gradle.api.reporting.Report
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.process.CommandLineArgumentProvider
-import org.gradle.util.GradleVersion
 import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.spotbugs.CustomSpotBugsPlugin
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
@@ -158,13 +156,6 @@ class QualityPlugin implements Plugin<Project> {
 
                 tasks.withType(Checkstyle).configureEach {
                     doFirst {
-                        if (GradleVersion.current() < GradleVersion.version('6.0')) {
-                            // required for gradle < 6 because it will not set config_loc if target dir does not exists
-                            // https://github.com/gradle/gradle/issues/11058
-                            String propName = 'config_loc'
-                            configProperties[propName] = configProperties[propName]
-                                    ?: configLoader.resolveCheckstyleConfigDir().absolutePath
-                        }
                         if (extension.checkstyleBackport) {
                             project.logger.warn("WARNING: checkstyle-backport-jre8 (${extension.checkstyleVersion})" +
                                     ' used instead of regular checkstyle: https://checkstyle.org/#Backport')
@@ -172,8 +163,8 @@ class QualityPlugin implements Plugin<Project> {
                         configLoader.resolveCheckstyleConfig()
                         applyExcludes(it, extension)
                     }
-                    enableReport(reports.xml)
-                    enableReport(reports.html, extension.htmlReports)
+                    reports.xml.required.set(true)
+                    reports.html.required.set(extension.htmlReports)
                 }
             }
             configurePluginTasks(project, extension, Checkstyle, 'checkstyle', new CheckstyleReporter(configLoader))
@@ -209,8 +200,8 @@ class QualityPlugin implements Plugin<Project> {
                         configLoader.resolvePmdConfig()
                         applyExcludes(it, extension)
                     }
-                    enableReport(reports.xml)
-                    enableReport(reports.html, extension.htmlReports)
+                    reports.xml.required.set(true)
+                    reports.html.required.set(extension.htmlReports)
                 }
             }
             configurePluginTasks(project, extension, Pmd, 'pmd', new PmdReporter())
@@ -231,8 +222,6 @@ class QualityPlugin implements Plugin<Project> {
                 spotbugs {
                     toolVersion = extension.spotbugsVersion
                     ignoreFailures = !extension.strict
-                    // when enabled show an additional stacktrace in non strict mode (plugin default changed)
-                    showStackTraces = extension.spotbugsShowStackTraces
                     effort = extension.spotbugsEffort
                     reportLevel = extension.spotbugsLevel
 
@@ -261,7 +250,10 @@ class QualityPlugin implements Plugin<Project> {
                     )))
                     reports {
                         xml {
-                            enableReport(it)
+                            required.set(true)
+                        }
+                        html {
+                            required.set(extension.htmlReports)
                         }
                     }
                 }
@@ -296,8 +288,8 @@ class QualityPlugin implements Plugin<Project> {
                         configLoader.resolveCodenarcConfig()
                         applyExcludes(it, extension)
                     }
-                    enableReport(reports.xml)
-                    enableReport(reports.html, extension.htmlReports)
+                    reports.xml.required.set(true)
+                    reports.html.required.set(extension.htmlReports)
                 }
             }
             configurePluginTasks(project, extension, CodeNarc, 'codenarc', new CodeNarcReporter())
@@ -370,7 +362,7 @@ class QualityPlugin implements Plugin<Project> {
             Class<Task> cpdTasksType = plugin.class.classLoader.loadClass('de.aaschmid.gradle.plugins.cpd.Cpd')
             // reports applied for all registered cpd tasks
             prj.tasks.withType(cpdTasksType).configureEach { task ->
-                enableReport(reports.xml)
+                reports.xml.required.set(true)
                 doFirst {
                     configLoader.resolveCpdXsl()
                 }
@@ -387,14 +379,6 @@ class QualityPlugin implements Plugin<Project> {
             // yes, it's not completely normal that module could disable root project task, but it would be much
             // simpler to use like that (because quality plugin assumed to be applied in subprojects section)
             applyEnabledState(prj, extension, cpdTasksType)
-        }
-    }
-
-    private void enableReport(Report report, boolean enable = true) {
-        if (GradleVersion.current() < GradleVersion.version('7.0')) {
-            report.enabled = enable
-        } else {
-            report.required.set(enable)
         }
     }
 

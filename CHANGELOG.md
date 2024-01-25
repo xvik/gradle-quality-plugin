@@ -1,3 +1,8 @@
+* (BREAKING) Drop gradle 5 and 6 support
+* Update spotbugs plugin to 5.2.5 (#94)
+  - Remove spotbugsShowStackTraces option because it's not used by spotbugs anymore
+  - Custom xsl file not used for html report - native html report generation used instead
+
 ### 4.9.0 (2023-02-18)
 * Gradle 8 support (#77)
 * Update checkstyle 10.3.1 -> 10.6.0

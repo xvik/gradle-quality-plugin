@@ -35,13 +35,14 @@ class ConsoleReportsDisableKitTest extends AbstractKitTest {
         fileFromClasspath('src/main/groovy/sample/GSample.groovy', '/ru/vyarus/gradle/plugin/quality/groovy/sample/GSample.groovy')
 
         when: "run check task with both sources"
+        debug()
         BuildResult result = run('check')
 
         then: "all plugins detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
         result.output.contains('CodeNarc rule violations were found')
         result.output.contains('Checkstyle rule violations were found')
-        result.output.contains('SpotBugs violations were found')
+        result.output.contains('SpotBugs ended with exit code 1')
         result.output.contains('PMD rule violations were found')
 
         then: "no console reporting performed"

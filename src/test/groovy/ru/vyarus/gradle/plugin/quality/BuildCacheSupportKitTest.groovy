@@ -1,5 +1,6 @@
 package ru.vyarus.gradle.plugin.quality
 
+import groovy.ant.AntBuilder
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import spock.lang.TempDir
@@ -20,7 +21,7 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
         file("settings.gradle") << """  
             rootProject.name='my-project'
             buildCache {
-                local(DirectoryBuildCache) {
+                local {
                     directory = new File('${cacheDir.canonicalPath.replace('\\', '\\\\')}')
                 }
             }
@@ -91,7 +92,7 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
         // build cache will survive within test only!!
         file("settings.gradle") << """
             buildCache {
-                local(DirectoryBuildCache) {
+                local {
                     directory = new File('${cacheDir.canonicalPath.replace('\\', '\\\\')}')
                 }
             }

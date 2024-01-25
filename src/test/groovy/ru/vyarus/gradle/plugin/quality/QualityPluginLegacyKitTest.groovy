@@ -9,10 +9,9 @@ import org.gradle.testkit.runner.TaskOutcome
  */
 class QualityPluginLegacyKitTest extends AbstractKitTest {
 
-    // 5.6 only because of spotbugs, other plugins works with 5.1
-    public static final String GRADLE_VERSION = '5.6'
+    public static final String GRADLE_VERSION = '7.0'
 
-    def "Check java and groovy checks with gradle 5.6 (previous)"() {
+    def "Check java and groovy checks with gradle"() {
         setup:
         build("""
             plugins {

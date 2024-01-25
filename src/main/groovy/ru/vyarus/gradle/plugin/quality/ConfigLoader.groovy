@@ -20,7 +20,6 @@ class ConfigLoader {
     private final String pmd = 'pmd/pmd.xml'
     private final String cpdXsl = 'cpd/cpdhtml.xslt'
     private final String spotbugsExclude = 'spotbugs/exclude.xml'
-    private final String spotbugsXsl = 'spotbugs/html-report-style.xsl'
     private final String codenarc = 'codenarc/codenarc.xml'
 
     Project project
@@ -56,10 +55,6 @@ class ConfigLoader {
         resolve(spotbugsExclude, copyDefaultFile)
     }
 
-    File resolveSpotbugsXsl(boolean copyDefaultFile = true) {
-        resolve(spotbugsXsl, copyDefaultFile)
-    }
-
     File resolveCodenarcConfig(boolean copyDefaultFile = true) {
         resolve(codenarc, copyDefaultFile)
     }
@@ -71,7 +66,7 @@ class ConfigLoader {
      */
     void initUserConfigs(boolean override) {
         init()
-        [checkstyle, checkstyleSuppressions, pmd, cpdXsl, codenarc, spotbugsExclude, spotbugsXsl].each {
+        [checkstyle, checkstyleSuppressions, pmd, cpdXsl, codenarc, spotbugsExclude].each {
             copyConfig(configDir, it, override)
         }
     }

@@ -123,11 +123,13 @@ class ExcludeKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'groovy'
-                id 'ru.vyarus.animalsniffer' version '1.5.0'
+                id 'ru.vyarus.animalsniffer' version '1.7.1'
                 id 'ru.vyarus.quality'
             }
             
-            sourceCompatibility = 1.8
+            java {
+                sourceCompatibility = 1.8
+            }
 
             quality {
                 strict false

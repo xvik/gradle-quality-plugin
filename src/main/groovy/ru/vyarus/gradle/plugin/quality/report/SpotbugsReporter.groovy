@@ -9,15 +9,13 @@ import ru.vyarus.gradle.plugin.quality.util.FileUtils
 
 /**
  * Prints spotbugs errors (from xml report) into console and generates html report using custom xsl.
- * Gradle spotbugs plugin support html report generation too, but it can't generate both xml and html at the same
- * time (so we have to generate html separately, because xml report is required for console reporting).
  *
  * @author Vyacheslav Rusakov
  * @since 28.01.2018
  */
 @CompileStatic
-class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<SpotBugsTask> {
-    private static final String XML = 'XML'
+class SpotbugsReporter implements Reporter<SpotBugsTask> {
+    private static final String XML = 'xml'
 
     ConfigLoader configLoader
 
@@ -67,26 +65,6 @@ class SpotbugsReporter implements Reporter<SpotBugsTask>, HtmlReportGenerator<Sp
             String htmlReportUrl = ReportUtils.toConsoleLink(task.project
                     .file("${task.project.extensions.spotbugs.reportsDir.get()}/${type}.html"))
             task.logger.error "SpotBugs HTML report: $htmlReportUrl"
-        }
-    }
-
-    @Override
-    @CompileStatic(TypeCheckingMode.SKIP)
-    void generateHtmlReport(SpotBugsTask task, String type) {
-        File reportFile = ReportUtils.getReportFile(task.reports.findByName(XML))
-        if (reportFile == null || !reportFile.exists()) {
-            return
-        }
-        Project project = task.project
-        // html report
-        String htmlReportPath = "${project.extensions.spotbugs.reportsDir.get()}/${type}.html"
-        File htmlReportFile = project.file(htmlReportPath)
-        // avoid redundant re-generation
-        if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
-            project.ant.xslt(in: reportFile,
-                    style: configLoader.resolveSpotbugsXsl(),
-                    out: htmlReportPath,
-            )
         }
     }
 

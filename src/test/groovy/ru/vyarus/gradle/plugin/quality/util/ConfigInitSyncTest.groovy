@@ -41,7 +41,7 @@ class ConfigInitSyncTest extends AbstractTest {
                 it.delete()
             }
         }
-        assert reference.size() == 7
+        assert reference.size() == 6
 
 
         when: "initializing configs concurrently"
@@ -82,7 +82,7 @@ class ConfigInitSyncTest extends AbstractTest {
                 it.delete()
             }
         }
-        assert reference.size() == 7
+        assert reference.size() == 6
 
 
         when: "initializing configs concurrently"

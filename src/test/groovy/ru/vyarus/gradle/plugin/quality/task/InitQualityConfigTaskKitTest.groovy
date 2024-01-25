@@ -32,7 +32,6 @@ class InitQualityConfigTaskKitTest extends AbstractKitTest {
         file('config/checkstyle/checkstyle.xml').exists()
         file('config/codenarc/codenarc.xml').exists()
         file('config/spotbugs/exclude.xml').exists()
-        file('config/spotbugs/html-report-style.xsl').exists()
         file('config/pmd/pmd.xml').exists()
         file('config/cpd/cpdhtml.xslt').exists()
     }

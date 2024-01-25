@@ -15,7 +15,7 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
-                id 'org.hidetake.swagger.generator' version '2.18.1' 
+                id 'org.hidetake.swagger.generator' version '2.19.2' 
             }           
             
             repositories { mavenCentral() }

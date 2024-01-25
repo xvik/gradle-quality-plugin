@@ -14,7 +14,9 @@ plugins {
     id 'ru.vyarus.mkdocs' version '3.0.0'
 }
 
-sourceCompatibility = 1.8
+java {
+    sourceCompatibility = 1.8
+}
 
 wrapper {
     gradleVersion = '8.5'
@@ -23,7 +25,7 @@ wrapper {
 ext {
     animalsnifferVersion = '1.7.1'
     cpdVersion = '3.3'
-    spotbugsPluginVersion = '4.8.0'
+    spotbugsPluginVersion = '5.2.5'
     docVersion = '4.9.0'
 }
 
@@ -31,7 +33,7 @@ repositories { mavenLocal(); mavenCentral(); gradlePluginPortal() }
 dependencies {
     implementation "com.github.spotbugs.snom:spotbugs-gradle-plugin:$spotbugsPluginVersion"
 
-    testImplementation('org.spockframework:spock-core:2.0-groovy-2.5') {
+    testImplementation('org.spockframework:spock-core:2.3-groovy-3.0') {
         exclude group: 'org.codehaus.groovy'
     }
     testImplementation "ru.vyarus:gradle-animalsniffer-plugin:$animalsnifferVersion"
@@ -85,7 +87,7 @@ nexusPublishing {
 }
 
 // skip signing for jitpack (snapshots)
-tasks.withType(Sign) {onlyIf { !System.getenv('JITPACK') }}
+tasks.withType(Sign).configureEach { onlyIf { !System.getenv('JITPACK') } }
 
 // Required signing properties for release: signing.keyId, signing.password and signing.secretKeyRingFile
 // (https://docs.gradle.org/current/userguide/signing_plugin.html#sec:signatory_credentials)
