@@ -1,5 +1,5 @@
 plugins {
-    id 'com.gradle.plugin-publish' version '0.21.0'
+    id 'com.gradle.plugin-publish' version '1.2.1'
     id 'java-gradle-plugin'
     id 'groovy'
     id 'jacoco'
@@ -103,17 +103,10 @@ gradlePlugin {
         qualityPlugin {
             id = 'ru.vyarus.quality'
             displayName = project.description
+            description = 'Static code analysis for Java and Groovy projects'
+            tags.set(['java', 'groovy', 'quality', 'checkstyle', 'pmd', 'cpd', 'spotbugs', 'codenarc'])
             implementationClass = 'ru.vyarus.gradle.plugin.quality.QualityPlugin'
         }
-    }
-}
-pluginBundle {
-    description = 'Static code analysis for Java and Groovy projects'
-    tags = ['java', 'groovy', 'quality', 'checkstyle', 'pmd', 'cpd', 'spotbugs', 'codenarc']
-
-    mavenCoordinates {
-        groupId = project.group
-        artifactId = project.name
     }
 }
 
