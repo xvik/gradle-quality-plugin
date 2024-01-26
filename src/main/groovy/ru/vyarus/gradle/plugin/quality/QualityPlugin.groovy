@@ -128,6 +128,19 @@ class QualityPlugin implements Plugin<Project> {
                 register,
                 CheckstylePlugin) {
             project.configure(project) {
+                // required due to checkstyle update of gradle metadata causing now collission with google collections
+                // https://github.com/google/guava/releases/tag/v32.1.0 (https://github.com/gradle/gradle/issues/27035)
+                String guavaTarget = 'com.google.guava:guava:0'
+                configurations.checkstyle {
+                    resolutionStrategy.capabilitiesResolution.withCapability(
+                            'com.google.collections:google-collections') {
+                        select(guavaTarget)
+                    }
+                    resolutionStrategy.capabilitiesResolution.withCapability('com.google.guava:listenablefuture') {
+                        select(guavaTarget)
+                    }
+                }
+
                 checkstyle {
                     showViolations = false
                     toolVersion = extension.checkstyleVersion

@@ -22,10 +22,10 @@ class QualityExtension {
         sourceSets = [project.sourceSets.main] as Collection<SourceSet>
     }
 
-    String checkstyleVersion = '10.6.0'
-    String pmdVersion = '6.54.0'
-    String spotbugsVersion = '4.7.3'
-    String codenarcVersion = '3.2.0'
+    String checkstyleVersion = '10.12.7'
+    String pmdVersion = '6.55.0'
+    String spotbugsVersion = '4.8.3'
+    String codenarcVersion = '3.4.0'
 
     /**
      * Sets AnimalSniffer version.
