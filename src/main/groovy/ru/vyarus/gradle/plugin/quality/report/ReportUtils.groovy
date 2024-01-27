@@ -2,6 +2,7 @@ package ru.vyarus.gradle.plugin.quality.report
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import groovy.xml.XmlSlurper
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.reporting.Report

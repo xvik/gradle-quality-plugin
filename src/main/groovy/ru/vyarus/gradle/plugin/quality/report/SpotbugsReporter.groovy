@@ -3,6 +3,7 @@ package ru.vyarus.gradle.plugin.quality.report
 import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import groovy.xml.XmlParser
 import org.gradle.api.Project
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
 import ru.vyarus.gradle.plugin.quality.util.FileUtils

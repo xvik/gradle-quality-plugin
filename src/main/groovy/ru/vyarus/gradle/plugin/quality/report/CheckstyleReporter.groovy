@@ -2,6 +2,7 @@ package ru.vyarus.gradle.plugin.quality.report
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import groovy.xml.XmlParser
 import org.gradle.api.plugins.quality.Checkstyle
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
 

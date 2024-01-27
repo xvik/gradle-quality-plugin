@@ -89,7 +89,7 @@ class ConfigLoader {
         if (configDir == null) {
             // lazy resolution to make sure user configuration applied
             this.configDir = project.rootProject.file(project.extensions.findByType(QualityExtension).configDir)
-            this.tmpConfigDir = project.file("$project.buildDir/quality-configs/")
+            this.tmpConfigDir = project.file("${project.layout.buildDirectory.get()}/quality-configs/")
         }
     }
 
