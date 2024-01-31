@@ -48,7 +48,7 @@ class CheckstyleReporterTest extends AbstractKitTest {
 
 [Javadoc | JavadocType] sample.(Sample.java:6)
   Missing a Javadoc comment.
-  http://checkstyle.sourceforge.io/checks/javadoc/javadoctype.html
+  https://checkstyle.sourceforge.io/checks/javadoc/javadoctype.html
 
 [Misc | NewlineAtEndOfFile] sample.(Sample2.java:0)
   File does not end with a newline.
