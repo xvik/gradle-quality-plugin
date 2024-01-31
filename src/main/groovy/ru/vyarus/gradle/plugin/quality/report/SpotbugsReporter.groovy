@@ -5,7 +5,6 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlParser
 import org.gradle.api.Project
-import ru.vyarus.gradle.plugin.quality.ConfigLoader
 import ru.vyarus.gradle.plugin.quality.util.FileUtils
 
 /**
@@ -18,10 +17,14 @@ import ru.vyarus.gradle.plugin.quality.util.FileUtils
 class SpotbugsReporter implements Reporter<SpotBugsTask> {
     private static final String XML = 'xml'
 
-    ConfigLoader configLoader
+    Map<String, String> pluginChecks
 
-    SpotbugsReporter(ConfigLoader configLoader) {
-        this.configLoader = configLoader
+    @Override
+    synchronized void init(SpotBugsTask task) {
+        if (pluginChecks == null) {
+            // there could not be tasks from different projects because quality plugin would be applied to each one
+            pluginChecks = resolvePluginsChecks(task.project)
+        }
     }
 
     @Override
@@ -45,7 +48,6 @@ class SpotbugsReporter implements Reporter<SpotBugsTask> {
 
             Map<String, String> desc = buildDescription(result)
             Map<String, String> cat = buildCategories(result)
-            Map<String, String> plugins = resolvePluginsChecks(task.project)
             result.BugInstance.each { bug ->
                 Node msg = bug.LongMessage[0]
                 Node src = bug.SourceLine[0]
@@ -55,7 +57,7 @@ class SpotbugsReporter implements Reporter<SpotBugsTask> {
                 String classname = src.@classname
                 String pkg = classname[0..classname.lastIndexOf('.')]
                 String cls = src.@sourcefile
-                String plugin = plugins[bugType] ?: ''
+                String plugin = pluginChecks[bugType] ?: ''
                 // part in braces recognized by intellij IDEA and shown as link
                 task.logger.error "[${plugin}${cat[bug.@category]} | ${bugType}] $pkg(${cls}:${srcPosition})  " +
                         "[priority ${bug.@priority} / rank ${bug.@rank}]" +

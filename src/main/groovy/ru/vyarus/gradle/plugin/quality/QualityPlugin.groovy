@@ -10,19 +10,21 @@ import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.*
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.TaskProvider
-import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.build.event.BuildEventsListenerRegistry
 import org.gradle.process.CommandLineArgumentProvider
-import ru.vyarus.gradle.plugin.quality.report.*
 import ru.vyarus.gradle.plugin.quality.spotbugs.CustomSpotBugsPlugin
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.util.CpdUtils
-import ru.vyarus.gradle.plugin.quality.util.DurationFormatter
 import ru.vyarus.gradle.plugin.quality.util.SpotbugsExclusionConfigProvider
 import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
+import ru.vyarus.gradle.plugin.quality.service.TasksListenerService
+
+import javax.inject.Inject
 
 /**
  * Quality plugin enables and configures quality plugins for java and groovy projects.
@@ -60,10 +62,15 @@ import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
  * @see de.aaschmid.gradle.plugins.cpd.CpdPlugin
  */
 @CompileStatic
-class QualityPlugin implements Plugin<Project> {
+abstract class QualityPlugin implements Plugin<Project> {
 
     private static final String QUALITY_TASK = 'checkQuality'
     private static final String CODENARC_GROOVY4 = '-groovy-4.0'
+
+    private Provider<TasksListenerService> tasksListener
+
+    @Inject
+    abstract BuildEventsListenerRegistry getEventsListenerRegistry()
 
     @Override
     void apply(Project project) {
@@ -72,11 +79,16 @@ class QualityPlugin implements Plugin<Project> {
             QualityExtension extension = project.extensions.create('quality', QualityExtension, project)
             addInitConfigTask(project)
 
+            tasksListener = project.getGradle().getSharedServices().registerIfAbsent(
+                            "taskEvents", TasksListenerService.class, spec -> {})
+            getEventsListenerRegistry().onTaskCompletion(tasksListener)
+
             project.afterEvaluate {
                 configureGroupingTasks(project)
 
                 Context context = createContext(project, extension)
                 ConfigLoader configLoader = new ConfigLoader(project)
+                tasksListener.get().init(configLoader, extension)
 
                 configureJavac(project, extension)
                 applyCheckstyle(project, extension, configLoader, context.registerJavaPlugins)
@@ -167,7 +179,7 @@ class QualityPlugin implements Plugin<Project> {
                     }
                 }
 
-                tasks.withType(Checkstyle).configureEach {
+                tasks.withType(Checkstyle).configureEach { task ->
                     doFirst {
                         if (extension.checkstyleBackport) {
                             project.logger.warn("WARNING: checkstyle-backport-jre8 (${extension.checkstyleVersion})" +
@@ -178,9 +190,11 @@ class QualityPlugin implements Plugin<Project> {
                     }
                     reports.xml.required.set(true)
                     reports.html.required.set(extension.htmlReports)
+
+                    registerReporter(task, 'checkstyle')
                 }
             }
-            configurePluginTasks(project, extension, Checkstyle, 'checkstyle', new CheckstyleReporter(configLoader))
+            configurePluginTasks(project, extension, Checkstyle, 'checkstyle')
         }
     }
 
@@ -208,16 +222,18 @@ class QualityPlugin implements Plugin<Project> {
                                 + 'supported only from gradle 5.6')
                     }
                 }
-                tasks.withType(Pmd).configureEach {
+                tasks.withType(Pmd).configureEach { task ->
                     doFirst {
                         configLoader.resolvePmdConfig()
                         applyExcludes(it, extension)
                     }
                     reports.xml.required.set(true)
                     reports.html.required.set(extension.htmlReports)
+
+                    registerReporter(task, 'pmd')
                 }
             }
-            configurePluginTasks(project, extension, Pmd, 'pmd', new PmdReporter())
+            configurePluginTasks(project, extension, Pmd, 'pmd')
         }
     }
 
@@ -269,10 +285,11 @@ class QualityPlugin implements Plugin<Project> {
                             required.set(extension.htmlReports)
                         }
                     }
+                    registerReporter(task, 'spotbugs')
                 }
             }
 
-            configurePluginTasks(project, extension, SpotBugsTask, 'spotbugs', new SpotbugsReporter(configLoader))
+            configurePluginTasks(project, extension, SpotBugsTask, 'spotbugs')
         }
     }
 
@@ -296,22 +313,24 @@ class QualityPlugin implements Plugin<Project> {
                         codenarc "org.codenarc:CodeNarc:${extension.codenarcVersion}$CODENARC_GROOVY4"
                     }
                 }
-                tasks.withType(CodeNarc).configureEach {
+                tasks.withType(CodeNarc).configureEach { task ->
                     doFirst {
                         configLoader.resolveCodenarcConfig()
                         applyExcludes(it, extension)
                     }
                     reports.xml.required.set(true)
                     reports.html.required.set(extension.htmlReports)
+
+                    registerReporter(task, 'codenarc')
                 }
             }
-            configurePluginTasks(project, extension, CodeNarc, 'codenarc', new CodeNarcReporter())
+            configurePluginTasks(project, extension, CodeNarc, 'codenarc')
         }
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
     private void configureAnimalSniffer(Project project, QualityExtension extension) {
-        project.plugins.withId('ru.vyarus.animalsniffer') {
+        project.plugins.withId('ru.vyarus.animalsniffer') {plugin ->
             project.configure(project) {
                 animalsniffer {
                     ignoreFailures = !extension.strict
@@ -322,7 +341,7 @@ class QualityPlugin implements Plugin<Project> {
                 }
             }
             applyEnabledState(project, extension,
-                    it.class.classLoader.loadClass('ru.vyarus.gradle.plugin.animalsniffer.AnimalSniffer'))
+                    plugin.class.classLoader.loadClass('ru.vyarus.gradle.plugin.animalsniffer.AnimalSniffer'))
             groupQualityTasks(project, 'animalsniffer')
         }
     }
@@ -380,8 +399,7 @@ class QualityPlugin implements Plugin<Project> {
                     configLoader.resolveCpdXsl()
                 }
                 // console reporting for each cpd task
-                applyReporter(prj, task.name, new CpdReporter(configLoader),
-                        extension.consoleReporting, extension.htmlReports)
+                registerReporter(task, 'cpd', true)
             }
             // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
             // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
@@ -392,31 +410,6 @@ class QualityPlugin implements Plugin<Project> {
             // yes, it's not completely normal that module could disable root project task, but it would be much
             // simpler to use like that (because quality plugin assumed to be applied in subprojects section)
             applyEnabledState(prj, extension, cpdTasksType)
-        }
-    }
-
-    private void applyReporter(Project project, String type, Reporter reporter,
-                               boolean consoleReport, boolean htmlReport) {
-        boolean generatesHtmlReport = htmlReport && HtmlReportGenerator.isAssignableFrom(reporter.class)
-        if (!consoleReport && !generatesHtmlReport) {
-            // nothing to do at all
-            return
-        }
-        // in multi-project reporter registered for each project, but all gets called on task execution in any module
-        project.gradle.taskGraph.afterTask { Task task, TaskState state ->
-            if (task.name.startsWith(type) && project == task.project) {
-                // special case for cpd where single task used for all source sets
-                String taskType = task.name == type ? type : task.name[type.length()..-1].toLowerCase()
-                if (generatesHtmlReport) {
-                    (reporter as HtmlReportGenerator).generateHtmlReport(task, taskType)
-                }
-                if (consoleReport) {
-                    long start = System.currentTimeMillis()
-                    reporter.report(task, taskType)
-                    String duration = DurationFormatter.format(System.currentTimeMillis() - start)
-                    task.project.logger.info("[plugin:quality] $type reporting executed in $duration")
-                }
-            }
         }
     }
 
@@ -467,18 +460,19 @@ class QualityPlugin implements Plugin<Project> {
         }
     }
 
+    void registerReporter(Task task, String type, boolean useFullTaskName = false) {
+        tasksListener.get().register(task, type, useFullTaskName)
+    }
+
     /**
-     * Applies reporter, enabled state control and checkQuality* grouping tasks.
+     * Applies enabled state control and checkQuality* grouping tasks.
      *
      * @param project project instance
      * @param extension extension instance
      * @param taskType task class
      * @param task task base name
-     * @param reporter plugin specific reporter instance
      */
-    private void configurePluginTasks(Project project, QualityExtension extension,
-                                      Class taskType, String task, Reporter reporter) {
-        applyReporter(project, task, reporter, extension.consoleReporting, extension.htmlReports)
+    void configurePluginTasks(Project project, QualityExtension extension, Class taskType, String task) {
         applyEnabledState(project, extension, taskType)
         groupQualityTasks(project, task)
     }
@@ -496,7 +490,7 @@ class QualityPlugin implements Plugin<Project> {
      * @param extension extension instance
      * @param task quality plugin task class
      */
-    private void applyEnabledState(Project project, QualityExtension extension, Class task) {
+    void applyEnabledState(Project project, QualityExtension extension, Class task) {
         if (!extension.enabled) {
             project.gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
                 project.tasks.withType(task).configureEach { Task t ->
@@ -517,7 +511,7 @@ class QualityPlugin implements Plugin<Project> {
      * @param task quality task
      * @param extension extension instance
      */
-    private void applyExcludes(SourceTask task, QualityExtension extension) {
+    void applyExcludes(SourceTask task, QualityExtension extension) {
         if (extension.excludeSources) {
             // directly excluded sources
             task.source = task.source - extension.excludeSources
@@ -537,7 +531,7 @@ class QualityPlugin implements Plugin<Project> {
      * @param task task base name
      */
     @CompileStatic(TypeCheckingMode.SKIP)
-    private void groupQualityTasks(Project project, String task) {
+    void groupQualityTasks(Project project, String task) {
         // each quality plugin generate separate tasks for each source set
         // assign plugin tasks to source set grouping quality task
         project.sourceSets.each {

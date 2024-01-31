@@ -19,6 +19,20 @@ interface Reporter<T extends Task> {
     String NL = String.format('%n')
 
     /**
+     * In some cases, reporter would be executed outside of gradle threads and so any access to
+     * project configurations would not be allowed ("was resolved from a thread not managed by Gradle" error).
+     * To avoid this error, all initialization must be performed before actual processing.
+     * <p>
+     * IMPORTANT: all quality tasks are lazy and this method would be called only when quality task configuration
+     * was triggered (ideally, before actual task execution).
+     * <p>
+     * Method would be called for EACH quality task.
+     *
+     * @param task
+     */
+    default void init(T task) {}
+
+    /**
      * Called after quality tool task to report violations.
      *
      * @param task quality task with violations

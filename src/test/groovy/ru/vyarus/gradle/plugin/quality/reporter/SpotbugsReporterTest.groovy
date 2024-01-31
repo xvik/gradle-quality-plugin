@@ -22,9 +22,9 @@ class SpotbugsReporterTest extends AbstractKitTest {
 
             task testReport() {
                 doLast {
-                    new ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter(
-                        new ru.vyarus.gradle.plugin.quality.ConfigLoader(project)
-                    ).report(spotbugsMain, 'main')
+                    def reporter = new ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter()
+                    reporter.init(spotbugsMain)
+                    reporter.report(spotbugsMain, 'main')
                 }
             }
         """)
@@ -72,9 +72,9 @@ SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir)}/buil
             
             task testReport() {
                 doLast {
-                    new ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter(
-                        new ru.vyarus.gradle.plugin.quality.ConfigLoader(project)
-                    ).report(spotbugsMain, 'main')
+                    def reporter = new ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter()
+                    reporter.init(spotbugsMain)
+                    reporter.report(spotbugsMain, 'main')
                 }
             }
         """)

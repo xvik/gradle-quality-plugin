@@ -1,11 +1,18 @@
 * (BREAKING) Drop gradle 5 and 6 support
 * Update spotbugs plugin to 5.2.5 (#94)
   - Remove spotbugsShowStackTraces option because it's not used by spotbugs anymore
-  - Custom xsl file not used for html report - native html report generation used instead
+  - Custom xsl file is not used for html report - native html report generation used instead
 * Update checkstyle 10.6.0 -> 10.12.7 (gradle metadata fix applied)
 * Update spotbugs 4.7.3 -> 4.8.3
 * Update pmd 6.54 -> 6.55 (java 20 support)
 * Update codenarc 3.2.0 -> 3.4.0
+* Remove deprecated gradle apis usage
+    - The plugin is still NOT compatible with configuration cache
+
+NOTE: in strict mode (when a quality task fails when violations are found)
+a console report may appear NOT STRICTLY BELOW the referenced quality task
+(because old gradle api was deprecated and new api does not guarantee 
+immediate execution after the quality task)
 
 ### 4.9.0 (2023-02-18)
 * Gradle 8 support (#77)

@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlParser
 import org.gradle.api.plugins.quality.Checkstyle
-import ru.vyarus.gradle.plugin.quality.ConfigLoader
 
 /**
  * Prints checkstyle errors (from xml report) into console.
@@ -15,12 +14,6 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
 @SuppressWarnings('DuplicateStringLiteral')
 @CompileStatic
 class CheckstyleReporter implements Reporter<Checkstyle> {
-
-    ConfigLoader configLoader
-
-    CheckstyleReporter(ConfigLoader configLoader) {
-        this.configLoader = configLoader
-    }
 
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
