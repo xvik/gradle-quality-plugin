@@ -55,11 +55,11 @@ Checkstyle violations by severity: [error:2]
 
 [Misc | NewlineAtEndOfFile] sample.(Sample.java:1)
   File does not end with a newline.
-  http://checkstyle.sourceforge.io/config_misc.html#NewlineAtEndOfFile
+  https://checkstyle.sourceforge.io/checks/misc/newlineatendoffile.html
 
 [Javadoc | MissingJavadocType] sample.(Sample.java:6)
   Missing a Javadoc comment.
-  http://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocType
+  https://checkstyle.sourceforge.io/checks/javadoc/missingjavadoctype.html
 
 """.replaceAll("tmp/junit6300057182805361069", ReportUtils.noRootFilePath(testProjectDir)))
 
@@ -74,11 +74,11 @@ Checkstyle violations by severity: [error:2]
 
 [Misc | NewlineAtEndOfFile] sample.(Sample2.java:1)
   File does not end with a newline.
-  http://checkstyle.sourceforge.io/config_misc.html#NewlineAtEndOfFile
+  https://checkstyle.sourceforge.io/checks/misc/newlineatendoffile.html
 
 [Javadoc | MissingJavadocType] sample.(Sample2.java:6)
   Missing a Javadoc comment.
-  http://checkstyle.sourceforge.io/config_javadoc.html#MissingJavadocType
+  https://checkstyle.sourceforge.io/checks/javadoc/missingjavadoctype.html
 
 """.replaceAll("tmp/junit6300057182805361069", ReportUtils.noRootFilePath(testProjectDir)))
     }

@@ -45,7 +45,7 @@ class SuppressFilterKitTest extends AbstractKitTest {
 
 [Misc | NewlineAtEndOfFile] sample.(Sample2.java:1)
   File does not end with a newline.
-  http://checkstyle.sourceforge.io/config_misc.html#NewlineAtEndOfFile
+  https://checkstyle.sourceforge.io/checks/misc/newlineatendoffile.html
 """
     }
 }

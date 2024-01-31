@@ -41,7 +41,7 @@ class CheckstyleReporter implements Reporter<Checkstyle> {
                     // part in braces recognized by intellij IDEA and shown as link
                     task.logger.error "[${group.capitalize()} | $check] $name.($sourceFile:$srcPointer)" +
                             "$NL  ${it.@message}" +
-                            "$NL  http://checkstyle.sourceforge.io/config_${group}.html#$check$NL"
+                            "$NL  https://checkstyle.sourceforge.io/checks/${group}/${check.toLowerCase()}.html$NL"
                 }
             }
         }

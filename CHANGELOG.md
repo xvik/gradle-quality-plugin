@@ -3,6 +3,7 @@
   - Remove spotbugsShowStackTraces option because it's not used by spotbugs anymore
   - Custom xsl file is not used for html report - native html report generation used instead
 * Update checkstyle 10.6.0 -> 10.12.7 (gradle metadata fix applied)
+    - Fix links to checkstyle site (site structure changed)
 * Update spotbugs 4.7.3 -> 4.8.3
 * Update pmd 6.54 -> 6.55 (java 20 support)
 * Update codenarc 3.2.0 -> 3.4.0
