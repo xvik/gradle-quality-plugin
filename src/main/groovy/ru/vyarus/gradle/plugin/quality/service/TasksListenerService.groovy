@@ -9,6 +9,7 @@ import org.gradle.tooling.events.OperationCompletionListener
 import org.gradle.tooling.events.task.TaskFinishEvent
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
 import ru.vyarus.gradle.plugin.quality.QualityExtension
+import ru.vyarus.gradle.plugin.quality.QualityPlugin
 import ru.vyarus.gradle.plugin.quality.report.CheckstyleReporter
 import ru.vyarus.gradle.plugin.quality.report.CodeNarcReporter
 import ru.vyarus.gradle.plugin.quality.report.CpdReporter
@@ -37,6 +38,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @since 30.01.2024
  */
 @CompileStatic
+@SuppressWarnings('AbstractClassWithoutAbstractMethod')
 abstract class TasksListenerService implements BuildService<BuildServiceParameters.None>,
         OperationCompletionListener {
 
@@ -53,11 +55,11 @@ abstract class TasksListenerService implements BuildService<BuildServiceParamete
     void init(ConfigLoader loader, QualityExtension extension) {
         this.extension = extension
 
-        reporters['checkstyle'] = new CheckstyleReporter()
-        reporters['codenarc'] = new CodeNarcReporter()
-        reporters['cpd'] = new CpdReporter(loader)
-        reporters['pmd'] = new PmdReporter()
-        reporters['spotbugs'] = new SpotbugsReporter()
+        reporters[QualityPlugin.TOOL_CHECKSTYLE] = new CheckstyleReporter()
+        reporters[QualityPlugin.TOOL_CODENARC] = new CodeNarcReporter()
+        reporters[QualityPlugin.TOOL_CPD] = new CpdReporter(loader)
+        reporters[QualityPlugin.TOOL_PMD] = new PmdReporter()
+        reporters[QualityPlugin.TOOL_SPOTBUGS] = new SpotbugsReporter()
     }
 
     /**
@@ -92,6 +94,7 @@ abstract class TasksListenerService implements BuildService<BuildServiceParamete
      * @param finishEvent finish event
      */
     @Override
+    @SuppressWarnings('Instanceof')
     void onFinish(FinishEvent finishEvent) {
         if (finishEvent instanceof TaskFinishEvent) {
             TaskFinishEvent taskEvent = (TaskFinishEvent) finishEvent
@@ -100,6 +103,7 @@ abstract class TasksListenerService implements BuildService<BuildServiceParamete
     }
 
     // synchronized to at least not mix different reports (still report might be shown not near the task)
+    @SuppressWarnings('SynchronizedMethod')
     synchronized void execute(String taskPath) {
         TaskDesc desc = targetTasks.get(taskPath)
         if (desc != null && !desc.executed) {

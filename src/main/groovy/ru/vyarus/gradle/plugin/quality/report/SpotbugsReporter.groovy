@@ -20,6 +20,7 @@ class SpotbugsReporter implements Reporter<SpotBugsTask> {
     Map<String, String> pluginChecks
 
     @Override
+    @SuppressWarnings('SynchronizedMethod')
     synchronized void init(SpotBugsTask task) {
         if (pluginChecks == null) {
             // there could not be tasks from different projects because quality plugin would be applied to each one

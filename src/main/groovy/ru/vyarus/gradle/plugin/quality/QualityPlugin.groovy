@@ -64,6 +64,12 @@ import javax.inject.Inject
 @CompileStatic
 abstract class QualityPlugin implements Plugin<Project> {
 
+    public static final String TOOL_CHECKSTYLE = 'checkstyle'
+    public static final String TOOL_PMD = 'pmd'
+    public static final String TOOL_SPOTBUGS = 'spotbugs'
+    public static final String TOOL_CODENARC = 'codenarc'
+    public static final String TOOL_CPD = 'cpd'
+
     private static final String QUALITY_TASK = 'checkQuality'
     private static final String CODENARC_GROOVY4 = '-groovy-4.0'
 
@@ -79,9 +85,9 @@ abstract class QualityPlugin implements Plugin<Project> {
             QualityExtension extension = project.extensions.create('quality', QualityExtension, project)
             addInitConfigTask(project)
 
-            tasksListener = project.getGradle().getSharedServices().registerIfAbsent(
-                            "taskEvents", TasksListenerService.class, spec -> {})
-            getEventsListenerRegistry().onTaskCompletion(tasksListener)
+            tasksListener = project.gradle.sharedServices.registerIfAbsent(
+                            'taskEvents', TasksListenerService, spec -> { })
+            eventsListenerRegistry.onTaskCompletion(tasksListener)
 
             project.afterEvaluate {
                 configureGroupingTasks(project)
@@ -102,12 +108,12 @@ abstract class QualityPlugin implements Plugin<Project> {
         }
     }
 
-    private void addInitConfigTask(Project project) {
+    protected void addInitConfigTask(Project project) {
         project.tasks.register('initQualityConfig', InitQualityConfigTask)
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    private void configureGroupingTasks(Project project) {
+    protected void configureGroupingTasks(Project project) {
         // create checkQualityMain, checkQualityTest (quality tasks for all source sets)
         // using all source sets and not just declared in extension to be able to run quality plugins
         // on source sets which are not included in check task run (e.g. run quality on tests time to time)
@@ -121,7 +127,7 @@ abstract class QualityPlugin implements Plugin<Project> {
         }
     }
 
-    private void configureJavac(Project project, QualityExtension extension) {
+    protected void configureJavac(Project project, QualityExtension extension) {
         if (!extension.lintOptions) {
             return
         }
@@ -133,7 +139,7 @@ abstract class QualityPlugin implements Plugin<Project> {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings(['MethodSize', 'NestedBlockDepth'])
-    private void applyCheckstyle(Project project, QualityExtension extension, ConfigLoader configLoader,
+    protected void applyCheckstyle(Project project, QualityExtension extension, ConfigLoader configLoader,
                                  boolean register) {
         configurePlugin(project,
                 extension.checkstyle,
@@ -191,15 +197,15 @@ abstract class QualityPlugin implements Plugin<Project> {
                     reports.xml.required.set(true)
                     reports.html.required.set(extension.htmlReports)
 
-                    registerReporter(task, 'checkstyle')
+                    registerReporter(task, TOOL_CHECKSTYLE)
                 }
             }
-            configurePluginTasks(project, extension, Checkstyle, 'checkstyle')
+            configurePluginTasks(project, extension, Checkstyle, TOOL_CHECKSTYLE)
         }
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    private void applyPMD(Project project, QualityExtension extension, ConfigLoader configLoader,
+    protected void applyPMD(Project project, QualityExtension extension, ConfigLoader configLoader,
                           boolean register) {
         configurePlugin(project,
                 extension.pmd,
@@ -230,16 +236,16 @@ abstract class QualityPlugin implements Plugin<Project> {
                     reports.xml.required.set(true)
                     reports.html.required.set(extension.htmlReports)
 
-                    registerReporter(task, 'pmd')
+                    registerReporter(task, TOOL_PMD)
                 }
             }
-            configurePluginTasks(project, extension, Pmd, 'pmd')
+            configurePluginTasks(project, extension, Pmd, TOOL_PMD)
         }
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings('MethodSize')
-    private void applySpotbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
+    protected void applySpotbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
                                boolean register) {
         SpotbugsUtils.validateRankSetting(extension.spotbugsMaxRank)
 
@@ -285,16 +291,16 @@ abstract class QualityPlugin implements Plugin<Project> {
                             required.set(extension.htmlReports)
                         }
                     }
-                    registerReporter(task, 'spotbugs')
+                    registerReporter(task, TOOL_SPOTBUGS)
                 }
             }
 
-            configurePluginTasks(project, extension, SpotBugsTask, 'spotbugs')
+            configurePluginTasks(project, extension, SpotBugsTask, TOOL_SPOTBUGS)
         }
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    private void applyCodeNarc(Project project, QualityExtension extension, ConfigLoader configLoader,
+    protected void applyCodeNarc(Project project, QualityExtension extension, ConfigLoader configLoader,
                                boolean register) {
         configurePlugin(project,
                 extension.codenarc,
@@ -321,16 +327,16 @@ abstract class QualityPlugin implements Plugin<Project> {
                     reports.xml.required.set(true)
                     reports.html.required.set(extension.htmlReports)
 
-                    registerReporter(task, 'codenarc')
+                    registerReporter(task, TOOL_CODENARC)
                 }
             }
-            configurePluginTasks(project, extension, CodeNarc, 'codenarc')
+            configurePluginTasks(project, extension, CodeNarc, TOOL_CODENARC)
         }
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    private void configureAnimalSniffer(Project project, QualityExtension extension) {
-        project.plugins.withId('ru.vyarus.animalsniffer') {plugin ->
+    protected void configureAnimalSniffer(Project project, QualityExtension extension) {
+        project.plugins.withId('ru.vyarus.animalsniffer') { plugin ->
             project.configure(project) {
                 animalsniffer {
                     ignoreFailures = !extension.strict
@@ -348,7 +354,7 @@ abstract class QualityPlugin implements Plugin<Project> {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings('MethodSize')
-    private void configureCpdPlugin(Project project, QualityExtension extension, ConfigLoader configLoader,
+    protected void configureCpdPlugin(Project project, QualityExtension extension, ConfigLoader configLoader,
                                     boolean onlyGroovy) {
         if (!extension.cpd) {
             return
@@ -399,7 +405,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                     configLoader.resolveCpdXsl()
                 }
                 // console reporting for each cpd task
-                registerReporter(task, 'cpd', true)
+                registerReporter(task, TOOL_CPD, true)
             }
             // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
             // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
@@ -423,7 +429,7 @@ abstract class QualityPlugin implements Plugin<Project> {
      * @return context instance
      */
     @CompileStatic(TypeCheckingMode.SKIP)
-    private Context createContext(Project project, QualityExtension extension) {
+    protected Context createContext(Project project, QualityExtension extension) {
         Context context = new Context()
         if (extension.autoRegistration) {
             context.registerJavaPlugins = (extension.sourceSets.find { it.java.srcDirs.find { it.exists() } }) != null
@@ -446,7 +452,7 @@ abstract class QualityPlugin implements Plugin<Project> {
      * @param plugin plugin class
      * @param config plugin configuration closure
      */
-    private void configurePlugin(Project project, boolean enabled, boolean register, Class plugin, Closure config) {
+    protected void configurePlugin(Project project, boolean enabled, boolean register, Class plugin, Closure config) {
         if (!enabled) {
             // do not configure even if manually registered
             return
@@ -460,7 +466,7 @@ abstract class QualityPlugin implements Plugin<Project> {
         }
     }
 
-    void registerReporter(Task task, String type, boolean useFullTaskName = false) {
+    protected void registerReporter(Task task, String type, boolean useFullTaskName = false) {
         tasksListener.get().register(task, type, useFullTaskName)
     }
 
@@ -472,7 +478,7 @@ abstract class QualityPlugin implements Plugin<Project> {
      * @param taskType task class
      * @param task task base name
      */
-    void configurePluginTasks(Project project, QualityExtension extension, Class taskType, String task) {
+    protected void configurePluginTasks(Project project, QualityExtension extension, Class taskType, String task) {
         applyEnabledState(project, extension, taskType)
         groupQualityTasks(project, task)
     }
@@ -490,7 +496,7 @@ abstract class QualityPlugin implements Plugin<Project> {
      * @param extension extension instance
      * @param task quality plugin task class
      */
-    void applyEnabledState(Project project, QualityExtension extension, Class task) {
+    protected void applyEnabledState(Project project, QualityExtension extension, Class task) {
         if (!extension.enabled) {
             project.gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
                 project.tasks.withType(task).configureEach { Task t ->
@@ -511,7 +517,7 @@ abstract class QualityPlugin implements Plugin<Project> {
      * @param task quality task
      * @param extension extension instance
      */
-    void applyExcludes(SourceTask task, QualityExtension extension) {
+    protected void applyExcludes(SourceTask task, QualityExtension extension) {
         if (extension.excludeSources) {
             // directly excluded sources
             task.source = task.source - extension.excludeSources
@@ -531,7 +537,7 @@ abstract class QualityPlugin implements Plugin<Project> {
      * @param task task base name
      */
     @CompileStatic(TypeCheckingMode.SKIP)
-    void groupQualityTasks(Project project, String task) {
+    protected void groupQualityTasks(Project project, String task) {
         // each quality plugin generate separate tasks for each source set
         // assign plugin tasks to source set grouping quality task
         project.sourceSets.each {

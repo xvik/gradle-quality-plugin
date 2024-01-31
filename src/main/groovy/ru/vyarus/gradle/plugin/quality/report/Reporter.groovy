@@ -8,7 +8,7 @@ import org.gradle.api.Task
  *
  * @author Vyacheslav Rusakov
  * @since 12.11.2015
- * @param <T>  task type
+ * @param <T>   task type
  */
 @CompileStatic
 interface Reporter<T extends Task> {
@@ -16,7 +16,7 @@ interface Reporter<T extends Task> {
     /**
      * New line symbol.
      */
-    String NL = String.format('%n')
+    static final String NL = String.format('%n')
 
     /**
      * In some cases, reporter would be executed outside of gradle threads and so any access to
@@ -28,9 +28,10 @@ interface Reporter<T extends Task> {
      * <p>
      * Method would be called for EACH quality task.
      *
-     * @param task
+     * @param task quality task
      */
-    default void init(T task) {}
+    @SuppressWarnings(['EmptyMethod', 'UnusedMethodParameter'])
+    default void init(T task) { }
 
     /**
      * Called after quality tool task to report violations.
