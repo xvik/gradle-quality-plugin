@@ -1,3 +1,4 @@
+### 5.0.0 (2024-02-01)
 * (BREAKING) Drop gradle 5 and 6 support
 * Update spotbugs plugin to 5.2.5 (#94)
   - Remove spotbugsShowStackTraces option because it's not used by spotbugs anymore

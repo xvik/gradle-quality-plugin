@@ -26,6 +26,8 @@
 * Html and xml reports for all plugins (custom xsl used for findbugs html report because it can't generate both xml and html reports)
 * Grouping tasks to run registered quality plugins for exact source set (e.g. checkQualityMain)
 
+!!! note
+    The plugin is **not compatible** with the gradle [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html)
 
 ## How to use docs
 

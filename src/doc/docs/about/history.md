@@ -1,3 +1,18 @@
+### [5.0.0](http://xvik.github.io/gradle-quality-plugin/5.0.0) (2024-02-01)
+* (BREAKING) Drop gradle 5 and 6 support
+* Update spotbugs plugin to 5.2.5 (#94)
+    - Remove spotbugsShowStackTraces option because it's not used by spotbugs anymore
+    - Custom xsl file is not used for html report - native html report generation used instead
+    - Add spotbugs-annotations dependency automatically with compileOnly (to simplify @SuppressFBWarnings usage)
+      Could be disabled with quality.spotbugsAnnotations = false configuration
+* Update checkstyle 10.6.0 -> 10.12.7 (gradle metadata fix applied)
+    - Fix links to checkstyle site (site structure changed)
+* Update spotbugs 4.7.3 -> 4.8.3
+* Update pmd 6.54 -> 6.55 (java 20 support)
+* Update codenarc 3.2.0 -> 3.4.0
+* Remove deprecated gradle apis usage
+    - The plugin is still NOT compatible with configuration cache
+
 ### [4.9.0](http://xvik.github.io/gradle-quality-plugin/4.9.0) (2023-02-18)
 * Gradle 8 support (#77)
 * Update checkstyle 10.3.1 -> 10.6.0

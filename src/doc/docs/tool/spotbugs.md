@@ -23,11 +23,6 @@ it uses [efforts level](http://spotbugs.readthedocs.io/en/latest/effort.html). D
 Default settings (`max` effort and `medium` level) are perfect for most cases. Some checks were disabled in the default 
 [filter file](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/spotbugs/exclude.xml)
 
-!!! note
-    Special [xsl file](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/spotbugs/html-report-style.xsl) 
-    used for manual html report generation. Spotbugs plugin can generate both xml and html reports, but
-    this ability is not used (for more stable and legacy-compatible behaviour).  
-
 ## Output
 
 ```
@@ -58,11 +53,11 @@ Tool config options with defaults:
 quality {
     spotbugsVersion = '{{ gradle.spotbugs }}'
     spotbugs = true // false to disable automatic plugin activation
-    spotbugsShowStackTraces = false // changes default for spotbugs.showStackTraces
     spotbugsEffort = 'max'  // min, less, more or max
     spotbugsLevel = 'medium' // low, medium, high
     spotbugsMaxRank = 20 // 1-4 scariest, 5-9 scary, 10-14 troubling, 15-20 of concern  
     spotbugsMaxHeapSize = '1g'
+    spotbugsAnnotations = true // false to not register spotbugs-annotations
 }
 ```
 
@@ -81,8 +76,8 @@ quality {
 To suppress violations you can use [filter file](http://spotbugs.readthedocs.io/en/latest/filter.html).
 In this case you need to override [default filter file](https://github.com/xvik/gradle-quality-plugin/blob/master/src/main/resources/ru/vyarus/quality/config/spotbugs/exclude.xml).
 
-Or you can use annotations. SpotBugs use custom annotations and so you need to add 
-`com.github.spotbugs:spotbugs-annotations:3.1.2` dependency (with provided scope if possible) and use:
+Plugin applies `com.github.spotbugs:spotbugs-annotations:{{ gradle.spotbugs }}` dependency automatically
+in `compileOnly` scope in order to use special suppressing annotation:
 
 ```java
 @SuppressFBWarnings("URF_UNREAD_FIELD")
@@ -91,6 +86,12 @@ Or you can use annotations. SpotBugs use custom annotations and so you need to a
 !!! abstract
     Spotbugs can't use default `@SuppressWarnings` annotation because it's a source annotation
     and not available in bytecode. 
+
+!!! note
+    To disable automatic annotations dependency applying:
+    ```java
+    quality.spotbugsAnnotations = false
+    ```
 
 ## Excludes
 
