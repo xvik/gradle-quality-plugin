@@ -77,7 +77,7 @@ class SpotbugsReporter implements Reporter<SpotBugsTask> {
         Map<String, String> desc = [:]
         result.BugPattern.each { pattern ->
             desc[pattern.@type] = pattern.Details.text()
-            //remove html tags
+            // remove html tags
                     .replaceAll('<(.|\n)*?>', '')
             // remove empty lines after tags remove (only one separator line remain)
                     .replaceAll('([ \t]*\n){3,}', "$NL$NL")
