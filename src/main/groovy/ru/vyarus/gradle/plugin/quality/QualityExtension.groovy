@@ -179,6 +179,13 @@ class QualityExtension {
     Set<String> spotbugsPlugins = []
 
     /**
+     * Apply spotbugs annotations dependency with compileOnly scope. This dependency is required for
+     * suppression of warnings ({@code @SuppressFBWarnings}). Dependency version would be the same as
+     * used spotbugs version (as described in spotbugs plugin recommendation).
+     */
+    boolean spotbugsAnnotations = true
+
+    /**
      * Javac lint options to show compiler warnings, not visible by default.
      * By default enables deprecation and unchecked options. Applies to all JavaCompile tasks.
      * Full list of options: http://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCJCABJ

@@ -2,6 +2,8 @@
 * Update spotbugs plugin to 5.2.5 (#94)
   - Remove spotbugsShowStackTraces option because it's not used by spotbugs anymore
   - Custom xsl file is not used for html report - native html report generation used instead
+  - Add spotbugs-annotations dependency automatically with compileOnly (to simplify @SuppressFBWarnings usage)
+      Could be disabled with quality.spotbugsAnnotations = false configuration
 * Update checkstyle 10.6.0 -> 10.12.7 (gradle metadata fix applied)
     - Fix links to checkstyle site (site structure changed)
 * Update spotbugs 4.7.3 -> 4.8.3

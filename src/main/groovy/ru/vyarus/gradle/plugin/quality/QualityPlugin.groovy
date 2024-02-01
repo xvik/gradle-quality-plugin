@@ -62,6 +62,7 @@ import javax.inject.Inject
  * @see de.aaschmid.gradle.plugins.cpd.CpdPlugin
  */
 @CompileStatic
+@SuppressWarnings('ClassSize')
 abstract class QualityPlugin implements Plugin<Project> {
 
     public static final String TOOL_CHECKSTYLE = 'checkstyle'
@@ -263,6 +264,14 @@ abstract class QualityPlugin implements Plugin<Project> {
                     // in gradle 5 default 1g was changed and so spotbugs fails on large projects (recover behaviour),
                     // but not if value set manually
                     maxHeapSize.convention(extension.spotbugsMaxHeapSize)
+                }
+
+                // spotbugs annotations to simplify access to @SuppressFBWarnings
+                // (applied according to plugin recommendation)
+                if (extension.spotbugsAnnotations) {
+                    dependencies {
+                        compileOnly "com.github.spotbugs:spotbugs-annotations:${extension.spotbugsVersion}"
+                    }
                 }
 
                 // plugins shortcut
