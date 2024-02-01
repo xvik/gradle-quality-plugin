@@ -65,6 +65,6 @@ class SpotbugsAnnotationsAppliedKitTest extends AbstractKitTest {
 
         then: "all plugins detect violations"
         result.task(":compileJava").outcome == TaskOutcome.FAILED
-        result.output.contains('src/main/java/sample/SBSuppressSample.java:8: error: cannot find symbol')
+        result.output.contains('package edu.umd.cs.findbugs.annotations does not exist')
     }
 }
