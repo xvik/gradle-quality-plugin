@@ -67,7 +67,7 @@ buildscript {
 apply plugin: 'ru.vyarus.quality'
 ```
 
-Minimal requirements: java 8, gradle 5.6 
+Minimal requirements: java 8, gradle 7
 
 #### Compatibility
 

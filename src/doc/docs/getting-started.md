@@ -34,7 +34,7 @@ apply plugin: 'ru.vyarus.quality'
     Plugin must be applied after `java`, `java-library` or `groovy` plugins. Otherwise, it will do nothing.
 
 !!! note
-    Requires java 8 and gradle >= 5.6
+    Requires java 8 and gradle >= 7
 
 If you are using lower java versions use previous plugin releases.
 
