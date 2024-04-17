@@ -94,36 +94,20 @@ Version [3.3.0](http://xvik.github.io/gradle-quality-plugin/3.3.0) is the latest
 * Select `Commits` section and click `Get it` on commit you want to use (you may need to wait while version builds if no one requested it before)
     or use `master-SNAPSHOT` to use the most recent snapshot
 
-For gradle before 6.0 use `buildscript` block with required commit hash as version:
-
-```groovy
-buildscript {
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
-    dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:b9474cab84'
-    }
-}
-apply plugin: 'ru.vyarus.quality'
-```
-
-For gradle 6.0 and above:
-
-* Add to `settings.gradle` (top most!) with required commit hash as version:
+* Add to `settings.gradle` (top most!) (exact commit hash might be used as version):
 
   ```groovy
   pluginManagement {
       resolutionStrategy {
           eachPlugin {
-              if (requested.id.namespace == 'ru.vyarus.quality') {
-                  useModule('ru.vyarus:gradle-quality-plugin:b9474cab84')
+              if (requested.id.id == 'ru.vyarus.quality') {
+                  useModule('ru.vyarus:gradle-quality-plugin:master-SNAPSHOT')
               }
           }
       }
-      repositories {
-          maven { url 'https://jitpack.io' }
-          gradlePluginPortal()          
+      repositories {                        
+          gradlePluginPortal()
+          maven { url 'https://jitpack.io' }                    
       }
   }    
   ``` 
