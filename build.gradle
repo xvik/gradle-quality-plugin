@@ -24,7 +24,7 @@ wrapper {
 }
 
 ext {
-    animalsnifferVersion = '1.7.1'
+    animalsnifferVersion = '1.7.2'
     cpdVersion = '3.5'
     spotbugsPluginVersion = '5.2.5'
     docVersion = '5.0.0'
