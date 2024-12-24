@@ -4,7 +4,7 @@ plugins {
     id 'groovy'
     id 'jacoco'
     id 'signing'
-    id 'net.researchgate.release' version '3.0.2'
+    id 'net.researchgate.release' version '3.1.0'
     id 'ru.vyarus.quality' version '5.0.0'
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
     id 'ru.vyarus.java-lib' version '3.0.0'
