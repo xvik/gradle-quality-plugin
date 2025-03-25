@@ -137,3 +137,4 @@ Read [documentation](http://xvik.github.io/gradle-quality-plugin)
 
 ---
 [![gradle plugin generator](http://img.shields.io/badge/Powered%20by-%20Gradle%20plugin%20generator-green.svg?style=flat-square)](https://github.com/xvik/generator-gradle-plugin)
+[![libs.tech recommends](https://libs.tech/project/46465020/badge.svg)](https://libs.tech/project/46465020/gradle-quality-plugin)
