@@ -6,6 +6,15 @@
 
 **DOCUMENTATION** http://xvik.github.io/gradle-quality-plugin
 
+**JAVA 8 CHECKSTYLE PROBLEM**   
+I don't know why but java 8 checkstyle backport *disappeared
+from the maven central* (and github) and so your java 8 build might fail now.
+Use this workaround to disable checkstyle for java 8 (fixed plugin version would be released later):
+```java
+    tasks.withType(Checkstyle)
+            .configureEach { enabled = JavaVersion.current() > JavaVersion.VERSION_1_8 }
+```
+
 ### About
 
 Static code analysis for Java and Groovy projects using [Checkstyle](https://checkstyle.sourceforge.io/), 
