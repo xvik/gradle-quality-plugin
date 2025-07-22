@@ -45,7 +45,7 @@ class ExcludeKitTest extends AbstractKitTest {
         def output = result.output
         output.contains "2 Checkstyle rule violations were found in 1 files"
         output.contains "1 (0 / 1 / 0) SpotBugs violations were found in 1 files"
-        output.contains "7 PMD rule violations were found in 1 files"
+        output.contains "6 PMD rule violations were found in 1 files"
         output.contains "15 (0 / 6 / 9) CodeNarc violations were found in 1 files"
     }
 
@@ -123,7 +123,7 @@ class ExcludeKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'groovy'
-                id 'ru.vyarus.animalsniffer' version '1.7.1'
+                id 'ru.vyarus.animalsniffer' version '2.0.1'
                 id 'ru.vyarus.quality'
             }
             

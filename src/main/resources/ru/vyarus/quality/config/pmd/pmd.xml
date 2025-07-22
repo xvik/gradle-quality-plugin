@@ -15,27 +15,22 @@
         <exclude name="AccessorMethodGeneration"/>
         <exclude name="ArrayIsStoredDirectly"/>
         <exclude name="GuardLogStatement"/>
-        <exclude name="JUnitAssertionsShouldIncludeMessage"/>
+        <exclude name="UnitTestAssertionsShouldIncludeMessage"/>
         <exclude name="JUnit4SuitesShouldUseSuiteAnnotation"/>
-        <exclude name="JUnitTestsShouldIncludeAssert"/>
-        <exclude name="JUnit4TestShouldUseBeforeAnnotation"/>
-        <exclude name="JUnit4TestShouldUseAfterAnnotation"/>
-        <exclude name="JUnit4TestShouldUseTestAnnotation"/>
-        <exclude name="UnusedImports"/> <!-- deprecated in favour of UnnecessaryImport -->
+        <exclude name="UnitTestShouldIncludeAssert"/>
+        <exclude name="UnitTestShouldUseBeforeAnnotation"/>
+        <exclude name="UnitTestShouldUseAfterAnnotation"/>
+        <exclude name="UnitTestShouldUseTestAnnotation"/>
     </rule>
 
 
     <!-- Code style (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_codestyle.html) -->
     <rule ref="category/java/codestyle.xml">
-        <exclude name="AbstractNaming"/>
         <exclude name="AtLeastOneConstructor"/>
-        <exclude name="AvoidFinalLocalVariable"/>
         <exclude name="CallSuperInConstructor"/>
         <exclude name="CommentDefaultAccessModifier"/>
         <exclude name="ConfusingTernary"/>
         <exclude name="ClassNamingConventions"/>
-        <exclude name="DontImportJavaLang"/> <!-- deprecated in favour of UnnecessaryImport -->
-        <exclude name="DuplicateImports"/> <!-- deprecated in favour of UnnecessaryImport -->
         <exclude name="LocalHomeNamingConvention"/> <!-- earlier j2ee group-->
         <exclude name="LocalInterfaceSessionNamingConvention"/> <!-- earlier j2ee group-->
         <exclude name="LocalVariableCouldBeFinal"/>
@@ -62,13 +57,9 @@
         <exclude name="AvoidCatchingGenericException"/>
         <exclude name="AvoidUncheckedExceptionsInSignatures"/>
         <exclude name="DataClass"/>
-        <exclude name="ExcessiveClassLength"/> <!-- replaced by NcssCount -->
-        <exclude name="ExcessiveMethodLength"/> <!-- replaced by NcssCount -->
         <exclude name="LawOfDemeter"/>
         <exclude name="LoosePackageCoupling"/>
-        <exclude name="ModifiedCyclomaticComplexity"/>
         <exclude name="SignatureDeclareThrowsException"/>
-        <exclude name="StdCyclomaticComplexity"/>
     </rule>
     <rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts">
         <properties>
@@ -117,20 +108,17 @@
         <exclude name="AssignmentInOperand"/>
         <exclude name="AvoidAccessibilityAlteration"/>
         <exclude name="AvoidCatchingThrowable"/>
-        <exclude name="DataflowAnomalyAnalysis"/>
         <exclude name="DoNotTerminateVM"/> <!-- earlier j2ee group; before 6.29 DoNotCallSystemExit-->
         <exclude name="EmptyFinalizer"/>
         <exclude name="FinalizeOnlyCallsSuperFinalize"/>
         <exclude name="FinalizeDoesNotCallSuperFinalize"/>
         <exclude name="JUnitSpelling"/>
         <exclude name="JUnitStaticSuite"/>
-        <exclude name="ImportFromSamePackage"/> <!-- deprecated in favour of UnnecessaryImport -->
         <exclude name="InvalidLogMessageFormat"/>
-        <exclude name="LoggerIsNotStaticFinal"/>
         <exclude name="MissingSerialVersionUID"/>
         <exclude name="NonSerializableClass"/>
         <exclude name="NullAssignment"/> <!-- disabled due to false positive for initialization with ternary operator -->
-        <exclude name="ReturnEmptyArrayRatherThanNull"/>
+        <exclude name="ReturnEmptyCollectionRatherThanNull"/>
         <exclude name="StaticEJBFieldShouldBeFinal"/> <!-- earlier j2ee group-->
         <exclude name="TestClassWithoutTestCases"/>
         <exclude name="UseCorrectExceptionLogging"/>

@@ -15,7 +15,7 @@ class AnimalSnifferIntegrationKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'java'
-                id 'ru.vyarus.animalsniffer' version '1.7.1'
+                id 'ru.vyarus.animalsniffer' version '2.0.1'
                 id 'ru.vyarus.quality'
             }
             
@@ -54,7 +54,7 @@ class AnimalSnifferIntegrationKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'java'
-                id 'ru.vyarus.animalsniffer' version '1.7.1'
+                id 'ru.vyarus.animalsniffer' version '2.0.1'
                 id 'ru.vyarus.quality'
             }
 

@@ -15,7 +15,7 @@ class CpdReportsDisableTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'java'
-                id 'de.aaschmid.cpd' version '3.3'
+                id 'de.aaschmid.cpd' version '3.5'
                 id 'ru.vyarus.quality'
             }            
 

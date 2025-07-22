@@ -1,3 +1,15 @@
+* Drop gradle 7.0-7.1 support (7.2 min requirement)
+* Update checkstyle 10.12.7 -> 10.26.1 (java 21 support)
+    - Add [PatternVariableAssignment](https://checkstyle.sourceforge.io/checks/coding/patternvariableassignment.html)
+    - Add [UnnecessaryNullCheckWithInstanceOf](https://checkstyle.sourceforge.io/checks/coding/unnecessarynullcheckwithinstanceof.html)
+    - Add [ConstructorsDeclarationGrouping](https://checkstyle.sourceforge.io/checks/coding/constructorsdeclarationgrouping.html)
+* Update spotbugs 4.8.3 -> 4.9.3 (requires java 11)
+* Update pmd 6.55 -> 7.15.0 (java 21, 22 support)
+    - Fix gradle plugin for pmd 7 (pmd 7 split jar so plugin classpath must be overridden )
+    - Fix default pmd config: remove legacy rules exclusions
+* Update codenarc 3.4.0 -> 3.6.0
+* Fix CPD plugin compatibility for version 3.5  
+
 ### 5.0.0 (2024-02-01)
 * (BREAKING) Drop gradle 5 and 6 support
 * Update spotbugs plugin to 5.2.5 (#94)

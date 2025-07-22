@@ -176,7 +176,7 @@ Expected root project configuration looks like this:
 
 ```groovy
 plugins {
-    id 'de.aaschmid.cpd' version '3.1'
+    id 'de.aaschmid.cpd' version '3.5'
     id 'ru.vyarus.quality' version '4.5.0' apply false
 }
 cpd {

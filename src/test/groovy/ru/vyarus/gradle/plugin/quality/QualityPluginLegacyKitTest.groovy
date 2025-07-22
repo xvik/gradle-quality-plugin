@@ -11,7 +11,7 @@ import spock.lang.IgnoreIf
 @IgnoreIf({jvm.java17Compatible}) // only gradle 7.3 supports java 17  
 class QualityPluginLegacyKitTest extends AbstractKitTest {
 
-    public static final String GRADLE_VERSION = '7.0'
+    public static final String GRADLE_VERSION = '7.2'
 
     def "Check java and groovy checks with gradle"() {
         setup:

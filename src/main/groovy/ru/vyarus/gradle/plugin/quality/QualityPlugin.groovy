@@ -220,6 +220,12 @@ abstract class QualityPlugin implements Plugin<Project> {
                     ruleSetFiles = files(configLoader.resolvePmdConfig(false).absolutePath)
                     sourceSets = extension.sourceSets
                 }
+                // have to override dependencies declaration due to split in pmd 7
+                // https://github.com/gradle/gradle/issues/24502
+                dependencies {
+                    pmd("net.sourceforge.pmd:pmd-ant:$extension.pmdVersion")
+                    pmd("net.sourceforge.pmd:pmd-java:$extension.pmdVersion")
+                }
                 if (extension.pmdIncremental) {
                     // block enables incremental analysis for gradle 5.6 - 6.4 (later it is enabled by default)
                     if (PmdExtension.metaClass.properties.any { it.name == 'incrementalAnalysis' }) {
