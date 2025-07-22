@@ -1,8 +1,10 @@
-* Drop gradle 7.0-7.1 support (7.2 min requirement)
+* (BREAKING) Drop gradle 7.0-7.1 support (7.2 min requirement)
 * Update checkstyle 10.12.7 -> 10.26.1 (java 21 support)
     - Add [PatternVariableAssignment](https://checkstyle.sourceforge.io/checks/coding/patternvariableassignment.html)
     - Add [UnnecessaryNullCheckWithInstanceOf](https://checkstyle.sourceforge.io/checks/coding/unnecessarynullcheckwithinstanceof.html)
     - Add [ConstructorsDeclarationGrouping](https://checkstyle.sourceforge.io/checks/coding/constructorsdeclarationgrouping.html)
+    - (BREAKING) Remove checkstyle support for java 8 due to remove of the backport project (including maven central)
+      * quality.checkstyleBackport property removed
 * Update spotbugs 4.8.3 -> 4.9.3 (requires java 11)
 * Update pmd 6.55 -> 7.15.0 (java 21, 22 support)
     - Fix gradle plugin for pmd 7 (pmd 7 split jar so plugin classpath must be overridden )

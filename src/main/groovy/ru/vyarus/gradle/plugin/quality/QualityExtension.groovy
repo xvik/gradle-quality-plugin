@@ -81,21 +81,6 @@ class QualityExtension {
     boolean codenarc = true
 
     /**
-     * Since checkstyle 10, minimum required java is 11. Community (not checkstyle core team!) started a
-     * <a href="https://checkstyle.org/#Backport">backport</a> project - maintaining java 8 compatibility.
-     * Backport releases would be delayed relative to main checkstyle releases (see
-     * <a href="https://rnveach.github.io/checkstyle-backport-jre8/">checkstyle-backport-jre8</a>).
-     * <p>
-     * NOTE: additional repository would be configured to download backport (only when backport required). But the
-     * repository would be limited to checkstyle group only!
-     * <p>
-     * This property switches between backport and normal checkstyle versions. By default backport would be enabled
-     * on java 8-10, but you can manually enable it for all java versions if required. Or you can use false value
-     * to prevent backport behaviour and preventing new  repository registration.
-     */
-    boolean checkstyleBackport = !JavaVersion.current().java11Compatible
-
-    /**
      * Since codenarc 3.1.0 there is a separate artifact for groovy 4 (CodeNarc-x.x-groovy-4.0). Gradle runs codenarc
      * task with it's own groovy so by default groovy4 artifact is active. If you need to use earlier codenarc version
      * then switch this option to false.

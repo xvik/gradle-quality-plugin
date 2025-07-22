@@ -147,7 +147,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                 register,
                 CheckstylePlugin) {
             project.configure(project) {
-                // required due to checkstyle update of gradle metadata causing now collission with google collections
+                // required due to checkstyle update of gradle metadata causing now collision with google collections
                 // https://github.com/google/guava/releases/tag/v32.1.0 (https://github.com/gradle/gradle/issues/27035)
                 String guavaTarget = 'com.google.guava:guava:0'
                 configurations.checkstyle {
@@ -173,25 +173,9 @@ abstract class QualityPlugin implements Plugin<Project> {
                     configDirectory = configLoader.resolveCheckstyleConfigDir()
                     sourceSets = extension.sourceSets
                 }
-                if (extension.checkstyleBackport) {
-                    repositories {
-                        maven {
-                            url 'https://rnveach.github.io/checkstyle-backport-jre8/maven2/'
-                            // use custom repository ONLY for checkstyle (just in case)
-                            content { includeGroup 'com.puppycrawl.tools' }
-                        }
-                    }
-                    dependencies {
-                        checkstyle "com.puppycrawl.tools:checkstyle-backport-jre8:${extension.checkstyleVersion}"
-                    }
-                }
 
                 tasks.withType(Checkstyle).configureEach { task ->
                     doFirst {
-                        if (extension.checkstyleBackport) {
-                            project.logger.warn("WARNING: checkstyle-backport-jre8 (${extension.checkstyleVersion})" +
-                                    ' used instead of regular checkstyle: https://checkstyle.org/#Backport')
-                        }
                         configLoader.resolveCheckstyleConfig()
                         applyExcludes(it, extension)
                     }
