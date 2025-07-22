@@ -3,6 +3,7 @@ package ru.vyarus.gradle.plugin.quality
 import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -98,13 +99,15 @@ abstract class QualityPlugin implements Plugin<Project> {
                 tasksListener.get().init(configLoader, extension)
 
                 configureJavac(project, extension)
-                applyCheckstyle(project, extension, configLoader, context.registerJavaPlugins)
-                applyPMD(project, extension, configLoader, context.registerJavaPlugins)
-                applySpotbugs(project, extension, configLoader, context.registerJavaPlugins)
-                configureAnimalSniffer(project, extension)
-                configureCpdPlugin(project, extension, configLoader,
-                        !context.registerJavaPlugins && context.registerGroovyPlugins)
-                applyCodeNarc(project, extension, configLoader, context.registerGroovyPlugins)
+                if (JavaVersion.current().java11Compatible) {
+                    applyCheckstyle(project, extension, configLoader, context.registerJavaPlugins)
+                    applyPMD(project, extension, configLoader, context.registerJavaPlugins)
+                    applySpotbugs(project, extension, configLoader, context.registerJavaPlugins)
+                    configureAnimalSniffer(project, extension)
+                    configureCpdPlugin(project, extension, configLoader,
+                            !context.registerJavaPlugins && context.registerGroovyPlugins)
+                    applyCodeNarc(project, extension, configLoader, context.registerGroovyPlugins)
+                }
             }
         }
     }
@@ -123,6 +126,10 @@ abstract class QualityPlugin implements Plugin<Project> {
                 it.with {
                     group = 'verification'
                     description = "Run quality plugins for $set.name source set"
+                }
+                if (JavaVersion.current().java11Compatible) {
+                    project.logger.warn("WARN: Quality plugin requires Java 11 or above and can't work on current " +
+                            "Java ${JavaVersion.current()}.")
                 }
             }
         }

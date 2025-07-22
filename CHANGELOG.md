@@ -10,7 +10,12 @@
     - Fix gradle plugin for pmd 7 (pmd 7 split jar so plugin classpath must be overridden )
     - Fix default pmd config: remove legacy rules exclusions
 * Update codenarc 3.4.0 -> 3.6.0
-* Fix CPD plugin compatibility for version 3.5  
+* Fix CPD plugin compatibility for version 3.5
+* (BREAKING) Plugin requires Java 11 or above (because many tools require it). 
+  If the plugin runs on JDK8-10:
+  - it would not break the build (just no configuration performed)  
+  - javac configured
+  - grouping task (checkQuality) created and will show a warning on run
 
 ### 5.0.0 (2024-02-01)
 * (BREAKING) Drop gradle 5 and 6 support
