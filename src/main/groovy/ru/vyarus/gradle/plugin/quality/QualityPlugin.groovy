@@ -211,13 +211,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                     pmd("net.sourceforge.pmd:pmd-java:$extension.pmdVersion")
                 }
                 if (extension.pmdIncremental) {
-                    // block enables incremental analysis for gradle 5.6 - 6.4 (later it is enabled by default)
-                    if (PmdExtension.metaClass.properties.any { it.name == 'incrementalAnalysis' }) {
-                        pmd.incrementalAnalysis = true
-                    } else {
-                        project.logger.warn('WARNING: PMD incremental analysis option ignored, because it\'s '
-                                + 'supported only from gradle 5.6')
-                    }
+                    pmd.incrementalAnalysis = true
                 }
                 tasks.withType(Pmd).configureEach { task ->
                     doFirst {
