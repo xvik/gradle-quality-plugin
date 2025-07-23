@@ -1,7 +1,6 @@
 package ru.vyarus.gradle.plugin.quality.spotbugs;
 
 import com.github.spotbugs.snom.SpotBugsBasePlugin;
-import com.github.spotbugs.snom.SpotBugsExtension;
 import com.github.spotbugs.snom.internal.SpotBugsTaskFactory;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
