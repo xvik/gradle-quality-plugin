@@ -11,7 +11,8 @@
     - Fix default pmd config: remove legacy rules exclusions
 * Update codenarc 3.4.0 -> 3.6.0
 * Fix CPD plugin compatibility for version 3.5
-* (BREAKING) Plugin requires Java 11 or above (because many tools require it). 
+* Update spotbugs plugin to 5.2.5 -> 6.2.2 (requires java 11)
+* (BREAKING) Plugin requires Java 11 or above (because many tools require it), but still compiled for java 8 
   If the plugin runs on JDK8-10:
   - it would not break the build (just no configuration performed)  
   - javac configured

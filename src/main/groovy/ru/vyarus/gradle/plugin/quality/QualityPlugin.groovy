@@ -1,5 +1,7 @@
 package ru.vyarus.gradle.plugin.quality
 
+import com.github.spotbugs.snom.Confidence
+import com.github.spotbugs.snom.Effort
 import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
@@ -249,8 +251,8 @@ abstract class QualityPlugin implements Plugin<Project> {
                 spotbugs {
                     toolVersion = extension.spotbugsVersion
                     ignoreFailures = !extension.strict
-                    effort = extension.spotbugsEffort
-                    reportLevel = extension.spotbugsLevel
+                    effort = Effort.valueOf(extension.spotbugsEffort.toUpperCase())
+                    reportLevel = Confidence.valueOf(extension.spotbugsLevel.toUpperCase())
 
                     // in gradle 5 default 1g was changed and so spotbugs fails on large projects (recover behaviour),
                     // but not if value set manually
