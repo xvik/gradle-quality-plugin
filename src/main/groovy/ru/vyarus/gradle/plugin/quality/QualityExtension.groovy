@@ -23,7 +23,7 @@ class QualityExtension {
     }
 
     String checkstyleVersion = '10.26.1'
-    String pmdVersion = '7.15.0'
+    String pmdVersion = '7.16.0'
     String spotbugsVersion = JavaVersion.current().java11Compatible ? '4.9.3' : '4.8.6'
     String codenarcVersion = '3.6.0'
 
