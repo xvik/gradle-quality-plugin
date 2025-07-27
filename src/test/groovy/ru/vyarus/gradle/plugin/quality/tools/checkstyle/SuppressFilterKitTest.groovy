@@ -3,11 +3,13 @@ package ru.vyarus.gradle.plugin.quality.tools.checkstyle
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 04.02.2021
  */
+@IgnoreIf({jvm.java8})
 class SuppressFilterKitTest extends AbstractKitTest {
 
     def "Check java checks"() {

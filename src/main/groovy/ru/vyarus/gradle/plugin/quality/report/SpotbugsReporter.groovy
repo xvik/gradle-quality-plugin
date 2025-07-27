@@ -1,10 +1,10 @@
 package ru.vyarus.gradle.plugin.quality.report
 
-import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlParser
 import org.gradle.api.Project
+import org.gradle.api.Task
 import ru.vyarus.gradle.plugin.quality.util.FileUtils
 
 /**
@@ -14,14 +14,14 @@ import ru.vyarus.gradle.plugin.quality.util.FileUtils
  * @since 28.01.2018
  */
 @CompileStatic
-class SpotbugsReporter implements Reporter<SpotBugsTask> {
+class SpotbugsReporter implements Reporter<Task> {
     private static final String XML = 'xml'
 
     Map<String, String> pluginChecks
 
     @Override
     @SuppressWarnings('SynchronizedMethod')
-    synchronized void init(SpotBugsTask task) {
+    synchronized void init(Task task) {
         if (pluginChecks == null) {
             // there could not be tasks from different projects because quality plugin would be applied to each one
             pluginChecks = resolvePluginsChecks(task.project)
@@ -30,7 +30,7 @@ class SpotbugsReporter implements Reporter<SpotBugsTask> {
 
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
-    void report(SpotBugsTask task, String type) {
+    void report(Task task, String type) {
         // report may not exists
         File reportFile = ReportUtils.getReportFile(task.reports.findByName(XML))
         if (reportFile == null || !reportFile.exists() || reportFile.length() == 0) {

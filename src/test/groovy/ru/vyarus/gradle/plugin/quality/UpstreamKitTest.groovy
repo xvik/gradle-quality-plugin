@@ -2,6 +2,7 @@ package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
+import spock.lang.IgnoreIf
 
 /**
  * Minimal compatibility check with the latest gradle version.
@@ -9,6 +10,7 @@ import org.gradle.testkit.runner.TaskOutcome
  * @author Vyacheslav Rusakov
  * @since 10.11.2019
  */
+@IgnoreIf({jvm.java8})
 class UpstreamKitTest extends AbstractKitTest {
 
 
@@ -20,6 +22,7 @@ class UpstreamKitTest extends AbstractKitTest {
             plugins {
                 id 'java-library'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {
@@ -54,6 +57,7 @@ class UpstreamKitTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {

@@ -3,11 +3,13 @@ package ru.vyarus.gradle.plugin.quality.task
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov 
  * @since 15.11.2015
  */
+@IgnoreIf({jvm.java8})
 class InitQualityConfigTaskKitTest extends AbstractKitTest {
 
     def "Check configs init"() {
@@ -16,7 +18,7 @@ class InitQualityConfigTaskKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
-                id 'com.github.spotbugs'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {

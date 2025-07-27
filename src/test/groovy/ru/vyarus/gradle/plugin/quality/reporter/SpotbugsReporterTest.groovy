@@ -4,11 +4,13 @@ import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
 import ru.vyarus.gradle.plugin.quality.report.ReportUtils
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 20.02.2018
  */
+@IgnoreIf({jvm.java8})
 class SpotbugsReporterTest extends AbstractKitTest {
 
     def "Check spotbugs report"() {
@@ -18,6 +20,7 @@ class SpotbugsReporterTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             task testReport() {
@@ -58,7 +61,8 @@ SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir)}/buil
         build("""
             plugins {
                 id 'groovy'
-                id 'ru.vyarus.quality'                                
+                id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'                               
             }
 
             quality {

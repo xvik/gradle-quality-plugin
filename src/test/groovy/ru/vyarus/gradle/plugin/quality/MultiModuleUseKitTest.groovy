@@ -2,11 +2,13 @@ package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
 import ru.vyarus.gradle.plugin.quality.report.ReportUtils
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 24.08.2016
  */
+@IgnoreIf({jvm.java8})
 class MultiModuleUseKitTest extends AbstractKitTest {
 
     def "Check java checks"() {

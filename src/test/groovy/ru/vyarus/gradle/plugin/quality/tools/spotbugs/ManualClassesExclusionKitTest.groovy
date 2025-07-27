@@ -3,11 +3,13 @@ package ru.vyarus.gradle.plugin.quality.tools.spotbugs
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 10.10.2020
  */
+@IgnoreIf({jvm.java8})
 class ManualClassesExclusionKitTest extends AbstractKitTest {
 
     def "Check manual spotbugs exclusion"() {
@@ -16,6 +18,7 @@ class ManualClassesExclusionKitTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {

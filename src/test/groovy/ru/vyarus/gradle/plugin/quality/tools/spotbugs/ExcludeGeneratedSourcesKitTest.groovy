@@ -3,11 +3,13 @@ package ru.vyarus.gradle.plugin.quality.tools.spotbugs
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 05.09.2020
  */
+@IgnoreIf({jvm.java8})
 class ExcludeGeneratedSourcesKitTest extends AbstractKitTest {
 
     def "Check apt generated exclusion"() {
@@ -16,6 +18,7 @@ class ExcludeGeneratedSourcesKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {

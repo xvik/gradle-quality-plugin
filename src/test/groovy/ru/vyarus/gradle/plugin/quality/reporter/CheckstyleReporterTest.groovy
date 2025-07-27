@@ -4,11 +4,13 @@ import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
 import ru.vyarus.gradle.plugin.quality.report.ReportUtils
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov 
  * @since 18.11.2015
  */
+@IgnoreIf({jvm.java8})
 class CheckstyleReporterTest extends AbstractKitTest {
 
     def "Check checkstyle report"() {

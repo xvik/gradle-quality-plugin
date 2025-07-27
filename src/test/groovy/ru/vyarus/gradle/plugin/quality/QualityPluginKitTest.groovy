@@ -2,19 +2,112 @@ package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov 
  * @since 12.11.2015
  */
+@IgnoreIf({jvm.java8})
 class QualityPluginKitTest extends AbstractKitTest {
 
-    def "Check java checks"() {
+    def "Check java checks without spotbugs"() {
         setup:
         build("""
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
+            }
+
+            quality {
+                strict false
+            }
+
+            repositories {
+                mavenCentral() //required for testKit run
+            }
+        """)
+
+        fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
+        fileFromClasspath('src/main/java/sample/Sample2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample2.java')
+
+        when: "run check task with java sources"
+        BuildResult result = run('check')
+
+        then: "all plugins detect violations"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('Checkstyle rule violations were found')
+        !result.output.contains('SpotBugs violations were found')
+        result.output.contains('PMD rule violations were found')
+
+        then: "all html reports generated"
+        file('build/reports/checkstyle/main.html').exists()
+        !file('build/reports/spotbugs/main.html').exists()
+        file('build/reports/pmd/main.html').exists()
+
+        when: "run one more time"
+        result = run('check', '--rerun-tasks')
+
+        then: "ok"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('Checkstyle rule violations were found')
+        !result.output.contains('SpotBugs violations were found')
+        result.output.contains('PMD rule violations were found')
+    }
+
+
+    def "Check java checks with spotbugs 6.x"() {
+        setup:
+        build("""
+            plugins {
+                id 'java'
+                id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
+            }
+
+            quality {
+                strict false
+            }
+
+            repositories {
+                mavenCentral() //required for testKit run
+            }
+        """)
+
+        fileFromClasspath('src/main/java/sample/Sample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample.java')
+        fileFromClasspath('src/main/java/sample/Sample2.java', '/ru/vyarus/gradle/plugin/quality/java/sample/Sample2.java')
+
+        when: "run check task with java sources"
+        BuildResult result = run('check')
+
+        then: "all plugins detect violations"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('Checkstyle rule violations were found')
+        result.output.contains('SpotBugs violations were found')
+        result.output.contains('PMD rule violations were found')
+
+        then: "all html reports generated"
+        file('build/reports/checkstyle/main.html').exists()
+        file('build/reports/spotbugs/main.html').exists()
+        file('build/reports/pmd/main.html').exists()
+
+        when: "run one more time"
+        result = run('check', '--rerun-tasks')
+
+        then: "ok"
+        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.output.contains('Checkstyle rule violations were found')
+        result.output.contains('SpotBugs violations were found')
+        result.output.contains('PMD rule violations were found')
+    }
+
+    def "Check java checks with spotbugs 5.x"() {
+        setup:
+        build("""
+            plugins {
+                id 'java'
+                id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '5.2.5'
             }
 
             quality {
@@ -59,6 +152,7 @@ class QualityPluginKitTest extends AbstractKitTest {
             plugins {
                 id 'java-library'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {
@@ -146,6 +240,7 @@ class QualityPluginKitTest extends AbstractKitTest {
                 id 'java-library'
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {
@@ -188,6 +283,7 @@ class QualityPluginKitTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {

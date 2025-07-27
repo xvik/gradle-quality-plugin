@@ -1,11 +1,13 @@
 package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 02.09.2016
  */
+@IgnoreIf({jvm.java8})
 class JavaInGroovyDirKitTest extends AbstractKitTest {
 
     def "Check java and groovy checks disable"() {

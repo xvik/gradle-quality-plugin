@@ -2,11 +2,13 @@ package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 21.03.2017
  */
+@IgnoreIf({jvm.java8})
 class ExcludeSourcesKitTest extends AbstractKitTest {
 
     def "Check main plugins sources exclusion"() {
@@ -15,6 +17,7 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
             
             sourceSets.main {
@@ -63,6 +66,7 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
             
             sourceSets.main {

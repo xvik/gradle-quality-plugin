@@ -5,12 +5,14 @@ import org.gradle.api.Task
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskProvider
 import ru.vyarus.gradle.plugin.quality.AbstractTest
+import spock.lang.IgnoreIf
 
 
 /**
  * @author Vyacheslav Rusakov
  * @since 01.09.2016
  */
+@IgnoreIf({jvm.java8})
 class GroupingTasksTest extends AbstractTest {
 
     def "Check grouping tasks registration"() {
@@ -32,8 +34,8 @@ class GroupingTasksTest extends AbstractTest {
         project.tasks.checkQualityTest
 
         then: "correct tasks grouped"
-        dependsOn(project.tasks.checkQualityMain) == ['checkstyleMain', 'pmdMain', 'spotbugsMain'] as Set
-        dependsOn(project.tasks.checkQualityTest) == ['checkstyleTest', 'pmdTest', 'spotbugsTest'] as Set
+        dependsOn(project.tasks.checkQualityMain) == ['checkstyleMain', 'pmdMain'] as Set
+        dependsOn(project.tasks.checkQualityTest) == ['checkstyleTest', 'pmdTest'] as Set
     }
 
     def "Check groovy grouping tasks registration"() {
@@ -109,8 +111,8 @@ class GroupingTasksTest extends AbstractTest {
         project.tasks.checkQualityTest
 
         then: "correct tasks grouped"
-        dependsOn(project.tasks.checkQualityMain) == ['checkstyleMain', 'pmdMain', 'spotbugsMain', 'animalsnifferMain'] as Set
-        dependsOn(project.tasks.checkQualityTest) == ['checkstyleTest', 'pmdTest', 'spotbugsTest', 'animalsnifferTest'] as Set
+        dependsOn(project.tasks.checkQualityMain) == ['checkstyleMain', 'pmdMain', 'animalsnifferMain'] as Set
+        dependsOn(project.tasks.checkQualityTest) == ['checkstyleTest', 'pmdTest', 'animalsnifferTest'] as Set
     }
 
     private Set<String> dependsOn(Task task) {

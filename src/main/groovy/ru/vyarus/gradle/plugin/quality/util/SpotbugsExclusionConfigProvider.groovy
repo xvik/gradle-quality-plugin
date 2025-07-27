@@ -1,7 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.util
 
-import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
+import org.gradle.api.Task
 import org.gradle.api.file.RegularFile
 import ru.vyarus.gradle.plugin.quality.ConfigLoader
 import ru.vyarus.gradle.plugin.quality.QualityExtension
@@ -29,14 +29,14 @@ import java.util.concurrent.Callable
 @CompileStatic
 class SpotbugsExclusionConfigProvider implements Callable<RegularFile> {
 
-    SpotBugsTask task
+    Task task
     ConfigLoader loader
     QualityExtension extension
 
     // required to avoid duplicate calculations (because provider would be called multiple times)
     File computed
 
-    SpotbugsExclusionConfigProvider(SpotBugsTask task, ConfigLoader loader, QualityExtension extension) {
+    SpotbugsExclusionConfigProvider(Task task, ConfigLoader loader, QualityExtension extension) {
         this.task = task
         this.loader = loader
         this.extension = extension

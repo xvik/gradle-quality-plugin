@@ -155,19 +155,6 @@ class SpotbugsUtilsTest extends AbstractTest {
 """ as String
     }
 
-
-    def "Check plugin detection"() {
-
-        when: "spotbugs plugin enabled"
-        Project project = project {
-            apply plugin: 'java'
-            apply plugin: 'com.github.spotbugs'
-        }
-
-        then: "detect ok"
-        SpotbugsUtils.isPluginEnabled(project)
-    }
-
     private String merge(Collection<File> exclude, Collection<File> roots, Integer rank = null) {
         File tmp = Files.createTempFile("test", "spotbugs").toFile()
         tmp.text = new File(getClass().getResource('/ru/vyarus/quality/config/spotbugs/exclude.xml').toURI()).text

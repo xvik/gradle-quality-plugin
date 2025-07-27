@@ -3,12 +3,14 @@ package ru.vyarus.gradle.plugin.quality
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import spock.lang.IgnoreIf
+import spock.lang.Requires
 
 /**
  * @author Vyacheslav Rusakov
  * @since 21.09.2017
  */
-@IgnoreIf({jvm.java17Compatible}) // only gradle 7.3 supports java 17  
+@IgnoreIf({jvm.java17Compatible}) // only gradle 7.3 supports java 17
+@Requires({jvm.java11Compatible})
 class QualityPluginLegacyKitTest extends AbstractKitTest {
 
     public static final String GRADLE_VERSION = '7.1'
@@ -19,6 +21,7 @@ class QualityPluginLegacyKitTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {

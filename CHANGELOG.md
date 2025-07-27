@@ -1,22 +1,25 @@
-* (BREAKING) Drop gradle 7.0-7.1 support (7.2 min requirement)
+* (BREAKING) Drop gradle 7.0 support (7.1 min requirement due to spotbugs plugin)
 * Update checkstyle 10.12.7 -> 10.26.1 (java 21 support)
     - Add [PatternVariableAssignment](https://checkstyle.sourceforge.io/checks/coding/patternvariableassignment.html)
     - Add [UnnecessaryNullCheckWithInstanceOf](https://checkstyle.sourceforge.io/checks/coding/unnecessarynullcheckwithinstanceof.html)
     - Add [ConstructorsDeclarationGrouping](https://checkstyle.sourceforge.io/checks/coding/constructorsdeclarationgrouping.html)
     - (BREAKING) Remove checkstyle support for java 8 due to remove of the backport project (including maven central)
       * quality.checkstyleBackport property removed
+      * On java 8 checkstyle plugin simply isn't applied
 * Update spotbugs 4.8.3 -> 4.9.3 (requires java 11)
+    - On java 8 version 4.8.6 would be selected (the latest compatible with java 8)
 * Update pmd 6.55 -> 7.15.0 (java 21, 22 support)
     - Fix gradle plugin for pmd 7 (pmd 7 split jar so plugin classpath must be overridden )
     - Fix default pmd config: remove legacy rules exclusions
 * Update codenarc 3.4.0 -> 3.6.0
 * Fix CPD plugin compatibility for version 3.5
-* Update spotbugs plugin to 5.2.5 -> 6.2.2 (requires java 11)
-* (BREAKING) Plugin requires Java 11 or above (because many tools require it), but still compiled for java 8 
-  If the plugin runs on JDK8-10:
-  - it would not break the build (just no configuration performed)  
-  - javac configured
-  - grouping task (checkQuality) created and will show a warning on run
+* (BREAKING) Spotbugs plugin:
+    - Spotbugs plugin 6.x support
+    - Spotbugs plugin is not installed automatically anymore: it should be applied manually
+      (and quality plugin will configure it as before) because
+        * The latest spotbugs plugin (6.x) requires java 11 (direct dependency would drop java 8 support for the entire plugin)
+        * For java 8 spotbugs plugin 5.x could be used
+    - Custom spotbugs plugin is not used anymore: now extra dependencies cleared from the check task
 
 ### 5.0.0 (2024-02-01)
 * (BREAKING) Drop gradle 5 and 6 support

@@ -3,11 +3,13 @@ package ru.vyarus.gradle.plugin.quality.tools.spotbugs
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 20.02.2018
  */
+@IgnoreIf({jvm.java8})
 class SpotbugsPluginsKitTest extends AbstractKitTest {
 
     def "Check spotbugs plugins"() {
@@ -15,8 +17,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'java'
-                // NOTE it will activate standard plugin which assign all spotbugs tasks to check
-                id 'com.github.spotbugs'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
                 id 'ru.vyarus.quality'
             }
 
@@ -49,6 +50,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {
@@ -82,6 +84,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {

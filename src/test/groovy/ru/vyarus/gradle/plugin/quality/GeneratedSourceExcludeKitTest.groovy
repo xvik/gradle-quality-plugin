@@ -2,11 +2,13 @@ package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 07.10.2020
  */
+@IgnoreIf({jvm.java8})
 class GeneratedSourceExcludeKitTest extends AbstractKitTest {
 
     def "Check generated check failed without exclusion"() {

@@ -3,12 +3,14 @@ package ru.vyarus.gradle.plugin.quality
 import groovy.ant.AntBuilder
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
+import spock.lang.IgnoreIf
 import spock.lang.TempDir
 
 /**
  * @author Vyacheslav Rusakov
  * @since 28.08.2018
  */
+@IgnoreIf({jvm.java8})
 class BuildCacheSupportKitTest extends AbstractKitTest {
 
     @TempDir File cacheDir
@@ -30,6 +32,7 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {
@@ -101,6 +104,7 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {

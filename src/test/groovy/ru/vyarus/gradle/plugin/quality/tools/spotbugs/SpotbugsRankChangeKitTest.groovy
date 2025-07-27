@@ -3,11 +3,13 @@ package ru.vyarus.gradle.plugin.quality.tools.spotbugs
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 06.11.2019
  */
+@IgnoreIf({jvm.java8})
 class SpotbugsRankChangeKitTest extends AbstractKitTest {
 
     def "Check spotbugs run with all ranks"() {
@@ -15,7 +17,7 @@ class SpotbugsRankChangeKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'java'
-                id 'com.github.spotbugs'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
                 id 'ru.vyarus.quality'
             }
 
@@ -43,7 +45,7 @@ class SpotbugsRankChangeKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'java'
-                id 'com.github.spotbugs'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
                 id 'ru.vyarus.quality'
             }
 
@@ -72,7 +74,7 @@ class SpotbugsRankChangeKitTest extends AbstractKitTest {
         build("""
             plugins {
                 id 'java'
-                id 'com.github.spotbugs'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
                 id 'ru.vyarus.quality'
             }
 

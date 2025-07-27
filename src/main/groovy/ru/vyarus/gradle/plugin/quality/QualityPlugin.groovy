@@ -1,8 +1,5 @@
 package ru.vyarus.gradle.plugin.quality
 
-import com.github.spotbugs.snom.Confidence
-import com.github.spotbugs.snom.Effort
-import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.JavaVersion
@@ -11,6 +8,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.*
 import org.gradle.api.provider.Provider
@@ -20,12 +18,11 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.build.event.BuildEventsListenerRegistry
 import org.gradle.process.CommandLineArgumentProvider
-import ru.vyarus.gradle.plugin.quality.spotbugs.CustomSpotBugsPlugin
+import ru.vyarus.gradle.plugin.quality.service.TasksListenerService
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.util.CpdUtils
 import ru.vyarus.gradle.plugin.quality.util.SpotbugsExclusionConfigProvider
 import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
-import ru.vyarus.gradle.plugin.quality.service.TasksListenerService
 
 import javax.inject.Inject
 
@@ -90,7 +87,7 @@ abstract class QualityPlugin implements Plugin<Project> {
             addInitConfigTask(project)
 
             tasksListener = project.gradle.sharedServices.registerIfAbsent(
-                            'taskEvents', TasksListenerService, spec -> { })
+                    'taskEvents', TasksListenerService, spec -> { })
             eventsListenerRegistry.onTaskCompletion(tasksListener)
 
             project.afterEvaluate {
@@ -103,13 +100,13 @@ abstract class QualityPlugin implements Plugin<Project> {
                 configureJavac(project, extension)
                 if (JavaVersion.current().java11Compatible) {
                     applyCheckstyle(project, extension, configLoader, context.registerJavaPlugins)
-                    applyPMD(project, extension, configLoader, context.registerJavaPlugins)
-                    applySpotbugs(project, extension, configLoader, context.registerJavaPlugins)
-                    configureAnimalSniffer(project, extension)
-                    configureCpdPlugin(project, extension, configLoader,
-                            !context.registerJavaPlugins && context.registerGroovyPlugins)
-                    applyCodeNarc(project, extension, configLoader, context.registerGroovyPlugins)
                 }
+                applyPMD(project, extension, configLoader, context.registerJavaPlugins)
+                applySpotbugs(project, extension, configLoader, context.registerJavaPlugins)
+                configureAnimalSniffer(project, extension)
+                configureCpdPlugin(project, extension, configLoader,
+                        !context.registerJavaPlugins && context.registerGroovyPlugins)
+                applyCodeNarc(project, extension, configLoader, context.registerGroovyPlugins)
             }
         }
     }
@@ -150,7 +147,7 @@ abstract class QualityPlugin implements Plugin<Project> {
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings(['MethodSize', 'NestedBlockDepth'])
     protected void applyCheckstyle(Project project, QualityExtension extension, ConfigLoader configLoader,
-                                 boolean register) {
+                                   boolean register) {
         configurePlugin(project,
                 extension.checkstyle,
                 register,
@@ -200,7 +197,7 @@ abstract class QualityPlugin implements Plugin<Project> {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected void applyPMD(Project project, QualityExtension extension, ConfigLoader configLoader,
-                          boolean register) {
+                            boolean register) {
         configurePlugin(project,
                 extension.pmd,
                 register,
@@ -238,72 +235,80 @@ abstract class QualityPlugin implements Plugin<Project> {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    @SuppressWarnings('MethodSize')
+    @SuppressWarnings(['MethodSize', 'NestedBlockDepth'])
     protected void applySpotbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
-                               boolean register) {
-        SpotbugsUtils.validateRankSetting(extension.spotbugsMaxRank)
+                                 boolean register) {
+        // only when plugin manually applied
+        project.plugins.withId('com.github.spotbugs') { plugin ->
+            SpotbugsUtils.validateRankSetting(extension.spotbugsMaxRank)
 
-        configurePlugin(project,
-                extension.spotbugs,
-                register,
-                CustomSpotBugsPlugin) {
-            project.configure(project) {
-                spotbugs {
-                    toolVersion = extension.spotbugsVersion
-                    ignoreFailures = !extension.strict
-                    effort = Effort.valueOf(extension.spotbugsEffort.toUpperCase())
-                    reportLevel = Confidence.valueOf(extension.spotbugsLevel.toUpperCase())
+            Class<? extends Task> spotbugsTaskType = plugin.class.classLoader
+                    .loadClass('com.github.spotbugs.snom.SpotBugsTask') as Class<? extends Task>
 
-                    // in gradle 5 default 1g was changed and so spotbugs fails on large projects (recover behaviour),
-                    // but not if value set manually
-                    maxHeapSize.convention(extension.spotbugsMaxHeapSize)
-                }
-
-                // spotbugs annotations to simplify access to @SuppressFBWarnings
-                // (applied according to plugin recommendation)
-                if (extension.spotbugsAnnotations) {
-                    dependencies {
-                        compileOnly "com.github.spotbugs:spotbugs-annotations:${extension.spotbugsVersion}"
+            configurePlugin(project,
+                    extension.spotbugs,
+                    register,
+                    plugin.class) {
+                project.configure(project) {
+                    spotbugs {
+                        toolVersion = extension.spotbugsVersion
+                        ignoreFailures = !extension.strict
+                        effort = SpotbugsUtils.enumValue(plugin, 'Effort', extension.spotbugsEffort)
+                        reportLevel = SpotbugsUtils.enumValue(plugin, 'Confidence', extension.spotbugsLevel)
+                        // in gradle 5 default 1g was changed and so spotbugs fails on large projects (recover
+                        // behaviour), but not if value set manually
+                        maxHeapSize.convention(extension.spotbugsMaxHeapSize)
                     }
-                }
 
-                // plugins shortcut
-                extension.spotbugsPlugins?.each {
-                    project.configurations.getByName('spotbugsPlugins').dependencies.add(
-                            project.dependencies.create(it)
-                    )
-                }
+                    // override spotbugs plugin configuration: by default, it would apply ALL tasks
+                    SpotbugsUtils.fixCheckDependencies(project, extension, spotbugsTaskType)
 
-                tasks.withType(SpotBugsTask).configureEach { task ->
-                    doFirst {
-                        configLoader.resolveSpotbugsExclude()
-                        // it is not possible to substitute filter file here (due to locked Property)
-                        // but possible to update already configured file (it must be already a temp file here)
-                        SpotbugsUtils.replaceExcludeFilter(task, extension, logger)
-                    }
-                    // have to use this way instead of doFirst hook, because nothing else will work (damn props!)
-                    excludeFilter.set(project.provider(new SpotbugsExclusionConfigProvider(
-                            task, configLoader, extension
-                    )))
-                    reports {
-                        xml {
-                            required.set(true)
-                        }
-                        html {
-                            required.set(extension.htmlReports)
+                    // spotbugs annotations to simplify access to @SuppressFBWarnings
+                    // (applied according to plugin recommendation)
+                    if (extension.spotbugsAnnotations) {
+                        dependencies {
+                            compileOnly "com.github.spotbugs:spotbugs-annotations:${extension.spotbugsVersion}"
                         }
                     }
-                    registerReporter(task, TOOL_SPOTBUGS)
+
+                    // plugins shortcut
+                    extension.spotbugsPlugins?.each {
+                        project.configurations.getByName('spotbugsPlugins').dependencies.add(
+                                project.dependencies.create(it)
+                        )
+                    }
+
+                    tasks.withType(spotbugsTaskType).configureEach { task ->
+                        doFirst {
+                            configLoader.resolveSpotbugsExclude()
+                            // it is not possible to substitute filter file here (due to locked Property)
+                            // but possible to update already configured file (it must be already a temp file here)
+                            SpotbugsUtils.replaceExcludeFilter(task, extension, logger)
+                        }
+                        // have to use this way instead of doFirst hook, because nothing else will work (damn props!)
+                        excludeFilter.set(project.provider(new SpotbugsExclusionConfigProvider(
+                                task, configLoader, extension
+                        )))
+                        reports {
+                            xml {
+                                required.set(true)
+                            }
+                            html {
+                                required.set(extension.htmlReports)
+                            }
+                        }
+                        registerReporter(task, TOOL_SPOTBUGS)
+                    }
                 }
+
+                configurePluginTasks(project, extension, spotbugsTaskType, TOOL_SPOTBUGS)
             }
-
-            configurePluginTasks(project, extension, SpotBugsTask, TOOL_SPOTBUGS)
         }
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected void applyCodeNarc(Project project, QualityExtension extension, ConfigLoader configLoader,
-                               boolean register) {
+                                 boolean register) {
         configurePlugin(project,
                 extension.codenarc,
                 register,
@@ -357,7 +362,7 @@ abstract class QualityPlugin implements Plugin<Project> {
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings('MethodSize')
     protected void configureCpdPlugin(Project project, QualityExtension extension, ConfigLoader configLoader,
-                                    boolean onlyGroovy) {
+                                      boolean onlyGroovy) {
         if (!extension.cpd) {
             return
         }
@@ -412,7 +417,8 @@ abstract class QualityPlugin implements Plugin<Project> {
             // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
             // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
             // For single module projects simply make sure check will trigger cpd
-            project.tasks.named('check').configure { it.dependsOn prj.tasks.withType(cpdTasksType) }
+            project.tasks.named(JavaBasePlugin.CHECK_TASK_NAME)
+                    .configure { it.dependsOn prj.tasks.withType(cpdTasksType) }
 
             // cpd disabled together with all quality plugins
             // yes, it's not completely normal that module could disable root project task, but it would be much

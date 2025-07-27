@@ -1,15 +1,19 @@
 package ru.vyarus.gradle.plugin.quality.util
 
-import com.github.spotbugs.snom.SpotBugsTask
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlParser
 import groovy.xml.XmlUtil
+import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
+import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.compile.JavaCompile
 import org.slf4j.Logger
 import ru.vyarus.gradle.plugin.quality.QualityExtension
+import ru.vyarus.gradle.plugin.quality.QualityPlugin
 
 /**
  * Spotbugs helper utils.
@@ -35,6 +39,61 @@ class SpotbugsUtils {
     }
 
     /**
+     * Spotbugs use enums for configuration since plugin version 6.x., but 5.x use pure strings (through method).
+     * Enum conversion would work for both plugin versions.
+     *
+     * @param plugin spotbugs plugin instance
+     * @param name enum name (without package)
+     * @param value configured value
+     * @return enum or string value
+     */
+    static Object enumValue(Plugin plugin, String name, String value) {
+        Class type = plugin.class.classLoader.loadClass("com.github.spotbugs.snom.$name")
+        type.getMethod('valueOf', String).invoke(null, value.toUpperCase())
+    }
+
+    /**
+     * SpotBugsPlugin applies all spotbugs tasks as check dependencies. This methods looks modifies check task
+     * dependsOn collection (override it) in order to remove some spotbugs tasks.
+     *
+     * @param check check task
+     * @param project project
+     * @param extension extension
+     * @param spotbugsTaskType spotbugs task class
+     */
+    @SuppressWarnings('Instanceof')
+    static void fixCheckDependencies(Project project, QualityExtension extension, Class spotbugsTaskType) {
+        project.tasks.named(JavaBasePlugin.CHECK_TASK_NAME)
+                .configure { check ->
+                    // all tasks that should be assigned to check
+                    List<String> requiredTasks = extension.sourceSets*.getTaskName(QualityPlugin.TOOL_SPOTBUGS, null)
+                    // tasks already assigned to check, but not required
+                    List<String> toRemove = project.tasks.withType(spotbugsTaskType).matching { Task t ->
+                        !requiredTasks.contains(t.name)
+                    }*.name
+                    if (toRemove.empty) {
+                        return
+                    }
+
+                    List depends = check.dependsOn.asList()
+                    // SpotBugsPlugin applies tasks like thins:
+                    // it.dependsOn(project.tasks.withType(SpotBugsTask::class.java))
+                    // so we search and remove this container
+                    depends.removeIf {
+                        it instanceof TaskCollection && (it as TaskCollection<Task>)
+                                .find { it.name.startsWith(QualityPlugin.TOOL_SPOTBUGS) }
+                    }
+                    // no remove verification because in the latest plugin there is an option to disable tasks addition
+                    // which means the absence of configured tasks might be expected behaviour
+
+                    // replace tasks applied by SpotBugsPlugin with actually required tasks
+                    depends.add(requiredTasks)
+                    // override depends on (important to not use method here which will append new collection!)
+                    check.dependsOn = depends
+                }
+    }
+
+    /**
      * Spotbugs task properties may be configured only once. At that time it is too early to compute exact file,
      * but we can assume that if excludes configured then temp file would be required. So preparing temp file
      * ahead of time. Later, it would be filled with actual exclusions (if anything matches).
@@ -46,7 +105,7 @@ class SpotbugsUtils {
      * @return excludes file for task configuration
      */
     @SuppressWarnings('FileCreateTempFile')
-    static File excludesFile(SpotBugsTask task, QualityExtension extension, File configured) {
+    static File excludesFile(Task task, QualityExtension extension, File configured) {
         Project project = task.project
         // spotbugs does not support exclude of SourceTask, so appending excluded classes to
         // xml exclude filter
@@ -72,11 +131,11 @@ class SpotbugsUtils {
      * @param logger project logger for error messages
      */
     @CompileStatic(TypeCheckingMode.SKIP)
-    static void replaceExcludeFilter(SpotBugsTask task, QualityExtension extension, Logger logger) {
+    static void replaceExcludeFilter(Task task, QualityExtension extension, Logger logger) {
         // setting means max allowed rank, but filter evicts all ranks >= specified (so +1)
         Integer rank = extension.spotbugsMaxRank < MAX_RANK ? extension.spotbugsMaxRank + 1 : null
 
-        SourceSet set = FileUtils.findMatchingSet('spotbugs', task.name, extension.sourceSets)
+        SourceSet set = FileUtils.findMatchingSet(QualityPlugin.TOOL_SPOTBUGS, task.name, extension.sourceSets)
         if (!set) {
             logger.error("[SpotBugs] Failed to find source set for task ${task.name}: exclusions " +
                     ' will not be applied')
@@ -133,13 +192,5 @@ class SpotbugsUtils {
         Writer writer = src.newWriter()
         XmlUtil.serialize(xml, writer)
         writer.flush()
-    }
-
-    /**
-     * @param project gradle project
-     * @return true if spotbugs plugin enabled, false otherwise
-     */
-    static boolean isPluginEnabled(Project project) {
-        return project.plugins.hasPlugin('com.github.spotbugs')
     }
 }

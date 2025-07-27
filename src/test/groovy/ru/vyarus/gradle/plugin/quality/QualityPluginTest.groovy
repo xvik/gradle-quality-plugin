@@ -1,15 +1,16 @@
 package ru.vyarus.gradle.plugin.quality
 
-import com.github.spotbugs.snom.SpotBugsBasePlugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.plugins.quality.PmdPlugin
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov 
  * @since 12.11.2015
  */
+@IgnoreIf({jvm.java8})
 class QualityPluginTest extends AbstractTest {
 
     def "Check plugins registration"() {
@@ -25,7 +26,7 @@ class QualityPluginTest extends AbstractTest {
         then: "plugins registered"
         project.plugins.findPlugin(CheckstylePlugin)
         project.plugins.findPlugin(PmdPlugin)
-        project.plugins.findPlugin(SpotBugsBasePlugin)
+        !project.plugins.findPlugin('com.github.spotbugs')
         !project.plugins.findPlugin(CodeNarcPlugin)
 
         then: "tasks installed"
@@ -47,7 +48,7 @@ class QualityPluginTest extends AbstractTest {
         then: "plugins registered"
         project.plugins.findPlugin(CheckstylePlugin)
         project.plugins.findPlugin(PmdPlugin)
-        project.plugins.findPlugin(SpotBugsBasePlugin)
+        !project.plugins.findPlugin('com.github.spotbugs')
         !project.plugins.findPlugin(CodeNarcPlugin)
 
         then: "tasks installed"
@@ -69,7 +70,7 @@ class QualityPluginTest extends AbstractTest {
         then: "plugins registered"
         !project.plugins.findPlugin(CheckstylePlugin)
         !project.plugins.findPlugin(PmdPlugin)
-        !project.plugins.findPlugin(SpotBugsBasePlugin)
+        !project.plugins.findPlugin('com.github.spotbugs')
         project.plugins.findPlugin(CodeNarcPlugin)
     }
 
@@ -87,7 +88,7 @@ class QualityPluginTest extends AbstractTest {
         then: "plugins registered"
         !project.plugins.findPlugin(CheckstylePlugin)
         !project.plugins.findPlugin(PmdPlugin)
-        !project.plugins.findPlugin(SpotBugsBasePlugin)
+        !project.plugins.findPlugin('com.github.spotbugs')
         project.plugins.findPlugin(CodeNarcPlugin)
     }
 
@@ -111,7 +112,7 @@ class QualityPluginTest extends AbstractTest {
         then: "plugins not registered"
         !project.plugins.findPlugin(CheckstylePlugin)
         !project.plugins.findPlugin(PmdPlugin)
-        !project.plugins.findPlugin(SpotBugsBasePlugin)
+        !project.plugins.findPlugin('com.github.spotbugs')
         !project.plugins.findPlugin(CodeNarcPlugin)
     }
 
@@ -165,7 +166,7 @@ class QualityPluginTest extends AbstractTest {
         then: "plugins registered"
         project.plugins.findPlugin(CheckstylePlugin)
         !project.plugins.findPlugin(PmdPlugin)
-        !project.plugins.findPlugin(SpotBugsBasePlugin)
+        !project.plugins.findPlugin('com.github.spotbugs')
         !project.plugins.findPlugin(CodeNarcPlugin)
     }
 }

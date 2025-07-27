@@ -2,11 +2,13 @@ package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 12.07.2018
  */
+@IgnoreIf({jvm.java8})
 class HtmlReportsDisableKitTest extends AbstractKitTest {
 
     def "Check java and groovy checks without html reports"() {
@@ -15,6 +17,7 @@ class HtmlReportsDisableKitTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {

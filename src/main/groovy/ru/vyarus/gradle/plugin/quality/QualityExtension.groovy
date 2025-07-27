@@ -2,6 +2,7 @@ package ru.vyarus.gradle.plugin.quality
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.SourceSet
@@ -23,7 +24,7 @@ class QualityExtension {
 
     String checkstyleVersion = '10.26.1'
     String pmdVersion = '7.15.0'
-    String spotbugsVersion = '4.9.3'
+    String spotbugsVersion = JavaVersion.current().java11Compatible ? '4.9.3' : '4.8.6'
     String codenarcVersion = '3.6.0'
 
     /**
@@ -44,10 +45,10 @@ class QualityExtension {
     boolean autoRegistration = true
 
     /**
-     * Enable Checkstyle plugin. True by default.
+     * Enable Checkstyle plugin. True by default for java 11 and above (because checkstyle requires java 11).
      * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
      */
-    boolean checkstyle = true
+    boolean checkstyle = JavaVersion.current().java11Compatible
 
     /**
      * Enable PMD plugin. True by default.
@@ -68,8 +69,9 @@ class QualityExtension {
     boolean cpd = true
 
     /**
-     * Enable SpotBugs plugin. True by default.
-     * If plugin enabled manually then disabling this option will just prevent applying plugin configuration.
+     * Configure SpotBugs plugin. True by default.
+     * Note that spotbugs plugin MUST be applied manually (because the latest (6.x) plugin requires java 11 and
+     * it might be required to use 5.x for java 8 compatibility).
      */
     boolean spotbugs = true
 
