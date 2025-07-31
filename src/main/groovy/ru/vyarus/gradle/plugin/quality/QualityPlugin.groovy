@@ -126,10 +126,6 @@ abstract class QualityPlugin implements Plugin<Project> {
                     group = 'verification'
                     description = "Run quality plugins for $set.name source set"
                 }
-                if (JavaVersion.current().java11Compatible) {
-                    project.logger.warn("WARN: Quality plugin requires Java 11 or above and can't work on current " +
-                            "Java ${JavaVersion.current()}.")
-                }
             }
         }
     }
