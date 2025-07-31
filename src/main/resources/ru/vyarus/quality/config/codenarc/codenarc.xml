@@ -61,6 +61,9 @@
     <!-- JDBC (https://codenarc.org/codenarc-rules-jdbc.html) -->
     <ruleset-ref path='rulesets/jdbc.xml'/>
 
+    <!-- Jenkins (https://codenarc.org/codenarc-rules-jenkins.html) -->
+<!--    <ruleset-ref path='rulesets/jenkins.xml'/>-->
+
     <!-- JUnit (https://codenarc.org/codenarc-rules-junit.html) -->
     <ruleset-ref path='rulesets/junit.xml'/>
 
@@ -78,7 +81,9 @@
     </ruleset-ref>
 
     <!-- Serialization (https://codenarc.org/codenarc-rules-serialization.html) -->
-    <ruleset-ref path='rulesets/serialization.xml'/>
+    <ruleset-ref path='rulesets/serialization.xml'>
+        <exclude name="NonSerializableFieldInSerializableClass"/> <!--enhanced rule-->
+    </ruleset-ref>
 
     <!-- Size and Complexity (https://codenarc.org/codenarc-rules-size.html) -->
     <ruleset-ref path='rulesets/size.xml'>

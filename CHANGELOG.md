@@ -12,6 +12,8 @@
     - Fix gradle plugin for pmd 7 (pmd 7 split jar so plugin classpath must be overridden )
     - Fix default pmd config: remove legacy rules exclusions
 * Update codenarc 3.4.0 -> 3.6.0
+    - Remove new rule [NonSerializableFieldInSerializableClass](https://codenarc.org/codenarc-rules-serialization.html#nonserializablefieldinserializableclass-rule)
+      to avoid enhanced rules enabled warning (and potential problems)
 * Fix CPD plugin compatibility for version 3.5
 * (BREAKING) Spotbugs plugin:
     - Spotbugs plugin 6.x support
