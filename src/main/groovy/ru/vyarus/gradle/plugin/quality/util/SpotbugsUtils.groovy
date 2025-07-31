@@ -28,6 +28,22 @@ class SpotbugsUtils {
     private static final String MATCH = 'Match'
 
     /**
+     * Searches for applied spotbugs plugin (plugin must be present in buildscript classpath and may not be applied).
+     *
+     * @param project project
+     * @return spotbugs plugin class or null if plugin is not available
+     */
+    static Class<? extends Plugin> findPluginClass(Project project) {
+        try {
+            // plugin registered, but not applied (apply false)
+            return project.buildscript.classLoader
+                    .loadClass('com.github.spotbugs.snom.SpotBugsPlugin') as Class<? extends Plugin>
+        } catch (ClassNotFoundException ignored) {
+        }
+        return null
+    }
+
+    /**
      * Validate declared rank value correctness.
      * @param rank rank value
      */
@@ -47,13 +63,13 @@ class SpotbugsUtils {
      * @param value configured value
      * @return enum or string value
      */
-    static Object enumValue(Plugin plugin, String name, String value) {
-        Class type = plugin.class.classLoader.loadClass("com.github.spotbugs.snom.$name")
+    static Object enumValue(Class plugin, String name, String value) {
+        Class type = plugin.classLoader.loadClass("com.github.spotbugs.snom.$name")
         type.getMethod('valueOf', String).invoke(null, value.toUpperCase())
     }
 
     /**
-     * SpotBugsPlugin applies all spotbugs tasks as check dependencies. This methods looks modifies check task
+     * SpotBugsPlugin applies all spotbugs tasks as check task dependencies. This method looks modifies check task
      * dependsOn collection (override it) in order to remove some spotbugs tasks.
      *
      * @param check check task

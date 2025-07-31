@@ -234,71 +234,73 @@ abstract class QualityPlugin implements Plugin<Project> {
     @SuppressWarnings(['MethodSize', 'NestedBlockDepth'])
     protected void applySpotbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
                                  boolean register) {
-        // only when plugin manually applied
-        project.plugins.withId('com.github.spotbugs') { plugin ->
-            SpotbugsUtils.validateRankSetting(extension.spotbugsMaxRank)
+        // if plugin is not on classpath - do nothing; if plugin in classpath but not applied - apply it
+        Class<? extends Plugin> plugin = SpotbugsUtils.findPluginClass(project)
+        if (plugin == null) {
+            return
+        }
+        SpotbugsUtils.validateRankSetting(extension.spotbugsMaxRank)
 
-            Class<? extends Task> spotbugsTaskType = plugin.class.classLoader
-                    .loadClass('com.github.spotbugs.snom.SpotBugsTask') as Class<? extends Task>
+        Class<? extends Task> spotbugsTaskType = plugin.classLoader
+                .loadClass('com.github.spotbugs.snom.SpotBugsTask') as Class<? extends Task>
 
-            configurePlugin(project,
-                    extension.spotbugs,
-                    register,
-                    plugin.class) {
-                project.configure(project) {
-                    spotbugs {
-                        toolVersion = extension.spotbugsVersion
-                        ignoreFailures = !extension.strict
-                        effort = SpotbugsUtils.enumValue(plugin, 'Effort', extension.spotbugsEffort)
-                        reportLevel = SpotbugsUtils.enumValue(plugin, 'Confidence', extension.spotbugsLevel)
-                        // in gradle 5 default 1g was changed and so spotbugs fails on large projects (recover
-                        // behaviour), but not if value set manually
-                        maxHeapSize.convention(extension.spotbugsMaxHeapSize)
-                    }
+        configurePlugin(project,
+                extension.spotbugs,
+                register,
+                plugin) {
+            project.configure(project) {
+                spotbugs {
+                    toolVersion = extension.spotbugsVersion
+                    ignoreFailures = !extension.strict
+                    effort = SpotbugsUtils.enumValue(plugin, 'Effort', extension.spotbugsEffort)
+                    reportLevel = SpotbugsUtils.enumValue(plugin, 'Confidence', extension.spotbugsLevel)
+                    // in gradle 5 default 1g was changed and so spotbugs fails on large projects (recover
+                    // behaviour), but not if value set manually
+                    maxHeapSize.convention(extension.spotbugsMaxHeapSize)
+                }
 
-                    // override spotbugs plugin configuration: by default, it would apply ALL tasks
-                    SpotbugsUtils.fixCheckDependencies(project, extension, spotbugsTaskType)
+                // override spotbugs plugin configuration: by default, it would apply ALL tasks
+                SpotbugsUtils.fixCheckDependencies(project, extension, spotbugsTaskType)
 
-                    // spotbugs annotations to simplify access to @SuppressFBWarnings
-                    // (applied according to plugin recommendation)
-                    if (extension.spotbugsAnnotations) {
-                        dependencies {
-                            compileOnly "com.github.spotbugs:spotbugs-annotations:${extension.spotbugsVersion}"
-                        }
-                    }
-
-                    // plugins shortcut
-                    extension.spotbugsPlugins?.each {
-                        project.configurations.getByName('spotbugsPlugins').dependencies.add(
-                                project.dependencies.create(it)
-                        )
-                    }
-
-                    tasks.withType(spotbugsTaskType).configureEach { task ->
-                        doFirst {
-                            configLoader.resolveSpotbugsExclude()
-                            // it is not possible to substitute filter file here (due to locked Property)
-                            // but possible to update already configured file (it must be already a temp file here)
-                            SpotbugsUtils.replaceExcludeFilter(task, extension, logger)
-                        }
-                        // have to use this way instead of doFirst hook, because nothing else will work (damn props!)
-                        excludeFilter.set(project.provider(new SpotbugsExclusionConfigProvider(
-                                task, configLoader, extension
-                        )))
-                        reports {
-                            xml {
-                                required.set(true)
-                            }
-                            html {
-                                required.set(extension.htmlReports)
-                            }
-                        }
-                        registerReporter(task, TOOL_SPOTBUGS)
+                // spotbugs annotations to simplify access to @SuppressFBWarnings
+                // (applied according to plugin recommendation)
+                if (extension.spotbugsAnnotations) {
+                    dependencies {
+                        compileOnly "com.github.spotbugs:spotbugs-annotations:${extension.spotbugsVersion}"
                     }
                 }
 
-                configurePluginTasks(project, extension, spotbugsTaskType, TOOL_SPOTBUGS)
+                // plugins shortcut
+                extension.spotbugsPlugins?.each {
+                    project.configurations.getByName('spotbugsPlugins').dependencies.add(
+                            project.dependencies.create(it)
+                    )
+                }
+
+                tasks.withType(spotbugsTaskType).configureEach { task ->
+                    doFirst {
+                        configLoader.resolveSpotbugsExclude()
+                        // it is not possible to substitute filter file here (due to locked Property)
+                        // but possible to update already configured file (it must be already a temp file here)
+                        SpotbugsUtils.replaceExcludeFilter(task, extension, logger)
+                    }
+                    // have to use this way instead of doFirst hook, because nothing else will work (damn props!)
+                    excludeFilter.set(project.provider(new SpotbugsExclusionConfigProvider(
+                            task, configLoader, extension
+                    )))
+                    reports {
+                        xml {
+                            required.set(true)
+                        }
+                        html {
+                            required.set(extension.htmlReports)
+                        }
+                    }
+                    registerReporter(task, TOOL_SPOTBUGS)
+                }
             }
+
+            configurePluginTasks(project, extension, spotbugsTaskType, TOOL_SPOTBUGS)
         }
     }
 
@@ -463,6 +465,7 @@ abstract class QualityPlugin implements Plugin<Project> {
         } else if (register) {
             // register plugin automatically
             project.plugins.apply(plugin)
+            project.logger.info("Plugin $plugin.simpleName auto-applied in project $project.name ")
         }
         // configure plugin if registered (manually or automatic)
         project.plugins.withType(plugin) {

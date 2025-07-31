@@ -18,7 +18,7 @@ class SpotbugsAnnotationsAppliedKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
-                id 'com.github.spotbugs'  version '6.2.2'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
 
             quality {

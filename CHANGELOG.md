@@ -21,6 +21,7 @@
       (and quality plugin will configure it as before) because
         * The latest spotbugs plugin (6.x) requires java 11 (direct dependency would drop java 8 support for the entire plugin)
         * For java 8 spotbugs plugin 5.x could be used
+    - For multimodule projects it is enough to specify spotbugs plugin in the root project (with "apply false")
     - Custom spotbugs plugin is not used anymore: now extra dependencies cleared from the check task
 
 ### 5.0.0 (2024-02-01)
