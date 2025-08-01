@@ -465,7 +465,7 @@ abstract class QualityPlugin implements Plugin<Project> {
         } else if (register) {
             // register plugin automatically
             project.plugins.apply(plugin)
-            project.logger.info("Plugin $plugin.simpleName auto-applied in project $project.name ")
+            project.logger.info("[plugin:quality] Plugin $plugin.simpleName auto-applied in project $project.name ")
         }
         // configure plugin if registered (manually or automatic)
         project.plugins.withType(plugin) {

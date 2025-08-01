@@ -15,6 +15,8 @@ import org.gradle.api.Project
  */
 @CompileStatic
 class ConfigLoader {
+    private static final String JAR_NAME = 'gradle-quality-plugin-'
+
     private final String checkstyle = 'checkstyle/checkstyle.xml'
     private final String checkstyleSuppressions = 'checkstyle/suppressions.xml'
     private final String pmd = 'pmd/pmd.xml'
@@ -89,11 +91,23 @@ class ConfigLoader {
         if (configDir == null) {
             // lazy resolution to make sure user configuration applied
             this.configDir = project.rootProject.file(project.extensions.findByType(QualityExtension).configDir)
-            this.tmpConfigDir = project.file("${project.layout.buildDirectory.get()}/quality-configs/")
+
+            // use plugin version to avoid case when default configs used and old cache being used for
+            // a new plugin version (usually leading to silly errors)
+            String version = 'unknown_version'
+            String location = this.class.protectionDomain.codeSource.location
+            int end = location.indexOf('.jar')
+            if (end > 0) {
+                int start = location.indexOf(JAR_NAME)
+                version = location.substring(start + JAR_NAME.length(), end)
+            }
+
+            this.tmpConfigDir = project.file("${project.layout.buildDirectory.get()}/quality-configs/$version")
         }
     }
 
-    @SuppressWarnings('SynchronizedOnThis') // internal class so no monitor steal possible
+    @SuppressWarnings('SynchronizedOnThis')
+    // internal class so no monitor steal possible
     private File copyConfig(File parent, String path, boolean override) {
         File target = new File(parent, path)
         if (target.exists() && !override) {

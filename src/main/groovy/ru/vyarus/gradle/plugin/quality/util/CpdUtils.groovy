@@ -66,7 +66,7 @@ class CpdUtils {
         project.plugins.withType(JavaBasePlugin) {
             project.sourceSets.all { sourceSet ->
                 if (!qualitySets.contains(sourceSet)) {
-                    project.logger.info('Removing {}/{} source set directories from CPD: {}',
+                    project.logger.info('[plugin:quality] Removing {}/{} source set directories from CPD: {}',
                             project.name, sourceSet.name, sourceSet.allSource.srcDirs)
                     // by default task configure all source set contents, so just remove not needed sets
                     // note that it is important to use allSource and not allJava because otherwise only java

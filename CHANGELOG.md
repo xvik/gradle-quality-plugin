@@ -23,6 +23,7 @@
         * For java 8 spotbugs plugin 5.x could be used
     - For multimodule projects it is enough to specify spotbugs plugin in the root project (with "apply false")
     - Custom spotbugs plugin is not used anymore: now extra dependencies cleared from the check task
+* Create configs cache path with plugin version to avoid silly mistakes when default configs not updated without clean
 
 ### 5.0.0 (2024-02-01)
 * (BREAKING) Drop gradle 5 and 6 support
