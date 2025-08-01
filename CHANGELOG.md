@@ -10,7 +10,13 @@
     - On java 8 version 4.8.6 would be selected (the latest compatible with java 8)
 * Update pmd 6.55 -> 7.16.0 (java 25 support)
     - Fix gradle plugin for pmd 7 (pmd 7 split jar so plugin classpath must be overridden )
-    - Fix default pmd config: remove legacy rules exclusions
+    - Pmd config:
+      * Remove legacy rules
+      * Remove [AvoidLiteralsInIfCondition](https://docs.pmd-code.org/pmd-doc-7.16.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition) 
+      * Remove [AvoidSynchronizedStatement](https://docs.pmd-code.org/pmd-doc-7.16.0/pmd_rules_java_multithreading.html#avoidsynchronizedstatement)
+      * Remove [AvoidSynchronizedAtMethodLevel](https://docs.pmd-code.org/pmd-doc-7.16.0/pmd_rules_java_multithreading.html?#avoidsynchronizedatmethodlevel)
+      * Remove [ImplicitFunctionalInterface](https://docs.pmd-code.org/pmd-doc-7.16.0/pmd_rules_java_bestpractices.html#implicitfunctionalinterface)
+      * Change [CouplingBetweenObjects](https://docs.pmd-code.org/pmd-doc-7.16.0/pmd_rules_java_design.html#couplingbetweenobjects) 20 -> 25
 * Update codenarc 3.4.0 -> 3.6.0
     - Remove new rule [NonSerializableFieldInSerializableClass](https://codenarc.org/codenarc-rules-serialization.html#nonserializablefieldinserializableclass-rule)
       to avoid enhanced rules enabled warning (and potential problems)

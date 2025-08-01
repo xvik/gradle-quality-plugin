@@ -15,6 +15,7 @@
         <exclude name="AccessorMethodGeneration"/>
         <exclude name="ArrayIsStoredDirectly"/>
         <exclude name="GuardLogStatement"/>
+        <exclude name="ImplicitFunctionalInterface"/>
         <exclude name="UnitTestAssertionsShouldIncludeMessage"/>
         <exclude name="JUnit4SuitesShouldUseSuiteAnnotation"/>
         <exclude name="UnitTestShouldIncludeAssert"/>
@@ -71,6 +72,11 @@
             <property name="reportLevel" value="21"/>
         </properties>
     </rule>
+    <rule ref="category/java/design.xml/CouplingBetweenObjects">
+        <properties>
+            <property name="threshold" value="25" />
+        </properties>
+    </rule>
     <rule ref="category/java/design.xml/CyclomaticComplexity">
         <properties>
             <property name="cycloOptions" value="ignoreBooleanPaths"/>
@@ -108,6 +114,7 @@
         <exclude name="AssignmentInOperand"/>
         <exclude name="AvoidAccessibilityAlteration"/>
         <exclude name="AvoidCatchingThrowable"/>
+        <exclude name="AvoidLiteralsInIfCondition"/>
         <exclude name="DoNotTerminateVM"/> <!-- earlier j2ee group; before 6.29 DoNotCallSystemExit-->
         <exclude name="EmptyFinalizer"/>
         <exclude name="FinalizeOnlyCallsSuperFinalize"/>
@@ -130,11 +137,6 @@
             <property name="skipAnnotations" value="true"/>
         </properties>
     </rule>
-    <rule ref="category/java/errorprone.xml/AvoidLiteralsInIfCondition">
-        <properties>
-            <property name="ignoreMagicNumbers" value="-1,0,1"/>
-        </properties>
-    </rule>
     <rule ref="category/java/errorprone.xml/CloseResource">
         <properties>
             <!-- AutoClosable removed from value because it produces too many false positives -->
@@ -145,6 +147,8 @@
 
     <!-- Error prone (https://pmd.github.io/pmd-6.0.1/pmd_rules_java_multithreading.html) -->
     <rule ref="category/java/multithreading.xml">
+        <exclude name="AvoidSynchronizedAtMethodLevel"/>
+        <exclude name="AvoidSynchronizedStatement"/>
         <exclude name="AvoidUsingVolatile"/>
         <exclude name="DoNotUseThreads"/> <!-- earlier j2ee group-->
         <exclude name="UseConcurrentHashMap"/>
