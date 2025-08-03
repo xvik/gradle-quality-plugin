@@ -45,8 +45,8 @@ group = 'ru.vyarus'
 description = 'Gradle quality plugin for Java and Groovy'
 
 github {
-    user 'xvik'
-    license 'MIT'
+    user = 'xvik'
+    license = 'MIT'
 }
 
 mkdocs {
@@ -129,7 +129,7 @@ test {
     useJUnitPlatform()
     testLogging {
         events 'skipped', 'failed'
-        exceptionFormat 'full'
+        exceptionFormat = 'full'
     }
     maxHeapSize = '2g'
     doLast {
