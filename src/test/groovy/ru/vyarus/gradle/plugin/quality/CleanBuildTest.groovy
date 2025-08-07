@@ -17,7 +17,7 @@ class CleanBuildTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
             }
 
             repositories {
@@ -44,7 +44,7 @@ class CleanBuildTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
             }
 
             repositories {

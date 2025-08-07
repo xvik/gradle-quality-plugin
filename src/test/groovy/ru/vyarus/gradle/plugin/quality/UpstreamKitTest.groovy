@@ -2,7 +2,7 @@ package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
-import spock.lang.IgnoreIf
+import spock.lang.Requires
 
 /**
  * Minimal compatibility check with the latest gradle version.
@@ -10,7 +10,7 @@ import spock.lang.IgnoreIf
  * @author Vyacheslav Rusakov
  * @since 10.11.2019
  */
-@IgnoreIf({jvm.java8})
+@Requires({jvm.java17Compatible})
 class UpstreamKitTest extends AbstractKitTest {
 
 
@@ -26,7 +26,7 @@ class UpstreamKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
             }
 
             repositories {
@@ -61,7 +61,7 @@ class UpstreamKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
             }
 
             repositories {

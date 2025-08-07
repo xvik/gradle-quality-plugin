@@ -21,8 +21,9 @@ class HtmlReportsDisableKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
-                htmlReports false
+                strict = false
+                fallbackToCompatibleToolVersion = true
+                htmlReports = false
             }
 
             repositories {

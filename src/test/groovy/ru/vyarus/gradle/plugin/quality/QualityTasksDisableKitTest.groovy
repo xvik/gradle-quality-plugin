@@ -56,6 +56,7 @@ class QualityTasksDisableKitTest extends AbstractKitTest {
 
             quality {
                 enabled = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {
@@ -87,6 +88,7 @@ class QualityTasksDisableKitTest extends AbstractKitTest {
 
             quality {
                 enabled = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {
@@ -118,6 +120,7 @@ class QualityTasksDisableKitTest extends AbstractKitTest {
 
             quality {
                 enabled = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {

@@ -21,7 +21,8 @@ class ExcludeKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
                 exclude '**/Sample2.java', 
                         '**/GSample2.groovy'
             }
@@ -62,7 +63,8 @@ class ExcludeKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
                 exclude '**/Sample2.groovy'
             }
 
@@ -97,7 +99,8 @@ class ExcludeKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
                 exclude '**/Sample2.java'
             }
 
@@ -137,10 +140,10 @@ class ExcludeKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
-                spotbugs false
-                pmd false
-                checkstyle false
+                strict = false
+                spotbugs = false
+                pmd = false
+                checkstyle = false
                 // animalsniffer operates on sources so use universal pattern which might affect
                 exclude '**/sample/*'
             }

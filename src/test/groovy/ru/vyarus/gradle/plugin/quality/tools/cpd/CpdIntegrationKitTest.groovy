@@ -21,10 +21,10 @@ class CpdIntegrationKitTest extends AbstractKitTest {
             }            
 
             quality {
-                pmd false
-                checkstyle false
-                spotbugs false
-                strict false
+                pmd = false
+                checkstyle = false
+                spotbugs = false
+                strict = false
             }
 
             repositories {            
@@ -59,10 +59,10 @@ class CpdIntegrationKitTest extends AbstractKitTest {
             }            
 
             quality {
-                pmd false
-                checkstyle false
-                spotbugs false
-                strict false
+                pmd = false
+                checkstyle = false
+                spotbugs = false
+                strict = false
             }
 
             repositories {            
@@ -174,11 +174,11 @@ class CpdIntegrationKitTest extends AbstractKitTest {
             }            
 
             quality {
-                pmd false
-                checkstyle false
-                spotbugs false
+                pmd = false
+                checkstyle = false
+                spotbugs = false
                 codenarc = false
-                strict false
+                strict = false
             }                          
 
             repositories {

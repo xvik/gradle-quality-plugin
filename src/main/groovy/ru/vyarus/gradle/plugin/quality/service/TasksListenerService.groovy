@@ -113,8 +113,9 @@ abstract class TasksListenerService implements BuildService<BuildServiceParamete
     }
 
     private void reportTask(Task task, String type, Reporter reporter, boolean useFullTaskName) {
-        boolean generatesHtmlReport = extension.htmlReports && HtmlReportGenerator.isAssignableFrom(reporter.class)
-        if (!extension.consoleReporting && !generatesHtmlReport) {
+        boolean generatesHtmlReport = extension.htmlReports.get()
+                && HtmlReportGenerator.isAssignableFrom(reporter.class)
+        if (!extension.consoleReporting.get() && !generatesHtmlReport) {
             // nothing to do at all
             return
         }
@@ -123,7 +124,7 @@ abstract class TasksListenerService implements BuildService<BuildServiceParamete
         if (generatesHtmlReport) {
             (reporter as HtmlReportGenerator).generateHtmlReport(task, taskType)
         }
-        if (extension.consoleReporting) {
+        if (extension.consoleReporting.get()) {
             long start = System.currentTimeMillis()
             reporter.report(task, taskType)
             String duration = DurationFormatter.format(System.currentTimeMillis() - start)

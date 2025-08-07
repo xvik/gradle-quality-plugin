@@ -24,10 +24,10 @@ class AnimalSnifferIntegrationKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
-                spotbugs false
-                pmd false
-                checkstyle false
+                strict = false
+                spotbugs = false
+                pmd = false
+                checkstyle = false
             }
 
             repositories {            

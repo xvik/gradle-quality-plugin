@@ -20,7 +20,8 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {
@@ -66,7 +67,8 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {
@@ -111,7 +113,8 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {
@@ -156,7 +159,8 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {
@@ -200,7 +204,8 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {
@@ -244,7 +249,8 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {
@@ -287,7 +293,8 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {
@@ -334,7 +341,10 @@ class QualityPluginKitTest extends AbstractKitTest {
             }
             
             // because spotbugs plugin configuration approach changed 
-            quality.spotbugs = false
+            quality {
+                spotbugs = false
+                fallbackToCompatibleToolVersion = true
+            }
 
             afterEvaluate {
                 checkstyle {

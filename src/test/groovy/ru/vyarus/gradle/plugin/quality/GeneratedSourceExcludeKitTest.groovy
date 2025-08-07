@@ -50,9 +50,10 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             sourceSets.main.resources.srcDir "\${swaggerSources.petstoreApi.code.outputDir}/src/main/resources"
 
             quality {
-                pmd false
-                spotbugs false 
-                strict false
+                pmd = false
+                spotbugs = false 
+                strict = false  
+                fallbackToCompatibleToolVersion = true
             }
         """)
 
@@ -109,9 +110,10 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             sourceSets.main.resources.srcDir "\${swaggerSources.petstoreApi.code.outputDir}/src/main/resources"
 
             quality {
-                pmd false
-                spotbugs false
-                strict false
+                pmd = false
+                spotbugs = false
+                strict = false
+                fallbackToCompatibleToolVersion = true
                 
                 excludeSources = fileTree(swaggerSources.petstoreApi.code.outputDir)
             }
@@ -138,7 +140,7 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
-                 id 'org.hidetake.swagger.generator' version '2.18.2' 
+                id 'org.hidetake.swagger.generator' version '2.18.2' 
             }           
             
             repositories { mavenCentral() }
@@ -171,9 +173,10 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             sourceSets.main.resources.srcDir "\${swaggerSources.petstoreApi.code.outputDir}/src/main/resources"
 
             quality {
-                pmd false
-                spotbugs false
-                strict false
+                pmd = false
+                spotbugs = false
+                strict = false 
+                fallbackToCompatibleToolVersion = true
                 
                 exclude 'com/petstore/**'
             }

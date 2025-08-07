@@ -20,7 +20,7 @@ class Java8QualityPluginKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
             }
 
             repositories {
@@ -66,7 +66,8 @@ class Java8QualityPluginKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {

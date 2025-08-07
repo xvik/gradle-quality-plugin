@@ -22,9 +22,9 @@ class ExcludeGeneratedSourcesKitTest extends AbstractKitTest {
             }
 
             quality {
-                checkstyle false
-                pmd false
-                strict false
+                checkstyle = false
+                pmd = false
+                strict = false
             }
             
             // errors contained in generated sources and they must be excluded

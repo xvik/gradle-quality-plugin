@@ -20,6 +20,7 @@ import org.gradle.build.event.BuildEventsListenerRegistry
 import org.gradle.process.CommandLineArgumentProvider
 import ru.vyarus.gradle.plugin.quality.service.TasksListenerService
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
+import ru.vyarus.gradle.plugin.quality.task.QualityToolVersionsTask
 import ru.vyarus.gradle.plugin.quality.util.CpdUtils
 import ru.vyarus.gradle.plugin.quality.util.SpotbugsExclusionConfigProvider
 import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
@@ -84,7 +85,7 @@ abstract class QualityPlugin implements Plugin<Project> {
         // activated only when java plugin is enabled
         project.plugins.withType(JavaPlugin) {
             QualityExtension extension = project.extensions.create('quality', QualityExtension, project)
-            addInitConfigTask(project)
+            addTasks(project, extension)
 
             tasksListener = project.gradle.sharedServices.registerIfAbsent(
                     'taskEvents', TasksListenerService, spec -> { })
@@ -94,6 +95,8 @@ abstract class QualityPlugin implements Plugin<Project> {
                 configureGroupingTasks(project)
 
                 Context context = createContext(project, extension)
+                project.tasks.withType(QualityToolVersionsTask)
+                        .configureEach { it.context.set(context) }
                 ConfigLoader configLoader = new ConfigLoader(project)
                 tasksListener.get().init(configLoader, extension)
 
@@ -111,8 +114,21 @@ abstract class QualityPlugin implements Plugin<Project> {
         }
     }
 
-    protected void addInitConfigTask(Project project) {
+    protected void addTasks(Project project, QualityExtension extension) {
         project.tasks.register('initQualityConfig', InitQualityConfigTask)
+        project.tasks.register('qualityToolVersions', QualityToolVersionsTask) {
+            it.checkstyleVersion.set(project.provider {
+                extension.checkstyle.get() ? extension.checkstyleVersion.get() : 'disabled' })
+
+            it.pmdVersion.set(project.provider {
+                extension.pmd.get() ? extension.pmdVersion.get() : 'disabled' })
+
+            it.spotBugsVersion.set(project.provider {
+                extension.spotbugs.get() ? extension.spotbugsVersion.get() : 'disabled' })
+
+            it.codeNarcVersion.set(project.provider {
+                extension.codenarc.get() ? extension.codenarcVersion.get() : 'disabled' })
+        }
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -131,12 +147,13 @@ abstract class QualityPlugin implements Plugin<Project> {
     }
 
     protected void configureJavac(Project project, QualityExtension extension) {
-        if (!extension.lintOptions) {
+        if (!extension.lintOptions.get()) {
             return
         }
         project.tasks.withType(JavaCompile).configureEach { JavaCompile t ->
-            t.options.compilerArgumentProviders
-                    .add({ extension.lintOptions.collect { "-Xlint:$it" as String } } as CommandLineArgumentProvider)
+            t.options.compilerArgumentProviders.add({
+                extension.lintOptions.get().collect { "-Xlint:$it" as String }
+            } as CommandLineArgumentProvider)
         }
     }
 
@@ -145,7 +162,7 @@ abstract class QualityPlugin implements Plugin<Project> {
     protected void applyCheckstyle(Project project, QualityExtension extension, ConfigLoader configLoader,
                                    boolean register) {
         configurePlugin(project,
-                extension.checkstyle,
+                extension.checkstyle.get(),
                 register,
                 CheckstylePlugin) {
             project.configure(project) {
@@ -164,8 +181,8 @@ abstract class QualityPlugin implements Plugin<Project> {
 
                 checkstyle {
                     showViolations = false
-                    toolVersion = extension.checkstyleVersion
-                    ignoreFailures = !extension.strict
+                    toolVersion = extension.checkstyleVersion.get()
+                    ignoreFailures = !extension.strict.get()
                     // this may be custom user file (gradle/config/checkstyle/checkstyle.xml) or default one
                     // (in different location)
                     configFile = configLoader.resolveCheckstyleConfig(false)
@@ -173,7 +190,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                     // gradle/config/checkstyle/ (or other configured config location dir) because custom
                     // configuration files may be only there
                     configDirectory = configLoader.resolveCheckstyleConfigDir()
-                    sourceSets = extension.sourceSets
+                    sourceSets = extension.sourceSets.get()
                 }
 
                 tasks.withType(Checkstyle).configureEach { task ->
@@ -182,7 +199,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                         applyExcludes(it, extension)
                     }
                     reports.xml.required.set(true)
-                    reports.html.required.set(extension.htmlReports)
+                    reports.html.required.set(extension.htmlReports.get())
 
                     registerReporter(task, TOOL_CHECKSTYLE)
                 }
@@ -195,25 +212,22 @@ abstract class QualityPlugin implements Plugin<Project> {
     protected void applyPMD(Project project, QualityExtension extension, ConfigLoader configLoader,
                             boolean register) {
         configurePlugin(project,
-                extension.pmd,
+                extension.pmd.get(),
                 register,
                 PmdPlugin) {
             project.configure(project) {
                 pmd {
-                    toolVersion = extension.pmdVersion
-                    ignoreFailures = !extension.strict
+                    toolVersion = extension.pmdVersion.get()
+                    ignoreFailures = !extension.strict.get()
                     ruleSets = []
                     ruleSetFiles = files(configLoader.resolvePmdConfig(false).absolutePath)
-                    sourceSets = extension.sourceSets
+                    sourceSets = extension.sourceSets.get()
                 }
                 // have to override dependencies declaration due to split in pmd 7
                 // https://github.com/gradle/gradle/issues/24502
                 dependencies {
-                    pmd("net.sourceforge.pmd:pmd-ant:$extension.pmdVersion")
-                    pmd("net.sourceforge.pmd:pmd-java:$extension.pmdVersion")
-                }
-                if (extension.pmdIncremental) {
-                    pmd.incrementalAnalysis = true
+                    pmd("net.sourceforge.pmd:pmd-ant:${extension.pmdVersion.get()}")
+                    pmd("net.sourceforge.pmd:pmd-java:${extension.pmdVersion.get()}")
                 }
                 tasks.withType(Pmd).configureEach { task ->
                     doFirst {
@@ -221,7 +235,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                         applyExcludes(it, extension)
                     }
                     reports.xml.required.set(true)
-                    reports.html.required.set(extension.htmlReports)
+                    reports.html.required.set(extension.htmlReports.get())
 
                     registerReporter(task, TOOL_PMD)
                 }
@@ -239,24 +253,24 @@ abstract class QualityPlugin implements Plugin<Project> {
         if (plugin == null) {
             return
         }
-        SpotbugsUtils.validateRankSetting(extension.spotbugsMaxRank)
+        SpotbugsUtils.validateRankSetting(extension.spotbugsMaxRank.get())
 
         Class<? extends Task> spotbugsTaskType = plugin.classLoader
                 .loadClass('com.github.spotbugs.snom.SpotBugsTask') as Class<? extends Task>
 
         configurePlugin(project,
-                extension.spotbugs,
+                extension.spotbugs.get(),
                 register,
                 plugin) {
             project.configure(project) {
                 spotbugs {
-                    toolVersion = extension.spotbugsVersion
-                    ignoreFailures = !extension.strict
-                    effort = SpotbugsUtils.enumValue(plugin, 'Effort', extension.spotbugsEffort)
-                    reportLevel = SpotbugsUtils.enumValue(plugin, 'Confidence', extension.spotbugsLevel)
+                    toolVersion = extension.spotbugsVersion.get()
+                    ignoreFailures = !extension.strict.get()
+                    effort = SpotbugsUtils.enumValue(plugin, 'Effort', extension.spotbugsEffort.get())
+                    reportLevel = SpotbugsUtils.enumValue(plugin, 'Confidence', extension.spotbugsLevel.get())
                     // in gradle 5 default 1g was changed and so spotbugs fails on large projects (recover
                     // behaviour), but not if value set manually
-                    maxHeapSize.convention(extension.spotbugsMaxHeapSize)
+                    maxHeapSize.convention(extension.spotbugsMaxHeapSize.get())
                 }
 
                 // override spotbugs plugin configuration: by default, it would apply ALL tasks
@@ -264,14 +278,14 @@ abstract class QualityPlugin implements Plugin<Project> {
 
                 // spotbugs annotations to simplify access to @SuppressFBWarnings
                 // (applied according to plugin recommendation)
-                if (extension.spotbugsAnnotations) {
+                if (extension.spotbugsAnnotations.get()) {
                     dependencies {
-                        compileOnly "com.github.spotbugs:spotbugs-annotations:${extension.spotbugsVersion}"
+                        compileOnly "com.github.spotbugs:spotbugs-annotations:${extension.spotbugsVersion.get()}"
                     }
                 }
 
                 // plugins shortcut
-                extension.spotbugsPlugins?.each {
+                extension.spotbugsPlugins.get()?.each {
                     project.configurations.getByName('spotbugsPlugins').dependencies.add(
                             project.dependencies.create(it)
                     )
@@ -293,7 +307,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                             required.set(true)
                         }
                         html {
-                            required.set(extension.htmlReports)
+                            required.set(extension.htmlReports.get())
                         }
                     }
                     registerReporter(task, TOOL_SPOTBUGS)
@@ -308,20 +322,20 @@ abstract class QualityPlugin implements Plugin<Project> {
     protected void applyCodeNarc(Project project, QualityExtension extension, ConfigLoader configLoader,
                                  boolean register) {
         configurePlugin(project,
-                extension.codenarc,
+                extension.codenarc.get(),
                 register,
                 CodeNarcPlugin) {
             project.configure(project) {
                 codenarc {
-                    toolVersion = extension.codenarcVersion
-                    ignoreFailures = !extension.strict
+                    toolVersion = extension.codenarcVersion.get()
+                    ignoreFailures = !extension.strict.get()
                     configFile = configLoader.resolveCodenarcConfig(false)
-                    sourceSets = extension.sourceSets
+                    sourceSets = extension.sourceSets.get()
                 }
-                if (extension.codenarcGroovy4 && !extension.codenarcVersion.endsWith(CODENARC_GROOVY4)) {
+                if (extension.codenarcGroovy4.get() && !extension.codenarcVersion.get().endsWith(CODENARC_GROOVY4)) {
                     // since codenarc 3.1 different groovy4-based jar could be used
                     dependencies {
-                        codenarc "org.codenarc:CodeNarc:${extension.codenarcVersion}$CODENARC_GROOVY4"
+                        codenarc "org.codenarc:CodeNarc:${extension.codenarcVersion.get()}$CODENARC_GROOVY4"
                     }
                 }
                 tasks.withType(CodeNarc).configureEach { task ->
@@ -330,7 +344,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                         applyExcludes(it, extension)
                     }
                     reports.xml.required.set(true)
-                    reports.html.required.set(extension.htmlReports)
+                    reports.html.required.set(extension.htmlReports.get())
 
                     registerReporter(task, TOOL_CODENARC)
                 }
@@ -344,11 +358,11 @@ abstract class QualityPlugin implements Plugin<Project> {
         project.plugins.withId('ru.vyarus.animalsniffer') { plugin ->
             project.configure(project) {
                 animalsniffer {
-                    ignoreFailures = !extension.strict
-                    sourceSets = extension.sourceSets
+                    ignoreFailures = !extension.strict.get()
+                    sourceSets = extension.sourceSets.get()
                 }
-                if (extension.animalsnifferVersion) {
-                    animalsniffer.toolVersion = extension.animalsnifferVersion
+                if (extension.animalsnifferVersion.present) {
+                    animalsniffer.toolVersion = extension.animalsnifferVersion.get()
                 }
             }
             applyEnabledState(project, extension,
@@ -361,7 +375,7 @@ abstract class QualityPlugin implements Plugin<Project> {
     @SuppressWarnings('MethodSize')
     protected void configureCpdPlugin(Project project, QualityExtension extension, ConfigLoader configLoader,
                                       boolean onlyGroovy) {
-        if (!extension.cpd) {
+        if (!extension.cpd.get()) {
             return
         }
 
@@ -374,17 +388,17 @@ abstract class QualityPlugin implements Plugin<Project> {
                     if (sameModuleDeclaration && onlyGroovy) {
                         language = 'groovy'
                     }
-                    toolVersion = extension.pmdVersion
+                    toolVersion = extension.pmdVersion.get()
                     // assuming that in case of multi-module project quality plugin is applied in subprojects section
                     // and so it is normal that subproject configures root project
                     // Otherwise, side effect is possible that first configured module with quality plugin determines
                     // root project flag value
-                    ignoreFailures = !extension.strict
+                    ignoreFailures = !extension.strict.get()
                 }
                 // only default task is affected
                 tasks.named('cpdCheck').configure {
                     doFirst {
-                        if (extension.cpdUnifySources) {
+                        if (extension.cpdUnifySources.get()) {
                             applyExcludes(it, extension)
                         }
                     }
@@ -392,9 +406,9 @@ abstract class QualityPlugin implements Plugin<Project> {
             }
             // cpdCheck is always declared by cpd plugin
             TaskProvider<SourceTask> cpdCheck = CpdUtils.findCpdTask(prj)
-            if (extension.cpdUnifySources) {
+            if (extension.cpdUnifySources.get()) {
                 // exclude sources, not declared for quality checks in quality plugin declaration project
-                CpdUtils.unifyCpdSources(project, cpdCheck, extension.sourceSets)
+                CpdUtils.unifyCpdSources(project, cpdCheck, extension.sourceSets.get())
             }
 
             // STAGE2 for multi-module project everything below must be applied just once
@@ -437,11 +451,12 @@ abstract class QualityPlugin implements Plugin<Project> {
     @CompileStatic(TypeCheckingMode.SKIP)
     protected Context createContext(Project project, QualityExtension extension) {
         Context context = new Context()
-        if (extension.autoRegistration) {
-            context.registerJavaPlugins = (extension.sourceSets.find { it.java.srcDirs.find { it.exists() } }) != null
+        if (extension.autoRegistration.get()) {
+            context.registerJavaPlugins = (extension.sourceSets.get()
+                    .find { it.java.srcDirs.find { it.exists() } }) != null
             if (project.plugins.findPlugin(GroovyPlugin)) {
                 context.registerGroovyPlugins =
-                        (extension.sourceSets.find { it.groovy.srcDirs.find { it.exists() } }) != null
+                        (extension.sourceSets.get().find { it.groovy.srcDirs.find { it.exists() } }) != null
             }
         }
         context
@@ -504,7 +519,7 @@ abstract class QualityPlugin implements Plugin<Project> {
      * @param task quality plugin task class
      */
     protected void applyEnabledState(Project project, QualityExtension extension, Class task) {
-        if (!extension.enabled) {
+        if (!extension.enabled.get()) {
             project.gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
                 project.tasks.withType(task).configureEach { Task t ->
                     // last task on stack obtained only on actual task usage
@@ -529,9 +544,9 @@ abstract class QualityPlugin implements Plugin<Project> {
             // directly excluded sources
             task.source = task.source - extension.excludeSources
         }
-        if (extension.exclude) {
+        if (extension.exclude.get()) {
             // exclude by patterns (relative to source roots)
-            task.exclude extension.exclude
+            task.exclude extension.exclude.get()
         }
     }
 

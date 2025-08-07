@@ -23,11 +23,11 @@ class MultipleCpdTasksKitTest extends AbstractKitTest {
             }            
 
             quality {
-                pmd false
-                checkstyle false
-                spotbugs false
+                pmd = false
+                checkstyle = false
+                spotbugs = false
                 codenarc = false
-                strict false
+                strict = false
             }   
             
             cpdCheck.exclude '*.groovy'                     

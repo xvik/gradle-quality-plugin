@@ -22,9 +22,9 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
             }
 
             quality {
-                checkstyle false
-                pmd false
-                strict false
+                checkstyle = false
+                pmd = false
+                strict = false
             }
 
             repositories { mavenCentral() }
@@ -54,9 +54,9 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
             }
 
             quality {
-                checkstyle false
-                pmd false
-                strict false
+                checkstyle = false
+                pmd = false
+                strict = false
             }
 
             repositories { mavenCentral() }
@@ -88,9 +88,9 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
             }
 
             quality {
-                checkstyle false
-                pmd false
-                strict false
+                checkstyle = false
+                pmd = false
+                strict = false
                 
                 spotbugsPlugin 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0'
                 spotbugsPlugin 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'

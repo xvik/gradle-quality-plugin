@@ -20,10 +20,10 @@ class CpdExcludesKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
-                checkstyle false
-                spotbugs false
-                pmd false                
+                strict = false
+                checkstyle = false
+                spotbugs = false
+                pmd = false                
                 exclude '**/Struct2.java', '**/OtherStruct2.java' 
             }
 
@@ -63,9 +63,9 @@ class CpdExcludesKitTest extends AbstractKitTest {
 
             quality {
                 strict = false
-                checkstyle false
-                spotbugs false
-                pmd false     
+                checkstyle = false
+                spotbugs = false
+                pmd = false     
                 excludeSources = fileTree('build/generated/')
             }
 

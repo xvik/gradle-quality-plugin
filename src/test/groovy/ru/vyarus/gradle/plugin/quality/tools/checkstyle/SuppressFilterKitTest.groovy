@@ -21,9 +21,10 @@ class SuppressFilterKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
-                spotbugs false
-                pmd false
+                strict = false
+                spotbugs = false
+                pmd = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {

@@ -5,14 +5,13 @@ import org.gradle.api.Task
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskProvider
 import ru.vyarus.gradle.plugin.quality.AbstractTest
-import spock.lang.IgnoreIf
-
+import spock.lang.Requires
 
 /**
  * @author Vyacheslav Rusakov
  * @since 01.09.2016
  */
-@IgnoreIf({jvm.java8})
+@Requires({jvm.java17Compatible})
 class GroupingTasksTest extends AbstractTest {
 
     def "Check grouping tasks registration"() {

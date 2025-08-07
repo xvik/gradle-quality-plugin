@@ -21,6 +21,7 @@ class JavaInGroovyDirKitTest extends AbstractKitTest {
 
             quality {
                 strict = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {

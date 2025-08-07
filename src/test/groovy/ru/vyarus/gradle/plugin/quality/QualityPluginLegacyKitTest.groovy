@@ -25,7 +25,8 @@ class QualityPluginLegacyKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
+                strict = false
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {

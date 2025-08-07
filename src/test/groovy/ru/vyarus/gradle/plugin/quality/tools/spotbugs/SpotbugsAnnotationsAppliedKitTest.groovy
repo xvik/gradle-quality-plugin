@@ -22,9 +22,9 @@ class SpotbugsAnnotationsAppliedKitTest extends AbstractKitTest {
             }
 
             quality {
-                checkstyle false
-                pmd false
-                strict false
+                checkstyle = false
+                pmd = false
+                strict = false
             }
 
             repositories { mavenCentral() }
@@ -53,10 +53,10 @@ class SpotbugsAnnotationsAppliedKitTest extends AbstractKitTest {
             }
 
             quality {
-                checkstyle false
-                pmd false
-                strict false
-                spotbugsAnnotations false
+                checkstyle = false
+                pmd = false
+                strict = false
+                spotbugsAnnotations = false
             }
 
             repositories { mavenCentral() }

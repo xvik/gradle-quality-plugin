@@ -1,13 +1,17 @@
 * (BREAKING) Drop gradle 7.0 support (7.1 min requirement due to spotbugs plugin)
-* Update checkstyle 10.12.7 -> 10.26.1 (java 21 records support)
+* Update checkstyle 10.12.7 -> 11.0.0 (java 21 records support)
     - Add [PatternVariableAssignment](https://checkstyle.sourceforge.io/checks/coding/patternvariableassignment.html)
     - Add [UnnecessaryNullCheckWithInstanceOf](https://checkstyle.sourceforge.io/checks/coding/unnecessarynullcheckwithinstanceof.html)
     - Add [ConstructorsDeclarationGrouping](https://checkstyle.sourceforge.io/checks/coding/constructorsdeclarationgrouping.html)
     - (BREAKING) Remove checkstyle support for java 8 due to remove of the backport project (including maven central)
       * quality.checkstyleBackport property removed
       * On java 8 checkstyle plugin simply isn't applied
+    - (BREAKING) Checkstyle 11.0 requires java 17 and so for java < 17 it would be disabled
+      * On java 11 you can manually configure 10.26.1 to enable checkstyle
+        (or use new option fallbackToCompatibleToolVersion to downgrade automatically)
 * Update spotbugs 4.8.3 -> 4.9.3 (requires java 11)
-    - On java 8 version 4.8.6 would be selected (the latest compatible with java 8)
+    - On java 8 you can manually configure 4.8.6 to enable spotbugs
+      (or new option fallbackToCompatibleToolVersion to downgrade automatically)
 * Update pmd 6.55 -> 7.16.0 (java 25 support)
     - Fix gradle plugin for pmd 7 (pmd 7 split jar so plugin classpath must be overridden )
     - Pmd config:
@@ -17,6 +21,7 @@
       * Remove [AvoidSynchronizedAtMethodLevel](https://docs.pmd-code.org/pmd-doc-7.16.0/pmd_rules_java_multithreading.html?#avoidsynchronizedatmethodlevel)
       * Remove [ImplicitFunctionalInterface](https://docs.pmd-code.org/pmd-doc-7.16.0/pmd_rules_java_bestpractices.html#implicitfunctionalinterface)
       * Change [CouplingBetweenObjects](https://docs.pmd-code.org/pmd-doc-7.16.0/pmd_rules_java_design.html#couplingbetweenobjects) 20 -> 25
+      * Remove pmdIncremental property (it was useful for already not supported gradle 5.6 - 6.3)
 * Update codenarc 3.4.0 -> 3.6.0
     - Remove new rule [NonSerializableFieldInSerializableClass](https://codenarc.org/codenarc-rules-serialization.html#nonserializablefieldinserializableclass-rule)
       to avoid enhanced rules enabled warning (and potential problems)
@@ -30,6 +35,15 @@
     - For multimodule projects it is enough to specify spotbugs plugin in the root project (with "apply false")
     - Custom spotbugs plugin is not used anymore: now extra dependencies cleared from the check task
 * Use plugin version for configs cache path to avoid using outdated default configs after plugin version change
+* Add `qualityToolVersions` task to show applied tools versions. Could be useful for debug
+  because now spotbugs and checkstyle versions depend on a used java version
+* (BREAKING) Quality extension properties now wrapped with Property:
+    - groovy builds must use '=': quality.prop = value
+    - kotlin builds might require explicit .set(value)
+* Add `quality.fallbackToCompatibleToolVersion` option to automatically lower checkstyle
+ version for java 11 and spotbugs for java 8. False by default (used for tests)
+* quality.checkstyle and quality.spotbugs by default analyze configured tool versions 
+  and if version is compatible with current jvm enable tool (no need to manually enable tool, just set version)
 
 ### 5.0.0 (2024-02-01)
 * (BREAKING) Drop gradle 5 and 6 support

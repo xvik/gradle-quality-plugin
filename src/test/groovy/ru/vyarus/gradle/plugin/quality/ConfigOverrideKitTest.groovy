@@ -18,8 +18,8 @@ class ConfigOverrideKitTest extends AbstractKitTest {
             }
 
             quality {
-                strict false
-                configDir 'config'
+                strict = false
+                configDir = 'config'
             }
 
             repositories {

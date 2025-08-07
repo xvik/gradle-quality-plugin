@@ -24,7 +24,7 @@ class AutomaticSpotbugsActivationKitTest extends AbstractKitTest {
             quality {
                 checkstyle = false
                 pmd = false
-                strict false
+                strict = false
             }
 
             repositories {
@@ -60,7 +60,7 @@ class AutomaticSpotbugsActivationKitTest extends AbstractKitTest {
                 apply plugin: 'ru.vyarus.quality'
 
                 quality {
-                    strict false
+                    strict = false
                     checkstyle = false
                     pmd = false
                 }

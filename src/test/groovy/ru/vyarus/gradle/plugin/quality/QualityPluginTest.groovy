@@ -4,13 +4,13 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.plugins.quality.PmdPlugin
-import spock.lang.IgnoreIf
+import spock.lang.Requires
 
 /**
  * @author Vyacheslav Rusakov 
  * @since 12.11.2015
  */
-@IgnoreIf({jvm.java8})
+@Requires({jvm.java17Compatible})
 class QualityPluginTest extends AbstractTest {
 
     def "Check plugins registration"() {
@@ -102,10 +102,10 @@ class QualityPluginTest extends AbstractTest {
             apply plugin: 'ru.vyarus.quality'
 
             quality {
-                checkstyle false
-                pmd false
-                codenarc false
-                spotbugs false
+                checkstyle = false
+                pmd = false
+                codenarc = false
+                spotbugs = false
             }
         }
 

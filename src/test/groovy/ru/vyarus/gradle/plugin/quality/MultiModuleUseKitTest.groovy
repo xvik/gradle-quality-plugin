@@ -23,9 +23,10 @@ class MultiModuleUseKitTest extends AbstractKitTest {
                 apply plugin: 'ru.vyarus.quality'
 
                 quality {
-                    strict false
+                    strict = false
                     pmd = false
                     spotbugs = false
+                    fallbackToCompatibleToolVersion = true
                 }
 
                 repositories {

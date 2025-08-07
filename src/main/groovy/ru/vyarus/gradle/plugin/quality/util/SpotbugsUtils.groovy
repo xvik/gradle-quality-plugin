@@ -82,7 +82,8 @@ class SpotbugsUtils {
         project.tasks.named(JavaBasePlugin.CHECK_TASK_NAME)
                 .configure { check ->
                     // all tasks that should be assigned to check
-                    List<String> requiredTasks = extension.sourceSets*.getTaskName(QualityPlugin.TOOL_SPOTBUGS, null)
+                    List<String> requiredTasks = extension.sourceSets.get()*.getTaskName(
+                            QualityPlugin.TOOL_SPOTBUGS, null)
                     // tasks already assigned to check, but not required
                     List<String> toRemove = project.tasks.withType(spotbugsTaskType).matching { Task t ->
                         !requiredTasks.contains(t.name)
@@ -126,7 +127,7 @@ class SpotbugsUtils {
         // spotbugs does not support exclude of SourceTask, so appending excluded classes to
         // xml exclude filter
         // for custom rank appending extra rank exclusion rule
-        if (extension.exclude || extension.excludeSources || extension.spotbugsMaxRank < MAX_RANK
+        if (extension.exclude.get() || extension.excludeSources || extension.spotbugsMaxRank.get() < MAX_RANK
                 || !task.project.configurations.findByName('annotationProcessor').empty) {
             File tmp = File.createTempFile("$project.name-$task.name-excludes", '.xml')
             tmp.deleteOnExit()
@@ -149,9 +150,9 @@ class SpotbugsUtils {
     @CompileStatic(TypeCheckingMode.SKIP)
     static void replaceExcludeFilter(Task task, QualityExtension extension, Logger logger) {
         // setting means max allowed rank, but filter evicts all ranks >= specified (so +1)
-        Integer rank = extension.spotbugsMaxRank < MAX_RANK ? extension.spotbugsMaxRank + 1 : null
+        Integer rank = extension.spotbugsMaxRank.get() < MAX_RANK ? extension.spotbugsMaxRank.get() + 1 : null
 
-        SourceSet set = FileUtils.findMatchingSet(QualityPlugin.TOOL_SPOTBUGS, task.name, extension.sourceSets)
+        SourceSet set = FileUtils.findMatchingSet(QualityPlugin.TOOL_SPOTBUGS, task.name, extension.sourceSets.get())
         if (!set) {
             logger.error("[SpotBugs] Failed to find source set for task ${task.name}: exclusions " +
                     ' will not be applied')
@@ -161,7 +162,7 @@ class SpotbugsUtils {
         JavaCompile javaCompile = task.project.tasks.findByName(set.compileJavaTaskName) as JavaCompile
         File aptGenerated = javaCompile.options.generatedSourceOutputDirectory.get().asFile
 
-        Set<File> ignored = FileUtils.resolveIgnoredFiles(task.sourceDirs.asFileTree, extension.exclude)
+        Set<File> ignored = FileUtils.resolveIgnoredFiles(task.sourceDirs.asFileTree, extension.exclude.get())
         // exclude all apt-generated files
         ignored.addAll(task.project.fileTree(aptGenerated).filter { it.path.endsWith('.java') }.files)
         if (extension.excludeSources) {

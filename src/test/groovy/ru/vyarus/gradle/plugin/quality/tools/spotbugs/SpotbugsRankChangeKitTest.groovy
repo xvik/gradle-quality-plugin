@@ -22,9 +22,9 @@ class SpotbugsRankChangeKitTest extends AbstractKitTest {
             }
 
             quality {
-                checkstyle false
-                pmd false
-                strict false
+                checkstyle = false
+                pmd = false
+                strict = false
             }
 
             repositories { mavenCentral() }
@@ -50,9 +50,9 @@ class SpotbugsRankChangeKitTest extends AbstractKitTest {
             }
 
             quality {
-                checkstyle false
-                pmd false
-                strict false
+                checkstyle = false
+                pmd = false
+                strict = false
                 spotbugsMaxRank = 14
             }
 
@@ -79,9 +79,9 @@ class SpotbugsRankChangeKitTest extends AbstractKitTest {
             }
 
             quality {
-                checkstyle false
-                pmd false
-                strict false
+                checkstyle = false
+                pmd = false
+                strict = false
                 spotbugsMaxRank = 30
             }
 

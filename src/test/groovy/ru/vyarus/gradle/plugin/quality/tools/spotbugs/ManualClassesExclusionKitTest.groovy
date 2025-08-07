@@ -22,9 +22,9 @@ class ManualClassesExclusionKitTest extends AbstractKitTest {
             }
 
             quality {
-                checkstyle false
-                pmd false
-                strict false
+                checkstyle = false
+                pmd = false
+                strict = false
             }
             
             afterEvaluate {

@@ -35,7 +35,7 @@ class CpdIntegrationTest extends AbstractTest {
         then: "cpd configured"
         CpdExtension extension = project.extensions.cpd
         extension.ignoreFailures
-        extension.toolVersion == project.extensions.quality.pmdVersion
+        extension.toolVersion == project.extensions.quality.pmdVersion.get()
         extension.language == 'java'
         def task = project.tasks.cpdCheck
         task.source.files.collect { it.name } == ['Sample.java']
@@ -90,7 +90,7 @@ class CpdIntegrationTest extends AbstractTest {
         then: "cpd configured"
         CpdExtension extension = project.extensions.cpd
         extension.ignoreFailures
-        extension.toolVersion == project.extensions.quality.pmdVersion
+        extension.toolVersion == project.extensions.quality.pmdVersion.get()
         extension.language == 'java'
         def task = project.tasks.cpdCheck
         task.source.files.collect { it.name } == ['Sample.java', 'SampleTest.java']
@@ -215,7 +215,7 @@ class CpdIntegrationTest extends AbstractTest {
         then: "cpd partly configured"
         CpdExtension extension = project.extensions.cpd
         extension.ignoreFailures
-        extension.toolVersion == project.project(':sub').extensions.quality.pmdVersion
+        extension.toolVersion == project.project(':sub').extensions.quality.pmdVersion.get()
         def task = project.tasks.cpdCheck
         // sources were not re-configured for root project
         task.source.files.collect { it.name } == ['Sample.java']
@@ -251,7 +251,7 @@ class CpdIntegrationTest extends AbstractTest {
         def subroot = project.project(':subroot')
         CpdExtension extension = subroot.extensions.cpd
         extension.ignoreFailures
-        extension.toolVersion == project.project(':subroot:sub').extensions.quality.pmdVersion
+        extension.toolVersion == project.project(':subroot:sub').extensions.quality.pmdVersion.get()
         def task = subroot.tasks.cpdCheck
         // sources were not re-configured for root project
         task.source.files.collect { it.name } == ['Sample.java']

@@ -22,6 +22,7 @@ class ConsoleReportsDisableKitTest extends AbstractKitTest {
 
             quality {
                 strict = false
+                fallbackToCompatibleToolVersion = true
                 consoleReporting = false
             }
 

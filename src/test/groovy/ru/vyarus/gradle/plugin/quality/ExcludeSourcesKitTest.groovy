@@ -32,6 +32,7 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
             quality {
                 strict = false
                 excludeSources = fileTree('build/generated/')
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {
@@ -82,6 +83,7 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
                 strict = false
                 exclude = ['**/Sample3.java', '**/GSample3.groovy']
                 excludeSources = fileTree('build/generated/')
+                fallbackToCompatibleToolVersion = true
             }
 
             repositories {
@@ -133,10 +135,10 @@ class ExcludeSourcesKitTest extends AbstractKitTest {
             }
             
             quality {
-                strict false
-                spotbugs false
-                pmd false
-                checkstyle false
+                strict = false
+                spotbugs = false
+                pmd = false
+                checkstyle = false
                 excludeSources = fileTree('build/generated/')
             }
 

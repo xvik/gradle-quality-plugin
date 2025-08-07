@@ -3,7 +3,6 @@ package ru.vyarus.gradle.plugin.quality.reporter
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
-import ru.vyarus.gradle.plugin.quality.report.ReportUtils
 import spock.lang.IgnoreIf
 
 /**
@@ -20,6 +19,10 @@ class CheckstyleReporterTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+            }
+            
+            quality {
+                fallbackToCompatibleToolVersion = true
             }
 
             task testReport() {

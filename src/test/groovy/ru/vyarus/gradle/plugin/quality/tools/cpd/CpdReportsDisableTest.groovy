@@ -20,12 +20,12 @@ class CpdReportsDisableTest extends AbstractKitTest {
             }            
 
             quality {
-                pmd false
-                checkstyle false
-                spotbugs false
-                strict false
-                consoleReporting false
-                htmlReports false
+                pmd = false
+                checkstyle = false
+                spotbugs = false
+                strict = false
+                consoleReporting = false
+                htmlReports = false
             }
 
             repositories {            

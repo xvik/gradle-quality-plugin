@@ -23,7 +23,7 @@ class ExcludeConfigurationTest extends AbstractTest {
         }
 
         then: "configured"
-        project.extensions.findByType(QualityExtension).exclude == ['**/*.java']
+        project.extensions.findByType(QualityExtension).exclude.get() == ['**/*.java']
     }
 
     def "Check couple of exclude configs"() {
@@ -40,7 +40,7 @@ class ExcludeConfigurationTest extends AbstractTest {
         }
 
         then: "configured"
-        project.extensions.findByType(QualityExtension).exclude == ['**/sample/**', '**/other/**']
+        project.extensions.findByType(QualityExtension).exclude.get() == ['**/sample/**', '**/other/**']
 
     }
 
@@ -58,7 +58,7 @@ class ExcludeConfigurationTest extends AbstractTest {
         }
 
         then: "configured"
-        project.extensions.findByType(QualityExtension).exclude == ['**/sample/**', '**/other/**']
+        project.extensions.findByType(QualityExtension).exclude.get() == ['**/sample/**', '**/other/**']
 
     }
 
@@ -76,6 +76,6 @@ class ExcludeConfigurationTest extends AbstractTest {
         }
 
         then: "configured"
-        project.extensions.findByType(QualityExtension).exclude == ['**/sample/**', '**/other/**']
+        project.extensions.findByType(QualityExtension).exclude.get() == ['**/sample/**', '**/other/**']
     }
 }
