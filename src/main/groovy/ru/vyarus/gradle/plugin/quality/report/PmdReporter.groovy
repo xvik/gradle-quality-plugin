@@ -3,7 +3,12 @@ package ru.vyarus.gradle.plugin.quality.report
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlParser
-import org.gradle.api.plugins.quality.Pmd
+import org.gradle.api.Task
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
+import ru.vyarus.gradle.plugin.quality.QualityPlugin
+import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
+import ru.vyarus.gradle.plugin.quality.report.model.factory.ModelFactory
 
 /**
  * Prints pmd errors (from xml report) into console.
@@ -12,28 +17,35 @@ import org.gradle.api.plugins.quality.Pmd
  * @since 12.11.2015
  */
 @CompileStatic
-class PmdReporter implements Reporter<Pmd> {
+class PmdReporter implements Reporter {
+    // See AbstractTask - it' i's used inside tasks
+    private final Logger logger = Logging.getLogger(Task)
+
+    // for tests
+    void report(Task task, String sourceSet) {
+        report(new ModelFactory().buildDesc(task, QualityPlugin.TOOL_PMD), sourceSet)
+    }
 
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
-    void report(Pmd task, String type) {
-        File reportFile = ReportUtils.getReportFile(task.reports.xml)
+    void report(TaskDesc task, String sourceSet) {
+        File reportFile = new File(task.xmlReportPath)
         if (!reportFile.exists() || reportFile.length() == 0) {
             return
         }
         Node result = new XmlParser().parse(reportFile)
         int cnt = result.file.violation.size()
         if (cnt > 0) {
-            task.logger.error "$NL$cnt PMD rule violations were found in ${result.file.size()} files$NL"
+            logger.error "$NL$cnt PMD rule violations were found in ${result.file.size()} files$NL"
 
             result.file.each { file ->
                 String filePath = file.@name
                 String sourceFile = ReportUtils.extractFile(filePath)
-                String name = ReportUtils.extractJavaPackage(task.project, type, filePath)
+                String name = ReportUtils.extractJavaPackage(task.projectPath, task.sourceDirs, filePath)
                 file.violation.each { violation ->
                     String srcPos = violation.@beginline
                     // part in braces recognized by intellij IDEA and shown as link
-                    task.logger.error "[${violation.@ruleset} | ${violation.@rule}] $name.($sourceFile:${srcPos})" +
+                    logger.error "[${violation.@ruleset} | ${violation.@rule}] $name.($sourceFile:${srcPos})" +
                             "$NL  ${violation.text().trim()}" +
                             "$NL  ${violation.@externalInfoUrl}$NL"
                 }

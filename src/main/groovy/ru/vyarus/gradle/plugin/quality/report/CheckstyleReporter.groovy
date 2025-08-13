@@ -3,7 +3,12 @@ package ru.vyarus.gradle.plugin.quality.report
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlParser
-import org.gradle.api.plugins.quality.Checkstyle
+import org.gradle.api.Task
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
+import ru.vyarus.gradle.plugin.quality.QualityPlugin
+import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
+import ru.vyarus.gradle.plugin.quality.report.model.factory.ModelFactory
 
 /**
  * Prints checkstyle errors (from xml report) into console.
@@ -13,12 +18,20 @@ import org.gradle.api.plugins.quality.Checkstyle
  */
 @SuppressWarnings('DuplicateStringLiteral')
 @CompileStatic
-class CheckstyleReporter implements Reporter<Checkstyle> {
+class CheckstyleReporter implements Reporter {
+
+    // See AbstractTask - it' i's used inside tasks
+    private final Logger logger = Logging.getLogger(Task)
+
+    // for tests
+    void report(Task task, String sourceSet) {
+        report(new ModelFactory().buildDesc(task, QualityPlugin.TOOL_CHECKSTYLE), sourceSet)
+    }
 
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
-    void report(Checkstyle task, String type) {
-        File reportFile = ReportUtils.getReportFile(task.reports.xml)
+    void report(TaskDesc task, String sourceSet) {
+        File reportFile = new File(task.xmlReportPath)
         if (!reportFile.exists() || reportFile.length() == 0) {
             return
         }
@@ -27,19 +40,19 @@ class CheckstyleReporter implements Reporter<Checkstyle> {
         int cnt = result.file.error.size()
         if (cnt > 0) {
             int filesCnt = result.file.findAll { it.error.size() > 0 }.size()
-            task.logger.error "$NL$cnt Checkstyle rule violations were found in $filesCnt files$NL"
+            logger.error "$NL$cnt Checkstyle rule violations were found in $filesCnt files$NL"
 
             result.file.each { file ->
                 String filePath = file.@name
                 String sourceFile = ReportUtils.extractFile(filePath)
-                String name = ReportUtils.extractJavaPackage(task.project, type, filePath)
+                String name = ReportUtils.extractJavaPackage(task.projectPath, task.sourceDirs, filePath)
 
                 file.error.each {
                     String check = extractCheckName(it.@source)
                     String group = extractGroupName(it.@source)
                     String srcPointer = it.@line
                     // part in braces recognized by intellij IDEA and shown as link
-                    task.logger.error "[${group.capitalize()} | $check] $name.($sourceFile:$srcPointer)" +
+                    logger.error "[${group.capitalize()} | $check] $name.($sourceFile:$srcPointer)" +
                             "$NL  ${it.@message}" +
                             "$NL  https://checkstyle.sourceforge.io/checks/${group}/${check.toLowerCase()}.html$NL"
                 }

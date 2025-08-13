@@ -39,7 +39,6 @@ class ConsoleReportsDisableKitTest extends AbstractKitTest {
         fileFromClasspath('src/main/groovy/sample/GSample.groovy', '/ru/vyarus/gradle/plugin/quality/groovy/sample/GSample.groovy')
 
         when: "run check task with both sources"
-        debug()
         BuildResult result = run('check')
 
         then: "all plugins detect violations"

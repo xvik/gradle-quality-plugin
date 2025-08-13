@@ -4,7 +4,12 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlParser
 import org.gradle.api.Project
-import org.gradle.api.plugins.quality.CodeNarc
+import org.gradle.api.Task
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
+import ru.vyarus.gradle.plugin.quality.QualityPlugin
+import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
+import ru.vyarus.gradle.plugin.quality.report.model.factory.ModelFactory
 import ru.vyarus.gradle.plugin.quality.util.FileUtils
 
 /**
@@ -14,13 +19,45 @@ import ru.vyarus.gradle.plugin.quality.util.FileUtils
  * @since 13.11.2015
  */
 @CompileStatic
-class CodeNarcReporter implements Reporter<CodeNarc> {
+class CodeNarcReporter implements Reporter {
+    // See AbstractTask - it' i's used inside tasks
+    private final Logger logger = Logging.getLogger(Task)
+
+    private final Properties codenarcProperties
+
+    // for tests
+    CodeNarcReporter(Project project) {
+        this(loadCodenarcProperties(project))
+    }
+
+    CodeNarcReporter(Properties codenarcProperties) {
+        this.codenarcProperties = codenarcProperties
+    }
+
+    /**
+     * @param project project
+     * @return codenarc properties with rules reference (from codenarc jar)
+     */
+    static Properties loadCodenarcProperties(Project project) {
+        File codenarcJar = FileUtils.findConfigurationJar(project, 'codenarc', 'CodeNarc')
+        return FileUtils.loadFileFromJar(codenarcJar, 'codenarc-base-rules.properties') { InputStream it ->
+            Properties props = new Properties()
+            props.load(it)
+            return props
+        }
+    }
+
+    // for tests
+    void report(Task task, String sourceSet) {
+        report(new ModelFactory().buildDesc(task, QualityPlugin.TOOL_CODENARC), sourceSet)
+    }
 
     @Override
     @SuppressWarnings('DuplicateStringLiteral')
     @CompileStatic(TypeCheckingMode.SKIP)
-    void report(CodeNarc task, String type) {
-        File reportFile = ReportUtils.getReportFile(task.reports.xml)
+    // org.gradle.api.plugins.quality.CodeNarc
+    void report(TaskDesc task, String sourceSet) {
+        File reportFile = new File(task.xmlReportPath)
         if (!reportFile.exists() || reportFile.length() == 0) {
             return
         }
@@ -32,7 +69,7 @@ class CodeNarcReporter implements Reporter<CodeNarc> {
             Integer p2 = summary.@priority2 as Integer
             Integer p3 = summary.@priority3 as Integer
             Integer count = p1 + p2 + p3
-            task.logger.error "$NL$count ($p1 / $p2 / $p3) CodeNarc violations were found in ${fileCnt} " +
+            logger.error "$NL$count ($p1 / $p2 / $p3) CodeNarc violations were found in ${fileCnt} " +
                     "files$NL"
 
             Map<String, String> desc = [:]
@@ -40,21 +77,19 @@ class CodeNarcReporter implements Reporter<CodeNarc> {
                 desc[it.@name] = ReportUtils.unescapeHtml(it.Description.text())
             }
 
-            Properties props = loadCodenarcProperties(task.project)
-
             result.Package.each {
                 String pkg = it.@path.replaceAll('/', '.')
                 it.File.each {
                     String src = it.@name
                     it.Violation.each {
                         String rule = it.@ruleName
-                        String[] path = props[rule].split('\\.')
+                        String[] path = ((codenarcProperties[rule]) as String).split('\\.')
                         String group = path[path.length - 2]
                         String priority = it.@priority
                         String srcLine = ReportUtils.unescapeHtml(it.SourceLine.text())
                         String message = ReportUtils.unescapeHtml(it.Message.text())
                         // part in braces recognized by intellij IDEA and shown as link
-                        task.logger.error "[${group.capitalize()} | ${rule}] ${pkg}.($src:${it.@lineNumber})  " +
+                        logger.error "[${group.capitalize()} | ${rule}] ${pkg}.($src:${it.@lineNumber})  " +
                                 "[priority ${priority}]" +
                                 "$NL\t>> ${srcLine}" +
                                 "$NL  ${message}" +
@@ -64,15 +99,6 @@ class CodeNarcReporter implements Reporter<CodeNarc> {
                     }
                 }
             }
-        }
-    }
-
-    private Properties loadCodenarcProperties(Project project) {
-        File codenarcJar = FileUtils.findConfigurationJar(project, 'codenarc', 'CodeNarc')
-        return FileUtils.loadFileFromJar(codenarcJar, 'codenarc-base-rules.properties') { InputStream it ->
-            Properties props = new Properties()
-            props.load(it)
-            return props
         }
     }
 }

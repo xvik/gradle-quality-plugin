@@ -5,6 +5,11 @@ import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlParser
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
+import ru.vyarus.gradle.plugin.quality.QualityPlugin
+import ru.vyarus.gradle.plugin.quality.report.model.SpotbugsTaskDesc
+import ru.vyarus.gradle.plugin.quality.report.model.factory.SpotbugsModelFactory
 import ru.vyarus.gradle.plugin.quality.util.FileUtils
 
 /**
@@ -14,25 +19,61 @@ import ru.vyarus.gradle.plugin.quality.util.FileUtils
  * @since 28.01.2018
  */
 @CompileStatic
-class SpotbugsReporter implements Reporter<Task> {
-    private static final String XML = 'xml'
+class SpotbugsReporter implements Reporter<SpotbugsTaskDesc> {
+    // See AbstractTask - it' i's used inside tasks
+    private final Logger logger = Logging.getLogger(Task)
 
     Map<String, String> pluginChecks
 
-    @Override
-    @SuppressWarnings('SynchronizedMethod')
-    synchronized void init(Task task) {
-        if (pluginChecks == null) {
-            // there could not be tasks from different projects because quality plugin would be applied to each one
-            pluginChecks = resolvePluginsChecks(task.project)
+    // for tests
+    SpotbugsReporter(Project project) {
+        this(resolvePluginsChecks(project))
+    }
+
+    SpotbugsReporter(Map<String, String> pluginChecks) {
+        this.pluginChecks = pluginChecks
+    }
+
+    /**
+     * As each spotbugs plugins use its own error types, then custom error descriptions must be loaded for
+     * proper console output.
+     *
+     * @param project project instance
+     * @return error descriptors from plugins
+     */
+    @CompileStatic(TypeCheckingMode.SKIP)
+    @SuppressWarnings('CatchException')
+    static Map<String, String> resolvePluginsChecks(Project project) {
+        Map<String, String> res = [:]
+        project.configurations.getByName('spotbugsPlugins').resolve().each { jar ->
+            try {
+                FileUtils.loadFileFromJar(jar, 'findbugs.xml') { InputStream desc ->
+                    Node result = new XmlParser().parse(desc)
+                    // to simplify reporting
+                    String provider = result.@provider + ' | '
+                    result.Detector.each {
+                        it.@reports.split(',').each { String name ->
+                            res.put(name, provider)
+                        }
+                    }
+                }
+            } catch (Exception ignore) {
+                // it may be dependencies jars or format could suddenly change
+            }
         }
+        res
+    }
+
+    // for tests
+    void report(Task task, String sourceSet) {
+        report(new SpotbugsModelFactory().buildDesc(task, QualityPlugin.TOOL_SPOTBUGS) as SpotbugsTaskDesc, sourceSet)
     }
 
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
-    void report(Task task, String type) {
+    void report(SpotbugsTaskDesc task, String sourceSet) {
         // report may not exists
-        File reportFile = ReportUtils.getReportFile(task.reports.findByName(XML))
+        File reportFile = new File(task.xmlReportPath)
         if (reportFile == null || !reportFile.exists() || reportFile.length() == 0) {
             return
         }
@@ -44,7 +85,7 @@ class SpotbugsReporter implements Reporter<Task> {
             int p1 = summary.@priority_1 == null ? 0 : summary.@priority_1 as Integer
             int p2 = summary.@priority_2 == null ? 0 : summary.@priority_2 as Integer
             int p3 = summary.@priority_3 == null ? 0 : summary.@priority_3 as Integer
-            task.logger.error "$NL$cnt ($p1 / $p2 / $p3) SpotBugs violations were found in ${fileCnt} " +
+            logger.error "$NL$cnt ($p1 / $p2 / $p3) SpotBugs violations were found in ${fileCnt} " +
                     "files$NL"
 
             Map<String, String> desc = buildDescription(result)
@@ -60,15 +101,14 @@ class SpotbugsReporter implements Reporter<Task> {
                 String cls = src.@sourcefile
                 String plugin = pluginChecks[bugType] ?: ''
                 // part in braces recognized by intellij IDEA and shown as link
-                task.logger.error "[${plugin}${cat[bug.@category]} | ${bugType}] $pkg(${cls}:${srcPosition})  " +
+                logger.error "[${plugin}${cat[bug.@category]} | ${bugType}] $pkg(${cls}:${srcPosition})  " +
                         "[priority ${bug.@priority} / rank ${bug.@rank}]" +
                         "$NL\t>> ${msg.text()}" +
                         "$NL  ${description}$NL"
             }
             // html report will be generated before console reporting
-            String htmlReportUrl = ReportUtils.toConsoleLink(task.project
-                    .file("${task.project.extensions.spotbugs.reportsDir.get()}/${type}.html"))
-            task.logger.error "SpotBugs HTML report: $htmlReportUrl"
+            String htmlReportUrl = ReportUtils.toConsoleLink(new File("${task.reportsDir}/${sourceSet}.html"))
+            logger.error "SpotBugs HTML report: $htmlReportUrl"
         }
     }
 
@@ -96,28 +136,5 @@ class SpotbugsReporter implements Reporter<Task> {
             cat[category.@category] = category.Description.text()
         }
         return cat
-    }
-
-    @CompileStatic(TypeCheckingMode.SKIP)
-    @SuppressWarnings('CatchException')
-    private Map<String, String> resolvePluginsChecks(Project project) {
-        Map<String, String> res = [:]
-        project.configurations.getByName('spotbugsPlugins').resolve().each { jar ->
-            try {
-                FileUtils.loadFileFromJar(jar, 'findbugs.xml') { InputStream desc ->
-                    Node result = new XmlParser().parse(desc)
-                    // to simplify reporting
-                    String provider = result.@provider + ' | '
-                    result.Detector.each {
-                        it.@reports.split(',').each { String name ->
-                            res.put(name, provider)
-                        }
-                    }
-                }
-            } catch (Exception ignore) {
-                // it may be dependencies jars or format could suddenly change
-            }
-        }
-        res
     }
 }

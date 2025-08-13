@@ -26,6 +26,10 @@ class GroupingTasksTest extends AbstractTest {
             quality {
                 sourceSets = [project.sourceSets.main, project.sourceSets.test]
             }
+
+            repositories {
+                mavenCentral()
+            }
         }
 
         then: "grouping tasks registered"
@@ -48,6 +52,10 @@ class GroupingTasksTest extends AbstractTest {
 
             quality {
                 sourceSets = [project.sourceSets.main, project.sourceSets.test]
+            }
+
+            repositories {
+                mavenCentral()
             }
         }
 
@@ -76,6 +84,10 @@ class GroupingTasksTest extends AbstractTest {
             quality {
                 sourceSets = [project.sourceSets.main]
             }
+
+            repositories {
+                mavenCentral()
+            }
         }
 
         then: "grouping tasks registered"
@@ -102,6 +114,10 @@ class GroupingTasksTest extends AbstractTest {
 
             quality {
                 sourceSets = [project.sourceSets.main, project.sourceSets.test]
+            }
+
+            repositories {
+                mavenCentral()
             }
         }
 

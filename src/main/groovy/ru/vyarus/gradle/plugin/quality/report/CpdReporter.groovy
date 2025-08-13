@@ -1,11 +1,18 @@
 package ru.vyarus.gradle.plugin.quality.report
 
+import groovy.ant.AntBuilder
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlParser
 import org.gradle.api.Project
-import org.gradle.api.tasks.SourceTask
-import ru.vyarus.gradle.plugin.quality.ConfigLoader
+import org.gradle.api.Task
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
+import org.gradle.api.provider.Provider
+import ru.vyarus.gradle.plugin.quality.QualityPlugin
+import ru.vyarus.gradle.plugin.quality.report.model.CpdTaskDesc
+import ru.vyarus.gradle.plugin.quality.report.model.factory.CpdModelFactory
+import ru.vyarus.gradle.plugin.quality.service.ConfigsService
 
 /**
  * Prints CPD duplicates (from xml report) into console.
@@ -14,20 +21,33 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
  * @since 08.11.2019
  */
 @CompileStatic
-class CpdReporter implements Reporter<SourceTask>, HtmlReportGenerator<SourceTask> {
-
+class CpdReporter implements Reporter<CpdTaskDesc>, HtmlReportGenerator<CpdTaskDesc> {
     private static final String CODE_INDENT = '│'
 
-    ConfigLoader configLoader
+    // See AbstractTask - it' i's used inside tasks
+    private final Logger logger = Logging.getLogger(Task)
 
-    CpdReporter(ConfigLoader configLoader) {
-        this.configLoader = configLoader
+    private final Provider<ConfigsService> configs
+
+    // for tests
+    CpdReporter(Project project) {
+        this(project.gradle.sharedServices.registerIfAbsent(QualityPlugin.CONFIGS_SERVICE, ConfigsService))
+    }
+
+    CpdReporter(Provider<ConfigsService> configs) {
+        this.configs = configs
+    }
+
+    // for tests
+    void report(Task task, String sourceSet) {
+        report(new CpdModelFactory().buildDesc(task, QualityPlugin.TOOL_CPD) as CpdTaskDesc, sourceSet)
     }
 
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
-    void report(SourceTask task, String type) {
-        File reportFile = ReportUtils.getReportFile(task.reports.xml)
+    // org.gradle.api.tasks.SourceTask
+    void report(CpdTaskDesc task, String sourceSet) {
+        File reportFile = new File(task.xmlReportPath)
 
         if (!reportFile.exists() || reportFile.length() == 0) {
             return
@@ -35,7 +55,7 @@ class CpdReporter implements Reporter<SourceTask>, HtmlReportGenerator<SourceTas
         Node result = new XmlParser().parse(reportFile)
         int cnt = result.duplication.size()
         if (cnt > 0) {
-            task.logger.error "$NL$cnt ${task.language} duplicates were found by CPD$NL"
+            logger.error "$NL$cnt ${task.language} duplicates were found by CPD$NL"
             result.duplication.each { dupl ->
                 int lines = dupl.@lines as Integer
                 int start = 0
@@ -44,7 +64,7 @@ class CpdReporter implements Reporter<SourceTask>, HtmlReportGenerator<SourceTas
                 dupl.file.each { file ->
                     String filePath = file.@path
                     String sourceFile = ReportUtils.extractFile(filePath)
-                    String name = ReportUtils.extractJavaPackage(task.project, filePath)
+                    String name = ReportUtils.extractJavaPackage(task.rootProjectPath, task.sources, filePath)
                     msg << "$name.($sourceFile:${file.@line})"
                     if (first) {
                         start = file.@line as Integer
@@ -64,31 +84,29 @@ class CpdReporter implements Reporter<SourceTask>, HtmlReportGenerator<SourceTas
                     msg << "${String.format(nbFmt, codePos++)}$CODE_INDENT    $it$NL"
                 }
 
-                task.logger.error "$msg$NL"
+                logger.error "$msg$NL"
             }
             // html report will be generated before console reporting
-            String htmlReportUrl = ReportUtils.toConsoleLink(task.project
-                    .file("${task.project.extensions.cpd.reportsDir}/${type}.html"))
-            task.logger.error "CPD HTML report: $htmlReportUrl"
+            String htmlReportUrl = ReportUtils.toConsoleLink(new File("${task.reportsDir}/${sourceSet}.html"))
+            logger.error "CPD HTML report: $htmlReportUrl"
         }
     }
 
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
-    void generateHtmlReport(SourceTask task, String type) {
-        File reportFile = ReportUtils.getReportFile(task.reports.xml)
+    void generateHtmlReport(CpdTaskDesc task, String sourceSet) {
+        File reportFile = new File(task.xmlReportPath)
         if (!reportFile.exists()) {
             return
         }
-        Project project = task.project
         // html report
-        String htmlReportPath = "${project.extensions.cpd.reportsDir}/${type}.html"
-        File htmlReportFile = project.file(htmlReportPath)
+        String htmlReportPath = "${task.reportsDir}/${sourceSet}.html"
+        File htmlReportFile = new File(htmlReportPath)
         // avoid redundant re-generation
         if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
-            project.ant.xslt(in: reportFile,
-                    style: configLoader.resolveCpdXsl(),
-                    out: htmlReportPath,
+            new AntBuilder().xslt(in: reportFile,
+                    style: configs.get().resolveCpdXsl(),
+                    out: htmlReportFile.canonicalPath,
             )
         }
     }

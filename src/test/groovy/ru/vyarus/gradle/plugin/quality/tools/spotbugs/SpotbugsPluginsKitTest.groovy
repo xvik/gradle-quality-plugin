@@ -29,7 +29,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
 
             repositories { mavenCentral() }
             dependencies {
-                spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
+                spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.6.4'
             }
         """)
 
@@ -62,7 +62,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
             repositories { mavenCentral() }
             afterEvaluate {
                 dependencies {
-                    spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
+                    spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.6.4'
                 }
             }
         """)
@@ -93,7 +93,7 @@ class SpotbugsPluginsKitTest extends AbstractKitTest {
                 strict = false
                 
                 spotbugsPlugin 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0'
-                spotbugsPlugin 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
+                spotbugsPlugin 'com.mebigfatguy.fb-contrib:fb-contrib:7.6.4'
             }
 
             repositories { mavenCentral() }            

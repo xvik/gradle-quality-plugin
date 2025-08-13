@@ -7,6 +7,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionGraph
+import org.gradle.api.file.ProjectLayout
+import org.gradle.api.file.RegularFile
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -18,6 +20,13 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.build.event.BuildEventsListenerRegistry
 import org.gradle.process.CommandLineArgumentProvider
+import ru.vyarus.gradle.plugin.quality.report.CodeNarcReporter
+import ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter
+import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
+import ru.vyarus.gradle.plugin.quality.report.model.factory.CpdModelFactory
+import ru.vyarus.gradle.plugin.quality.report.model.factory.ModelFactory
+import ru.vyarus.gradle.plugin.quality.report.model.factory.SpotbugsModelFactory
+import ru.vyarus.gradle.plugin.quality.service.ConfigsService
 import ru.vyarus.gradle.plugin.quality.service.TasksListenerService
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.task.QualityToolVersionsTask
@@ -71,10 +80,19 @@ abstract class QualityPlugin implements Plugin<Project> {
     public static final String TOOL_SPOTBUGS = 'spotbugs'
     public static final String TOOL_CODENARC = 'codenarc'
     public static final String TOOL_CPD = 'cpd'
+    public static final String CONFIGS_SERVICE = 'qualityConfigs'
 
+    private static final String JAR_NAME = 'gradle-quality-plugin-'
     private static final String QUALITY_TASK = 'checkQuality'
     private static final String CODENARC_GROOVY4 = '-groovy-4.0'
 
+    // need to collect all task data, required for reporting (under config cache)
+    private final Map<String, ModelFactory> taskDescFactory = initFactories()
+    // cacheable tasks data (cached by tasksListener)
+    // Works due to lazy properties init: collections filled under configuration time; service configured lazily
+    // and started only at runtime, so service receive complete data and cache it is its property for config. cache
+    private final List<TaskDesc> qualityTasks = []
+    private final Map<String, Object> reportersData = [:]
     private Provider<TasksListenerService> tasksListener
 
     @Inject
@@ -85,11 +103,9 @@ abstract class QualityPlugin implements Plugin<Project> {
         // activated only when java plugin is enabled
         project.plugins.withType(JavaPlugin) {
             QualityExtension extension = project.extensions.create('quality', QualityExtension, project)
-            addTasks(project, extension)
 
-            tasksListener = project.gradle.sharedServices.registerIfAbsent(
-                    'taskEvents', TasksListenerService, spec -> { })
-            eventsListenerRegistry.onTaskCompletion(tasksListener)
+            Provider<ConfigsService> configs = initServices(project, extension)
+            addTasks(project, extension, configs)
 
             project.afterEvaluate {
                 configureGroupingTasks(project)
@@ -97,25 +113,61 @@ abstract class QualityPlugin implements Plugin<Project> {
                 Context context = createContext(project, extension)
                 project.tasks.withType(QualityToolVersionsTask)
                         .configureEach { it.context.set(context) }
-                ConfigLoader configLoader = new ConfigLoader(project)
-                tasksListener.get().init(configLoader, extension)
 
                 configureJavac(project, extension)
                 if (JavaVersion.current().java11Compatible) {
-                    applyCheckstyle(project, extension, configLoader, context.registerJavaPlugins)
+                    applyCheckstyle(project, extension, configs, context.registerJavaPlugins)
                 }
-                applyPMD(project, extension, configLoader, context.registerJavaPlugins)
-                applySpotbugs(project, extension, configLoader, context.registerJavaPlugins)
+                applyPMD(project, extension, configs, context.registerJavaPlugins)
+                applySpotbugs(project, extension, configs, context.registerJavaPlugins)
                 configureAnimalSniffer(project, extension)
-                configureCpdPlugin(project, extension, configLoader,
+                configureCpdPlugin(project, extension, configs,
                         !context.registerJavaPlugins && context.registerGroovyPlugins)
-                applyCodeNarc(project, extension, configLoader, context.registerGroovyPlugins)
+                applyCodeNarc(project, extension, configs, context.registerGroovyPlugins)
             }
         }
     }
 
-    protected void addTasks(Project project, QualityExtension extension) {
-        project.tasks.register('initQualityConfig', InitQualityConfigTask)
+    protected Provider<ConfigsService> initServices(Project project, QualityExtension extension) {
+        Provider<ConfigsService> configs = project.gradle.sharedServices.registerIfAbsent(
+                CONFIGS_SERVICE, ConfigsService, spec -> {
+            spec.maxParallelUsages.set(1)
+            spec.parameters {
+                (it as ConfigsService.Params).configDir.set(
+                        project.layout.file(project
+                                .provider { project.rootProject.file(extension.configDir.get()) }))
+                (it as ConfigsService.Params).tempDir.set(createTmpConfigsDir(project.layout))
+            }
+        })
+        // just to avoid early destroy
+        eventsListenerRegistry.onTaskCompletion(configs)
+
+        // Service created per project because otherwise it is impossible to initialize tasks map properly
+        // (singleton service created in the first project and configurations from other modules not persisted)
+        tasksListener = project.gradle.sharedServices.registerIfAbsent(
+                "qualityEvents$project.name", TasksListenerService, spec -> {
+            spec.maxParallelUsages.set(1)
+            spec.parameters {
+                (it as TasksListenerService.Params).with {
+                    configsService.set(configs)
+                    htmlReports.set(extension.htmlReports)
+                    consoleReporting.set(extension.consoleReporting)
+                    // it is important to not use service at configuration time so list would contain
+                    // all quality tasks (and would be stored by configuration cache)
+                    qualityTasks.set(this.qualityTasks)
+                    reportersData.set(this.reportersData)
+                }
+            }
+        })
+        eventsListenerRegistry.onTaskCompletion(tasksListener)
+
+        return configs
+    }
+
+    protected void addTasks(Project project, QualityExtension extension, Provider<ConfigsService> configsService) {
+        project.tasks.register('initQualityConfig', InitQualityConfigTask) {
+            it.configs.set(configsService)
+        }
         project.tasks.register('qualityToolVersions', QualityToolVersionsTask) {
             it.checkstyleVersion.set(project.provider {
                 extension.checkstyle.get() ? extension.checkstyleVersion.get() : 'disabled' })
@@ -159,7 +211,7 @@ abstract class QualityPlugin implements Plugin<Project> {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings(['MethodSize', 'NestedBlockDepth'])
-    protected void applyCheckstyle(Project project, QualityExtension extension, ConfigLoader configLoader,
+    protected void applyCheckstyle(Project project, QualityExtension extension, Provider<ConfigsService> configs,
                                    boolean register) {
         configurePlugin(project,
                 extension.checkstyle.get(),
@@ -185,23 +237,23 @@ abstract class QualityPlugin implements Plugin<Project> {
                     ignoreFailures = !extension.strict.get()
                     // this may be custom user file (gradle/config/checkstyle/checkstyle.xml) or default one
                     // (in different location)
-                    configFile = configLoader.resolveCheckstyleConfig(false)
+                    configFile = configs.get().resolveCheckstyleConfig(false)
                     // this is required for ${config_loc} variable, but this will ALWAYS point to
                     // gradle/config/checkstyle/ (or other configured config location dir) because custom
                     // configuration files may be only there
-                    configDirectory = configLoader.resolveCheckstyleConfigDir()
+                    configDirectory = configs.get().resolveCheckstyleConfigDir()
                     sourceSets = extension.sourceSets.get()
                 }
 
                 tasks.withType(Checkstyle).configureEach { task ->
                     doFirst {
-                        configLoader.resolveCheckstyleConfig()
+                        configs.get().resolveCheckstyleConfig()
                         applyExcludes(it, extension)
                     }
                     reports.xml.required.set(true)
                     reports.html.required.set(extension.htmlReports.get())
-
-                    registerReporter(task, TOOL_CHECKSTYLE)
+                    registerTaskForReport(task, TOOL_CHECKSTYLE)
+                    reportAfterTask(task)
                 }
             }
             configurePluginTasks(project, extension, Checkstyle, TOOL_CHECKSTYLE)
@@ -209,7 +261,7 @@ abstract class QualityPlugin implements Plugin<Project> {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    protected void applyPMD(Project project, QualityExtension extension, ConfigLoader configLoader,
+    protected void applyPMD(Project project, QualityExtension extension, Provider<ConfigsService> configs,
                             boolean register) {
         configurePlugin(project,
                 extension.pmd.get(),
@@ -220,7 +272,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                     toolVersion = extension.pmdVersion.get()
                     ignoreFailures = !extension.strict.get()
                     ruleSets = []
-                    ruleSetFiles = files(configLoader.resolvePmdConfig(false).absolutePath)
+                    ruleSetFiles = files(configs.get().resolvePmdConfig(false).absolutePath)
                     sourceSets = extension.sourceSets.get()
                 }
                 // have to override dependencies declaration due to split in pmd 7
@@ -231,13 +283,13 @@ abstract class QualityPlugin implements Plugin<Project> {
                 }
                 tasks.withType(Pmd).configureEach { task ->
                     doFirst {
-                        configLoader.resolvePmdConfig()
+                        configs.get().resolvePmdConfig()
                         applyExcludes(it, extension)
                     }
                     reports.xml.required.set(true)
                     reports.html.required.set(extension.htmlReports.get())
-
-                    registerReporter(task, TOOL_PMD)
+                    registerTaskForReport(task, TOOL_PMD)
+                    reportAfterTask(task)
                 }
             }
             configurePluginTasks(project, extension, Pmd, TOOL_PMD)
@@ -245,8 +297,8 @@ abstract class QualityPlugin implements Plugin<Project> {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    @SuppressWarnings(['MethodSize', 'NestedBlockDepth'])
-    protected void applySpotbugs(Project project, QualityExtension extension, ConfigLoader configLoader,
+    @SuppressWarnings(['MethodSize', 'NestedBlockDepth', 'AbcMetric'])
+    protected void applySpotbugs(Project project, QualityExtension extension, Provider<ConfigsService> configs,
                                  boolean register) {
         // if plugin is not on classpath - do nothing; if plugin in classpath but not applied - apply it
         Class<? extends Plugin> plugin = SpotbugsUtils.findPluginClass(project)
@@ -293,15 +345,17 @@ abstract class QualityPlugin implements Plugin<Project> {
 
                 tasks.withType(spotbugsTaskType).configureEach { task ->
                     doFirst {
-                        configLoader.resolveSpotbugsExclude()
+                        configs.get().resolveSpotbugsExclude()
                         // it is not possible to substitute filter file here (due to locked Property)
                         // but possible to update already configured file (it must be already a temp file here)
                         SpotbugsUtils.replaceExcludeFilter(task, extension, logger)
                     }
                     // have to use this way instead of doFirst hook, because nothing else will work (damn props!)
                     excludeFilter.set(project.provider(new SpotbugsExclusionConfigProvider(
-                            task, configLoader, extension
+                            task, configs, extension
                     )))
+                    // read plugin error descriptions under configuration time
+                    readSpotbugsPluginsDescriptors(project)
                     reports {
                         xml {
                             required.set(true)
@@ -310,7 +364,8 @@ abstract class QualityPlugin implements Plugin<Project> {
                             required.set(extension.htmlReports.get())
                         }
                     }
-                    registerReporter(task, TOOL_SPOTBUGS)
+                    registerTaskForReport(task, TOOL_SPOTBUGS)
+                    reportAfterTask(task)
                 }
             }
 
@@ -318,8 +373,24 @@ abstract class QualityPlugin implements Plugin<Project> {
         }
     }
 
+    protected void readSpotbugsPluginsDescriptors(Project project) {
+        synchronized (reportersData) {
+            if (!reportersData.containsKey(TOOL_SPOTBUGS)) {
+                reportersData.put(TOOL_SPOTBUGS, SpotbugsReporter.resolvePluginsChecks(project))
+            }
+        }
+    }
+
+    protected void readCodenarcProperties(Project project) {
+        synchronized (reportersData) {
+            if (!reportersData.containsKey(TOOL_CODENARC)) {
+                reportersData.put(TOOL_CODENARC, CodeNarcReporter.loadCodenarcProperties(project))
+            }
+        }
+    }
+
     @CompileStatic(TypeCheckingMode.SKIP)
-    protected void applyCodeNarc(Project project, QualityExtension extension, ConfigLoader configLoader,
+    protected void applyCodeNarc(Project project, QualityExtension extension, Provider<ConfigsService> configs,
                                  boolean register) {
         configurePlugin(project,
                 extension.codenarc.get(),
@@ -329,7 +400,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                 codenarc {
                     toolVersion = extension.codenarcVersion.get()
                     ignoreFailures = !extension.strict.get()
-                    configFile = configLoader.resolveCodenarcConfig(false)
+                    configFile = configs.get().resolveCodenarcConfig(false)
                     sourceSets = extension.sourceSets.get()
                 }
                 if (extension.codenarcGroovy4.get() && !extension.codenarcVersion.get().endsWith(CODENARC_GROOVY4)) {
@@ -340,13 +411,15 @@ abstract class QualityPlugin implements Plugin<Project> {
                 }
                 tasks.withType(CodeNarc).configureEach { task ->
                     doFirst {
-                        configLoader.resolveCodenarcConfig()
+                        configs.get().resolveCodenarcConfig()
                         applyExcludes(it, extension)
                     }
+                    reportAfterTask(task)
+                    // read codenarc properties under configuration phase
+                    readCodenarcProperties(project)
                     reports.xml.required.set(true)
                     reports.html.required.set(extension.htmlReports.get())
-
-                    registerReporter(task, TOOL_CODENARC)
+                    registerTaskForReport(task, TOOL_CODENARC)
                 }
             }
             configurePluginTasks(project, extension, CodeNarc, TOOL_CODENARC)
@@ -373,7 +446,7 @@ abstract class QualityPlugin implements Plugin<Project> {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings('MethodSize')
-    protected void configureCpdPlugin(Project project, QualityExtension extension, ConfigLoader configLoader,
+    protected void configureCpdPlugin(Project project, QualityExtension extension, Provider<ConfigsService> configs,
                                       boolean onlyGroovy) {
         if (!extension.cpd.get()) {
             return
@@ -421,10 +494,10 @@ abstract class QualityPlugin implements Plugin<Project> {
             prj.tasks.withType(cpdTasksType).configureEach { task ->
                 reports.xml.required.set(true)
                 doFirst {
-                    configLoader.resolveCpdXsl()
+                    configs.get().resolveCpdXsl()
                 }
-                // console reporting for each cpd task
-                registerReporter(task, TOOL_CPD, true)
+                registerTaskForReport(task, TOOL_CPD)
+                reportAfterTask(task)
             }
             // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
             // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
@@ -488,8 +561,28 @@ abstract class QualityPlugin implements Plugin<Project> {
         }
     }
 
-    protected void registerReporter(Task task, String type, boolean useFullTaskName = false) {
-        tasksListener.get().register(task, type, useFullTaskName)
+    /**
+     * Each quality task is registered directly to properly apply reporting.
+     * <p>
+     * {@code useFullTaskName} is required for CPD task only, which use single task for all source sets.
+     *
+     * @param task task instance
+     * @param type task type (to reference reporter and resolve source set)
+     * @param useFullTaskName (true to use task name for a report file name instead of source set name)
+     */
+    @CompileStatic(TypeCheckingMode.SKIP)
+    protected void registerTaskForReport(Task task, String type) {
+        qualityTasks.add(taskDescFactory[type].buildDesc(task, type))
+    }
+
+    protected void reportAfterTask(Task task) {
+        // This is the only way to print report DIRECTLY AFTER the task output (like it was before).
+        // Also, the only way to report after not executed task (from cache)
+        // If task execution fails, doLast block would not be called at all, and in this case build service
+        // task listener would log it
+        task.doLast {
+            tasksListener.get().execute(task.path)
+        }
     }
 
     /**
@@ -568,6 +661,30 @@ abstract class QualityPlugin implements Plugin<Project> {
                 project.tasks.named(it.getTaskName(QUALITY_TASK, null)).configure { it.dependsOn pluginTask }
             }
         }
+    }
+
+    protected Provider<RegularFile> createTmpConfigsDir(ProjectLayout layout) {
+        // use plugin version to avoid case when default configs used and old cache being used for
+        // a new plugin version (usually leading to silly errors)
+        String version = 'unknown_version'
+        String location = this.class.protectionDomain.codeSource.location
+        int end = location.indexOf('.jar')
+        if (end > 0) {
+            int start = location.indexOf(JAR_NAME)
+            version = location.substring(start + JAR_NAME.length(), end)
+        }
+
+        return layout.buildDirectory.file("quality-configs/$version")
+    }
+
+    protected Map<String, ModelFactory> initFactories() {
+        Map<String, ModelFactory> res = [:]
+        res[TOOL_CHECKSTYLE] = new ModelFactory()
+        res[TOOL_PMD] = new ModelFactory()
+        res[TOOL_SPOTBUGS] = new SpotbugsModelFactory()
+        res[TOOL_CODENARC] = new ModelFactory()
+        res[TOOL_CPD] = new CpdModelFactory()
+        return res
     }
 
     /**

@@ -25,9 +25,8 @@ class SpotbugsReporterTest extends AbstractKitTest {
 
             task testReport() {
                 doLast {
-                    def reporter = new ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter()
-                    reporter.init(spotbugsMain)
-                    reporter.report(spotbugsMain, 'main')
+                    new ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter(project)
+                    .report(spotbugsMain, 'main')
                 }
             }
         """)
@@ -67,7 +66,7 @@ SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir)}/buil
 
             quality {
                 spotbugsPlugin 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0'
-                spotbugsPlugin 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
+                spotbugsPlugin 'com.mebigfatguy.fb-contrib:fb-contrib:7.6.4'
             }
             
             repositories {
@@ -76,9 +75,8 @@ SpotBugs HTML report: file:///${ReportUtils.noRootFilePath(testProjectDir)}/buil
             
             task testReport() {
                 doLast {
-                    def reporter = new ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter()
-                    reporter.init(spotbugsMain)
-                    reporter.report(spotbugsMain, 'main')
+                    new ru.vyarus.gradle.plugin.quality.report.SpotbugsReporter(project)
+                    .report(spotbugsMain, 'main')
                 }
             }
         """)

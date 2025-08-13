@@ -1,8 +1,9 @@
 package ru.vyarus.gradle.plugin.quality.util
 
 import org.gradle.api.Project
+import org.gradle.api.file.RegularFileProperty
 import ru.vyarus.gradle.plugin.quality.AbstractTest
-import ru.vyarus.gradle.plugin.quality.ConfigLoader
+import ru.vyarus.gradle.plugin.quality.service.ConfigsService
 
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -31,10 +32,10 @@ class ConfigInitSyncTest extends AbstractTest {
             apply plugin: 'java'
             apply plugin: 'ru.vyarus.quality'
         }
-        ConfigLoader loader = new ConfigLoader(project)
+        ConfigsService loader = new ConfigServiceImpl(project)
         loader.initUserConfigs(false)
         Map<String, Long> reference = [:]
-        loader.configDir.eachFileRecurse {
+        loader.parameters.configDir.get().asFile.eachFileRecurse {
             if (!it.directory) {
                 println "$it.name = ${it.length()}"
                 reference[it.name] = it.length()
@@ -57,7 +58,7 @@ class ConfigInitSyncTest extends AbstractTest {
         executed.each({ it.get() })
 
         then: "no duplicates"
-        loader.configDir.eachFileRecurse {
+        loader.parameters.configDir.get().asFile.eachFileRecurse {
             if (!it.directory) {
                 println "verification $it.name ${it.length()} (${reference[it.name]})"
                 assert reference[it.name] == it.length()
@@ -72,10 +73,10 @@ class ConfigInitSyncTest extends AbstractTest {
             apply plugin: 'java'
             apply plugin: 'ru.vyarus.quality'
         }
-        ConfigLoader loader = new ConfigLoader(project)
+        ConfigsService loader = new ConfigServiceImpl(project)
         loader.initUserConfigs(false)
         Map<String, Long> reference = [:]
-        loader.configDir.eachFileRecurse {
+        loader.parameters.configDir.get().asFile.eachFileRecurse {
             if (!it.directory) {
                 println "$it.name = ${it.length()}"
                 reference[it.name] = it.length()
@@ -98,11 +99,42 @@ class ConfigInitSyncTest extends AbstractTest {
         executed.each({ it.get() })
 
         then: "no duplicates"
-        loader.configDir.eachFileRecurse {
+        loader.parameters.configDir.get().asFile.eachFileRecurse {
             if (!it.directory) {
                 println "verification $it.name ${it.length()} (${reference[it.name]})"
                 assert reference[it.name] == it.length()
             }
+        }
+    }
+
+    class ConfigServiceImpl extends ConfigsService {
+
+        Project project
+
+        ConfigServiceImpl(Project project) {
+            this.project = project
+        }
+
+        @Override
+        Params getParameters() {
+            Params params = new Params() {
+
+                RegularFileProperty dir = project.objects.fileProperty()
+                RegularFileProperty temp = project.objects.fileProperty()
+
+                @Override
+                RegularFileProperty getConfigDir() {
+                    return dir
+                }
+
+                @Override
+                RegularFileProperty getTempDir() {
+                    return temp
+                }
+            }
+            params.configDir.set(new File("/tmp/some"))
+            params.tempDir.set(new File("/tmp/other"))
+            return params
         }
     }
 }

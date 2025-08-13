@@ -2,9 +2,11 @@ package ru.vyarus.gradle.plugin.quality.task
 
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
-import ru.vyarus.gradle.plugin.quality.ConfigLoader
+import ru.vyarus.gradle.plugin.quality.service.ConfigsService
 
 /**
  * Task copies default configs to user directory (quality.configDir) for customization.
@@ -16,10 +18,14 @@ import ru.vyarus.gradle.plugin.quality.ConfigLoader
  * @see ru.vyarus.gradle.plugin.quality.QualityPlugin for registration
  */
 @CompileStatic
-class InitQualityConfigTask extends DefaultTask {
+@SuppressWarnings('AbstractClassWithPublicConstructor')
+abstract class InitQualityConfigTask extends DefaultTask {
 
     @Input
     boolean override
+
+    @Internal
+    abstract Property<ConfigsService> getConfigs();
 
     InitQualityConfigTask() {
         group = 'build setup'
@@ -28,6 +34,6 @@ class InitQualityConfigTask extends DefaultTask {
 
     @TaskAction
     void run() {
-        new ConfigLoader(project).initUserConfigs(override)
+        configs.get().initUserConfigs(override)
     }
 }

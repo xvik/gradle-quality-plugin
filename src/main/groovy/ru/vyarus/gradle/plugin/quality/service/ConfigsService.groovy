@@ -1,21 +1,28 @@
-package ru.vyarus.gradle.plugin.quality
+package ru.vyarus.gradle.plugin.quality.service
 
 import groovy.transform.CompileStatic
-import org.gradle.api.Project
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
+import org.gradle.api.services.BuildService
+import org.gradle.api.services.BuildServiceParameters
+import org.gradle.tooling.events.FinishEvent
+import org.gradle.tooling.events.OperationCompletionListener
 
 /**
- * Loads configuration files either from custom configs directory (quality.configDir) or from classpath.
- * When loading from classpath all files are copied (and cached) in build/quality-configs/.
+ * Service, responsible for configuration files management. Loads configuration files either from custom configs
+ * directory (quality.configDir) or from classpath. When loading from classpath all files are copied (and cached)
+ * in build/quality-configs/.
  * <p>
  * To avoid problems with clean task, default configs are copied only before actual task run. All config file
  * getters contains optional parameter copyDefaultConfig to prevent actual file copying on configuration phase.
  *
  * @author Vyacheslav Rusakov
- * @since 12.11.2015
+ * @since 02.08.2025
  */
 @CompileStatic
-class ConfigLoader {
-    private static final String JAR_NAME = 'gradle-quality-plugin-'
+@SuppressWarnings('AbstractClassWithoutAbstractMethod')
+abstract class ConfigsService implements BuildService<Params>, OperationCompletionListener {
 
     private final String checkstyle = 'checkstyle/checkstyle.xml'
     private final String checkstyleSuppressions = 'checkstyle/suppressions.xml'
@@ -24,13 +31,7 @@ class ConfigLoader {
     private final String spotbugsExclude = 'spotbugs/exclude.xml'
     private final String codenarc = 'codenarc/codenarc.xml'
 
-    Project project
-    File configDir
-    File tmpConfigDir
-
-    ConfigLoader(Project project) {
-        this.project = project
-    }
+    private final Logger logger = Logging.getLogger(ConfigsService)
 
     File resolveCheckstyleConfig(boolean copyDefaultFile = true) {
         resolve(checkstyle, copyDefaultFile)
@@ -38,7 +39,7 @@ class ConfigLoader {
 
     File resolveCheckstyleConfigDir() {
         // used for ${config_loc} property definition (through checkstyle.configDirectory property)
-        File path = new File(configDir, checkstyle).parentFile
+        File path = new File(parameters.configDir.get().asFile, checkstyle).parentFile
         // if custom directory exists, use it, otherwise fall back to generated directory
         // because gradle 7 requires configured directory existence
         // (default file copying forced to create checkstyle directory and avoid gradle complains)
@@ -67,43 +68,29 @@ class ConfigLoader {
      * @param override override filed
      */
     void initUserConfigs(boolean override) {
-        init()
         [checkstyle, checkstyleSuppressions, pmd, cpdXsl, codenarc, spotbugsExclude].each {
-            copyConfig(configDir, it, override)
+            copyConfig(parameters.configDir.get().asFile, it, override)
         }
+    }
+
+    @Override
+    @SuppressWarnings('EmptyMethodInAbstractClass')
+    void onFinish(FinishEvent event) {
+        // not used - just a way to prevent killing service too early
     }
 
     private File resolve(String path, boolean copyDefaultFile) {
-        init()
         // look custom user file first
-        File target = new File(configDir, path)
+        File target = new File(parameters.configDir.get().asFile, path)
         boolean userFile = target.exists()
         // show message only just before task execution, not during configuration phase (avoid duplicate message)
         if (userFile && copyDefaultFile) {
-            project.logger.info('[plugin:quality] Using custom quality configuration: {}', project.relativePath(target))
+            logger.info('[plugin:quality] Using custom quality configuration: {}', target.toString())
         }
+
+        File tmpDir = parameters.tempDir.get().asFile
         return userFile ?
-                target
-                : (copyDefaultFile ? copyConfig(tmpConfigDir, path, false) : new File(tmpConfigDir, path)) as File
-    }
-
-    private void init() {
-        if (configDir == null) {
-            // lazy resolution to make sure user configuration applied
-            this.configDir = project.rootProject.file(project.extensions.findByType(QualityExtension).configDir)
-
-            // use plugin version to avoid case when default configs used and old cache being used for
-            // a new plugin version (usually leading to silly errors)
-            String version = 'unknown_version'
-            String location = this.class.protectionDomain.codeSource.location
-            int end = location.indexOf('.jar')
-            if (end > 0) {
-                int start = location.indexOf(JAR_NAME)
-                version = location.substring(start + JAR_NAME.length(), end)
-            }
-
-            this.tmpConfigDir = project.file("${project.layout.buildDirectory.get()}/quality-configs/$version")
-        }
+                target : (copyDefaultFile ? copyConfig(tmpDir, path, false) : new File(tmpDir, path)) as File
     }
 
     @SuppressWarnings('SynchronizedOnThis')
@@ -129,5 +116,10 @@ class ConfigLoader {
             }
             return target
         }
+    }
+
+    interface Params extends BuildServiceParameters {
+        RegularFileProperty getConfigDir();
+        RegularFileProperty getTempDir();
     }
 }

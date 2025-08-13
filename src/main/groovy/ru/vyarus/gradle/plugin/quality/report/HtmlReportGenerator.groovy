@@ -1,7 +1,7 @@
 package ru.vyarus.gradle.plugin.quality.report
 
 import groovy.transform.CompileStatic
-import org.gradle.api.Task
+import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
 
 /**
  * Responsible for html report generation for plugins not supporting that directly.
@@ -11,13 +11,13 @@ import org.gradle.api.Task
  * @param < T >  target task type
  */
 @CompileStatic
-interface HtmlReportGenerator<T extends Task> {
+interface HtmlReportGenerator<T extends TaskDesc> {
 
     /**
      * Called after quality tool task to generate html report.
      *
      * @param task quality task to generate report for
-     * @param type task type (main or test)
+     * @param sourceSet task type (main or test)
      */
-    void generateHtmlReport(T task, String type)
+    void generateHtmlReport(T task, String sourceSet)
 }

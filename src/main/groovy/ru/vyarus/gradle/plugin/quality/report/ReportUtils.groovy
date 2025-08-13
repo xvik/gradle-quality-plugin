@@ -3,10 +3,6 @@ package ru.vyarus.gradle.plugin.quality.report
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlSlurper
-import org.gradle.api.Project
-import org.gradle.api.plugins.JavaBasePlugin
-import org.gradle.api.reporting.Report
-import org.gradle.api.tasks.SourceSet
 
 /**
  * Reporting utils.
@@ -28,28 +24,29 @@ class ReportUtils {
      * @return package for provided java class path
      */
     @CompileStatic(TypeCheckingMode.SKIP)
-    static String extractJavaPackage(Project project, String type, String file) {
+    static String extractJavaPackage(String projectDir, List<String> sourceFiles, String file) {
         String name = new File(file).canonicalPath
         // try looking in java and related (groovy) sources (mixed mode)
-        String root = matchRoot(project.sourceSets[type] as SourceSet, name)
+        String root = matchRoot(sourceFiles, name)
         // if found, extract package, otherwise format file path, relative to project
         return root
                 ? resolvePackage(root, name)
-                : resolveFilePath(project.projectDir.canonicalPath, name)
+                : resolveFilePath(projectDir, name)
     }
 
     /**
      * Special version of package matching mechanism for muti-module resolution: looks for all source sets and all
      * child modules.
      *
-     * @param project project instance
+     * @param rootProjectPath root project directory
+     * @param sources source set dirs from project and sub projects (key is a module path, "" for root project)
      * @param file absolute path to source file
      * @return package for provided java class path
      */
-    static String extractJavaPackage(Project project, String file) {
+    static String extractJavaPackage(String rootProjectPath, Map<String, List<String>> sources, String file) {
         String name = new File(file).canonicalPath
 
-        String root = findMultiModuleRoot(project, name)
+        String root = findMultiModuleRoot(sources, name)
         // if found, extract package, otherwise format file path, relative to root project
         if (root) {
             // cut off possible module prefix
@@ -60,7 +57,7 @@ class ReportUtils {
             // apply module prefix
             return module.replace('>', '/') + resolvePackage(root, file)
         }
-        return resolveFilePath(project.rootDir.canonicalPath, name)
+        return resolveFilePath(rootProjectPath, name)
     }
 
     /**
@@ -100,30 +97,9 @@ class ReportUtils {
         return "file:///${noRootFilePath(file)}"
     }
 
-    /**
-     * Required because destination property was deprecated since gradle 7, but it still must be used for
-     * older gradle versions.
-     *
-     * @param report report instance
-     * @return report destination file
-     */
-    @CompileStatic(TypeCheckingMode.SKIP)
-    static File getReportFile(Report report) {
-        if (report == null) {
-            return null
-        }
-        // Provider for gradle 7 and Property for gradle 8
-        // static compilation must be disabled for method!
-        Object output = report.outputLocation
-        return output.get().asFile
-    }
-
-    private static String matchRoot(SourceSet set, String filePath) {
-        Closure search = { Iterable<File> files ->
-            files*.canonicalPath.find { String s -> filePath.startsWith(s) }
-        }
+    private static String matchRoot(List<String> sources, String filePath) {
         // try looking in java and related (groovy) sources (mixed mode)
-        return search(set.allJava.srcDirs)
+        return sources.find { filePath.startsWith(it) }
     }
 
     private static String resolvePackage(String rootPath, String filePath) {
@@ -147,22 +123,13 @@ class ReportUtils {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    private static String findMultiModuleRoot(Project project, String file) {
-        // check source sets
-        if (project.plugins.findPlugin(JavaBasePlugin) != null) {
-            for (SourceSet set : project.sourceSets) {
-                String root = matchRoot(set, file)
-                if (root) {
-                    return root
-                }
-            }
-        }
-        // check subprojects
-        for (Project sub : project.subprojects) {
-            String res = findMultiModuleRoot(sub, file)
-            if (res != null) {
-                // apply module name to easily identify class location
-                return "$sub.name>$res"
+    private static String findMultiModuleRoot(Map<String, List<String>> sources, String file) {
+        // check each project and sub projects source sets
+        for (String root : sources.keySet()) {
+            String match = matchRoot(sources.get(root), file)
+            if (match) {
+                // prefix module name for readability
+                return (root.empty ? '' : "$root>") + match
             }
         }
         return null
