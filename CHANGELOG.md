@@ -9,7 +9,7 @@
     - (BREAKING) Checkstyle 11.0 requires java 17 and so for java < 17 it would be disabled
       * On java 11 you can manually configure 10.26.1 to enable checkstyle
         (or use new option fallbackToCompatibleToolVersion to downgrade automatically)
-* Update spotbugs 4.8.3 -> 4.9.3 (requires java 11)
+* Update spotbugs 4.8.3 -> 4.9.4 (requires java 11)
     - On java 8 you can manually configure 4.8.6 to enable spotbugs
       (or new option fallbackToCompatibleToolVersion to downgrade automatically)
 * Update pmd 6.55 -> 7.16.0 (java 25 support)

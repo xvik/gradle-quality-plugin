@@ -22,7 +22,7 @@ abstract class QualityExtension {
 
     public static final String CHECKSTYLE = '11.0.0'
     public static final String PMD = '7.16.0'
-    public static final String SPOTBUGS = '4.9.3'
+    public static final String SPOTBUGS = '4.9.4'
     public static final String CODENARC = '3.6.0'
 
     @SuppressWarnings(['MethodSize', 'AbstractClassWithPublicConstructor'])

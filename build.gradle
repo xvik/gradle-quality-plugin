@@ -26,7 +26,7 @@ wrapper {
 ext {
     animalsnifferVersion = '2.0.1'
     cpdVersion = '3.5'
-    spotbugsPluginVersion = '6.2.3'
+    spotbugsPluginVersion = '6.2.4'
     docVersion = '5.0.0'
 }
 
@@ -60,7 +60,7 @@ mkdocs {
             'version': project.docVersion,
             'checkstyle': '11.0.0',
             'pmd': '7.16.0',
-            'spotbugs': '4.9.3',
+            'spotbugs': '4.9.4',
             'codenarc': '3.6.0',
             'spotbugsPlugin': project.spotbugsPluginVersion,
             'cpd': project.cpdVersion,

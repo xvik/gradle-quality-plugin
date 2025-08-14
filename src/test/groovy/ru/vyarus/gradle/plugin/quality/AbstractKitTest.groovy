@@ -11,7 +11,7 @@ import spock.lang.TempDir
  */
 abstract class AbstractKitTest extends Specification {
 
-    static String SPOTBUGS_PLUGIN = '6.2.3'
+    static String SPOTBUGS_PLUGIN = '6.2.4'
 
     boolean debug
     @TempDir File testProjectDir
