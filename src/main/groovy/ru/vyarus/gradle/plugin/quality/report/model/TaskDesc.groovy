@@ -12,7 +12,7 @@ import groovy.transform.CompileStatic
 class TaskDesc implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 11122
+    private static final long serialVersionUID = 1
 
     // task path
     String path

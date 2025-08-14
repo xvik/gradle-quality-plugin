@@ -10,5 +10,9 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class SpotbugsTaskDesc extends TaskDesc {
+
+    @Serial
+    private static final long serialVersionUID = 1
+
     String reportsDir
 }

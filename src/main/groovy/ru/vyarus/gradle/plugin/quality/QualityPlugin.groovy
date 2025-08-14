@@ -2,11 +2,11 @@ package ru.vyarus.gradle.plugin.quality
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionGraph
+import org.gradle.api.file.FileCollection
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
 import org.gradle.api.plugins.GroovyPlugin
@@ -93,7 +93,27 @@ abstract class QualityPlugin implements Plugin<Project> {
     // and started only at runtime, so service receive complete data and cache it is its property for config. cache
     private final List<TaskDesc> qualityTasks = []
     private final Map<String, Object> reportersData = [:]
-    private Provider<TasksListenerService> tasksListener
+
+    /**
+     * Applies exclude path patterns to quality tasks.
+     * Note: this does not apply to animalsniffer. For spotbugs this appliance is useless, see custom support above.
+     * <p>
+     * The method is static because it is referenced from runtime.
+     *
+     * @param task quality task
+     * @param excludeSources sources to exclude
+     * @param exclude exclude patterns
+     */
+    static void applyExcludes(SourceTask task, FileCollection excludeSources, List<String> exclude) {
+        if (excludeSources) {
+            // directly excluded sources
+            task.source = task.source - excludeSources
+        }
+        if (exclude) {
+            // exclude by patterns (relative to source roots)
+            task.exclude exclude
+        }
+    }
 
     @Inject
     abstract BuildEventsListenerRegistry getEventsListenerRegistry()
@@ -104,7 +124,8 @@ abstract class QualityPlugin implements Plugin<Project> {
         project.plugins.withType(JavaPlugin) {
             QualityExtension extension = project.extensions.create('quality', QualityExtension, project)
 
-            Provider<ConfigsService> configs = initServices(project, extension)
+            Provider<ConfigsService> configs = initConfigService(project, extension)
+            Provider<TasksListenerService> tasksListener = initListenerService(project, extension, configs)
             addTasks(project, extension, configs)
 
             project.afterEvaluate {
@@ -115,20 +136,18 @@ abstract class QualityPlugin implements Plugin<Project> {
                         .configureEach { it.context.set(context) }
 
                 configureJavac(project, extension)
-                if (JavaVersion.current().java11Compatible) {
-                    applyCheckstyle(project, extension, configs, context.registerJavaPlugins)
-                }
-                applyPMD(project, extension, configs, context.registerJavaPlugins)
-                applySpotbugs(project, extension, configs, context.registerJavaPlugins)
+                applyCheckstyle(project, extension, configs, tasksListener, context.registerJavaPlugins)
+                applyPMD(project, extension, configs, tasksListener, context.registerJavaPlugins)
+                applySpotbugs(project, extension, configs, tasksListener, context.registerJavaPlugins)
                 configureAnimalSniffer(project, extension)
-                configureCpdPlugin(project, extension, configs,
+                configureCpdPlugin(project, extension, configs, tasksListener,
                         !context.registerJavaPlugins && context.registerGroovyPlugins)
-                applyCodeNarc(project, extension, configs, context.registerGroovyPlugins)
+                applyCodeNarc(project, extension, configs, tasksListener, context.registerGroovyPlugins)
             }
         }
     }
 
-    protected Provider<ConfigsService> initServices(Project project, QualityExtension extension) {
+    protected Provider<ConfigsService> initConfigService(Project project, QualityExtension extension) {
         Provider<ConfigsService> configs = project.gradle.sharedServices.registerIfAbsent(
                 CONFIGS_SERVICE, ConfigsService, spec -> {
             spec.maxParallelUsages.set(1)
@@ -141,10 +160,14 @@ abstract class QualityPlugin implements Plugin<Project> {
         })
         // just to avoid early destroy
         eventsListenerRegistry.onTaskCompletion(configs)
+        return configs
+    }
 
+    protected Provider<TasksListenerService> initListenerService(Project project, QualityExtension extension,
+                                                                 Provider<ConfigsService> configs) {
         // Service created per project because otherwise it is impossible to initialize tasks map properly
         // (singleton service created in the first project and configurations from other modules not persisted)
-        tasksListener = project.gradle.sharedServices.registerIfAbsent(
+        Provider<TasksListenerService> tasksListener = project.gradle.sharedServices.registerIfAbsent(
                 "qualityEvents$project.name", TasksListenerService, spec -> {
             spec.maxParallelUsages.set(1)
             spec.parameters {
@@ -160,8 +183,7 @@ abstract class QualityPlugin implements Plugin<Project> {
             }
         })
         eventsListenerRegistry.onTaskCompletion(tasksListener)
-
-        return configs
+        return tasksListener
     }
 
     protected void addTasks(Project project, QualityExtension extension, Provider<ConfigsService> configsService) {
@@ -199,12 +221,13 @@ abstract class QualityPlugin implements Plugin<Project> {
     }
 
     protected void configureJavac(Project project, QualityExtension extension) {
-        if (!extension.lintOptions.get()) {
+        List<String> extraOptions = extension.lintOptions.get()
+        if (!extraOptions) {
             return
         }
         project.tasks.withType(JavaCompile).configureEach { JavaCompile t ->
             t.options.compilerArgumentProviders.add({
-                extension.lintOptions.get().collect { "-Xlint:$it" as String }
+                extraOptions.collect { "-Xlint:$it" as String }
             } as CommandLineArgumentProvider)
         }
     }
@@ -212,6 +235,7 @@ abstract class QualityPlugin implements Plugin<Project> {
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings(['MethodSize', 'NestedBlockDepth'])
     protected void applyCheckstyle(Project project, QualityExtension extension, Provider<ConfigsService> configs,
+                                   Provider<TasksListenerService> tasksListener,
                                    boolean register) {
         configurePlugin(project,
                 extension.checkstyle.get(),
@@ -246,14 +270,16 @@ abstract class QualityPlugin implements Plugin<Project> {
                 }
 
                 tasks.withType(Checkstyle).configureEach { task ->
+                    FileCollection excludeSources = extension.excludeSources
+                    List<String> sources = extension.exclude.get()
                     doFirst {
                         configs.get().resolveCheckstyleConfig()
-                        applyExcludes(it, extension)
+                        QualityPlugin.applyExcludes(it as SourceTask, excludeSources, sources)
                     }
                     reports.xml.required.set(true)
                     reports.html.required.set(extension.htmlReports.get())
                     registerTaskForReport(task, TOOL_CHECKSTYLE)
-                    reportAfterTask(task)
+                    reportAfterTask(task, tasksListener)
                 }
             }
             configurePluginTasks(project, extension, Checkstyle, TOOL_CHECKSTYLE)
@@ -262,6 +288,7 @@ abstract class QualityPlugin implements Plugin<Project> {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected void applyPMD(Project project, QualityExtension extension, Provider<ConfigsService> configs,
+                            Provider<TasksListenerService> tasksListener,
                             boolean register) {
         configurePlugin(project,
                 extension.pmd.get(),
@@ -282,14 +309,16 @@ abstract class QualityPlugin implements Plugin<Project> {
                     pmd("net.sourceforge.pmd:pmd-java:${extension.pmdVersion.get()}")
                 }
                 tasks.withType(Pmd).configureEach { task ->
+                    FileCollection excludeSources = extension.excludeSources
+                    List<String> sources = extension.exclude.get()
                     doFirst {
                         configs.get().resolvePmdConfig()
-                        applyExcludes(it, extension)
+                        QualityPlugin.applyExcludes(it as SourceTask, excludeSources, sources)
                     }
                     reports.xml.required.set(true)
                     reports.html.required.set(extension.htmlReports.get())
                     registerTaskForReport(task, TOOL_PMD)
-                    reportAfterTask(task)
+                    reportAfterTask(task, tasksListener)
                 }
             }
             configurePluginTasks(project, extension, Pmd, TOOL_PMD)
@@ -299,6 +328,7 @@ abstract class QualityPlugin implements Plugin<Project> {
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings(['MethodSize', 'NestedBlockDepth', 'AbcMetric'])
     protected void applySpotbugs(Project project, QualityExtension extension, Provider<ConfigsService> configs,
+                                 Provider<TasksListenerService> tasksListener,
                                  boolean register) {
         // if plugin is not on classpath - do nothing; if plugin in classpath but not applied - apply it
         Class<? extends Plugin> plugin = SpotbugsUtils.findPluginClass(project)
@@ -365,7 +395,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                         }
                     }
                     registerTaskForReport(task, TOOL_SPOTBUGS)
-                    reportAfterTask(task)
+                    reportAfterTask(task, tasksListener)
                 }
             }
 
@@ -391,6 +421,7 @@ abstract class QualityPlugin implements Plugin<Project> {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected void applyCodeNarc(Project project, QualityExtension extension, Provider<ConfigsService> configs,
+                                 Provider<TasksListenerService> tasksListener,
                                  boolean register) {
         configurePlugin(project,
                 extension.codenarc.get(),
@@ -410,11 +441,13 @@ abstract class QualityPlugin implements Plugin<Project> {
                     }
                 }
                 tasks.withType(CodeNarc).configureEach { task ->
+                    FileCollection excludeSources = extension.excludeSources
+                    List<String> sources = extension.exclude.get()
                     doFirst {
                         configs.get().resolveCodenarcConfig()
-                        applyExcludes(it, extension)
+                        QualityPlugin.applyExcludes(it as SourceTask, excludeSources, sources)
                     }
-                    reportAfterTask(task)
+                    reportAfterTask(task, tasksListener)
                     // read codenarc properties under configuration phase
                     readCodenarcProperties(project)
                     reports.xml.required.set(true)
@@ -447,6 +480,7 @@ abstract class QualityPlugin implements Plugin<Project> {
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings('MethodSize')
     protected void configureCpdPlugin(Project project, QualityExtension extension, Provider<ConfigsService> configs,
+                                      Provider<TasksListenerService> tasksListener,
                                       boolean onlyGroovy) {
         if (!extension.cpd.get()) {
             return
@@ -470,9 +504,12 @@ abstract class QualityPlugin implements Plugin<Project> {
                 }
                 // only default task is affected
                 tasks.named('cpdCheck').configure {
+                    boolean unifySources = extension.cpdUnifySources.get()
+                    FileCollection excludeSources = extension.excludeSources
+                    List<String> sources = extension.exclude.get()
                     doFirst {
-                        if (extension.cpdUnifySources.get()) {
-                            applyExcludes(it, extension)
+                        if (unifySources) {
+                            QualityPlugin.applyExcludes(it as SourceTask, excludeSources, sources)
                         }
                     }
                 }
@@ -497,7 +534,7 @@ abstract class QualityPlugin implements Plugin<Project> {
                     configs.get().resolveCpdXsl()
                 }
                 registerTaskForReport(task, TOOL_CPD)
-                reportAfterTask(task)
+                reportAfterTask(task, tasksListener)
             }
             // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
             // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
@@ -575,13 +612,13 @@ abstract class QualityPlugin implements Plugin<Project> {
         qualityTasks.add(taskDescFactory[type].buildDesc(task, type))
     }
 
-    protected void reportAfterTask(Task task) {
+    protected void reportAfterTask(Task task, Provider<TasksListenerService> tasksListener) {
         // This is the only way to print report DIRECTLY AFTER the task output (like it was before).
         // Also, the only way to report after not executed task (from cache)
         // If task execution fails, doLast block would not be called at all, and in this case build service
         // task listener would log it
         task.doLast {
-            tasksListener.get().execute(task.path)
+            tasksListener.get().execute(it.path)
         }
     }
 
@@ -622,24 +659,6 @@ abstract class QualityPlugin implements Plugin<Project> {
                     t.enabled = called != null && (called == t || called.name.startsWith(QUALITY_TASK))
                 }
             }
-        }
-    }
-
-    /**
-     * Applies exclude path patterns to quality tasks.
-     * Note: this does not apply to animalsniffer. For spotbugs this appliance is useless, see custom support above.
-     *
-     * @param task quality task
-     * @param extension extension instance
-     */
-    protected void applyExcludes(SourceTask task, QualityExtension extension) {
-        if (extension.excludeSources) {
-            // directly excluded sources
-            task.source = task.source - extension.excludeSources
-        }
-        if (extension.exclude.get()) {
-            // exclude by patterns (relative to source roots)
-            task.exclude extension.exclude.get()
         }
     }
 
