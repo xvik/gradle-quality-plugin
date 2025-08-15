@@ -9,6 +9,7 @@ import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -31,6 +32,7 @@ import ru.vyarus.gradle.plugin.quality.service.TasksListenerService
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.task.QualityToolVersionsTask
 import ru.vyarus.gradle.plugin.quality.util.CpdUtils
+import ru.vyarus.gradle.plugin.quality.util.FileUtils
 import ru.vyarus.gradle.plugin.quality.util.SpotbugsExclusionConfigProvider
 import ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils
 
@@ -374,11 +376,21 @@ abstract class QualityPlugin implements Plugin<Project> {
                 }
 
                 tasks.withType(spotbugsTaskType).configureEach { task ->
+                    SourceSet set = FileUtils.findMatchingSet(TOOL_SPOTBUGS, task.name, project.sourceSets)
+                    // apt is a special dir, not mentioned in sources!
+                    File aptGenerated = (task.project.tasks.findByName(set.compileJavaTaskName) as JavaCompile)
+                            .options.generatedSourceOutputDirectory.get().asFile
+                    Set<File> setSourceDirs = set.allJava.srcDirs
+                    Integer rank = extension.spotbugsMaxRank.get()
+                    List<String> excludes = extension.exclude.get()
+                    FileCollection excludeSources = extension.excludeSources
+                    ObjectFactory factory = project.objects
                     doFirst {
                         configs.get().resolveSpotbugsExclude()
                         // it is not possible to substitute filter file here (due to locked Property)
                         // but possible to update already configured file (it must be already a temp file here)
-                        SpotbugsUtils.replaceExcludeFilter(task, extension, logger)
+                        SpotbugsUtils.replaceExcludeFilter(it, aptGenerated, setSourceDirs,
+                                rank, excludes, excludeSources, factory)
                     }
                     // have to use this way instead of doFirst hook, because nothing else will work (damn props!)
                     excludeFilter.set(project.provider(new SpotbugsExclusionConfigProvider(

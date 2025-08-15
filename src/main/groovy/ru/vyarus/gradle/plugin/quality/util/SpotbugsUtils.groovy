@@ -7,11 +7,10 @@ import groovy.xml.XmlUtil
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.file.FileCollection
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.JavaBasePlugin
-import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskCollection
-import org.gradle.api.tasks.compile.JavaCompile
-import org.slf4j.Logger
 import ru.vyarus.gradle.plugin.quality.QualityExtension
 import ru.vyarus.gradle.plugin.quality.QualityPlugin
 
@@ -148,26 +147,19 @@ class SpotbugsUtils {
      * @param logger project logger for error messages
      */
     @CompileStatic(TypeCheckingMode.SKIP)
-    static void replaceExcludeFilter(Task task, QualityExtension extension, Logger logger) {
+    @SuppressWarnings('ParameterCount')
+    static void replaceExcludeFilter(Task task, File aptGenerated, Set<File> setSourceDirs,
+                                     Integer configuredRank, List<String> excludes, FileCollection excludeSources,
+                                     ObjectFactory factory) {
         // setting means max allowed rank, but filter evicts all ranks >= specified (so +1)
-        Integer rank = extension.spotbugsMaxRank.get() < MAX_RANK ? extension.spotbugsMaxRank.get() + 1 : null
+        Integer rank = configuredRank < MAX_RANK ? configuredRank + 1 : null
 
-        SourceSet set = FileUtils.findMatchingSet(QualityPlugin.TOOL_SPOTBUGS, task.name, extension.sourceSets.get())
-        if (!set) {
-            logger.error("[SpotBugs] Failed to find source set for task ${task.name}: exclusions " +
-                    ' will not be applied')
-            return
-        }
-        // apt is a special dir, not mentioned in sources!
-        JavaCompile javaCompile = task.project.tasks.findByName(set.compileJavaTaskName) as JavaCompile
-        File aptGenerated = javaCompile.options.generatedSourceOutputDirectory.get().asFile
-
-        Set<File> ignored = FileUtils.resolveIgnoredFiles(task.sourceDirs.asFileTree, extension.exclude.get())
+        Set<File> ignored = FileUtils.resolveIgnoredFiles(task.sourceDirs.asFileTree, excludes)
         // exclude all apt-generated files
-        ignored.addAll(task.project.fileTree(aptGenerated).filter { it.path.endsWith('.java') }.files)
-        if (extension.excludeSources) {
+        ignored.addAll(factory.fileTree().from(aptGenerated).filter { it.path.endsWith('.java') }.files)
+        if (excludeSources) {
             // add directly excluded files
-            ignored.addAll(extension.excludeSources.asFileTree.matching { include '**/*.java' }.files)
+            ignored.addAll(excludeSources.asFileTree.matching { include '**/*.java' }.files)
         }
         if (!ignored && !rank) {
             // no custom excludes required
@@ -175,7 +167,7 @@ class SpotbugsUtils {
         }
 
         Collection<File> sources = []
-        sources.addAll(set.allJava.srcDirs)
+        sources.addAll(setSourceDirs)
         sources.add(aptGenerated)
 
         mergeExcludes(task.excludeFilter.get().asFile, ignored, sources, rank)
