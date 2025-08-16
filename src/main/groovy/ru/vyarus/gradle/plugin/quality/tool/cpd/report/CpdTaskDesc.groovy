@@ -1,6 +1,7 @@
-package ru.vyarus.gradle.plugin.quality.report.model
+package ru.vyarus.gradle.plugin.quality.tool.cpd.report
 
 import groovy.transform.CompileStatic
+import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
 
 /**
  * Cpd task info, required for reporter.

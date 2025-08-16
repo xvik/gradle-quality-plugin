@@ -12,7 +12,8 @@ import org.gradle.tooling.events.task.TaskFinishEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import ru.vyarus.gradle.plugin.quality.QualityPlugin
-import ru.vyarus.gradle.plugin.quality.report.*
+import ru.vyarus.gradle.plugin.quality.report.HtmlReportGenerator
+import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
 import ru.vyarus.gradle.plugin.quality.util.DurationFormatter
 
@@ -42,13 +43,12 @@ abstract class TasksListenerService implements BuildService<Params>, OperationCo
     private final Map<String, Reporter> reporters = [:]
 
     TasksListenerService() {
-        reporters[QualityPlugin.TOOL_CHECKSTYLE] = new CheckstyleReporter()
-        reporters[QualityPlugin.TOOL_CODENARC] = new CodeNarcReporter(
-                parameters.reportersData.get().get(QualityPlugin.TOOL_CODENARC) as Properties)
-        reporters[QualityPlugin.TOOL_CPD] = new CpdReporter(parameters.configsService)
-        reporters[QualityPlugin.TOOL_PMD] = new PmdReporter()
-        reporters[QualityPlugin.TOOL_SPOTBUGS] = new SpotbugsReporter(
-                parameters.reportersData.get().get(QualityPlugin.TOOL_SPOTBUGS) as Map<String, String>)
+        // reporters must be initialized independently because under configuration cache plugin would not be created
+        // at all, but reporters still need to be initialized
+        QualityPlugin.TOOLS.each {
+            reporters[it.toolName] = it.createReporter(
+                    parameters.reportersData.get()[it.toolName], parameters.configsService)
+        }
     }
 
     /**

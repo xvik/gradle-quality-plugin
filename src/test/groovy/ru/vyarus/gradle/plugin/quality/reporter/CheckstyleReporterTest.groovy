@@ -27,7 +27,7 @@ class CheckstyleReporterTest extends AbstractKitTest {
 
             task testReport() {
                 doLast {
-                    new ru.vyarus.gradle.plugin.quality.report.CheckstyleReporter().report(checkstyleMain, 'main')
+                    new ru.vyarus.gradle.plugin.quality.tool.checkstyle.report.CheckstyleReporter().report(checkstyleMain, 'main')
                 }
             }
         """)

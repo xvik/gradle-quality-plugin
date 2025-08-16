@@ -1,4 +1,4 @@
-package ru.vyarus.gradle.plugin.quality.util
+package ru.vyarus.gradle.plugin.quality.tool.spotbugs
 
 import groovy.transform.CompileStatic
 import org.gradle.api.Task

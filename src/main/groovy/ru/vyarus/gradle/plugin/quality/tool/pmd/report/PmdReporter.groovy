@@ -1,4 +1,4 @@
-package ru.vyarus.gradle.plugin.quality.report
+package ru.vyarus.gradle.plugin.quality.tool.pmd.report
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
@@ -6,9 +6,11 @@ import groovy.xml.XmlParser
 import org.gradle.api.Task
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
-import ru.vyarus.gradle.plugin.quality.QualityPlugin
+import ru.vyarus.gradle.plugin.quality.report.ReportUtils
+import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
-import ru.vyarus.gradle.plugin.quality.report.model.factory.ModelFactory
+import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
+import ru.vyarus.gradle.plugin.quality.tool.pmd.PmdTool
 
 /**
  * Prints pmd errors (from xml report) into console.
@@ -23,7 +25,7 @@ class PmdReporter implements Reporter {
 
     // for tests
     void report(Task task, String sourceSet) {
-        report(new ModelFactory().buildDesc(task, QualityPlugin.TOOL_PMD), sourceSet)
+        report(new TaskDescFactory().buildDesc(task, PmdTool.NAME), sourceSet)
     }
 
     @Override

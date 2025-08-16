@@ -1,4 +1,4 @@
-package ru.vyarus.gradle.plugin.quality.report
+package ru.vyarus.gradle.plugin.quality.tool.checkstyle.report
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
@@ -6,9 +6,11 @@ import groovy.xml.XmlParser
 import org.gradle.api.Task
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
-import ru.vyarus.gradle.plugin.quality.QualityPlugin
+import ru.vyarus.gradle.plugin.quality.report.ReportUtils
+import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
-import ru.vyarus.gradle.plugin.quality.report.model.factory.ModelFactory
+import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
+import ru.vyarus.gradle.plugin.quality.tool.checkstyle.CheckstyleTool
 
 /**
  * Prints checkstyle errors (from xml report) into console.
@@ -25,7 +27,7 @@ class CheckstyleReporter implements Reporter {
 
     // for tests
     void report(Task task, String sourceSet) {
-        report(new ModelFactory().buildDesc(task, QualityPlugin.TOOL_CHECKSTYLE), sourceSet)
+        report(new TaskDescFactory().buildDesc(task, CheckstyleTool.NAME), sourceSet)
     }
 
     @Override

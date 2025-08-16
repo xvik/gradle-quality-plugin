@@ -1,4 +1,4 @@
-package ru.vyarus.gradle.plugin.quality.util
+package ru.vyarus.gradle.plugin.quality.tool.spotbugs
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
@@ -12,7 +12,7 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.TaskCollection
 import ru.vyarus.gradle.plugin.quality.QualityExtension
-import ru.vyarus.gradle.plugin.quality.QualityPlugin
+import ru.vyarus.gradle.plugin.quality.util.FileUtils
 
 /**
  * Spotbugs helper utils.
@@ -82,7 +82,7 @@ class SpotbugsUtils {
                 .configure { check ->
                     // all tasks that should be assigned to check
                     List<String> requiredTasks = extension.sourceSets.get()*.getTaskName(
-                            QualityPlugin.TOOL_SPOTBUGS, null)
+                            SpotbugsTool.NAME, null)
                     // tasks already assigned to check, but not required
                     List<String> toRemove = project.tasks.withType(spotbugsTaskType).matching { Task t ->
                         !requiredTasks.contains(t.name)
@@ -97,7 +97,7 @@ class SpotbugsUtils {
                     // so we search and remove this container
                     depends.removeIf {
                         it instanceof TaskCollection && (it as TaskCollection<Task>)
-                                .find { it.name.startsWith(QualityPlugin.TOOL_SPOTBUGS) }
+                                .find { it.name.startsWith(SpotbugsTool.NAME) }
                     }
                     // no remove verification because in the latest plugin there is an option to disable tasks addition
                     // which means the absence of configured tasks might be expected behaviour

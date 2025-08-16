@@ -1,11 +1,11 @@
 package ru.vyarus.gradle.plugin.quality.util
 
-import org.gradle.api.Project
+
 import ru.vyarus.gradle.plugin.quality.AbstractTest
 
 import java.nio.file.Files
 
-import static ru.vyarus.gradle.plugin.quality.util.SpotbugsUtils.mergeExcludes
+import static ru.vyarus.gradle.plugin.quality.tool.spotbugs.SpotbugsUtils.mergeExcludes
 
 /**
  * @author Vyacheslav Rusakov

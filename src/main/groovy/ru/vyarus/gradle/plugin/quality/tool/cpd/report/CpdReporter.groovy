@@ -1,4 +1,4 @@
-package ru.vyarus.gradle.plugin.quality.report
+package ru.vyarus.gradle.plugin.quality.tool.cpd.report
 
 import groovy.ant.AntBuilder
 import groovy.transform.CompileStatic
@@ -10,9 +10,11 @@ import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Provider
 import ru.vyarus.gradle.plugin.quality.QualityPlugin
-import ru.vyarus.gradle.plugin.quality.report.model.CpdTaskDesc
-import ru.vyarus.gradle.plugin.quality.report.model.factory.CpdModelFactory
+import ru.vyarus.gradle.plugin.quality.report.HtmlReportGenerator
+import ru.vyarus.gradle.plugin.quality.report.ReportUtils
+import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
+import ru.vyarus.gradle.plugin.quality.tool.cpd.CpdTool
 
 /**
  * Prints CPD duplicates (from xml report) into console.
@@ -40,7 +42,7 @@ class CpdReporter implements Reporter<CpdTaskDesc>, HtmlReportGenerator<CpdTaskD
 
     // for tests
     void report(Task task, String sourceSet) {
-        report(new CpdModelFactory().buildDesc(task, QualityPlugin.TOOL_CPD) as CpdTaskDesc, sourceSet)
+        report(new CpdTaskDescFactory().buildDesc(task, CpdTool.NAME) as CpdTaskDesc, sourceSet)
     }
 
     @Override

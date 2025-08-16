@@ -1,4 +1,4 @@
-package ru.vyarus.gradle.plugin.quality.report
+package ru.vyarus.gradle.plugin.quality.tool.codenarc.report
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
@@ -7,9 +7,11 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
-import ru.vyarus.gradle.plugin.quality.QualityPlugin
+import ru.vyarus.gradle.plugin.quality.report.ReportUtils
+import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
-import ru.vyarus.gradle.plugin.quality.report.model.factory.ModelFactory
+import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
+import ru.vyarus.gradle.plugin.quality.tool.codenarc.CodenarcTool
 import ru.vyarus.gradle.plugin.quality.util.FileUtils
 
 /**
@@ -49,7 +51,7 @@ class CodeNarcReporter implements Reporter {
 
     // for tests
     void report(Task task, String sourceSet) {
-        report(new ModelFactory().buildDesc(task, QualityPlugin.TOOL_CODENARC), sourceSet)
+        report(new TaskDescFactory().buildDesc(task, CodenarcTool.NAME), sourceSet)
     }
 
     @Override

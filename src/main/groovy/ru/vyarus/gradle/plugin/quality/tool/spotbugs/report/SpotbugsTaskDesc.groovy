@@ -1,6 +1,7 @@
-package ru.vyarus.gradle.plugin.quality.report.model
+package ru.vyarus.gradle.plugin.quality.tool.spotbugs.report
 
 import groovy.transform.CompileStatic
+import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
 
 /**
  * Spotbugs task info, required for reporter.

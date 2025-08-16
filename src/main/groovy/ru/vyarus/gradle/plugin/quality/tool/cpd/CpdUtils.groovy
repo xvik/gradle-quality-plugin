@@ -1,4 +1,4 @@
-package ru.vyarus.gradle.plugin.quality.util
+package ru.vyarus.gradle.plugin.quality.tool.cpd
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode

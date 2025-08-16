@@ -23,7 +23,7 @@ class CodeNarcReporterTest extends AbstractKitTest {
 
             task testReport() {
                 doLast {
-                    new ru.vyarus.gradle.plugin.quality.report.CodeNarcReporter(project).report(codenarcMain, 'main')
+                    new ru.vyarus.gradle.plugin.quality.tool.codenarc.report.CodeNarcReporter(project).report(codenarcMain, 'main')
                 }
             }
         """)

@@ -1,11 +1,10 @@
-package ru.vyarus.gradle.plugin.quality.report.model.factory
+package ru.vyarus.gradle.plugin.quality.report.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Task
 import org.gradle.api.reporting.Report
 import org.gradle.api.tasks.SourceSet
-import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
 
 /**
  * Copies all task information for reporter (because task itself can't be preserved).
@@ -14,7 +13,7 @@ import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
  * @since 11.08.2025
  */
 @CompileStatic
-class ModelFactory {
+class TaskDescFactory {
 
     /**
      * Build task descriptor for reporter.

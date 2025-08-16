@@ -1,4 +1,4 @@
-package ru.vyarus.gradle.plugin.quality.report.model.factory
+package ru.vyarus.gradle.plugin.quality.tool.cpd.report
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
@@ -6,8 +6,8 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.SourceSet
-import ru.vyarus.gradle.plugin.quality.report.model.CpdTaskDesc
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
+import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
 
 /**
  * Model factory for cpd reporter.
@@ -16,7 +16,7 @@ import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
  * @since 11.08.2025
  */
 @CompileStatic(TypeCheckingMode.SKIP)
-class CpdModelFactory extends ModelFactory {
+class CpdTaskDescFactory extends TaskDescFactory {
 
     @Override
     TaskDesc buildDesc(Task task, String tool) {
