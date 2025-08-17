@@ -107,7 +107,7 @@ class CpdReporter implements Reporter<CpdTaskDesc>, HtmlReportGenerator<CpdTaskD
         // avoid redundant re-generation
         if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
             new AntBuilder().xslt(in: reportFile,
-                    style: configs.get().resolveCpdXsl(),
+                    style: configs.get().resolveConfigFile(CpdTool.cpd_xsl).asFile,
                     out: htmlReportFile.canonicalPath,
             )
         }

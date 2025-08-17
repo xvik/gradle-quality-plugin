@@ -34,7 +34,7 @@
         * For java 8 spotbugs plugin 5.x could be used
     - For multimodule projects it is enough to specify spotbugs plugin in the root project (with "apply false")
     - Custom spotbugs plugin is not used anymore: now extra dependencies cleared from the check task
-* Use plugin version for configs cache path to avoid using outdated default configs after plugin version change
+* Fix default configs caching on plugin version change
 * Add `qualityToolVersions` task to show applied tools versions. Could be useful for debug
   because now spotbugs and checkstyle versions depend on a used java version
 * (BREAKING) Quality extension properties now wrapped with Property:
@@ -44,6 +44,11 @@
  version for java 11 and spotbugs for java 8. False by default (used for tests)
 * quality.checkstyle and quality.spotbugs by default analyze configured tool versions 
   and if version is compatible with current jvm enable tool (no need to manually enable tool, just set version)
+* Fix quality tasks up-to-date check
+* Fix build cache for checkstyle tasks 
+* Configuration cache support
+  - There is now a separate task copyQualityConfigs actually performing default configs copying
+    allowing gradle to properly cache default config files 
 
 ### 5.0.0 (2024-02-01)
 * (BREAKING) Drop gradle 5 and 6 support

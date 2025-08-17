@@ -146,11 +146,9 @@ class BuildCacheSupportKitTest extends AbstractKitTest {
         result = run('clean', 'check', '--build-cache')
 
         then: "all plugins detect violations"
-        result.task(":check").outcome == TaskOutcome.SUCCESS
+        result.task(":check").outcome == TaskOutcome.UP_TO_DATE
         result.task(":codenarcMain").outcome == TaskOutcome.FROM_CACHE
-        // since gradle 7 checkstyle's config dir must point to existing directory and so
-        // after project move directory (configDirectory) would always change and cache would miss
-        result.task(":checkstyleMain").outcome == TaskOutcome.SUCCESS
+        result.task(":checkstyleMain").outcome == TaskOutcome.FROM_CACHE
         result.task(":spotbugsMain").outcome == TaskOutcome.FROM_CACHE
         result.task(":pmdMain").outcome == TaskOutcome.FROM_CACHE
         result.output.contains('CodeNarc violations were found in 2 files')

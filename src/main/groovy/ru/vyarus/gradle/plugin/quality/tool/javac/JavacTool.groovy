@@ -2,12 +2,9 @@ package ru.vyarus.gradle.plugin.quality.tool.javac
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.process.CommandLineArgumentProvider
-import ru.vyarus.gradle.plugin.quality.QualityExtension
-import ru.vyarus.gradle.plugin.quality.service.ConfigsService
-import ru.vyarus.gradle.plugin.quality.tool.ProjectLang
+import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 
@@ -28,12 +25,12 @@ class JavacTool implements QualityTool {
     }
 
     @Override
-    List<ProjectLang> getSupportedLanguages() {
-        return [ProjectLang.Java, ProjectLang.Groovy]
+    List<ProjectSources> getAutoEnableForSources() {
+        return []
     }
 
     @Override
-    Set<File> copyConfigs(Provider<ConfigsService> configs, QualityExtension extension) {
+    List<String> getConfigs() {
         return []
     }
 

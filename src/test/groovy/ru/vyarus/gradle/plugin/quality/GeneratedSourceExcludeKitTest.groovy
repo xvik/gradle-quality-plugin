@@ -22,7 +22,7 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             
             repositories { mavenCentral() }
             dependencies {
-                swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.19'
+                swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.71'
                 implementation 'io.swagger.core.v3:swagger-annotations:2.1.0'
 
                 implementation 'com.fasterxml.jackson.core:jackson-core:2.10.4'        
@@ -68,7 +68,7 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
 
         then: "spotbugs does not detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        !result.output.contains('Checkstyle violations were found')
+        result.output.contains('Checkstyle rule violations were found')
     }
 
     def "Check generated exclusion by path"() {
@@ -77,12 +77,12 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
-                 id 'org.hidetake.swagger.generator' version '2.18.2' 
+                 id 'org.hidetake.swagger.generator' version '2.19.2' 
             }           
             
             repositories { mavenCentral() }
             dependencies {
-                swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.19'
+                swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.71'  
                 implementation 'io.swagger.core.v3:swagger-annotations:2.1.0'
 
                 implementation 'com.fasterxml.jackson.core:jackson-core:2.10.4'        
@@ -130,7 +130,7 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
 
         then: "plugins does not detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        !result.output.contains('Checkstyle violations were found')
+        !result.output.contains('Checkstyle rule violations were found')
     }
 
 
@@ -140,12 +140,12 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
-                id 'org.hidetake.swagger.generator' version '2.18.2' 
+                id 'org.hidetake.swagger.generator' version '2.19.2' 
             }           
             
             repositories { mavenCentral() }
             dependencies {
-                swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.19'
+                swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.71'
                 implementation 'io.swagger.core.v3:swagger-annotations:2.1.0'
 
                 implementation 'com.fasterxml.jackson.core:jackson-core:2.10.4'        
@@ -193,6 +193,6 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
 
         then: "plugins does not detect violations"
         result.task(":check").outcome == TaskOutcome.SUCCESS
-        !result.output.contains('Checkstyle violations were found')
+        !result.output.contains('Checkstyle rule violations were found')
     }
 }

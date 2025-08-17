@@ -1,7 +1,8 @@
 package ru.vyarus.gradle.plugin.quality.util
 
 import org.gradle.api.Project
-import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.ProviderFactory
 import ru.vyarus.gradle.plugin.quality.AbstractTest
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
 
@@ -116,21 +117,27 @@ class ConfigInitSyncTest extends AbstractTest {
         }
 
         @Override
+        ProviderFactory getProviderFactory() {
+            return project.providers
+        }
+
+        @Override
         Params getParameters() {
             Params params = new Params() {
 
-                RegularFileProperty dir = project.objects.fileProperty()
-                RegularFileProperty temp = project.objects.fileProperty()
+                DirectoryProperty dir = project.objects.directoryProperty()
+                DirectoryProperty temp = project.objects.directoryProperty()
 
                 @Override
-                RegularFileProperty getConfigDir() {
+                DirectoryProperty getConfigDir() {
                     return dir
                 }
 
                 @Override
-                RegularFileProperty getTempDir() {
+                DirectoryProperty getTempDir() {
                     return temp
                 }
+
             }
             params.configDir.set(new File("/tmp/some"))
             params.tempDir.set(new File("/tmp/other"))

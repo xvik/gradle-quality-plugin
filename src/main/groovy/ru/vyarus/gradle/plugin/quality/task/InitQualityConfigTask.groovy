@@ -25,7 +25,7 @@ abstract class InitQualityConfigTask extends DefaultTask {
     boolean override
 
     @Internal
-    abstract Property<ConfigsService> getConfigs();
+    abstract Property<ConfigsService> getConfigsService()
 
     InitQualityConfigTask() {
         group = 'build setup'
@@ -34,6 +34,6 @@ abstract class InitQualityConfigTask extends DefaultTask {
 
     @TaskAction
     void run() {
-        configs.get().initUserConfigs(override)
+        configsService.get().initUserConfigs(override)
     }
 }

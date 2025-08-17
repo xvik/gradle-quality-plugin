@@ -3,17 +3,17 @@ package ru.vyarus.gradle.plugin.quality.tool.codenarc
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.quality.CodeNarc
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceTask
 import ru.vyarus.gradle.plugin.quality.QualityExtension
-import ru.vyarus.gradle.plugin.quality.QualityPlugin
 import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
-import ru.vyarus.gradle.plugin.quality.tool.ProjectLang
+import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.tool.codenarc.report.CodeNarcReporter
@@ -26,9 +26,11 @@ import ru.vyarus.gradle.plugin.quality.tool.codenarc.report.CodeNarcReporter
  * @see CodeNarcPlugin
  */
 @CompileStatic(TypeCheckingMode.SKIP)
-@SuppressWarnings('GetterMethodCouldBeProperty')
+@SuppressWarnings(['GetterMethodCouldBeProperty', 'PropertyName'])
 class CodenarcTool implements QualityTool {
     static final String NAME = 'codenarc'
+
+    static final String codenarc_config = 'codenarc/codenarc.xml'
 
     private static final String CODENARC_GROOVY4 = '-groovy-4.0'
 
@@ -40,17 +42,18 @@ class CodenarcTool implements QualityTool {
     }
 
     @Override
-    List<ProjectLang> getSupportedLanguages() {
-        return [ProjectLang.Groovy]
+    List<ProjectSources> getAutoEnableForSources() {
+        return [ProjectSources.Groovy]
     }
 
     @Override
-    Set<File> copyConfigs(Provider<ConfigsService> configs, QualityExtension extension) {
-        ConfigsService service = configs.get()
+    List<String> getConfigs() {
+        return [codenarc_config]
+    }
 
-        return  [
-                service.resolveCodenarcConfig(true)
-        ]
+    @Override
+    Reporter createReporter(Object param, Provider<ConfigsService> configs) {
+        return new CodeNarcReporter(param as Properties)
     }
 
     @Override
@@ -60,22 +63,16 @@ class CodenarcTool implements QualityTool {
             return
         }
         context.withPlugin(CodeNarcPlugin, register) {
-            configureCodenarc(context.project, context.extension, context.configs, context)
+            configureCodenarc(context.project, context.extension, context)
         }
     }
 
-    @Override
-    Reporter createReporter(Object param, Provider<ConfigsService> configs) {
-        return new CodeNarcReporter(param as Properties)
-    }
-
-    private void configureCodenarc(Project project, QualityExtension extension, Provider<ConfigsService> configs,
-                                   ToolContext context) {
+    private void configureCodenarc(Project project, QualityExtension extension, ToolContext context) {
         project.configure(project) {
             codenarc {
                 toolVersion = extension.codenarcVersion.get()
                 ignoreFailures = !extension.strict.get()
-                configFile = configs.get().resolveCodenarcConfig(false)
+                configFile = context.resolveConfigFile(codenarc_config)
                 sourceSets = extension.sourceSets.get()
             }
             if (extension.codenarcGroovy4.get() && !extension.codenarcVersion.get().endsWith(CODENARC_GROOVY4)) {
@@ -84,14 +81,13 @@ class CodenarcTool implements QualityTool {
                     codenarc "org.codenarc:CodeNarc:${extension.codenarcVersion.get()}$CODENARC_GROOVY4"
                 }
             }
-            tasks.withType(CodeNarc).configureEach { task ->
+            tasks.withType(CodeNarc).configureEach { Task task ->
+                task.dependsOn(context.configsTask)
                 FileCollection excludeSources = extension.excludeSources
                 List<String> sources = extension.exclude.get()
                 doFirst {
-                    // toda remove
-                    configs.get().resolveCodenarcConfig()
-                    // todo move away
-                    QualityPlugin.applyExcludes(it as SourceTask, excludeSources, sources)
+                    // note that codenarc task will be up-to-date under configuration cache, so no problem
+                    ToolContext.applyExcludes(it as SourceTask, excludeSources, sources)
                 }
                   // read codenarc properties under configuration phase
                 context.storeReporterData(toolName) { CodeNarcReporter.loadCodenarcProperties(project) }

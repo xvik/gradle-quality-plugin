@@ -3,10 +3,8 @@ package ru.vyarus.gradle.plugin.quality.tool.animalsniffer
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
-import org.gradle.api.provider.Provider
 import ru.vyarus.gradle.plugin.quality.QualityExtension
-import ru.vyarus.gradle.plugin.quality.service.ConfigsService
-import ru.vyarus.gradle.plugin.quality.tool.ProjectLang
+import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 
@@ -29,13 +27,13 @@ class AnimalsnifferTool implements QualityTool {
     }
 
     @Override
-    List<ProjectLang> getSupportedLanguages() {
+    List<ProjectSources> getAutoEnableForSources() {
         // for all languages (used manually apply plugin when required)
-        return ProjectLang.values()
+        return ProjectSources.values()
     }
 
     @Override
-    Set<File> copyConfigs(Provider<ConfigsService> configs, QualityExtension extension) {
+    List<String> getConfigs() {
         return []
     }
 

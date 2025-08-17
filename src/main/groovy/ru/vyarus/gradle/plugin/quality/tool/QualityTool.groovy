@@ -2,7 +2,6 @@ package ru.vyarus.gradle.plugin.quality.tool
 
 import groovy.transform.CompileStatic
 import org.gradle.api.provider.Provider
-import ru.vyarus.gradle.plugin.quality.QualityExtension
 import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
 
@@ -34,39 +33,20 @@ interface QualityTool {
      * languages only affects plugin auto registration (which detected language should lead to automatic plugin
      * enabling).
      *
-     * @return languages to activate tool for
+     * @return detected sources to auto activate tool plugin
      */
-    List<ProjectLang> getSupportedLanguages()
+    List<ProjectSources> getAutoEnableForSources()
 
     /**
-     * If the tool requires compiled classes then plugin configuration must be delayed after java compilation.
-     *
-     * @return true if quality plugin requires compiled classes
-     */
-    default boolean isClassesRequired() {
-        return false
-    }
-
-    /**
-     * Copy required configuration files into tmp configs directory (custom directory used to collect user-declared
-     * configs together with default configs from plugin jar).
-     *
-     * @param configs configs service
-     * @param extension extension
-     * @return set of copied files
-     */
-    Set<File> copyConfigs(Provider<ConfigsService> configs, QualityExtension extension)
-
-    /**
-     * Perform custom tool configurations.
+     * Specify required config files. Plugin would decide if actual copying in required (user may provide manual file).
      * <p>
-     * All tools are always configured. Tool language only affects tools auto registration, but
-     * plugins might be enabled manually and in that case it must be also configured.
+     * IMPORTANT: only files not present in user dir will be copied. Config selector looks first in this tmp dir and
+     * only after falls back to user config. This is important for cases like spotbugs exclude filter when
+     * user provided xml file could be updated dynamically.
      *
-     * @param context plugin context
-     * @param register auto plugin registration (when related sources detected in project)
+     * @return config file paths
      */
-    void configure(ToolContext context, boolean register)
+    List<String> getConfigs()
 
     /**
      * Create console reporter for task, if required. When reporter is used, main configuration must call
@@ -85,4 +65,15 @@ interface QualityTool {
         // null means custom reporter not used by tool
         return null
     }
+
+    /**
+     * Perform custom tool configurations.
+     * <p>
+     * All tools are always configured. Tool language only affects tools auto registration, but
+     * plugins might be enabled manually and in that case it must be also configured.
+     *
+     * @param context plugin context
+     * @param register auto plugin registration (when related sources detected in project)
+     */
+    void configure(ToolContext context, boolean register)
 }

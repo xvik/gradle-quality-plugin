@@ -11,12 +11,11 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.TaskProvider
 import ru.vyarus.gradle.plugin.quality.QualityExtension
-import ru.vyarus.gradle.plugin.quality.QualityPlugin
 import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.tool.cpd.report.CpdTaskDescFactory
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
-import ru.vyarus.gradle.plugin.quality.tool.ProjectLang
+import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.tool.cpd.report.CpdReporter
@@ -31,9 +30,11 @@ import ru.vyarus.gradle.plugin.quality.tool.cpd.report.CpdReporter
  * @see de.aaschmid.gradle.plugins.cpd.CpdPlugin
  */
 @CompileStatic(TypeCheckingMode.SKIP)
-@SuppressWarnings('GetterMethodCouldBeProperty')
+@SuppressWarnings(['GetterMethodCouldBeProperty', 'PropertyName'])
 class CpdTool implements QualityTool {
     static final String NAME = 'cpd'
+
+    static final String cpd_xsl = 'cpd/cpdhtml.xslt'
 
     TaskDescFactory factory = new CpdTaskDescFactory()
 
@@ -43,17 +44,18 @@ class CpdTool implements QualityTool {
     }
 
     @Override
-    List<ProjectLang> getSupportedLanguages() {
-        return ProjectLang.values()
+    List<ProjectSources> getAutoEnableForSources() {
+        return ProjectSources.values()
     }
 
     @Override
-    Set<File> copyConfigs(Provider<ConfigsService> configs, QualityExtension extension) {
-        ConfigsService service = configs.get()
+    List<String> getConfigs() {
+        return [cpd_xsl]
+    }
 
-        return  [
-                service.resolveCpdXsl(true)
-        ]
+    @Override
+    Reporter createReporter(Object param, Provider<ConfigsService> configs) {
+        return new CpdReporter(configs)
     }
 
     @Override
@@ -61,19 +63,18 @@ class CpdTool implements QualityTool {
         if (!context.extension.cpd.get()) {
             return
         }
-        configureCpd(context.project, context.extension, context.configs, context)
+        configureCpd(context.project, context.extension, context)
     }
 
     @SuppressWarnings('MethodSize')
-    void configureCpd(Project project, QualityExtension extension, Provider<ConfigsService> configs,
-                      ToolContext context) {
+    void configureCpd(Project project, QualityExtension extension, ToolContext context) {
         CpdUtils.findAndConfigurePlugin(project) { Project prj, Plugin plugin ->
             boolean sameModuleDeclaration = prj == project
             // STAGE1 for multi-module project this part applies by all modules with quality plugin enabled
             prj.configure(prj) {
                 cpd {
                     // special case for single-module projects
-                    if (sameModuleDeclaration && context.languages == [ProjectLang.Groovy]) {
+                    if (sameModuleDeclaration && context.languages == [ProjectSources.Groovy]) {
                         language = 'groovy'
                     }
                     toolVersion = extension.pmdVersion.get()
@@ -90,8 +91,7 @@ class CpdTool implements QualityTool {
                     List<String> sources = extension.exclude.get()
                     doFirst {
                         if (unifySources) {
-                            // todo move away
-                            QualityPlugin.applyExcludes(it as SourceTask, excludeSources, sources)
+                            ToolContext.applyExcludes(it as SourceTask, excludeSources, sources)
                         }
                     }
                 }
@@ -108,31 +108,23 @@ class CpdTool implements QualityTool {
                 return
             }
 
-            Class<Task> cpdTasksType = plugin.class.classLoader.loadClass('de.aaschmid.gradle.plugins.cpd.Cpd')
+            Class<Task> cpdTaskType = plugin.class.classLoader.loadClass('de.aaschmid.gradle.plugins.cpd.Cpd')
             // reports applied for all registered cpd tasks
-            prj.tasks.withType(cpdTasksType).configureEach { task ->
+            prj.tasks.withType(cpdTaskType).configureEach { task ->
+                task.dependsOn(context.configsTask)
                 reports.xml.required.set(true)
-                doFirst {
-                    // todo remove
-                    configs.get().resolveCpdXsl()
-                }
                 context.registerTaskForReport(task, factory.buildDesc(task, toolName))
             }
             // cpd plugin recommendation: module check must also run cpd (check module changes for duplicates)
             // grouping tasks (checkQualityMain) are not affected because cpd applied to all source sets
             // For single module projects simply make sure check will trigger cpd
             project.tasks.named(JavaBasePlugin.CHECK_TASK_NAME)
-                    .configure { it.dependsOn prj.tasks.withType(cpdTasksType) }
+                    .configure { it.dependsOn prj.tasks.withType(cpdTaskType) }
 
             // cpd disabled together with all quality plugins
             // yes, it's not completely normal that module could disable root project task, but it would be much
             // simpler to use like that (because quality plugin assumed to be applied in subprojects section)
-            context.applyEnabledState(cpdTasksType)
+            context.applyEnabledState(cpdTaskType)
         }
-    }
-
-    @Override
-    Reporter createReporter(Object param, Provider<ConfigsService> configs) {
-        return new CpdReporter(configs)
     }
 }

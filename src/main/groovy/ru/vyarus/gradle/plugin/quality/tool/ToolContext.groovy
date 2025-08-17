@@ -4,14 +4,18 @@ import groovy.transform.CompileStatic
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionGraph
+import org.gradle.api.file.FileCollection
+import org.gradle.api.file.RegularFile
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.TaskProvider
 import ru.vyarus.gradle.plugin.quality.QualityExtension
 import ru.vyarus.gradle.plugin.quality.QualityPlugin
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
 import ru.vyarus.gradle.plugin.quality.service.TasksListenerService
+import ru.vyarus.gradle.plugin.quality.task.CopyConfigsTask
 
 import java.util.concurrent.Callable
 
@@ -28,7 +32,8 @@ class ToolContext {
     final QualityExtension extension
     final Provider<ConfigsService> configs
     private final Provider<TasksListenerService> listenerService
-    final List<ProjectLang> languages
+    final List<ProjectSources> languages
+    final TaskProvider<CopyConfigsTask> configsTask
 
     // used to collect data during configuration (stored later in listener service)
     final List<TaskDesc> qualityTasks
@@ -38,9 +43,10 @@ class ToolContext {
     ToolContext(Project project, QualityExtension extension,
                 Provider<ConfigsService> configs,
                 Provider<TasksListenerService> listenerService,
-                List<ProjectLang> languages,
+                List<ProjectSources> languages,
                 List<TaskDesc> qualityTasks,
-                Map<String, Object> reportersData) {
+                Map<String, Object> reportersData,
+                TaskProvider<CopyConfigsTask> configsTask) {
         this.project = project
         this.extension = extension
         this.configs = configs
@@ -50,6 +56,28 @@ class ToolContext {
         // cache values for configuration cache
         this.qualityTasks = qualityTasks
         this.reportersData = reportersData
+        this.configsTask = configsTask
+    }
+
+    /**
+     * Applies exclude path patterns to quality tasks.
+     * Note: this does not apply to animalsniffer. For spotbugs this appliance is useless, see custom support above.
+     * <p>
+     * The method is static because it is referenced from runtime.
+     *
+     * @param task quality task
+     * @param excludeSources sources to exclude
+     * @param exclude exclude patterns
+     */
+    static void applyExcludes(SourceTask task, FileCollection excludeSources, List<String> exclude) {
+        if (excludeSources) {
+            // directly excluded sources
+            task.source = task.source - excludeSources
+        }
+        if (exclude) {
+            // exclude by patterns (relative to source roots)
+            task.exclude exclude
+        }
     }
 
     /**
@@ -150,5 +178,41 @@ class ToolContext {
                 reportersData.put(tool, data.call())
             }
         }
+    }
+
+    /**
+     * Decide what config file to use: either user provided from custom user directory or copied tmp config
+     * from plugin jar. Note that config would be copied with a special task  - here only correct target selection
+     * is required.
+     *
+     * @param path file path
+     * @return file
+     */
+    File resolveConfigFile(String path) {
+        return resolveRegularConfigFile(path).asFile
+    }
+
+    /**
+     * @param path file path
+     * @return path to config file in user directory (if user manually provide it)
+     */
+    File userConfigFile(String path) {
+        return userRegularConfigFile(path).asFile
+    }
+
+    /**
+     * @param path file path
+     * @return regular file (required by some plugins like spotbugs)
+     */
+    RegularFile resolveRegularConfigFile(String path) {
+        return configs.get().resolveConfigFile(path)
+    }
+
+    /**
+     * @param path file path
+     * @return regular file (required by some plugins like spotbugs)
+     */
+    RegularFile userRegularConfigFile(String path) {
+        return configs.get().userConfigFile(path)
     }
 }

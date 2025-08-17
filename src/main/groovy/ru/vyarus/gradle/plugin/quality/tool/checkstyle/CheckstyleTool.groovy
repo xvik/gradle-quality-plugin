@@ -3,17 +3,17 @@ package ru.vyarus.gradle.plugin.quality.tool.checkstyle
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceTask
 import ru.vyarus.gradle.plugin.quality.QualityExtension
-import ru.vyarus.gradle.plugin.quality.QualityPlugin
 import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
-import ru.vyarus.gradle.plugin.quality.tool.ProjectLang
+import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.tool.checkstyle.report.CheckstyleReporter
@@ -26,12 +26,24 @@ import ru.vyarus.gradle.plugin.quality.tool.checkstyle.report.CheckstyleReporter
  * @see CheckstylePlugin
  */
 @CompileStatic(TypeCheckingMode.SKIP)
-@SuppressWarnings('GetterMethodCouldBeProperty')
+@SuppressWarnings(['GetterMethodCouldBeProperty', 'PropertyName'])
 class CheckstyleTool implements QualityTool {
 
     static final String NAME = 'checkstyle'
 
+    static final String checkstyle_config = 'checkstyle/checkstyle.xml'
+    static final String checkstyle_suppressions = 'checkstyle/suppressions.xml'
+
     private final TaskDescFactory factory = new TaskDescFactory()
+
+    static File resolveConfigsDir(ToolContext context) {
+        // used for ${config_loc} property definition (through checkstyle.configDirectory property)
+        File path = context.userConfigFile(checkstyle_config).parentFile
+        // if custom directory exists, use it, otherwise fall back to generated directory
+        // because gradle 7 requires configured directory existence
+        // (default file copying forced to create checkstyle directory and avoid gradle complains)
+        return path.exists() ? path : context.resolveConfigFile(checkstyle_config).parentFile
+    }
 
     @Override
     String getToolName() {
@@ -39,18 +51,18 @@ class CheckstyleTool implements QualityTool {
     }
 
     @Override
-    List<ProjectLang> getSupportedLanguages() {
-        return [ProjectLang.Java]
+    List<ProjectSources> getAutoEnableForSources() {
+        return [ProjectSources.Java]
     }
 
     @Override
-    Set<File> copyConfigs(Provider<ConfigsService> configs, QualityExtension extension) {
-        ConfigsService service = configs.get()
+    List<String> getConfigs() {
+        return [checkstyle_config, checkstyle_suppressions]
+    }
 
-        return  [
-                service.resolveCheckstyleConfig(true),
-                service.resolveCheckstyleConfigDir(),
-        ]
+    @Override
+    Reporter createReporter(Object param, Provider<ConfigsService> configs) {
+        return new CheckstyleReporter()
     }
 
     @Override
@@ -60,17 +72,11 @@ class CheckstyleTool implements QualityTool {
             return
         }
         context.withPlugin(CheckstylePlugin, register) {
-            configureCheckstyle(context.project, context.extension, context.configs, context)
+            configureCheckstyle(context.project, context.extension, context)
         }
     }
 
-    @Override
-    Reporter createReporter(Object param, Provider<ConfigsService> configs) {
-        return new CheckstyleReporter()
-    }
-
-    private void configureCheckstyle(Project project, QualityExtension extension, Provider<ConfigsService> configs,
-                                     ToolContext context) {
+    private void configureCheckstyle(Project project, QualityExtension extension, ToolContext context) {
         project.configure(project) {
             // required due to checkstyle update of gradle metadata causing now collision with google collections
             // https://github.com/google/guava/releases/tag/v32.1.0 (https://github.com/gradle/gradle/issues/27035)
@@ -91,22 +97,21 @@ class CheckstyleTool implements QualityTool {
                 ignoreFailures = !extension.strict.get()
                 // this may be custom user file (gradle/config/checkstyle/checkstyle.xml) or default one
                 // (in different location)
-                configFile = configs.get().resolveCheckstyleConfig(false)
+                configFile = context.resolveConfigFile(checkstyle_config)
                 // this is required for ${config_loc} variable, but this will ALWAYS point to
                 // gradle/config/checkstyle/ (or other configured config location dir) because custom
                 // configuration files may be only there
-                configDirectory = configs.get().resolveCheckstyleConfigDir()
+                configDirectory = resolveConfigsDir(context)
                 sourceSets = extension.sourceSets.get()
             }
 
-            tasks.withType(Checkstyle).configureEach { task ->
+            tasks.withType(Checkstyle).configureEach { Task task ->
+                task.dependsOn(context.configsTask)
                 FileCollection excludeSources = extension.excludeSources
                 List<String> sources = extension.exclude.get()
                 doFirst {
-                    // todo remove
-                    configs.get().resolveCheckstyleConfig()
-                    // todo move out
-                    QualityPlugin.applyExcludes(it as SourceTask, excludeSources, sources)
+                    // note that checkstyle task will be up-to-date under configuration cache, so no problem
+                    ToolContext.applyExcludes(it as SourceTask, excludeSources, sources)
                 }
                 reports.xml.required.set(true)
                 reports.html.required.set(extension.htmlReports.get())

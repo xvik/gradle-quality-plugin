@@ -46,8 +46,11 @@ abstract class TasksListenerService implements BuildService<Params>, OperationCo
         // reporters must be initialized independently because under configuration cache plugin would not be created
         // at all, but reporters still need to be initialized
         QualityPlugin.TOOLS.each {
-            reporters[it.toolName] = it.createReporter(
+            Reporter reporter = it.createReporter(
                     parameters.reportersData.get()[it.toolName], parameters.configsService)
+            if (reporter) {
+                reporters[it.toolName] = reporter
+            }
         }
     }
 

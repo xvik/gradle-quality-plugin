@@ -9,11 +9,10 @@ import org.gradle.api.plugins.quality.PmdPlugin
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceTask
 import ru.vyarus.gradle.plugin.quality.QualityExtension
-import ru.vyarus.gradle.plugin.quality.QualityPlugin
 import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
-import ru.vyarus.gradle.plugin.quality.tool.ProjectLang
+import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.tool.pmd.report.PmdReporter
@@ -26,9 +25,11 @@ import ru.vyarus.gradle.plugin.quality.tool.pmd.report.PmdReporter
  * @see PmdPlugin
  */
 @CompileStatic(TypeCheckingMode.SKIP)
-@SuppressWarnings('GetterMethodCouldBeProperty')
+@SuppressWarnings(['GetterMethodCouldBeProperty', 'PropertyName'])
 class PmdTool implements QualityTool {
     static final String NAME = 'pmd'
+
+    static final String pmd_config = 'pmd/pmd.xml'
 
     private final TaskDescFactory factory = new TaskDescFactory()
 
@@ -38,17 +39,18 @@ class PmdTool implements QualityTool {
     }
 
     @Override
-    List<ProjectLang> getSupportedLanguages() {
-        return [ProjectLang.Java]
+    List<ProjectSources> getAutoEnableForSources() {
+        return [ProjectSources.Java]
     }
 
     @Override
-    Set<File> copyConfigs(Provider<ConfigsService> configs, QualityExtension extension) {
-        ConfigsService service = configs.get()
+    List<String> getConfigs() {
+        return [pmd_config]
+    }
 
-        return [
-                service.resolvePmdConfig(true)
-        ]
+    @Override
+    Reporter createReporter(Object param, Provider<ConfigsService> configs) {
+        return new PmdReporter()
     }
 
     @Override
@@ -58,23 +60,17 @@ class PmdTool implements QualityTool {
             return
         }
         context.withPlugin(PmdPlugin, register) {
-            configurePmd(context.project, context.extension, context.configs, context)
+            configurePmd(context.project, context.extension, context)
         }
     }
 
-    @Override
-    Reporter createReporter(Object param, Provider<ConfigsService> configs) {
-        return new PmdReporter()
-    }
-
-    private void configurePmd(Project project, QualityExtension extension, Provider<ConfigsService> configs,
-                              ToolContext context) {
+    private void configurePmd(Project project, QualityExtension extension, ToolContext context) {
         project.configure(project) {
             pmd {
                 toolVersion = extension.pmdVersion.get()
                 ignoreFailures = !extension.strict.get()
                 ruleSets = []
-                ruleSetFiles = files(configs.get().resolvePmdConfig(false).absolutePath)
+                ruleSetFiles = files(context.resolveConfigFile(pmd_config).absolutePath)
                 sourceSets = extension.sourceSets.get()
             }
             // have to override dependencies declaration due to split in pmd 7
@@ -84,13 +80,12 @@ class PmdTool implements QualityTool {
                 pmd("net.sourceforge.pmd:pmd-java:${extension.pmdVersion.get()}")
             }
             tasks.withType(Pmd).configureEach { task ->
+                task.dependsOn(context.configsTask)
                 FileCollection excludeSources = extension.excludeSources
                 List<String> sources = extension.exclude.get()
                 doFirst {
-                    // todo remove
-                    configs.get().resolvePmdConfig()
-                    // todo move out
-                    QualityPlugin.applyExcludes(it as SourceTask, excludeSources, sources)
+                    // note that pmd task will be up-to-date under configuration cache, so no problem
+                    ToolContext.applyExcludes(it as SourceTask, excludeSources, sources)
                 }
                 reports.xml.required.set(true)
                 reports.html.required.set(extension.htmlReports.get())

@@ -10,6 +10,6 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 @SuppressWarnings('FieldName')
-enum ProjectLang {
+enum ProjectSources {
     Java, Groovy
 }

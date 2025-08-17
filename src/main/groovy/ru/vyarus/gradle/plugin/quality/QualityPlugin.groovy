@@ -4,21 +4,19 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.file.FileCollection
-import org.gradle.api.file.ProjectLayout
-import org.gradle.api.file.RegularFile
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceSet
-import org.gradle.api.tasks.SourceTask
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.build.event.BuildEventsListenerRegistry
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
 import ru.vyarus.gradle.plugin.quality.service.TasksListenerService
+import ru.vyarus.gradle.plugin.quality.task.CopyConfigsTask
 import ru.vyarus.gradle.plugin.quality.task.InitQualityConfigTask
 import ru.vyarus.gradle.plugin.quality.task.QualityToolVersionsTask
-import ru.vyarus.gradle.plugin.quality.tool.ProjectLang
+import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.tool.animalsniffer.AnimalsnifferTool
@@ -85,27 +83,6 @@ abstract class QualityPlugin implements Plugin<Project> {
     private final List<TaskDesc> qualityTasks = []
     private final Map<String, Object> reportersData = [:]
 
-    /**
-     * Applies exclude path patterns to quality tasks.
-     * Note: this does not apply to animalsniffer. For spotbugs this appliance is useless, see custom support above.
-     * <p>
-     * The method is static because it is referenced from runtime.
-     *
-     * @param task quality task
-     * @param excludeSources sources to exclude
-     * @param exclude exclude patterns
-     */
-    static void applyExcludes(SourceTask task, FileCollection excludeSources, List<String> exclude) {
-        if (excludeSources) {
-            // directly excluded sources
-            task.source = task.source - excludeSources
-        }
-        if (exclude) {
-            // exclude by patterns (relative to source roots)
-            task.exclude exclude
-        }
-    }
-
     @Inject
     abstract BuildEventsListenerRegistry getEventsListenerRegistry()
 
@@ -117,22 +94,22 @@ abstract class QualityPlugin implements Plugin<Project> {
 
             Provider<ConfigsService> configs = initConfigService(project, extension)
             Provider<TasksListenerService> tasksListener = initListenerService(project, extension, configs)
-            addTasks(project, extension, configs)
+            TaskProvider<CopyConfigsTask> configsTask = addTasks(project, extension, configs)
 
             project.afterEvaluate {
                 configureGroupingTasks(project)
 
-                List<ProjectLang> langs = detectLangs(project, extension)
+                List<ProjectSources> langs = detectLangs(project, extension)
                 project.tasks.withType(QualityToolVersionsTask)
                         .configureEach { it.languages.addAll(langs) }
 
                 ToolContext context = new ToolContext(project, extension, configs, tasksListener, langs,
-                        qualityTasks, reportersData)
+                        qualityTasks, reportersData, configsTask)
 
                 TOOLS.each { QualityTool tool ->
                     // tool language only affects auto registration because if plugin registered manually
                     // it is still must be configured
-                    boolean autoRegister = langs.intersect(tool.supportedLanguages).size() > 0
+                    boolean autoRegister = langs.intersect(tool.autoEnableForSources).size() > 0
                     tool.configure(context, autoRegister)
                 }
             }
@@ -140,14 +117,18 @@ abstract class QualityPlugin implements Plugin<Project> {
     }
 
     protected Provider<ConfigsService> initConfigService(Project project, QualityExtension extension) {
+        // service HAVE to be project-specific because copyConfigs task MUST use different temp folders,
+        // otherwise gradle would complain about implicit tasks dependencies
         Provider<ConfigsService> configs = project.gradle.sharedServices.registerIfAbsent(
-                CONFIGS_SERVICE, ConfigsService, spec -> {
+                CONFIGS_SERVICE + project.path, ConfigsService, spec -> {
             spec.maxParallelUsages.set(1)
             spec.parameters {
                 (it as ConfigsService.Params).configDir.set(
-                        project.layout.file(project
+                        project.rootProject.layout.dir(project
                                 .provider { project.rootProject.file(extension.configDir.get()) }))
-                (it as ConfigsService.Params).tempDir.set(createTmpConfigsDir(project.layout))
+                // not a rootproject! because otherwise gradle would complain in multi-module project (as module tasks
+                // would write into one top directory and gradle would assume cross project dependencies)
+                (it as ConfigsService.Params).tempDir.set(project.layout.buildDirectory.dir('quality-configs'))
             }
         })
         // just to avoid early destroy
@@ -160,7 +141,7 @@ abstract class QualityPlugin implements Plugin<Project> {
         // Service created per project because otherwise it is impossible to initialize tasks map properly
         // (singleton service created in the first project and configurations from other modules not persisted)
         Provider<TasksListenerService> tasksListener = project.gradle.sharedServices.registerIfAbsent(
-                "qualityEvents$project.name", TasksListenerService, spec -> {
+                "qualityEvents$project.path", TasksListenerService, spec -> {
             spec.maxParallelUsages.set(1)
             spec.parameters {
                 (it as TasksListenerService.Params).with {
@@ -178,9 +159,10 @@ abstract class QualityPlugin implements Plugin<Project> {
         return tasksListener
     }
 
-    protected void addTasks(Project project, QualityExtension extension, Provider<ConfigsService> configsService) {
+    protected TaskProvider<CopyConfigsTask> addTasks(
+            Project project, QualityExtension extension, Provider<ConfigsService> configsService) {
         project.tasks.register('initQualityConfig', InitQualityConfigTask) {
-            it.configs.set(configsService)
+            it.configsService.set(configsService)
         }
         project.tasks.register('qualityToolVersions', QualityToolVersionsTask) {
             it.checkstyleVersion.set(project.provider {
@@ -198,6 +180,16 @@ abstract class QualityPlugin implements Plugin<Project> {
             it.codeNarcVersion.set(project.provider {
                 extension.codenarc.get() ? extension.codenarcVersion.get() : 'disabled'
             })
+        }
+        // task initialize default configuration files. It is important to use task for this because otherwise
+        // it would be impossible to properly support caching (because files would be created dynamically)
+        project.tasks.register('copyQualityConfigs', CopyConfigsTask) {
+            it.configsService.set(configsService)
+            it.exclude.set(extension.exclude)
+            // can't be used because exclude sources may contain implicit links to other tasks
+//            it.excludeSources = extension.excludeSources
+            // important to invalidate task cache on plugin version change (in order to update default configs)
+            it.pluginVersion.set(pluginVersion)
         }
     }
 
@@ -226,24 +218,22 @@ abstract class QualityPlugin implements Plugin<Project> {
      * @return context instance
      */
     @CompileStatic(TypeCheckingMode.SKIP)
-    protected List<ProjectLang> detectLangs(Project project, QualityExtension extension) {
-        List<ProjectLang> langs = []
+    protected List<ProjectSources> detectLangs(Project project, QualityExtension extension) {
+        List<ProjectSources> langs = []
         if (extension.autoRegistration.get()) {
             if ((extension.sourceSets.get()
                     .find { it.java.srcDirs.find { it.exists() } }) != null) {
-                langs.add(ProjectLang.Java)
+                langs.add(ProjectSources.Java)
             }
             if (project.plugins.findPlugin(GroovyPlugin) && (extension.sourceSets.get()
                     .find { it.groovy.srcDirs.find { it.exists() } }) != null) {
-                langs.add(ProjectLang.Groovy)
+                langs.add(ProjectSources.Groovy)
             }
         }
         return langs
     }
 
-    protected Provider<RegularFile> createTmpConfigsDir(ProjectLayout layout) {
-        // use plugin version to avoid case when default configs used and old cache being used for
-        // a new plugin version (usually leading to silly errors)
+    protected String getPluginVersion() {
         String version = 'unknown_version'
         String location = this.class.protectionDomain.codeSource.location
         int end = location.indexOf('.jar')
@@ -252,6 +242,6 @@ abstract class QualityPlugin implements Plugin<Project> {
             version = location.substring(start + JAR_NAME.length(), end)
         }
 
-        return layout.buildDirectory.file("quality-configs/$version")
+        return version
     }
 }

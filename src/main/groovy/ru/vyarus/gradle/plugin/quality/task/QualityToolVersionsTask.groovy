@@ -9,7 +9,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import org.gradle.util.GradleVersion
-import ru.vyarus.gradle.plugin.quality.tool.ProjectLang
+import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 
 /**
  * Task shows versions of currently used quality tools.
@@ -29,7 +29,7 @@ abstract class QualityToolVersionsTask extends DefaultTask {
     @Input
     abstract Property<String> getCodeNarcVersion()
     @Internal
-    abstract ListProperty<ProjectLang> getLanguages()
+    abstract ListProperty<ProjectSources> getLanguages()
 
     @SuppressWarnings('AbstractClassWithPublicConstructor')
     QualityToolVersionsTask() {
@@ -43,12 +43,12 @@ abstract class QualityToolVersionsTask extends DefaultTask {
         println 'Java version: ' + JavaVersion.current()
         println 'Gradle version: ' + GradleVersion.current().version
 
-        if (languages.get().contains(ProjectLang.Java)) {
+        if (languages.get().contains(ProjectSources.Java)) {
             println 'Checkstyle: ' + checkstyleVersion.get()
             println 'PMD: ' + pmdVersion.get()
             println 'SpotBugs: ' + spotBugsVersion.get()
         }
-        if (languages.get().contains(ProjectLang.Groovy)) {
+        if (languages.get().contains(ProjectSources.Groovy)) {
             println 'CodeNarc: ' + codeNarcVersion.get()
         }
     }

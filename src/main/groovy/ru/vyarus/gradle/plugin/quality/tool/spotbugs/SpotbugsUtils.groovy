@@ -110,33 +110,6 @@ class SpotbugsUtils {
     }
 
     /**
-     * Spotbugs task properties may be configured only once. At that time it is too early to compute exact file,
-     * but we can assume that if excludes configured then temp file would be required. So preparing temp file
-     * ahead of time. Later, it would be filled with actual exclusions (if anything matches).
-     *
-     * @param task target task
-     * @param taskName spotbugs task name
-     * @param extension extension
-     * @param configured configured exclusions file (most likely default one)
-     * @return excludes file for task configuration
-     */
-    @SuppressWarnings('FileCreateTempFile')
-    static File excludesFile(Task task, QualityExtension extension, File configured) {
-        Project project = task.project
-        // spotbugs does not support exclude of SourceTask, so appending excluded classes to
-        // xml exclude filter
-        // for custom rank appending extra rank exclusion rule
-        if (extension.exclude.get() || extension.excludeSources || extension.spotbugsMaxRank.get() < MAX_RANK
-                || !task.project.configurations.findByName('annotationProcessor').empty) {
-            File tmp = File.createTempFile("$project.name-$task.name-excludes", '.xml')
-            tmp.deleteOnExit()
-            tmp << configured.text
-            return tmp
-        }
-        return configured
-    }
-
-    /**
      * Extend exclusions filter file with when exclusions are required. Note: it is assumed that tmp file was already
      * created (because it is impossible to configure different file on this stage).
      * <p>

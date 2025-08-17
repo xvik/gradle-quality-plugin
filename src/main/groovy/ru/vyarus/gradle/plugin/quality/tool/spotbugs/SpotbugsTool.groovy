@@ -16,7 +16,7 @@ import ru.vyarus.gradle.plugin.quality.tool.spotbugs.report.SpotbugsReporter
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
 import ru.vyarus.gradle.plugin.quality.tool.spotbugs.report.SpotbugsTaskDescFactory
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
-import ru.vyarus.gradle.plugin.quality.tool.ProjectLang
+import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.util.FileUtils
@@ -38,9 +38,11 @@ import ru.vyarus.gradle.plugin.quality.util.FileUtils
  * @see com.github.spotbugs.snom.SpotBugsPlugin
  */
 @CompileStatic(TypeCheckingMode.SKIP)
-@SuppressWarnings('GetterMethodCouldBeProperty')
+@SuppressWarnings(['GetterMethodCouldBeProperty', 'PropertyName'])
 class SpotbugsTool implements QualityTool {
     static final String NAME = 'spotbugs'
+
+    static final String spotbugs_exclude = 'spotbugs/exclude.xml'
 
     TaskDescFactory factory = new SpotbugsTaskDescFactory()
 
@@ -50,17 +52,18 @@ class SpotbugsTool implements QualityTool {
     }
 
     @Override
-    List<ProjectLang> getSupportedLanguages() {
-        return [ProjectLang.Java]
+    List<ProjectSources> getAutoEnableForSources() {
+        return [ProjectSources.Java]
     }
 
     @Override
-    Set<File> copyConfigs(Provider<ConfigsService> configs, QualityExtension extension) {
-        ConfigsService service = configs.get()
+    List<String> getConfigs() {
+        return [spotbugs_exclude]
+    }
 
-        return [
-                service.resolveSpotbugsExclude(true)
-        ]
+    @Override
+    Reporter createReporter(Object param, Provider<ConfigsService> configs) {
+        new SpotbugsReporter(param as Map<String, String>)
     }
 
     @Override
@@ -80,19 +83,13 @@ class SpotbugsTool implements QualityTool {
             return
         }
         context.withPlugin(plugin, register) {
-            configureSpotbugs(plugin, spotbugsTaskType, context.project, context.extension, context.configs, context)
+            configureSpotbugs(plugin, spotbugsTaskType, context.project, context.extension, context)
         }
-    }
-
-    @Override
-    Reporter createReporter(Object param, Provider<ConfigsService> configs) {
-        new SpotbugsReporter(param as Map<String, String>)
     }
 
     @SuppressWarnings(['AbcMetric', 'MethodSize', 'ParameterCount'])
     private void configureSpotbugs(Class<? extends Plugin> plugin, Class<? extends Task> spotbugsTaskType,
-                                   Project project, QualityExtension extension, Provider<ConfigsService> configs,
-                                   ToolContext context) {
+                                   Project project, QualityExtension extension, ToolContext context) {
         project.configure(project) {
             spotbugs {
                 toolVersion = extension.spotbugsVersion.get()
@@ -122,7 +119,8 @@ class SpotbugsTool implements QualityTool {
                 )
             }
 
-            tasks.withType(spotbugsTaskType).configureEach { task ->
+            tasks.withType(spotbugsTaskType).configureEach { Task task ->
+                task.dependsOn(context.configsTask)
                 SourceSet set = FileUtils.findMatchingSet(toolName, task.name, project.sourceSets)
                 // apt is a special dir, not mentioned in sources!
                 File aptGenerated = (task.project.tasks.findByName(set.compileJavaTaskName) as JavaCompile)
@@ -133,18 +131,12 @@ class SpotbugsTool implements QualityTool {
                 FileCollection excludeSources = extension.excludeSources
                 ObjectFactory objectFactory = project.objects
                 doFirst {
-                    // todo remove
-                    configs.get().resolveSpotbugsExclude()
-                    // todo move away
-                    // it is not possible to substitute filter file here (due to locked Property)
-                    // but possible to update already configured file (it must be already a temp file here)
+                    // updating existing exclude filter file
+                    // note that spotbugs task will be up-to-date under configuration cache, so no problem
                     SpotbugsUtils.replaceExcludeFilter(it, aptGenerated, setSourceDirs,
                             rank, excludes, excludeSources, objectFactory)
                 }
-                // have to use this way instead of doFirst hook, because nothing else will work (damn props!)
-                excludeFilter.set(project.provider(new SpotbugsExclusionConfigProvider(
-                        task, configs, extension
-                )))
+                excludeFilter.set(project.provider { context.resolveRegularConfigFile(spotbugs_exclude) })
                 // read plugin error descriptions under configuration time
                 context.storeReporterData(toolName) { SpotbugsReporter.resolvePluginsChecks(project) }
                 reports {
