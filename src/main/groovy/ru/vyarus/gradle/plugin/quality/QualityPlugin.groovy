@@ -236,7 +236,7 @@ abstract class QualityPlugin implements Plugin<Project> {
     protected String getPluginVersion() {
         String version = 'unknown_version'
         String location = this.class.protectionDomain.codeSource.location
-        int end = location.indexOf('.jar')
+        int end = location ? location.indexOf('.jar') : -1
         if (end > 0) {
             int start = location.indexOf(JAR_NAME)
             version = location.substring(start + JAR_NAME.length(), end)

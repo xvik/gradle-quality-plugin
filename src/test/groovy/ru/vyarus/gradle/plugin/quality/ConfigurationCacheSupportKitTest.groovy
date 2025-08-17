@@ -2,11 +2,13 @@ package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
+import spock.lang.Requires
 
 /**
  * @author Vyacheslav Rusakov
  * @since 05.02.2024
  */
+@Requires({jvm.java17Compatible})
 class ConfigurationCacheSupportKitTest extends AbstractKitTest {
 
     def "Check java and groovy checks"() {

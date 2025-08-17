@@ -12,7 +12,6 @@ import ru.vyarus.gradle.plugin.quality.report.model.TaskDesc
 @CompileStatic
 class CpdTaskDesc extends TaskDesc {
 
-    @Serial
     private static final long serialVersionUID = 1
 
     String reportsDir
