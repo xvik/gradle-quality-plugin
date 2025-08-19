@@ -4,6 +4,8 @@ import groovy.ant.AntBuilder
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlParser
+import org.apache.tools.ant.BuildLogger
+import org.apache.tools.ant.NoBannerLogger
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.logging.Logger
@@ -106,10 +108,25 @@ class CpdReporter implements Reporter<CpdTaskDesc>, HtmlReportGenerator<CpdTaskD
         File htmlReportFile = new File(htmlReportPath)
         // avoid redundant re-generation
         if (!htmlReportFile.exists() || reportFile.lastModified() > htmlReportFile.lastModified()) {
-            new AntBuilder().xslt(in: reportFile,
+            createAnt().xslt(in: reportFile,
                     style: configs.get().resolveConfigFile(CpdTool.cpd_xsl).asFile,
                     out: htmlReportFile.canonicalPath,
             )
         }
+    }
+
+    private AntBuilder createAnt() {
+        // see AntBuilder default constructor
+        final org.apache.tools.ant.Project project = new org.apache.tools.ant.Project()
+        final BuildLogger logger = new NoBannerLogger()
+
+        logger.messageOutputLevel = org.apache.tools.ant.Project.MSG_ERR
+        logger.outputPrintStream = System.out
+        logger.errorPrintStream = System.err
+
+        project.addBuildListener(logger)
+        project.init()
+        project.baseDir
+        return new AntBuilder(project)
     }
 }
