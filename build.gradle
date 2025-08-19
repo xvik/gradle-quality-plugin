@@ -39,6 +39,8 @@ dependencies {
     testImplementation "de.aaschmid:gradle-cpd-plugin:$cpdVersion"
     // spotbugs plugin not included because both 5.x and 6.x versions must be tested
     // testImplementation "com.github.spotbugs.snom:spotbugs-gradle-plugin:$spotbugsPluginVersion"
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 group = 'ru.vyarus'
