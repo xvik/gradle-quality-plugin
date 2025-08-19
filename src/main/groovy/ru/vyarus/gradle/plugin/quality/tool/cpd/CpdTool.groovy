@@ -12,13 +12,13 @@ import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.TaskProvider
 import ru.vyarus.gradle.plugin.quality.QualityExtension
 import ru.vyarus.gradle.plugin.quality.report.Reporter
-import ru.vyarus.gradle.plugin.quality.tool.cpd.report.CpdTaskDescFactory
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
 import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.tool.cpd.report.CpdReporter
+import ru.vyarus.gradle.plugin.quality.tool.cpd.report.CpdTaskDescFactory
 
 /**
  * CPD support. Requires cpd plugin manual activation.
@@ -51,6 +51,14 @@ class CpdTool implements QualityTool {
     @Override
     List<String> getConfigs() {
         return [cpd_xsl]
+    }
+
+    @Override
+    String getToolInfo(Project project, QualityExtension extension, List<ProjectSources> langs) {
+        if (project.plugins.hasPlugin(CpdUtils.CPD_PLUGIN)) {
+            return 'CPD: ' + extension.cpd.get() ? 'enabled' : 'disabled'
+        }
+        return null
     }
 
     @Override

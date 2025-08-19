@@ -20,6 +20,7 @@ import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 class AnimalsnifferTool implements QualityTool {
 
     static final String NAME = 'animalsniffer'
+    static final String ANIMALSNIFFER_PLUGIN = 'ru.vyarus.animalsniffer'
 
     @Override
     String getToolName() {
@@ -38,11 +39,27 @@ class AnimalsnifferTool implements QualityTool {
     }
 
     @Override
+    String getToolInfo(Project project, QualityExtension extension, List<ProjectSources> langs) {
+        if (project.plugins.hasPlugin(ANIMALSNIFFER_PLUGIN)) {
+            if (extension.animalsniffer.get()) {
+                boolean versionSet = extension.animalsnifferVersion.present
+                return versionSet ? "AnimalSniffer: ${extension.animalsnifferVersion.get()}" : null
+            }
+            return 'AnimalSniffer: disabled'
+        }
+        return null
+    }
+
+    @Override
     void configure(ToolContext context, boolean register) {
         Project project = context.project
         QualityExtension extension = context.extension
 
-        project.plugins.withId('ru.vyarus.animalsniffer') { plugin ->
+        if (!extension.animalsniffer.get()) {
+            return
+        }
+
+        project.plugins.withId(ANIMALSNIFFER_PLUGIN) { plugin ->
             project.configure(project) {
                 animalsniffer {
                     ignoreFailures = !extension.strict.get()

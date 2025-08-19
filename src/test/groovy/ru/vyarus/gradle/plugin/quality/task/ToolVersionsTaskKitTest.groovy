@@ -50,6 +50,7 @@ class ToolVersionsTaskKitTest extends AbstractKitTest {
         result.output.contains('Checkstyle:')
     }
 
+    @Requires({jvm.java11Compatible})
     def "Check disabled tools version info"() {
 
         setup:
@@ -57,6 +58,7 @@ class ToolVersionsTaskKitTest extends AbstractKitTest {
             plugins {
                 id 'groovy'
                 id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
             }
             
             quality {

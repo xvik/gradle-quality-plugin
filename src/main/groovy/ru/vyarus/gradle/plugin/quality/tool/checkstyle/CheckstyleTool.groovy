@@ -61,6 +61,14 @@ class CheckstyleTool implements QualityTool {
     }
 
     @Override
+    String getToolInfo(Project project, QualityExtension extension, List<ProjectSources> langs) {
+        if (langs.contains(ProjectSources.Java)) {
+            return 'Checkstyle: ' + (extension.checkstyle.get() ? extension.checkstyleVersion.get() : 'disabled')
+        }
+        return null
+    }
+
+    @Override
     Reporter createReporter(Object param, Provider<ConfigsService> configs) {
         return new CheckstyleReporter()
     }

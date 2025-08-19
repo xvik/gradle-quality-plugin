@@ -1,7 +1,9 @@
 package ru.vyarus.gradle.plugin.quality.tool
 
 import groovy.transform.CompileStatic
+import org.gradle.api.Project
 import org.gradle.api.provider.Provider
+import ru.vyarus.gradle.plugin.quality.QualityExtension
 import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
 
@@ -47,6 +49,19 @@ interface QualityTool {
      * @return config file paths
      */
     List<String> getConfigs()
+
+    /**
+     * Tool enabled state and used version. Useful for automatically enabled tools.
+     * Used for qualityToolVersions task output.
+     * <p>
+     * Tool should only return info when it's relevant.
+     *
+     * @param project project
+     * @param extension extension
+     * @param langs detected source languages in project
+     * @return tool info or null if nothing to report
+     */
+    String getToolInfo(Project project, QualityExtension extension, List<ProjectSources> langs)
 
     /**
      * Create console reporter for task, if required. When reporter is used, main configuration must call

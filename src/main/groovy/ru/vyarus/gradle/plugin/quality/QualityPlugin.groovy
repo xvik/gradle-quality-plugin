@@ -94,14 +94,13 @@ abstract class QualityPlugin implements Plugin<Project> {
 
             Provider<ConfigsService> configs = initConfigService(project, extension)
             Provider<TasksListenerService> tasksListener = initListenerService(project, extension, configs)
-            TaskProvider<CopyConfigsTask> configsTask = addTasks(project, extension, configs)
+            // langs used in lazy-initialized tool versions task
+            List<ProjectSources> langs = []
+            TaskProvider<CopyConfigsTask> configsTask = addTasks(project, extension, configs, langs)
 
             project.afterEvaluate {
                 configureGroupingTasks(project)
-
-                List<ProjectSources> langs = detectLangs(project, extension)
-                project.tasks.withType(QualityToolVersionsTask)
-                        .configureEach { it.languages.addAll(langs) }
+                langs.addAll(detectLangs(project, extension))
 
                 ToolContext context = new ToolContext(project, extension, configs, tasksListener, langs,
                         qualityTasks, reportersData, configsTask)
@@ -159,26 +158,23 @@ abstract class QualityPlugin implements Plugin<Project> {
         return tasksListener
     }
 
-    protected TaskProvider<CopyConfigsTask> addTasks(
-            Project project, QualityExtension extension, Provider<ConfigsService> configsService) {
+    protected TaskProvider<CopyConfigsTask> addTasks(Project project,
+                                                     QualityExtension extension,
+                                                     Provider<ConfigsService> configsService,
+                                                     List<ProjectSources> langs) {
         project.tasks.register('initQualityConfig', InitQualityConfigTask) {
             it.configsService.set(configsService)
         }
         project.tasks.register('qualityToolVersions', QualityToolVersionsTask) {
-            it.checkstyleVersion.set(project.provider {
-                extension.checkstyle.get() ? extension.checkstyleVersion.get() : 'disabled'
-            })
-
-            it.pmdVersion.set(project.provider {
-                extension.pmd.get() ? extension.pmdVersion.get() : 'disabled'
-            })
-
-            it.spotBugsVersion.set(project.provider {
-                extension.spotbugs.get() ? extension.spotbugsVersion.get() : 'disabled'
-            })
-
-            it.codeNarcVersion.set(project.provider {
-                extension.codenarc.get() ? extension.codenarcVersion.get() : 'disabled'
+            it.toolsInfo.set(project.provider {
+                List<String> res = []
+                TOOLS.each {
+                    String info = it.getToolInfo(project, extension, langs)
+                    if (info) {
+                        res.add(info)
+                    }
+                }
+                return res
             })
         }
         // task initialize default configuration files. It is important to use task for this because otherwise

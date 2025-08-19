@@ -2,8 +2,10 @@ package ru.vyarus.gradle.plugin.quality.tool.javac
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.process.CommandLineArgumentProvider
+import ru.vyarus.gradle.plugin.quality.QualityExtension
 import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
@@ -32,6 +34,11 @@ class JavacTool implements QualityTool {
     @Override
     List<String> getConfigs() {
         return []
+    }
+
+    @Override
+    String getToolInfo(Project project, QualityExtension extension, List<ProjectSources> langs) {
+        return null
     }
 
     @Override

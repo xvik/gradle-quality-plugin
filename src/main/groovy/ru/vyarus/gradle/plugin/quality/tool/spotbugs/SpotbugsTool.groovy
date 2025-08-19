@@ -62,6 +62,14 @@ class SpotbugsTool implements QualityTool {
     }
 
     @Override
+    String getToolInfo(Project project, QualityExtension extension, List<ProjectSources> langs) {
+        if (project.plugins.hasPlugin('com.github.spotbugs')) {
+            return 'SpotBugs: ' + (extension.spotbugs.get() ? extension.spotbugsVersion.get() : 'disabled')
+        }
+        return null
+    }
+
+    @Override
     Reporter createReporter(Object param, Provider<ConfigsService> configs) {
         new SpotbugsReporter(param as Map<String, String>)
     }

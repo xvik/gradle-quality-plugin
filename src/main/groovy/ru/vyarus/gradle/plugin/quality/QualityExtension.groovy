@@ -18,6 +18,7 @@ import ru.vyarus.gradle.plugin.quality.util.ToolVersionUtils
  * @see ru.vyarus.gradle.plugin.quality.QualityPlugin for registration
  */
 @CompileStatic
+@SuppressWarnings('MethodCount')
 abstract class QualityExtension {
 
     public static final String CHECKSTYLE = '11.0.0'
@@ -59,6 +60,7 @@ abstract class QualityExtension {
         spotbugs.convention(
                 project.provider { ToolVersionUtils.isSpotbugsCompatible(spotbugsVersion.get()) }
         )
+        animalsniffer.convention(true)
         codenarc.convention(true)
         codenarcGroovy4.convention(true)
 
@@ -152,6 +154,12 @@ abstract class QualityExtension {
      * automatically for java 8.
      */
     abstract Property<Boolean> getSpotbugs()
+
+    /**
+     * Configure animalsniffer plugin. True by default.
+     * Disabling this option will prevent applying plugin configuration.
+     */
+    abstract Property<Boolean> getAnimalsniffer()
 
     /**
      * Enable CodeNarc plugin. Ignored if groovy plugin is not applied). True by default.

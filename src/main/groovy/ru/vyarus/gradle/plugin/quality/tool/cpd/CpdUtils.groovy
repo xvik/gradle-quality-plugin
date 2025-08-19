@@ -17,6 +17,8 @@ import org.gradle.api.tasks.TaskProvider
 @CompileStatic
 class CpdUtils {
 
+    public static final String CPD_PLUGIN = 'de.aaschmid.cpd'
+
     /**
      * In case of multi-module projects cpd most likely will be applied in the root project, but quality plugin is
      * applied on subproject level. In such case we can't attach cpd task into checkMain task and can't apply
@@ -33,7 +35,7 @@ class CpdUtils {
         // for multi-module project - entire parents chain will be checked
         Project current = project
         while (current != null) {
-            current.plugins.withId('de.aaschmid.cpd') {
+            current.plugins.withId(CPD_PLUGIN) {
                 configuration.call(current, it)
             }
             current = current.parent

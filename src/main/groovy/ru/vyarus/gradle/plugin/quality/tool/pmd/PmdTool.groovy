@@ -49,6 +49,14 @@ class PmdTool implements QualityTool {
     }
 
     @Override
+    String getToolInfo(Project project, QualityExtension extension, List<ProjectSources> langs) {
+        if (langs.contains(ProjectSources.Java)) {
+            return 'PMD: ' + (extension.pmd.get() ? extension.pmdVersion.get() : 'disabled')
+        }
+        return null
+    }
+
+    @Override
     Reporter createReporter(Object param, Provider<ConfigsService> configs) {
         return new PmdReporter()
     }

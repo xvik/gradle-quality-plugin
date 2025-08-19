@@ -4,12 +4,9 @@ import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.JavaVersion
 import org.gradle.api.provider.ListProperty
-import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import org.gradle.util.GradleVersion
-import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 
 /**
  * Task shows versions of currently used quality tools.
@@ -20,16 +17,8 @@ import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 @CompileStatic
 abstract class QualityToolVersionsTask extends DefaultTask {
 
-    @Input
-    abstract Property<String> getCheckstyleVersion()
-    @Input
-    abstract Property<String> getPmdVersion()
-    @Input
-    abstract Property<String> getSpotBugsVersion()
-    @Input
-    abstract Property<String> getCodeNarcVersion()
     @Internal
-    abstract ListProperty<ProjectSources> getLanguages()
+    abstract ListProperty<String> getToolsInfo()
 
     @SuppressWarnings('AbstractClassWithPublicConstructor')
     QualityToolVersionsTask() {
@@ -43,13 +32,7 @@ abstract class QualityToolVersionsTask extends DefaultTask {
         println 'Java version: ' + JavaVersion.current()
         println 'Gradle version: ' + GradleVersion.current().version
 
-        if (languages.get().contains(ProjectSources.Java)) {
-            println 'Checkstyle: ' + checkstyleVersion.get()
-            println 'PMD: ' + pmdVersion.get()
-            println 'SpotBugs: ' + spotBugsVersion.get()
-        }
-        if (languages.get().contains(ProjectSources.Groovy)) {
-            println 'CodeNarc: ' + codeNarcVersion.get()
-        }
+        // each tool renders its info line (if it's relevant to current project)
+        toolsInfo.get().each { println it }
     }
 }

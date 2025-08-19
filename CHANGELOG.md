@@ -42,6 +42,7 @@
     - kotlin builds might require explicit .set(value)
 * Add `quality.fallbackToCompatibleToolVersion` option to automatically lower checkstyle
  version for java 11 and spotbugs for java 8. False by default (used for tests)
+* Add `quality.animalsniffer` option to be able to disable animalsniffer plugin configuration
 * quality.checkstyle and quality.spotbugs by default analyze configured tool versions 
   and if version is compatible with current jvm enable tool (no need to manually enable tool, just set version)
 * Fix quality tasks up-to-date check
