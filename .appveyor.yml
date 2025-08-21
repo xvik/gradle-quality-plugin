@@ -5,9 +5,9 @@ environment:
     - job_name: Java 8
       appveyor_build_worker_image: Visual Studio 2019
       JAVA_HOME: C:\Program Files\Java\jdk1.8.0
-    - job_name: Java 11
-      appveyor_build_worker_image: Visual Studio 2019
-      JAVA_HOME: C:\Program Files\Java\jdk11
+#    - job_name: Java 11
+#      appveyor_build_worker_image: Visual Studio 2019
+#      JAVA_HOME: C:\Program Files\Java\jdk11
     - job_name: Java 17
       appveyor_build_worker_image: Visual Studio 2019
       JAVA_HOME: C:\Program Files\Java\jdk17
