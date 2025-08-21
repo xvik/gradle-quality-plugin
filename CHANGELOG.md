@@ -26,6 +26,7 @@
     - Remove new rule [NonSerializableFieldInSerializableClass](https://codenarc.org/codenarc-rules-serialization.html#nonserializablefieldinserializableclass-rule)
       to avoid enhanced rules enabled warning (and potential problems)
 * Fix CPD plugin compatibility for version 3.5
+    - Update default xsl file (for html report)
 * (BREAKING) Spotbugs plugin:
     - Spotbugs plugin 6.x support
     - Spotbugs plugin is not installed automatically anymore: it should be applied manually
