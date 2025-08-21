@@ -8,18 +8,16 @@ import org.gradle.api.Task
 import org.gradle.api.file.FileCollection
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.compile.JavaCompile
 import ru.vyarus.gradle.plugin.quality.QualityExtension
 import ru.vyarus.gradle.plugin.quality.report.Reporter
-import ru.vyarus.gradle.plugin.quality.tool.spotbugs.report.SpotbugsReporter
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
-import ru.vyarus.gradle.plugin.quality.tool.spotbugs.report.SpotbugsTaskDescFactory
 import ru.vyarus.gradle.plugin.quality.service.ConfigsService
 import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
-import ru.vyarus.gradle.plugin.quality.util.FileUtils
+import ru.vyarus.gradle.plugin.quality.tool.spotbugs.report.SpotbugsReporter
+import ru.vyarus.gradle.plugin.quality.tool.spotbugs.report.SpotbugsTaskDescFactory
 
 /**
  * Spotbugs support. Spotbugs plugin must be registered manually (due its limitation to java 11, it can't be
@@ -127,26 +125,22 @@ class SpotbugsTool implements QualityTool {
                 )
             }
 
+            // afterEvaluate used so here configuration should already be ok
+            Integer rank = extension.spotbugsMaxRank.get()
+            List<String> excludes = extension.exclude.get()
+            FileCollection excludeSources = extension.excludeSources
+            boolean filterModificationRequired = rank != null || excludes || excludeSources
+
             tasks.withType(spotbugsTaskType).configureEach { Task task ->
                 task.dependsOn(context.configsTask)
-                SourceSet set = FileUtils.findMatchingSet(toolName, task.name, project.sourceSets)
-                // apt is a special dir, not mentioned in sources!
-                File aptGenerated = (task.project.tasks.findByName(set.compileJavaTaskName) as JavaCompile)
-                        .options.generatedSourceOutputDirectory.get().asFile
-                Set<File> setSourceDirs = set.allJava.srcDirs
-                Integer rank = extension.spotbugsMaxRank.get()
-                List<String> excludes = extension.exclude.get()
-                FileCollection excludeSources = extension.excludeSources
-                ObjectFactory objectFactory = project.objects
-                doFirst {
-                    // updating existing exclude filter file
-                    // note that spotbugs task will be up-to-date under configuration cache, so no problem
-                    SpotbugsUtils.replaceExcludeFilter(it, aptGenerated, setSourceDirs,
-                            rank, excludes, excludeSources, objectFactory)
-                }
-                excludeFilter.set(project.provider { context.resolveRegularConfigFile(spotbugs_exclude) })
-                // read plugin error descriptions under configuration time
-                context.storeReporterData(toolName) { SpotbugsReporter.resolvePluginsChecks(project) }
+                excludeFilter.set(project.provider {
+                    // if rank or excludes configured, then exclude file must be updated dynamically
+                    // (and so user config copied inside tmp)
+                    return filterModificationRequired ?
+                            context.tempRegularConfigFile(spotbugs_exclude)
+                            : context.resolveRegularConfigFile(spotbugs_exclude)
+                })
+
                 reports {
                     xml {
                         required.set(true)
@@ -156,6 +150,38 @@ class SpotbugsTool implements QualityTool {
                     }
                 }
                 context.registerTaskForReport(task, factory.buildDesc(task, toolName))
+                // read plugin error descriptions under configuration time
+                context.storeReporterData(toolName) { SpotbugsReporter.resolvePluginsChecks(project) }
+            }
+
+            // dynamic spotbugs exclude file update (with rank and additional exclusions)
+            // It's ok to update file in the scope of configs copying - output directory should be cached after
+            context.configsTask.configure {
+                if (!filterModificationRequired) {
+                    // nothing to do
+                    return
+                }
+                // request user file copying (for modification)
+                modifiableFiles.add(spotbugs_exclude)
+
+                // apt is a special dir, not mentioned in sources!
+                Set<File> aptGenerated = []
+                Set<File> sourceDirs = []
+                extension.sourceSets.get().each {
+                    aptGenerated.add((project.tasks.findByName(it.compileJavaTaskName) as JavaCompile)
+                            .options.generatedSourceOutputDirectory.get().asFile)
+                    sourceDirs.addAll(it.allJava.srcDirs)
+                }
+
+                ObjectFactory objectFactory = project.objects
+                // default or user file, copied into temp dir (for modification)
+                File config = context.tempConfigFile(spotbugs_exclude)
+
+                it.doLast {
+                    // modify (already copied) excludes file to apply configured exclusions
+                    SpotbugsUtils.replaceExcludeFilter(config,
+                            aptGenerated, sourceDirs, rank, excludes, excludeSources, objectFactory)
+                }
             }
         }
 

@@ -34,6 +34,7 @@
         * For java 8 spotbugs plugin 5.x could be used
     - For multimodule projects it is enough to specify spotbugs plugin in the root project (with "apply false")
     - Custom spotbugs plugin is not used anymore: now extra dependencies cleared from the check task
+    - Fix spotbugs exclusions for multiple affected source sets
 * Fix default configs caching on plugin version change
 * Add `qualityToolVersions` task to show applied tools versions. Could be useful for debug
   because now spotbugs and checkstyle versions depend on a used java version

@@ -5,7 +5,6 @@ import groovy.transform.TypeCheckingMode
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceTask
@@ -94,13 +93,8 @@ class CpdTool implements QualityTool {
                 }
                 // only default task is affected
                 tasks.named('cpdCheck').configure {
-                    boolean unifySources = extension.cpdUnifySources.get()
-                    FileCollection excludeSources = extension.excludeSources
-                    List<String> sources = extension.exclude.get()
-                    doFirst {
-                        if (unifySources) {
-                            ToolContext.applyExcludes(it as SourceTask, excludeSources, sources)
-                        }
+                    if (extension.cpdUnifySources.get()) {
+                        context.applyExcludes(it as SourceTask, extension.excludeSources, extension.exclude.get())
                     }
                 }
             }

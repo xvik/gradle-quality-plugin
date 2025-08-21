@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.quality.CodeNarc
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.provider.Provider
@@ -91,17 +90,14 @@ class CodenarcTool implements QualityTool {
             }
             tasks.withType(CodeNarc).configureEach { Task task ->
                 task.dependsOn(context.configsTask)
-                FileCollection excludeSources = extension.excludeSources
-                List<String> sources = extension.exclude.get()
-                doFirst {
-                    // note that codenarc task will be up-to-date under configuration cache, so no problem
-                    ToolContext.applyExcludes(it as SourceTask, excludeSources, sources)
-                }
-                  // read codenarc properties under configuration phase
-                context.storeReporterData(toolName) { CodeNarcReporter.loadCodenarcProperties(project) }
+
                 reports.xml.required.set(true)
                 reports.html.required.set(extension.htmlReports.get())
+
                 context.registerTaskForReport(task, factory.buildDesc(task, toolName))
+                context.applyExcludes(task as SourceTask, extension.excludeSources, extension.exclude.get())
+                // read codenarc properties under configuration phase
+                context.storeReporterData(toolName) { CodeNarcReporter.loadCodenarcProperties(project) }
             }
         }
         context.applyEnabledState(CodeNarc)

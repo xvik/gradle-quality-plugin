@@ -60,27 +60,6 @@ class ToolContext {
     }
 
     /**
-     * Applies exclude path patterns to quality tasks.
-     * Note: this does not apply to animalsniffer. For spotbugs this appliance is useless, see custom support above.
-     * <p>
-     * The method is static because it is referenced from runtime.
-     *
-     * @param task quality task
-     * @param excludeSources sources to exclude
-     * @param exclude exclude patterns
-     */
-    static void applyExcludes(SourceTask task, FileCollection excludeSources, List<String> exclude) {
-        if (excludeSources) {
-            // directly excluded sources
-            task.source = task.source - excludeSources
-        }
-        if (exclude) {
-            // exclude by patterns (relative to source roots)
-            task.exclude exclude
-        }
-    }
-
-    /**
      * Plugins may be registered manually and in this case plugin will also be configured, but only
      * when plugin support not disabled by quality configuration. If plugin not registered and
      * sources auto detection allow registration - it will be registered and then configured.
@@ -181,6 +160,27 @@ class ToolContext {
     }
 
     /**
+     * Applies exclude path patterns to quality tasks.
+     * Note: this does not apply to animalsniffer. For spotbugs this appliance is useless, see custom support above.
+     * <p>
+     * The method is static because it is referenced from runtime.
+     *
+     * @param task quality task
+     * @param excludeSources sources to exclude
+     * @param exclude exclude patterns
+     */
+    void applyExcludes(SourceTask task, FileCollection excludeSources, List<String> exclude) {
+        if (excludeSources) {
+            // directly excluded sources
+            task.source = task.source - excludeSources
+        }
+        if (exclude) {
+            // exclude by patterns (relative to source roots)
+            task.exclude exclude
+        }
+    }
+
+    /**
      * Decide what config file to use: either user provided from custom user directory or copied tmp config
      * from plugin jar. Note that config would be copied with a special task  - here only correct target selection
      * is required.
@@ -201,6 +201,17 @@ class ToolContext {
     }
 
     /**
+     * Required only for cases when both user-declared config and config in tmp folder exists (meaning user config
+     * was copied and modified).
+     *
+     * @param path file path
+     * @return path to config file in user directory (if user manually provide it)
+     */
+    File tempConfigFile(String path) {
+        return tempRegularConfigFile(path).asFile
+    }
+
+    /**
      * @param path file path
      * @return regular file (required by some plugins like spotbugs)
      */
@@ -214,5 +225,16 @@ class ToolContext {
      */
     RegularFile userRegularConfigFile(String path) {
         return configs.get().userConfigFile(path)
+    }
+
+    /**
+     * Required only for cases when both user-declared config and config in tmp folder exists (meaning user config
+     * was copied and modified).
+     *
+     * @param path file path
+     * @return config file located in temporary directory
+     */
+    RegularFile tempRegularConfigFile(String path) {
+        return configs.get().tempConfigFile(path)
     }
 }

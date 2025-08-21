@@ -3,7 +3,6 @@ package ru.vyarus.gradle.plugin.quality.tool.pmd
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
-import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.quality.Pmd
 import org.gradle.api.plugins.quality.PmdPlugin
 import org.gradle.api.provider.Provider
@@ -89,16 +88,12 @@ class PmdTool implements QualityTool {
             }
             tasks.withType(Pmd).configureEach { task ->
                 task.dependsOn(context.configsTask)
-                FileCollection excludeSources = extension.excludeSources
-                List<String> sources = extension.exclude.get()
-                doFirst {
-                    // note that pmd task will be up-to-date under configuration cache, so no problem
-                    ToolContext.applyExcludes(it as SourceTask, excludeSources, sources)
-                }
+
                 reports.xml.required.set(true)
                 reports.html.required.set(extension.htmlReports.get())
 
                 context.registerTaskForReport(task, factory.buildDesc(task, toolName))
+                context.applyExcludes(task as SourceTask, extension.excludeSources, extension.exclude.get())
             }
         }
         context.applyEnabledState(Pmd)

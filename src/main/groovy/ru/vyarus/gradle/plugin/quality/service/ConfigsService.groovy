@@ -11,6 +11,7 @@ import org.gradle.tooling.events.OperationCompletionListener
 import ru.vyarus.gradle.plugin.quality.QualityPlugin
 
 import javax.inject.Inject
+import java.nio.file.Files
 
 /**
  * Service, responsible for configuration files management. Loads configuration files either from custom configs
@@ -27,6 +28,7 @@ import javax.inject.Inject
 @SuppressWarnings('AbstractClassWithoutAbstractMethod')
 abstract class ConfigsService implements BuildService<Params>, OperationCompletionListener {
 
+    private static final Object SYNC = new Object()
     @Inject
     abstract ProviderFactory getProviderFactory()
 
@@ -40,7 +42,7 @@ abstract class ConfigsService implements BuildService<Params>, OperationCompleti
      */
     RegularFile resolveConfigFile(String path) {
         RegularFile userFile = userConfigFile(path)
-        return userFile.asFile.exists() ? userFile : parameters.tempDir.get().file(path)
+        return userFile.asFile.exists() ? userFile : tempConfigFile(path)
     }
 
     /**
@@ -51,6 +53,16 @@ abstract class ConfigsService implements BuildService<Params>, OperationCompleti
      */
     RegularFile userConfigFile(String path) {
         return parameters.configDir.get().file(path)
+    }
+
+    /**
+     * Return config located in temp directory.
+     *
+     * @param path file path
+     * @return file
+     */
+    RegularFile tempConfigFile(String path) {
+        return parameters.tempDir.get().file(path)
     }
 
     /**
@@ -85,7 +97,7 @@ abstract class ConfigsService implements BuildService<Params>, OperationCompleti
         if (target.exists() && !override) {
             return target
         }
-        synchronized (this) {
+        synchronized (SYNC) {
             if (!target.exists() || override) {
                 if (target.exists() && override) {
                     target.delete()
@@ -101,6 +113,25 @@ abstract class ConfigsService implements BuildService<Params>, OperationCompleti
             }
             return target
         }
+    }
+
+    /**
+     * Copy file, provided by user into tmp configs directory for modifications. Do nothing if user config not
+     * available (assuming default config would be copied automatically).
+     *
+     * @param path file path
+     * @return true when copied
+     */
+    boolean copyUserConfigForModification(String path) {
+        File config = userConfigFile(path).asFile
+        File tmpCfg = tempConfigFile(path).asFile
+        // otherwise nothing to do - default config would be copied
+        if (config.exists()) {
+            tmpCfg.parentFile.mkdirs()
+            Files.copy(config.toPath(), tmpCfg.toPath())
+            return true
+        }
+        return false
     }
 
     interface Params extends BuildServiceParameters {

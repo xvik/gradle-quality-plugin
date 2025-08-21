@@ -2,11 +2,13 @@ package ru.vyarus.gradle.plugin.quality.tool.spotbugs
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import groovy.xml.XmlNodePrinter
 import groovy.xml.XmlParser
-import groovy.xml.XmlUtil
+import org.apache.groovy.io.StringBuilderWriter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.FileCollection
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.JavaBasePlugin
@@ -110,7 +112,7 @@ class SpotbugsUtils {
     }
 
     /**
-     * Extend exclusions filter file with when exclusions are required. Note: it is assumed that tmp file was already
+     * Extend exclusions filter file when exclusions are required. Note: it is assumed that tmp file was already
      * created (because it is impossible to configure different file on this stage).
      * <p>
      * Apt sources are also counted (to be able to ignore apt sources).
@@ -121,15 +123,25 @@ class SpotbugsUtils {
      */
     @CompileStatic(TypeCheckingMode.SKIP)
     @SuppressWarnings('ParameterCount')
-    static void replaceExcludeFilter(Task task, File aptGenerated, Set<File> setSourceDirs,
+    static void replaceExcludeFilter(File file, Set<File> aptGenerated, Set<File> sourceDirs,
                                      Integer configuredRank, List<String> excludes, FileCollection excludeSources,
                                      ObjectFactory factory) {
         // setting means max allowed rank, but filter evicts all ranks >= specified (so +1)
         Integer rank = configuredRank < MAX_RANK ? configuredRank + 1 : null
 
-        Set<File> ignored = FileUtils.resolveIgnoredFiles(task.sourceDirs.asFileTree, excludes)
+        Set<File> ignored = []
+        if (excludes) {
+            sourceDirs.each {
+                ConfigurableFileTree tree = factory.fileTree().from(it)
+                ignored.addAll(FileUtils.resolveIgnoredFiles(tree, excludes))
+            }
+        }
+
         // exclude all apt-generated files
-        ignored.addAll(factory.fileTree().from(aptGenerated).filter { it.path.endsWith('.java') }.files)
+        aptGenerated.each {
+            ConfigurableFileTree tree = factory.fileTree().from(it)
+            ignored.addAll(tree.filter { it.path.endsWith('.java') }.files)
+        }
         if (excludeSources) {
             // add directly excluded files
             ignored.addAll(excludeSources.asFileTree.matching { include '**/*.java' }.files)
@@ -140,10 +152,10 @@ class SpotbugsUtils {
         }
 
         Collection<File> sources = []
-        sources.addAll(setSourceDirs)
-        sources.add(aptGenerated)
+        sources.addAll(sourceDirs)
+        sources.addAll(aptGenerated)
 
-        mergeExcludes(task.excludeFilter.get().asFile, ignored, sources, rank)
+        mergeExcludes(file, ignored, sources, rank)
     }
 
     /**
@@ -171,8 +183,16 @@ class SpotbugsUtils {
             xml.appendNode(MATCH).appendNode('Rank', ['value': rank])
         }
 
-        Writer writer = src.newWriter()
-        XmlUtil.serialize(xml, writer)
+        Writer writer = src.newWriter(false)
+        writer.writeLine('<?xml version="1.0" encoding="UTF-8"?>')
+
+        Writer sw = new StringBuilderWriter()
+        XmlNodePrinter printer = new XmlNodePrinter(new PrintWriter(sw))
+        printer.print(xml)
+        writer.write(sw.toString())
+
+        // not direct serialization to avoid blank lines
+//        XmlUtil.serialize(xml, writer)
         writer.flush()
     }
 }

@@ -28,19 +28,16 @@ abstract class CopyConfigsTask extends DefaultTask {
     // re-init config if plugin version changes (to update defaults)
     @Input
     abstract Property<String> getPluginVersion()
-    // required to re-init configs in case of exclusions change (important for spotbugs)
+    // required to re-init configs in case of exclusions change (important for spotbugs, which generates config file)
     @Input
     @Optional
     abstract ListProperty<String> getExclude()
-
-    // NOTE: can't depend on exclusion sources because they may bring an implicit dependency on other task
-    // (when other task output used for configuration) which will lead to gradle failure.
-    // SIDE EFFECT: copy configs task would be up-to-date when exclusion patterns change
-
-//    @InputFiles
-//    @PathSensitive(PathSensitivity.RELATIVE)
-//    @Optional
-//    FileCollection excludeSources
+    // can't directly depend on quality.excludeSources because gradle would complain in some cases (due to possible
+    // implicit task dependency when other task output used for configuration). But still, configs task must be
+    // invalidated after excludeSources change, so using synthetic hash to detect configuration changes.
+    @Input
+    @Optional
+    abstract Property<String> getExcludeSources()
 
     @InputFiles
     @PathSensitive(PathSensitivity.RELATIVE)
@@ -49,6 +46,11 @@ abstract class CopyConfigsTask extends DefaultTask {
 
     @OutputDirectory
     abstract DirectoryProperty getTempDir()
+
+    // list of user files that must be copied into temp dir for modification (used by spotbugs)
+    @Input
+    @Optional
+    abstract ListProperty<String> getModifiableFiles()
 
     @Internal
     abstract Property<ConfigsService> getConfigsService()
@@ -80,6 +82,12 @@ abstract class CopyConfigsTask extends DefaultTask {
             }
             configsService.get().copyDefaultConfig(targetDir, it, false)
             logger.info("Copied default quality config: $it")
+        }
+
+        // copy modifiable user configs
+        modifiableFiles.get().each {
+            configsService.get().copyUserConfigForModification(it)
+            logger.info("User config copied for modifications: $it")
         }
     }
 }

@@ -18,7 +18,8 @@ class SpotbugsUtilsTest extends AbstractTest {
         expect: "conversion"
         merge([file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
                 [file('/src/main/java')] ) ==
-                """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
+                """<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
   <Match>
     <Source name="~.*\\.groovy"/>
   </Match>
@@ -48,7 +49,8 @@ class SpotbugsUtilsTest extends AbstractTest {
 
         expect: "no modification"
         merge([], [file('/src/main/java')]) ==
-                """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
+                """<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
   <Match>
     <Source name="~.*\\.groovy"/>
   </Match>
@@ -73,7 +75,8 @@ class SpotbugsUtilsTest extends AbstractTest {
         expect: "no changes"
         merge([file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
                 [file('/src/main/bad')]) ==
-                """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
+                """<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
   <Match>
     <Source name="~.*\\.groovy"/>
   </Match>
@@ -97,7 +100,8 @@ class SpotbugsUtilsTest extends AbstractTest {
 
         expect: "no changes"
         merge([], [], 15) ==
-                """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
+                """<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
   <Match>
     <Source name="~.*\\.groovy"/>
   </Match>
@@ -126,7 +130,8 @@ class SpotbugsUtilsTest extends AbstractTest {
         merge([file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
                 [file('/src/main/java')],
                 15) ==
-                """<?xml version="1.0" encoding="UTF-8"?><FindBugsFilter>
+                """<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
   <Match>
     <Source name="~.*\\.groovy"/>
   </Match>

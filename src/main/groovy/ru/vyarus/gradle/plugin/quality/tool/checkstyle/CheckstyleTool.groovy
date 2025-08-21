@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.api.provider.Provider
@@ -115,16 +114,12 @@ class CheckstyleTool implements QualityTool {
 
             tasks.withType(Checkstyle).configureEach { Task task ->
                 task.dependsOn(context.configsTask)
-                FileCollection excludeSources = extension.excludeSources
-                List<String> sources = extension.exclude.get()
-                doFirst {
-                    // note that checkstyle task will be up-to-date under configuration cache, so no problem
-                    ToolContext.applyExcludes(it as SourceTask, excludeSources, sources)
-                }
+
                 reports.xml.required.set(true)
                 reports.html.required.set(extension.htmlReports.get())
 
                 context.registerTaskForReport(task, factory.buildDesc(task, toolName))
+                context.applyExcludes(task as SourceTask, extension.excludeSources, extension.exclude.get())
             }
         }
         context.applyEnabledState(Checkstyle)

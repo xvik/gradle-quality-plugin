@@ -4,6 +4,9 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.ConfigurableFileTree
+import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.provider.Provider
@@ -182,8 +185,13 @@ abstract class QualityPlugin implements Plugin<Project> {
         project.tasks.register('copyQualityConfigs', CopyConfigsTask) {
             it.configsService.set(configsService)
             it.exclude.set(extension.exclude)
-            // can't be used because exclude sources may contain implicit links to other tasks
-//            it.excludeSources = extension.excludeSources
+            // can't use collection directly due to side effects of using other tasks outputs directly
+            // so compute hash to still detect config changes and re-execute copying
+            it.excludeSources.convention(
+                    // "hash" is a sum of all configured paths.. not ideal but should work for most cases
+                    // (copyConfigs task may not detect changes in filter/matcher patterns)
+                    getCollectionHash(extension.excludeSources)
+            )
             // important to invalidate task cache on plugin version change (in order to update default configs)
             it.pluginVersion.set(pluginVersion)
         }
@@ -239,5 +247,25 @@ abstract class QualityPlugin implements Plugin<Project> {
         }
 
         return version
+    }
+
+    // this is actually a quite bad hack: only major cases would be covered, when base directories change
+    // but fine tunings with filter and matches will not affect hash and so copyConfigs task could remain up-to-date
+    // Anyway, this is better then without detection at all (collection can't be used directly on task because
+    // it might be build from the other task output which make gradle complain)
+    @SuppressWarnings(['Instanceof', 'DuplicateStringLiteral'])
+    protected String getCollectionHash(FileCollection collection) {
+        if (!collection) {
+            return '0'
+        }
+        if (collection instanceof ConfigurableFileCollection) {
+            // specific filters ignored (no way to track it here)
+            return (collection as ConfigurableFileCollection).from*.toString().join(';').length()
+        }
+        if (collection instanceof ConfigurableFileTree) {
+            // matchers also not counted
+            return (collection as ConfigurableFileTree).dir.toString().length()
+        }
+        return String.valueOf(collection.size())
     }
 }
