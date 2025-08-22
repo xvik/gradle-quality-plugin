@@ -39,14 +39,14 @@
 * Fix default configs caching on plugin version change
 * Add `qualityToolVersions` task to show applied tools versions. Could be useful for debug
   because now spotbugs and checkstyle versions depend on a used java version
-* (BREAKING) Quality extension properties now wrapped with Property:
+* (BREAKING) Quality extension properties are now wrapped with Property:
     - groovy builds must use '=': quality.prop = value
     - kotlin builds might require explicit .set(value)
 * Add `quality.fallbackToCompatibleToolVersion` option to automatically lower checkstyle
  version for java 11 and spotbugs for java 8. False by default (used for tests)
 * Add `quality.animalsniffer` option to be able to disable animalsniffer plugin configuration
 * quality.checkstyle and quality.spotbugs by default analyze configured tool versions 
-  and if version is compatible with current jvm enable tool (no need to manually enable tool, just set version)
+  and, if version is compatible with current jvm, enable tool (no need to manually enable tool, just set version)
 * Fix quality tasks up-to-date check
 * Fix build cache for checkstyle tasks 
 * Configuration cache support

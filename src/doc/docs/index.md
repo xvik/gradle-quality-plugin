@@ -15,7 +15,7 @@
     error-prone checks and quality plugin makes all tools behave the same way as error-prone, but without java compiler modifications
     and [environment specific setup](https://github.com/tbroyer/gradle-errorprone-plugin#requirements).          
 
-[Release notes](about/history.md) - [License](about/license.md)
+**[Release Notes](about/release-notes.md)** - [History](about/history.md)  - [License](about/license.md)
 
 ## Main Features
 

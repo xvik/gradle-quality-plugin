@@ -11,7 +11,7 @@ repo_url: http://github.com/xvik/gradle-quality-plugin
 edit_uri: edit/master/src/doc/docs/
 
 #Copyright (shown at the footer)
-copyright: 'Copyright &copy; 2015-2024 Vyacheslav Rusakov'
+copyright: 'Copyright &copy; 2015-2025 Vyacheslav Rusakov'
 
 plugins:
   - search
@@ -110,6 +110,7 @@ nav:
       - Copy config: task/config.md
       - Group: task/group.md
   - About:
-      - Release notes: about/history.md
+      - Release notes: about/release-notes.md
+      - Version history: about/history.md
       - Compatibility: about/compatibility.md
       - License: about/license.md
