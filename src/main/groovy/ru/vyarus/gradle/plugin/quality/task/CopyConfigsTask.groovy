@@ -63,7 +63,7 @@ abstract class CopyConfigsTask extends DefaultTask {
         configDir.set(configsService.map { it.parameters.configDir.get() })
         tempDir.set(configsService.map { it.parameters.tempDir.get() })
 
-        description = "Prepares configuration files for quality tools"
+        description = 'Prepares configuration files for quality tools'
     }
 
     @TaskAction
