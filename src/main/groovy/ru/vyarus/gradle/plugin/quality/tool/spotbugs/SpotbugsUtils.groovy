@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlNodePrinter
 import groovy.xml.XmlParser
-import org.apache.groovy.io.StringBuilderWriter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -186,7 +185,7 @@ class SpotbugsUtils {
         Writer writer = src.newWriter(false)
         writer.writeLine('<?xml version="1.0" encoding="UTF-8"?>')
 
-        Writer sw = new StringBuilderWriter()
+        Writer sw = new StringWriter()
         XmlNodePrinter printer = new XmlNodePrinter(new PrintWriter(sw))
         printer.print(xml)
         writer.write(sw.toString())
