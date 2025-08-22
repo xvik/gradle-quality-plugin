@@ -145,3 +145,6 @@ $RECYCLE.BIN/
 
 # Used by previous versions of JEnv
 .jenv-version
+
+# Gradle multi version test support
+.generated-src

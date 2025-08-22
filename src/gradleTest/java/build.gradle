@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+    id 'ru.vyarus.quality'
+    id 'com.github.spotbugs' version '6.2.5'
+}
+
+quality {
+    strict = false
+}
+
+repositories {
+    mavenCentral() //required for testKit run
+}
