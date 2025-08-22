@@ -14,7 +14,7 @@ import spock.lang.Requires
 class UpstreamKitTest extends AbstractKitTest {
 
 
-    public static final String GRADLE = '8.11'
+    public static final String GRADLE = '9.0.0'
 
     def "Check java checks"() {
         setup:

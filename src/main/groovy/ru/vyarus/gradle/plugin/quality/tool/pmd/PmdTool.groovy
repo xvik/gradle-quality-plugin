@@ -7,6 +7,7 @@ import org.gradle.api.plugins.quality.Pmd
 import org.gradle.api.plugins.quality.PmdPlugin
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceTask
+import org.gradle.util.GradleVersion
 import ru.vyarus.gradle.plugin.quality.QualityExtension
 import ru.vyarus.gradle.plugin.quality.report.Reporter
 import ru.vyarus.gradle.plugin.quality.report.model.TaskDescFactory
@@ -80,11 +81,13 @@ class PmdTool implements QualityTool {
                 ruleSetFiles = files(context.resolveConfigFile(pmd_config).absolutePath)
                 sourceSets = extension.sourceSets.get()
             }
-            // have to override dependencies declaration due to split in pmd 7
-            // https://github.com/gradle/gradle/issues/24502
-            dependencies {
-                pmd("net.sourceforge.pmd:pmd-ant:${extension.pmdVersion.get()}")
-                pmd("net.sourceforge.pmd:pmd-java:${extension.pmdVersion.get()}")
+            if (GradleVersion.current() < GradleVersion.version('8.0')) {
+                // have to override dependencies declaration due to split in pmd 7
+                // https://github.com/gradle/gradle/issues/24502
+                dependencies {
+                    pmd("net.sourceforge.pmd:pmd-ant:${extension.pmdVersion.get()}")
+                    pmd("net.sourceforge.pmd:pmd-java:${extension.pmdVersion.get()}")
+                }
             }
             tasks.withType(Pmd).configureEach { task ->
                 task.dependsOn(context.configsTask)
