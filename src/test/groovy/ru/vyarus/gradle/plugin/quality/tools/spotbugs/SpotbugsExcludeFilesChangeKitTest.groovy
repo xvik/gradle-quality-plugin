@@ -3,11 +3,13 @@ package ru.vyarus.gradle.plugin.quality.tools.spotbugs
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import ru.vyarus.gradle.plugin.quality.AbstractKitTest
+import spock.lang.Requires
 
 /**
  * @author Vyacheslav Rusakov
  * @since 20.08.2025
  */
+@Requires({jvm.java11Compatible})
 class SpotbugsExcludeFilesChangeKitTest extends AbstractKitTest {
 
     def "Check main plugins sources exclusion"() {
