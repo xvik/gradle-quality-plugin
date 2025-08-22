@@ -62,6 +62,8 @@ abstract class CopyConfigsTask extends DefaultTask {
         // to avoid duplicate configuration in plugin (task needs to know these properties for proper caching)
         configDir.set(configsService.map { it.parameters.configDir.get() })
         tempDir.set(configsService.map { it.parameters.tempDir.get() })
+
+        description = "Prepares configuration files for quality tools"
     }
 
     @TaskAction
