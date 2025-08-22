@@ -81,7 +81,7 @@ class PmdTool implements QualityTool {
                 ruleSetFiles = files(context.resolveConfigFile(pmd_config).absolutePath)
                 sourceSets = extension.sourceSets.get()
             }
-            if (GradleVersion.current() < GradleVersion.version('8.0')) {
+            if (GradleVersion.current() < GradleVersion.version('8.3')) {
                 // have to override dependencies declaration due to split in pmd 7
                 // https://github.com/gradle/gradle/issues/24502
                 dependencies {
