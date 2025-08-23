@@ -67,7 +67,7 @@ class SpotbugsCustomExclusionConfigKitTest extends AbstractKitTest {
         and: 'config overridden'
         File cfg = file("build/quality-configs/$SpotbugsTool.spotbugs_exclude")
         cfg.exists()
-        cfg.text.trim() == """
+        unifyString(cfg.text.trim()) == """
         <?xml version="1.0" encoding="UTF-8"?>
         <FindBugsFilter>
           <Match>
@@ -119,7 +119,7 @@ class SpotbugsCustomExclusionConfigKitTest extends AbstractKitTest {
 
         and: 'config valid'
         cfg.exists()
-        cfg.text.trim() == """
+        unifyString(cfg.text.trim()) == """
         <?xml version="1.0" encoding="UTF-8"?>
         <FindBugsFilter>
           <Match>
