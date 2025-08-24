@@ -1,7 +1,6 @@
 plugins {
-    id 'java' // or java-library
+    id 'groovy'
     id 'ru.vyarus.quality'
-    id 'com.github.spotbugs' version '6.2.5'
 }
 
 quality {
@@ -10,3 +9,6 @@ quality {
 }
 
 repositories { mavenCentral() }
+dependencies {
+    implementation localGroovy()
+}

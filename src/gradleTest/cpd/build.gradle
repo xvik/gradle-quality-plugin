@@ -1,0 +1,23 @@
+plugins {
+    // CPD will also work with groovy sources, use java for simplicity
+    id 'java'
+    id 'de.aaschmid.cpd' version '3.5'
+    id 'ru.vyarus.quality'
+    // not applied for simplicity - to show only CPD output
+//    id 'com.github.spotbugs' version '6.2.5'
+}
+
+quality {
+    // used to prevent failure due to found quality violations
+    strict = false
+
+    // disable other tools just to simplify output (they could be used together with CPD)
+    checkstyle = false
+    spotbugs = false
+    pmd = false
+
+    // exclusions affect CPD
+    exclude '**/Struct2.java', '**/OtherStruct2.java'
+}
+
+repositories { mavenCentral() }

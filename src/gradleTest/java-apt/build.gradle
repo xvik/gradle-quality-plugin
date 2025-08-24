@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+    id 'ru.vyarus.quality'
+    id 'com.github.spotbugs' version '6.2.5'
+}
+
+quality {
+    // manual exclusion is not required because apt-generated sources are excluded automatically
+}
+
+// errors contained in generated sources and they must be excluded
+repositories { mavenCentral() }
+dependencies {
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.3.1.Final"
+    implementation "org.mapstruct:mapstruct:1.3.1.Final"
+}

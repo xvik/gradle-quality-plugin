@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+    id 'ru.vyarus.animalsniffer' version '2.0.1'
+    id 'ru.vyarus.quality'
+}
+
+java {
+    sourceCompatibility = 1.8
+}
+
+quality {
+    // used to prevent failure due to found quality violations
+    strict = false
+
+    // disable other tools for simpler output
+    spotbugs = false
+    pmd = false
+    checkstyle = false
+}
+
+repositories { mavenCentral() }
+dependencies {
+    signature 'org.codehaus.mojo.signature:java15:1.0@signature'
+}

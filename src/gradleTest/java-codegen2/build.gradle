@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'ru.vyarus.quality'
+    id 'com.github.spotbugs' version '6.2.5'
+    id 'org.openapi.generator' version '7.14.0'
+}
+
+repositories { mavenCentral() }
+dependencies {
+    compileOnly 'io.swagger.core.v3:swagger-annotations:2.2.30'
+
+    implementation 'com.github.scribejava:scribejava-core:8.3.3'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.19.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.19.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.19.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.2'
+
+    implementation 'org.glassfish.jersey.core:jersey-client:3.1.11'
+    implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:3.1.11'
+    implementation  'org.glassfish.jersey.media:jersey-media-multipart:3.1.11'
+}
+
+// https://openapi-generator.tech/docs/generators/java
+openApiGenerate {
+    generatorName = "java"
+    inputSpec = "$projectDir/src/main/openapi/petstore.yaml"
+    outputDir = "$buildDir/petstore/client"
+    apiPackage = "com.petstore.api"
+    invokerPackage = "com.petstore"
+    modelPackage = "com.petstore.api.model"
+    configOptions = [
+            library: "jersey3",
+            dateLibrary: "java8",
+            openApiNullable: "false",
+            hideGenerationTimestamp: "true"
+    ]
+}
+compileJava.dependsOn 'openApiGenerate'
+sourceSets.main.java.srcDir "${openApiGenerate.outputDir.get()}/src/main/java"
+
+quality {
+    // Violations would be found in the generated code without exclusion
+    exclude 'com/petstore/**'
+}
