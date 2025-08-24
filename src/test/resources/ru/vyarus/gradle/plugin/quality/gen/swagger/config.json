@@ -1,8 +1,0 @@
-{
-  "library": "jersey2",
-  "dateLibrary": "java8",
-  "hideGenerationTimestamp": true,
-  "modelPackage": "com.petstore.api.model",
-  "apiPackage": "com.petstore.api",
-  "invokerPackage": "com.petstore"
-}

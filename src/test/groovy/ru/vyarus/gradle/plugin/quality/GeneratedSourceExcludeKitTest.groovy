@@ -17,37 +17,41 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
-                id 'org.hidetake.swagger.generator' version '2.19.2' 
+                id 'org.openapi.generator' version '7.14.0'
             }           
             
             repositories { mavenCentral() }
             dependencies {
-                swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.71'
-                implementation 'io.swagger.core.v3:swagger-annotations:2.1.0'
+                compileOnly 'io.swagger.core.v3:swagger-annotations:2.2.30'
 
-                implementation 'com.fasterxml.jackson.core:jackson-core:2.10.4'        
-                implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.4'
-                implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.4'
-                implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.4'
-                
-                implementation 'org.glassfish.jersey.core:jersey-client:2.29.1'          
-                implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:2.29.1'            
-                implementation  'org.glassfish.jersey.media:jersey-media-multipart:2.29.1'
-            }
+                implementation 'com.github.scribejava:scribejava-core:8.3.3'
+                implementation 'com.fasterxml.jackson.core:jackson-core:2.19.2'
+                implementation 'com.fasterxml.jackson.core:jackson-annotations:2.19.2'
+                implementation 'com.fasterxml.jackson.core:jackson-databind:2.19.2'
+                implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.2'
             
-            swaggerSources {
-                petstoreApi {
-                    inputFile = file('src/main/swagger/petstore.yaml')
-                    code {
-                        language = 'java'
-                        configFile = file('src/main/swagger/config.json')
-                    }
-                }
-            }
-            compileJava.dependsOn swaggerSources.petstoreApi.code
+                implementation 'org.glassfish.jersey.core:jersey-client:3.1.11'
+                implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:3.1.11'
+                implementation  'org.glassfish.jersey.media:jersey-media-multipart:3.1.11'
+            }            
             
-            sourceSets.main.java.srcDir "\${swaggerSources.petstoreApi.code.outputDir}/src/main/java"
-            sourceSets.main.resources.srcDir "\${swaggerSources.petstoreApi.code.outputDir}/src/main/resources"
+            // https://openapi-generator.tech/docs/generators/java
+            openApiGenerate {
+                generatorName = "java"
+                inputSpec = "\$projectDir/src/main/openapi/petstore.yaml"
+                outputDir = "\$buildDir/petstore/client"
+                apiPackage = "com.petstore.api"
+                invokerPackage = "com.petstore"
+                modelPackage = "com.petstore.api.model"
+                configOptions = [
+                        library: "jersey3",
+                        dateLibrary: "java8",
+                        openApiNullable: "false",
+                        hideGenerationTimestamp: "true"
+                ]
+            }
+            compileJava.dependsOn 'openApiGenerate'
+            sourceSets.main.java.srcDir "\${openApiGenerate.outputDir.get()}/src/main/java"
 
             quality {
                 pmd = false
@@ -57,8 +61,7 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             }
         """)
 
-        fileFromClasspath('src/main/swagger/petstore.yaml', '/ru/vyarus/gradle/plugin/quality/gen/swagger/petstore.yaml')
-        fileFromClasspath('src/main/swagger/config.json', '/ru/vyarus/gradle/plugin/quality/gen/swagger/config.json')
+        fileFromClasspath('src/main/openapi/petstore.yaml', '/ru/vyarus/gradle/plugin/quality/gen/openapi/petstore.yaml')
         // need at least one source to activate quality
         fileFromClasspath('src/main/java/sample/ValidSample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/ValidSample.java')
 
@@ -77,37 +80,41 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
-                 id 'org.hidetake.swagger.generator' version '2.19.2' 
+                id 'org.openapi.generator' version '7.14.0'
             }           
             
             repositories { mavenCentral() }
             dependencies {
-                swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.71'  
-                implementation 'io.swagger.core.v3:swagger-annotations:2.1.0'
+                compileOnly 'io.swagger.core.v3:swagger-annotations:2.2.30'
 
-                implementation 'com.fasterxml.jackson.core:jackson-core:2.10.4'        
-                implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.4'
-                implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.4'
-                implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.4'
-                
-                implementation 'org.glassfish.jersey.core:jersey-client:2.29.1'          
-                implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:2.29.1'            
-                implementation  'org.glassfish.jersey.media:jersey-media-multipart:2.29.1'
-            }
+                implementation 'com.github.scribejava:scribejava-core:8.3.3'
+                implementation 'com.fasterxml.jackson.core:jackson-core:2.19.2'
+                implementation 'com.fasterxml.jackson.core:jackson-annotations:2.19.2'
+                implementation 'com.fasterxml.jackson.core:jackson-databind:2.19.2'
+                implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.2'
             
-            swaggerSources {
-                petstoreApi {
-                    inputFile = file('src/main/swagger/petstore.yaml')
-                    code {
-                        language = 'java'
-                        configFile = file('src/main/swagger/config.json')
-                    }
-                }
-            }
-            compileJava.dependsOn swaggerSources.petstoreApi.code
+                implementation 'org.glassfish.jersey.core:jersey-client:3.1.11'
+                implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:3.1.11'
+                implementation  'org.glassfish.jersey.media:jersey-media-multipart:3.1.11'
+            }            
             
-            sourceSets.main.java.srcDir "\${swaggerSources.petstoreApi.code.outputDir}/src/main/java"
-            sourceSets.main.resources.srcDir "\${swaggerSources.petstoreApi.code.outputDir}/src/main/resources"
+            // https://openapi-generator.tech/docs/generators/java
+            openApiGenerate {
+                generatorName = "java"
+                inputSpec = "\$projectDir/src/main/openapi/petstore.yaml"
+                outputDir = "\$buildDir/petstore/client"
+                apiPackage = "com.petstore.api"
+                invokerPackage = "com.petstore"
+                modelPackage = "com.petstore.api.model"
+                configOptions = [
+                        library: "jersey3",
+                        dateLibrary: "java8",
+                        openApiNullable: "false",
+                        hideGenerationTimestamp: "true"
+                ]
+            }
+            compileJava.dependsOn 'openApiGenerate'
+            sourceSets.main.java.srcDir "\${openApiGenerate.outputDir.get()}/src/main/java"
 
             quality {
                 pmd = false
@@ -115,12 +122,11 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
                 strict = false
                 fallbackToCompatibleToolVersion = true
                 
-                excludeSources = fileTree(swaggerSources.petstoreApi.code.outputDir)
+                excludeSources = fileTree(openApiGenerate.outputDir.get())
             }
         """)
 
-        fileFromClasspath('src/main/swagger/petstore.yaml', '/ru/vyarus/gradle/plugin/quality/gen/swagger/petstore.yaml')
-        fileFromClasspath('src/main/swagger/config.json', '/ru/vyarus/gradle/plugin/quality/gen/swagger/config.json')
+        fileFromClasspath('src/main/openapi/petstore.yaml', '/ru/vyarus/gradle/plugin/quality/gen/openapi/petstore.yaml')
         // need at least one source to activate quality
         fileFromClasspath('src/main/java/sample/ValidSample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/ValidSample.java')
 
@@ -140,37 +146,41 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             plugins {
                 id 'java'
                 id 'ru.vyarus.quality'
-                id 'org.hidetake.swagger.generator' version '2.19.2' 
+                id 'org.openapi.generator' version '7.14.0'
             }           
             
             repositories { mavenCentral() }
             dependencies {
-                swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.71'
-                implementation 'io.swagger.core.v3:swagger-annotations:2.1.0'
+                compileOnly 'io.swagger.core.v3:swagger-annotations:2.2.30'
 
-                implementation 'com.fasterxml.jackson.core:jackson-core:2.10.4'        
-                implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.4'
-                implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.4'
-                implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.4'
-                
-                implementation 'org.glassfish.jersey.core:jersey-client:2.29.1'          
-                implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:2.29.1'            
-                implementation  'org.glassfish.jersey.media:jersey-media-multipart:2.29.1'
-            }
+                implementation 'com.github.scribejava:scribejava-core:8.3.3'
+                implementation 'com.fasterxml.jackson.core:jackson-core:2.19.2'
+                implementation 'com.fasterxml.jackson.core:jackson-annotations:2.19.2'
+                implementation 'com.fasterxml.jackson.core:jackson-databind:2.19.2'
+                implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.2'
             
-            swaggerSources {
-                petstoreApi {
-                    inputFile = file('src/main/swagger/petstore.yaml')
-                    code {
-                        language = 'java'
-                        configFile = file('src/main/swagger/config.json')
-                    }
-                }
-            }
-            compileJava.dependsOn swaggerSources.petstoreApi.code
+                implementation 'org.glassfish.jersey.core:jersey-client:3.1.11'
+                implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:3.1.11'
+                implementation  'org.glassfish.jersey.media:jersey-media-multipart:3.1.11'
+            }            
             
-            sourceSets.main.java.srcDir "\${swaggerSources.petstoreApi.code.outputDir}/src/main/java"
-            sourceSets.main.resources.srcDir "\${swaggerSources.petstoreApi.code.outputDir}/src/main/resources"
+            // https://openapi-generator.tech/docs/generators/java
+            openApiGenerate {
+                generatorName = "java"
+                inputSpec = "\$projectDir/src/main/openapi/petstore.yaml"
+                outputDir = "\$buildDir/petstore/client"
+                apiPackage = "com.petstore.api"
+                invokerPackage = "com.petstore"
+                modelPackage = "com.petstore.api.model"
+                configOptions = [
+                        library: "jersey3",
+                        dateLibrary: "java8",
+                        openApiNullable: "false",
+                        hideGenerationTimestamp: "true"
+                ]
+            }
+            compileJava.dependsOn 'openApiGenerate'
+            sourceSets.main.java.srcDir "\${openApiGenerate.outputDir.get()}/src/main/java"
 
             quality {
                 pmd = false
@@ -182,8 +192,7 @@ class GeneratedSourceExcludeKitTest extends AbstractKitTest {
             }
         """)
 
-        fileFromClasspath('src/main/swagger/petstore.yaml', '/ru/vyarus/gradle/plugin/quality/gen/swagger/petstore.yaml')
-        fileFromClasspath('src/main/swagger/config.json', '/ru/vyarus/gradle/plugin/quality/gen/swagger/config.json')
+        fileFromClasspath('src/main/openapi/petstore.yaml', '/ru/vyarus/gradle/plugin/quality/gen/openapi/petstore.yaml')
         // need at least one source to activate quality
         fileFromClasspath('src/main/java/sample/ValidSample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/ValidSample.java')
 
