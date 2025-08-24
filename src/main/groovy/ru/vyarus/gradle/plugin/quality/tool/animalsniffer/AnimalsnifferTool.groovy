@@ -29,8 +29,7 @@ class AnimalsnifferTool implements QualityTool {
 
     @Override
     List<ProjectSources> getAutoEnableForSources() {
-        // for all languages (used manually apply plugin when required)
-        return ProjectSources.values()
+        return []
     }
 
     @Override
