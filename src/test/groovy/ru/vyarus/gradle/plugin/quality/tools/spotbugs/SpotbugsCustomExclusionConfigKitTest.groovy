@@ -74,7 +74,7 @@ class SpotbugsCustomExclusionConfigKitTest extends AbstractKitTest {
             <Class name="foo.SomeFoo"/>
           </Match>
           <Match>
-            <Class name="sample.Sample2"/>
+            <Class name="~sample\\.Sample2(\\\$.*)?"/>
           </Match>
         </FindBugsFilter>
         """.stripIndent().trim()
@@ -126,7 +126,7 @@ class SpotbugsCustomExclusionConfigKitTest extends AbstractKitTest {
             <Class name="foo.SomeFoo"/>
           </Match>
           <Match>
-            <Class name="sample.Sample"/>
+            <Class name="~sample\\.Sample(\\\$.*)?"/>
           </Match>
         </FindBugsFilter>
         """.stripIndent().trim()

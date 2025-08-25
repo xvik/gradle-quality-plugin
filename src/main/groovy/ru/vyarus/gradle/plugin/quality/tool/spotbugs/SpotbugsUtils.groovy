@@ -174,7 +174,7 @@ class SpotbugsUtils {
             String clazz = FileUtils.extractJavaClass(roots, it)
             if (clazz) {
                 // use regexp to also exclude inner classes
-                xml.appendNode(MATCH).appendNode('Class', ['name': "~${clazz.replace('.', '\\.')}.*"])
+                xml.appendNode(MATCH).appendNode('Class', ['name': "~${clazz.replace('.', '\\.')}(\\\$.*)?"])
             }
         }
 

@@ -36,10 +36,10 @@ class SpotbugsUtilsTest extends AbstractTest {
     </Or>
   </Match>
   <Match>
-    <Class name="~sample\\.Sample.*"/>
+    <Class name="~sample\\.Sample(\\\$.*)?"/>
   </Match>
   <Match>
-    <Class name="~other\\.Sample2.*"/>
+    <Class name="~other\\.Sample2(\\\$.*)?"/>
   </Match>
 </FindBugsFilter>
 """ as String
@@ -148,10 +148,10 @@ class SpotbugsUtilsTest extends AbstractTest {
     </Or>
   </Match>
   <Match>
-    <Class name="~sample\\.Sample.*"/>
+    <Class name="~sample\\.Sample(\\\$.*)?"/>
   </Match>
   <Match>
-    <Class name="~other\\.Sample2.*"/>
+    <Class name="~other\\.Sample2(\\\$.*)?"/>
   </Match>
   <Match>
     <Rank value="15"/>
