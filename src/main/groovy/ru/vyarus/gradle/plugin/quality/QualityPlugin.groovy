@@ -8,6 +8,7 @@ import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceSet
@@ -205,7 +206,7 @@ abstract class QualityPlugin implements Plugin<Project> {
         project.sourceSets.each { SourceSet set ->
             project.tasks.register(set.getTaskName(QUALITY_TASK, null)) {
                 it.with {
-                    group = 'verification'
+                    group = JavaBasePlugin.VERIFICATION_GROUP
                     description = "Run quality plugins for $set.name source set"
                 }
             }

@@ -3,6 +3,7 @@ package ru.vyarus.gradle.plugin.quality.task
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.JavaVersion
+import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
@@ -22,7 +23,7 @@ abstract class QualityToolVersionsTask extends DefaultTask {
 
     @SuppressWarnings('AbstractClassWithPublicConstructor')
     QualityToolVersionsTask() {
-        group = 'verification'
+        group = JavaBasePlugin.VERIFICATION_GROUP
         description = 'Show configured quality tools versions'
     }
 
