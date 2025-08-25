@@ -140,10 +140,12 @@ test {
     }
 }
 
+// run sample projects in src/gradleTest with different gradle versions
 gradleTestSets {
     testSets {
         main {
-            versions '7.1', '8.1', '9.0.0'
+            // gradle 8.0-8.3 can't be used due to a bug, affecting codegen projects
+            versions '7.1', '8.4', '9.0.0'
             defaultTaskToRun = 'check'
         }
     }

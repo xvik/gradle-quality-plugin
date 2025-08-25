@@ -4,7 +4,7 @@ package sample;
  * Sample class.
  */
 @SuppressWarnings({"HideUtilityClassConstructor", "PMD.SystemPrintln"})
-public class ValidSample {
+public final class ValidSample {
 
     private ValidSample() {
     }

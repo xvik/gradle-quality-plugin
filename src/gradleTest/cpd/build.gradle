@@ -17,7 +17,7 @@ quality {
     pmd = false
 
     // exclusions affect CPD
-    exclude '**/Struct2.java', '**/OtherStruct2.java'
+    exclude '**/Struct2.java'
 }
 
 repositories { mavenCentral() }
