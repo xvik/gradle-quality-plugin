@@ -170,11 +170,11 @@ class SpotbugsUtils {
      */
     static void mergeExcludes(File src, Collection<File> exclude, Collection<File> roots, Integer rank = null) {
         Node xml = new XmlParser().parse(src)
-
         exclude.each {
             String clazz = FileUtils.extractJavaClass(roots, it)
             if (clazz) {
-                xml.appendNode(MATCH).appendNode('Class', ['name': clazz])
+                // use regexp to also exclude inner classes
+                xml.appendNode(MATCH).appendNode('Class', ['name': "~${clazz.replace('.', '\\.')}.*"])
             }
         }
 
