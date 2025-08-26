@@ -1301,18 +1301,23 @@ and must be applied manually:</p>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;6.2.5&#39;</span>
 <span class="o">}</span>
 </code></pre></div>
-<p>Before, spotbugs plugin was bundled as a transitive dependency, and so direct plugin
-declaration was not required. But the actual spotbugs plugin requires java 11, and
-keeping it as a transitive dependency would mean java 8 compatibility loose,
-even for groovy projects (not requiring spotbugs at all).</p>
+<p>On multi-module projects it would be enough to declare spotbugs in the root project 
+(quality plugin will detect its presence in build classpath and apply in modules):</p>
+<p>```
+plugins {
+    id 'com.github.spotbugs' version '6.2.5' apply false
+}</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p><strong>Spotbugs plugin 6.x requires java 11</strong> (same as spotbugs 4.9.x itself)
 Spotbugs support will be disabled on lower java version, but spotbugs plugin itself might
-break your project on a lower java version (<a href="../../guide/java/">see java compatibility notes</a>).    </p>
+break your project on a lower java version (<a href="../../guide/java/">see java compatibility notes</a>).</p>
+<p>This is the reson why its not bundled as a tansitive dependency as before: 
+keeping it as a transitive dependency would mean java 8 compatibility loose,
+even for groovy projects (not requiring spotbugs at all).</p>
 </div>
-<p>By default, plugin activates if java sources available (<code>src/main/java</code>).    </p>
+<p>By default, plugin is applied (if found in build classpath) if java sources available (<code>src/main/java</code>).    </p>
 <p>SpotBugs configuration differ from other tools (checkstyle, pmd): instead of exact rules configuration
 it uses <a href="http://spotbugs.readthedocs.io/en/latest/effort.html">efforts level</a>. Deeper level could reveal more bugs, but with higher mistake possibility. 
 Default settings (<code>max</code> effort and <code>medium</code> level) are perfect for most cases. Some checks were disabled in the default 

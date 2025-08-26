@@ -1638,7 +1638,13 @@ tool versions would be used, which may cause different results. Better restrict 
 upper-most compatible java version.</p>
 </div>
 <h2 id="migration-guide">Migration guide<a class="headerlink" href="#migration-guide" title="Permanent link">&para;</a></h2>
-<p>Only affects java projects, using checkstyle and/or spotbugs.</p>
+<p>For groovy build scripts it is required to use <code>=</code> for extension properties assignment:</p>
+<div class="highlight"><pre><span></span><code><span class="n">quality</span><span class="o">.</span><span class="na">spotbugs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+<p>For kotlin builds it might be required to use <code>property.set(value)</code> in some cases</p>
+<p><code>quality.sourceSets</code> now accept source set names, so instead of <code>[project.sourceSets.main]</code> use <code>['main']</code> as value.
+Legacy configuration is available with method: <code>quality.sourceSets(project.sourceSets.main)</code></p>
+<p>The following only affects java projects, using checkstyle and/or spotbugs.</p>
 <h3 id="spotbugs_2">Spotbugs<a class="headerlink" href="#spotbugs_2" title="Permanent link">&para;</a></h3>
 <p>If you want to use spotbugs, apply plugin manually:</p>
 <div class="highlight"><pre><span></span><code><span class="w"> </span><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
