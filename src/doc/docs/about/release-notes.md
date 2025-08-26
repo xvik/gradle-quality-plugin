@@ -295,7 +295,18 @@ quality.fallbackToCompatibleToolVersion = true
 
 ## Migration guide
 
-Only affects java projects, using checkstyle and/or spotbugs.
+For groovy build scripts it is required to use `=` for extension properties assignment:
+
+```groovy
+quality.spotbugs = true
+```
+
+For kotlin builds it might be required to use `property.set(value)` in some cases
+
+`quality.sourceSets` now accept source set names, so instead of `[project.sourceSets.main]` use `['main']` as value.
+Legacy configuration is available with method: `quality.sourceSets(project.sourceSets.main)`
+
+The following only affects java projects, using checkstyle and/or spotbugs.
 
 ### Spotbugs
 

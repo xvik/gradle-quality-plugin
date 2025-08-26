@@ -21,17 +21,24 @@
     }
     ```
 
-    Before, spotbugs plugin was bundled as a transitive dependency, and so direct plugin
-    declaration was not required. But the actual spotbugs plugin requires java 11, and
-    keeping it as a transitive dependency would mean java 8 compatibility loose,
-    even for groovy projects (not requiring spotbugs at all).
+    On multi-module projects it would be enough to declare spotbugs in the root project 
+    (quality plugin will detect its presence in build classpath and apply in modules):
+    
+    ```
+    plugins {
+        id 'com.github.spotbugs' version '6.2.5' apply false
+    }
 
 !!! warning
     **Spotbugs plugin 6.x requires java 11** (same as spotbugs 4.9.x itself)
     Spotbugs support will be disabled on lower java version, but spotbugs plugin itself might
-    break your project on a lower java version ([see java compatibility notes](../guide/java.md)).    
+    break your project on a lower java version ([see java compatibility notes](../guide/java.md)).
 
-By default, plugin activates if java sources available (`src/main/java`).    
+    This is the reson why its not bundled as a tansitive dependency as before: 
+    keeping it as a transitive dependency would mean java 8 compatibility loose,
+    even for groovy projects (not requiring spotbugs at all).
+
+By default, plugin is applied (if found in build classpath) if java sources available (`src/main/java`).    
 
 SpotBugs configuration differ from other tools (checkstyle, pmd): instead of exact rules configuration
 it uses [efforts level](http://spotbugs.readthedocs.io/en/latest/effort.html). Deeper level could reveal more bugs, but with higher mistake possibility. 

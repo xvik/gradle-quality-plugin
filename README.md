@@ -74,23 +74,33 @@ buildscript {
 apply plugin: 'ru.vyarus.quality'
 ```
 
-Minimal requirements: java 8, gradle 7.1
+IMPORTANT: if spotbugs is required, spotbugs plugin must be [applied manually](https://xvik.github.io/gradle-quality-plugin/latest/getting-started/#spotbugs): 
 
-NOTE: if spotbugs is required, spotbugs plugin must be applied manually: 
 ```
 plugins {
     id 'com.github.spotbugs' version '6.2.5'
 }
 ```
 
+On multi-module projects it would be enough to declare spotbugs in the root project 
+(quality plugin will detect its presence in build classpath and apply in modules):
+
+```
+plugins {
+    id 'com.github.spotbugs' version '6.2.5' apply false
+}
+```
+
 #### Compatibility
 
-Plugin compiled for java 8, compatible with java 11 and above
+Plugin compiled for java 8, compatible with java 11 and above.
+
+Supported gradle 7.1 - 9.
 
 
 | Gradle | Version                                                      |
 |--------|--------------------------------------------------------------|
-| 7.1-8  | 6.0.0                                                        |
+| 7.1-9  | 6.0.0                                                        |
 | 7.0    | [5.0.0](https://xvik.github.io/gradle-quality-plugin/5.0.0/) |
 | 5.6-6  | [4.9.0](https://xvik.github.io/gradle-quality-plugin/4.9.0/) |
 | 5.1    | [4.2.2](http://xvik.github.io/gradle-quality-plugin/4.2.2)   |
@@ -107,7 +117,9 @@ Java requirements for quality tools:
 | SpotBugs   | 4.9.4           | 11           |
 | CodeNarc   | 3.6.0           | 8            |
 
-Incompatible tools will not be enabled: for example, on java 11 Checkstyle will not be enabled. 
+Incompatible tools will not be enabled: for example, on java 11 Checkstyle will not be enabled.
+
+See details about [configuration for exact java versions](https://xvik.github.io/gradle-quality-plugin/latest/guide/java/)
 
 #### Snapshots
 
