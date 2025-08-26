@@ -105,6 +105,20 @@ quality {
     spotbugsMaxHeapSize = '1g'
 
     /**
+     * Hide spotbugs warnings by applying '-quiet' option. Disabled by default. Use it to get rid of possible
+     * "The following classes needed for analysis were missing:" warning message (which is printed for each report
+     * (2 times) and there is nothing you could do with it).
+     */
+    spotbugsQuiet = false
+
+    /**
+     * Apply spotbugs annotations dependency with compileOnly scope. This dependency is required for
+     * suppression of warnings ({@code @SuppressFBWarnings}). Dependency version would be the same as
+     * used spotbugs version (as described in spotbugs plugin recommendation).
+     */
+    spotbugsAnnotations = true
+
+    /**
      * Javac lint options to show compiler warnings, not visible by default.
      * Applies to all CompileJava tasks.
      * Options will be added as -Xlint:option
