@@ -277,47 +277,7 @@ public boolean apply(@NonNull final Object input) {
 !!! hint
     `NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION` check was disabled because it does not allow this workaround to work
 
-## Spotbugs plugin specifics
-
-Spotbugs plugin 4 is a plugin re-write. Now it does not follow other gradle quality plugin
-conventions. The main difference is: there is no target source sets configuration anymore,
-so by default, all spotbugs tasks will be executed with `check`.
-
-To recover old spotbugs plugin behaviour (and unify it with other plugins) quality plugin 
-activates customized spotbugs plugin with legacy behaviour (the difference is only in what tasks
-attached to `check`).
-
-!!! warning
-    If you will activate spotbugs plugin manually
-    ```groovy    
-    plugins {
-        id 'com.github.spotbugs' version '4.1.0'
-    }     
-    ```
-    Then default spotbugs plugin will be used and so `check` will call all spotbugs tasks
-    (`spotbugsMain`, `spotbugsTest`).
-    
-    Still, everything else will work as before: the difference is only in check task dependencies. 
-
-If you would like to update bundled spotbugs plugin version use:
-
-```groovy
-plugins {
-    id 'com.github.spotbugs' version '4.1.0' apply false
-}     
-```
-
-If you want to apply plugin manually to activtate it earlier and be able to apply configurations
-without `afterEvaluate` block:
-
-```groovy
-apply plugin: ru.vyarus.gradle.plugin.quality.spotbugs.CustomSpotBugsPlugin
-```
-
 ### Spotbugs plugin issues
-
-New spotbugs plugin [does not support build cache](https://github.com/spotbugs/spotbugs-gradle-plugin/issues/244), 
-so spotbugs tasks will always run, even with enabled build cache. 
 
 Spotbugs plugin always throws an exception when violations found, so even in non strict mode
 (`quality.strict = false`) you will see an exception in logs when violations found (build will not be failed).

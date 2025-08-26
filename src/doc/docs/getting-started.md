@@ -136,3 +136,7 @@ Use it for suppression (e.g. `@SuppressWarnings("PMD.CommentRequired")` in case 
 You may develop locally on java 17, but run project on java 8 on CI (keep it in mind).
 
 See [java support notes](guide/java.md) for details. 
+
+## Examples
+
+See [example projects](index.md#samples)

@@ -36,3 +36,13 @@
     * [**Configuration**](guide/config.md) - configuration reference
 * [**Tools**](tool/lint.md) section describes exact quality tool configuration and usage aspects. Use it as a *hand book*.
 * [**Tasks**](task/config.md) section describes custom tasks.
+
+## Samples
+
+* [Java project](https://github.com/xvik/gradle-quality-plugin/tree/master/src/gradleTest/java)
+* [Groovy project](https://github.com/xvik/gradle-quality-plugin/tree/master/src/gradleTest/groovy)
+* [Java + generated code + exclusion by source dir](https://github.com/xvik/gradle-quality-plugin/tree/master/src/gradleTest/java-codegen)
+* [Java + generated code + exclusion by source path](https://github.com/xvik/gradle-quality-plugin/tree/master/src/gradleTest/java-codegen2)
+* [Java + apt](https://github.com/xvik/gradle-quality-plugin/tree/master/src/gradleTest/java-apt)
+* [CPD](https://github.com/xvik/gradle-quality-plugin/tree/master/src/gradleTest/cpd)
+* [AnimalSniffer](https://github.com/xvik/gradle-quality-plugin/tree/master/src/gradleTest/animalsniffer)
