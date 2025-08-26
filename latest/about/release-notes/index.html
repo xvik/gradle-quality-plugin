@@ -976,6 +976,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#checkstyle_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checkstyle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#spotbugs_1" class="md-nav__link">
     <span class="md-ellipsis">
       Spotbugs
@@ -1294,6 +1303,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#checkstyle_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checkstyle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#spotbugs_1" class="md-nav__link">
     <span class="md-ellipsis">
       Spotbugs
@@ -1425,9 +1443,9 @@
 <p><code>quality</code> extension now use gradle properties instead of fields.</p>
 <p>For groovy builds, you'll have to use <code>=</code> to assign values: <code>quality.key = value</code>.
 For kotlin builds, it <em>might</em> be required to use <code>quality.key.set(value)</code> (in some cases).</p>
-<p><code>quality.sourceSets</code> option not accept strings instead of source set objects.
-This was done to simplify configuration (especially for kotlin):</p>
-<p>instead of <code>sourceSets = [project.sourceSets.main]</code> now use <code>sourceSets = ['main']</code></p>
+<p><code>quality.sourceSets</code> option now accept strings instead of source set objects.
+This was done to simplify configuration (especially for kotlin):
+instead of <code>sourceSets = [project.sourceSets.main]</code> now use <code>sourceSets = ['main']</code></p>
 <p>Legacy configuration with object is available with method:</p>
 <div class="highlight"><pre><span></span><code><span class="n">quality</span><span class="o">.</span><span class="na">sourceSets</span><span class="o">(</span><span class="n">project</span><span class="o">.</span><span class="na">sourceSets</span><span class="o">.</span><span class="na">main</span><span class="o">,</span><span class="w"> </span><span class="n">project</span><span class="o">.</span><span class="na">sourceSets</span><span class="o">.</span><span class="na">test</span><span class="o">)</span>
 </code></pre></div>
@@ -1586,7 +1604,7 @@ SpotBugs: disabled
 </tr>
 </tbody>
 </table>
-<p>### Checkstyle</p>
+<h3 id="checkstyle_1">Checkstyle<a class="headerlink" href="#checkstyle_1" title="Permanent link">&para;</a></h3>
 <p>Default value for <code>quality.checkstyle</code> now depends on configured <code>checkstyleVersion</code>:</p>
 <ul>
 <li>For checkstyle 11 (default) <code>quality.checkstyle = false</code> on java &lt; 17</li>
@@ -1694,7 +1712,7 @@ java version checks:</p>
 <span class="n">plugins</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="err">&#39;</span><span class="n">java</span><span class="err">&#39;</span>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="err">&#39;</span><span class="n">ru</span><span class="p">.</span><span class="na">vyarus</span><span class="p">.</span><span class="na">quality</span><span class="err">&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="err">&#39;</span><span class="mf">6.0.0</span><span class="err">&#39;</span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="na">github</span><span class="p">.</span><span class="na">spotbugs</span><span class="err">&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="err">&#39;</span><span class="mf">6.2.5</span><span class="err">&#39;</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="na">github</span><span class="p">.</span><span class="na">spotbugs</span><span class="err">&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="err">&#39;</span><span class="mf">6.2.5</span><span class="err">&#39;</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="kc">false</span>
 <span class="p">}</span>
 </code></pre></div>
 This way, gradle would apply spotbugs plugin 6.x on java 8, but the quality plugin will not
