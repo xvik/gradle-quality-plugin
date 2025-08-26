@@ -151,7 +151,7 @@ class CpdIntegrationTest extends AbstractTest {
 
             quality {
                 strict = false
-                sourceSets = [project.sourceSets.main, project.sourceSets.custom]
+                sourceSets(project.sourceSets.main, project.sourceSets.custom)
             }
         }
 

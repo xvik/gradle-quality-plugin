@@ -7,6 +7,7 @@ import ru.vyarus.gradle.plugin.quality.QualityExtension
 import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
+import ru.vyarus.gradle.plugin.quality.util.SourceSetUtils
 
 /**
  * Animalsniffer support.
@@ -62,7 +63,8 @@ class AnimalsnifferTool implements QualityTool {
             project.configure(project) {
                 animalsniffer {
                     ignoreFailures = !extension.strict.get()
-                    sourceSets = extension.sourceSets.get()
+                    // switch to string-based defaultTargets later
+                    sourceSets = SourceSetUtils.getSourceSets(project, extension.sourceSets.get())
                 }
                 if (extension.animalsnifferVersion.present) {
                     animalsniffer.toolVersion = extension.animalsnifferVersion.get()

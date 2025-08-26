@@ -3,7 +3,6 @@ package ru.vyarus.gradle.plugin.quality
 import groovy.transform.CompileStatic
 import org.gradle.api.Project
 import org.gradle.api.file.FileCollection
-import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
@@ -28,9 +27,7 @@ abstract class QualityExtension {
 
     @SuppressWarnings(['MethodSize', 'AbstractClassWithPublicConstructor'])
     QualityExtension(Project project) {
-        sourceSets.convention([
-                project.extensions.getByType(JavaPluginExtension).sourceSets.findByName('main')
-        ] as Collection<SourceSet>)
+        sourceSets.convention(['main'])
 
         // Checkstyle and spotbugs mechanism based on property conventions:
         // * default checkstyle version would be calculated based on fallback option value, but only if user will
@@ -285,10 +282,10 @@ abstract class QualityExtension {
     abstract Property<Boolean> getHtmlReports()
 
     /**
-     * Source sets to apply checks on.
-     * Default is [project.sourceSets.main] to apply only for project sources, excluding tests.
+     * Source sets to apply checks on. Use string to simplify source sets declaration.
+     * Default is ['main'] to apply only for project sources, excluding tests.
      */
-    abstract ListProperty<SourceSet> getSourceSets()
+    abstract SetProperty<String> getSourceSets()
 
     /**
      * Source patterns (relative to source dir) to exclude from checks. Simply sets exclusions to quality tasks.
@@ -351,5 +348,23 @@ abstract class QualityExtension {
      */
     void spotbugsPlugin(String plugin) {
         spotbugsPlugins.add(plugin)
+    }
+
+    /**
+     * Shortcut for legacy source sets configuration with source set objects.
+     *
+     * @param sets source sets
+     */
+    void sourceSets(Collection<SourceSet> sets) {
+        this.sourceSets.addAll(sets*.name as Collection<String>)
+    }
+
+    /**
+     * Shortcut for legacy source sets configuration with source set objects.
+     *
+     * @param sets source sets
+     */
+    void sourceSets(SourceSet... sets) {
+        this.sourceSets(sets as List)
     }
 }

@@ -16,6 +16,7 @@ import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.tool.checkstyle.report.CheckstyleReporter
+import ru.vyarus.gradle.plugin.quality.util.SourceSetUtils
 
 /**
  * Checkstyle support.
@@ -109,7 +110,7 @@ class CheckstyleTool implements QualityTool {
                 // gradle/config/checkstyle/ (or other configured config location dir) because custom
                 // configuration files may be only there
                 configDirectory = resolveConfigsDir(context)
-                sourceSets = extension.sourceSets.get()
+                sourceSets = SourceSetUtils.getSourceSets(project, extension.sourceSets.get())
             }
 
             tasks.withType(Checkstyle).configureEach { Task task ->

@@ -18,6 +18,7 @@ import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.tool.spotbugs.report.SpotbugsReporter
 import ru.vyarus.gradle.plugin.quality.tool.spotbugs.report.SpotbugsTaskDescFactory
+import ru.vyarus.gradle.plugin.quality.util.SourceSetUtils
 
 /**
  * Spotbugs support. Spotbugs plugin must be registered manually (due its limitation to java 11, it can't be
@@ -167,7 +168,7 @@ class SpotbugsTool implements QualityTool {
                 // apt is a special dir, not mentioned in sources!
                 Set<File> aptGenerated = []
                 Set<File> sourceDirs = []
-                extension.sourceSets.get().each {
+                SourceSetUtils.getSourceSets(project, extension.sourceSets.get()).each {
                     aptGenerated.add((project.tasks.findByName(it.compileJavaTaskName) as JavaCompile)
                             .options.generatedSourceOutputDirectory.get().asFile)
                     sourceDirs.addAll(it.allJava.srcDirs)

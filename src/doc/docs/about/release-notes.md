@@ -3,6 +3,7 @@
 Summary:
 
 * Configuration cache support
+* `quality.sourceSets` configuration use source set names (instead of objects)
 * "UP-TO-DATE"-related fixes for quality tasks (proper build cache support)
 * New default tools side effects:
   - Checkstyle 11 requires java 17  (not enabled on java < 17)
@@ -26,6 +27,24 @@ Summary:
 
 For groovy builds, you'll have to use `=` to assign values: `quality.key = value`.
 For kotlin builds, it _might_ be required to use `quality.key.set(value)` (in some cases).
+
+`quality.sourceSets` option not accept strings instead of source set objects.
+This was done to simplify configuration (especially for kotlin):
+
+instead of `sourceSets = [project.sourceSets.main]` now use `sourceSets = ['main']`
+
+Legacy configuration with object is available with method:
+
+
+```groovy
+quality.sourceSets(project.sourceSets.main, project.sourceSets.test)
+```
+
+or with list
+
+```groovy
+quality.sourceSets([project.sourceSets.main, project.sourceSets.test])
+```
 
 ### Checkstyle
 

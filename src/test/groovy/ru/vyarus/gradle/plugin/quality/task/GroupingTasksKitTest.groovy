@@ -25,7 +25,7 @@ class GroupingTasksKitTest extends AbstractKitTest {
             quality {
                 strict = false
                 fallbackToCompatibleToolVersion = true
-                sourceSets = [project.sourceSets.main, project.sourceSets.test]
+                sourceSets(project.sourceSets.main, project.sourceSets.test)
             }
 
             repositories {

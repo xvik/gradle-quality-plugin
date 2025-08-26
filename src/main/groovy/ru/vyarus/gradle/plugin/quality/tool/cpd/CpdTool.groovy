@@ -18,6 +18,7 @@ import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.tool.cpd.report.CpdReporter
 import ru.vyarus.gradle.plugin.quality.tool.cpd.report.CpdTaskDescFactory
+import ru.vyarus.gradle.plugin.quality.util.SourceSetUtils
 
 /**
  * CPD support. Requires cpd plugin manual activation.
@@ -102,7 +103,8 @@ class CpdTool implements QualityTool {
             TaskProvider<SourceTask> cpdCheck = CpdUtils.findCpdTask(prj)
             if (extension.cpdUnifySources.get()) {
                 // exclude sources, not declared for quality checks in quality plugin declaration project
-                CpdUtils.unifyCpdSources(project, cpdCheck, extension.sourceSets.get())
+                CpdUtils.unifyCpdSources(project, cpdCheck,
+                        SourceSetUtils.getSourceSets(project, extension.sourceSets.get()))
             }
 
             // STAGE2 for multi-module project everything below must be applied just once

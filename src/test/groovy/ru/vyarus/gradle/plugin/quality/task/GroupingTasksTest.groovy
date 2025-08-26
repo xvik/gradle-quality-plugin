@@ -24,7 +24,7 @@ class GroupingTasksTest extends AbstractTest {
             apply plugin: 'ru.vyarus.quality'
 
             quality {
-                sourceSets = [project.sourceSets.main, project.sourceSets.test]
+                sourceSets([project.sourceSets.main, project.sourceSets.test])
             }
 
             repositories {
@@ -51,7 +51,7 @@ class GroupingTasksTest extends AbstractTest {
             apply plugin: 'ru.vyarus.quality'
 
             quality {
-                sourceSets = [project.sourceSets.main, project.sourceSets.test]
+                sourceSets(project.sourceSets.main, project.sourceSets.test)
             }
 
             repositories {
@@ -82,7 +82,7 @@ class GroupingTasksTest extends AbstractTest {
             }
 
             quality {
-                sourceSets = [project.sourceSets.main]
+                sourceSets(project.sourceSets.main)
             }
 
             repositories {
@@ -113,7 +113,7 @@ class GroupingTasksTest extends AbstractTest {
             apply plugin: 'ru.vyarus.quality'
 
             quality {
-                sourceSets = [project.sourceSets.main, project.sourceSets.test]
+                sourceSets(project.sourceSets.main, project.sourceSets.test)
             }
 
             repositories {
@@ -128,6 +128,33 @@ class GroupingTasksTest extends AbstractTest {
         then: "correct tasks grouped"
         dependsOn(project.tasks.checkQualityMain) == ['checkstyleMain', 'pmdMain', 'animalsnifferMain'] as Set
         dependsOn(project.tasks.checkQualityTest) == ['checkstyleTest', 'pmdTest', 'animalsnifferTest'] as Set
+    }
+
+    def "Check grouping tasks registration with string sets declaration"() {
+
+        when: "apply plugin"
+        file('src/main/java').mkdirs()
+
+        Project project = project {
+            apply plugin: 'java'
+            apply plugin: 'ru.vyarus.quality'
+
+            quality {
+                sourceSets = ['main', 'test']
+            }
+
+            repositories {
+                mavenCentral()
+            }
+        }
+
+        then: "grouping tasks registered"
+        project.tasks.checkQualityMain
+        project.tasks.checkQualityTest
+
+        then: "correct tasks grouped"
+        dependsOn(project.tasks.checkQualityMain) == ['checkstyleMain', 'pmdMain'] as Set
+        dependsOn(project.tasks.checkQualityTest) == ['checkstyleTest', 'pmdTest'] as Set
     }
 
     private Set<String> dependsOn(Task task) {

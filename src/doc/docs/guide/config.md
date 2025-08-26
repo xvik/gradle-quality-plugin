@@ -141,9 +141,9 @@ quality {
 
     /**
      * Source sets to apply checks on.
-     * Default is [sourceSets.main] to apply only for project sources, excluding tests.
+     * Default is ['main'] to apply only for project sources, excluding tests.
      */
-    sourceSets = [project.sourceSets.main]
+    sourceSets = ['main']
     
     /**
      * Source patterns (relative to source dir) to exclude from checks. Simply sets exclusions to quality tasks.
@@ -195,6 +195,26 @@ quality {
      */
     fallbackToCompatibleToolVersion = false
 }
+```
+
+## Source sets
+
+For simplicity, source sets configured with a names:
+
+```groovy
+quality.sourceSets = ['main', 'test']
+```
+
+But it is still possible to use source set objects with a method:
+
+```groovy
+quality.sourceSets(project.sourceSets.main, project.sourceSets.test)
+```
+
+or with list
+
+```groovy
+quality.sourceSets([project.sourceSets.main, project.sourceSets.test])
 ```
 
 ## Manual mode

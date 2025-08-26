@@ -14,6 +14,7 @@ import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.TaskCollection
 import ru.vyarus.gradle.plugin.quality.QualityExtension
 import ru.vyarus.gradle.plugin.quality.util.FileUtils
+import ru.vyarus.gradle.plugin.quality.util.SourceSetUtils
 
 /**
  * Spotbugs helper utils.
@@ -82,8 +83,8 @@ class SpotbugsUtils {
         project.tasks.named(JavaBasePlugin.CHECK_TASK_NAME)
                 .configure { check ->
                     // all tasks that should be assigned to check
-                    List<String> requiredTasks = extension.sourceSets.get()*.getTaskName(
-                            SpotbugsTool.NAME, null)
+                    List<String> requiredTasks = SourceSetUtils
+                            .getSourceSets(project, extension.sourceSets.get())*.getTaskName(SpotbugsTool.NAME, null)
                     // tasks already assigned to check, but not required
                     List<String> toRemove = project.tasks.withType(spotbugsTaskType).matching { Task t ->
                         !requiredTasks.contains(t.name)

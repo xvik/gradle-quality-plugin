@@ -16,6 +16,7 @@ import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.tool.codenarc.report.CodeNarcReporter
+import ru.vyarus.gradle.plugin.quality.util.SourceSetUtils
 
 /**
  * Codenarc support.
@@ -80,7 +81,7 @@ class CodenarcTool implements QualityTool {
                 toolVersion = extension.codenarcVersion.get()
                 ignoreFailures = !extension.strict.get()
                 configFile = context.resolveConfigFile(codenarc_config)
-                sourceSets = extension.sourceSets.get()
+                sourceSets = SourceSetUtils.getSourceSets(project, extension.sourceSets.get())
             }
             if (extension.codenarcGroovy4.get() && !extension.codenarcVersion.get().endsWith(CODENARC_GROOVY4)) {
                 // since codenarc 3.1 different groovy4-based jar could be used

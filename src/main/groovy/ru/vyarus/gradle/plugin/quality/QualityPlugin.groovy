@@ -30,6 +30,7 @@ import ru.vyarus.gradle.plugin.quality.tool.cpd.CpdTool
 import ru.vyarus.gradle.plugin.quality.tool.javac.JavacTool
 import ru.vyarus.gradle.plugin.quality.tool.pmd.PmdTool
 import ru.vyarus.gradle.plugin.quality.tool.spotbugs.SpotbugsTool
+import ru.vyarus.gradle.plugin.quality.util.SourceSetUtils
 
 import javax.inject.Inject
 
@@ -226,11 +227,12 @@ abstract class QualityPlugin implements Plugin<Project> {
     protected List<ProjectSources> detectLangs(Project project, QualityExtension extension) {
         List<ProjectSources> langs = []
         if (extension.autoRegistration.get()) {
-            if ((extension.sourceSets.get()
+            if ((SourceSetUtils.getSourceSets(project, extension.sourceSets.get())
                     .find { it.java.srcDirs.find { it.exists() } }) != null) {
                 langs.add(ProjectSources.Java)
             }
-            if (project.plugins.findPlugin(GroovyPlugin) && (extension.sourceSets.get()
+            if (project.plugins.findPlugin(GroovyPlugin) &&
+                    (SourceSetUtils.getSourceSets(project, extension.sourceSets.get())
                     .find { it.groovy.srcDirs.find { it.exists() } }) != null) {
                 langs.add(ProjectSources.Groovy)
             }

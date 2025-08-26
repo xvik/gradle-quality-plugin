@@ -140,7 +140,25 @@ class QualityPluginTest extends AbstractTest {
             apply plugin: 'ru.vyarus.quality'
 
             quality {
-                sourceSets = [project.sourceSets.main, project.sourceSets.test]
+                sourceSets(project.sourceSets.main, project.sourceSets.test)
+            }
+        }
+
+        then: "codenarc registered"
+        project.plugins.findPlugin(CodeNarcPlugin)
+    }
+
+    def "Check groovy sources check3"() {
+
+        when: "apply plugin"
+        file('src/test/groovy').mkdirs()
+
+        Project project = project {
+            apply plugin: 'groovy'
+            apply plugin: 'ru.vyarus.quality'
+
+            quality {
+                sourceSets = ['main', 'test']
             }
         }
 

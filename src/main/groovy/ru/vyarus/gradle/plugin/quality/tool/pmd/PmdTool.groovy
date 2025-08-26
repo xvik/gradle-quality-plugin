@@ -16,6 +16,7 @@ import ru.vyarus.gradle.plugin.quality.tool.ProjectSources
 import ru.vyarus.gradle.plugin.quality.tool.QualityTool
 import ru.vyarus.gradle.plugin.quality.tool.ToolContext
 import ru.vyarus.gradle.plugin.quality.tool.pmd.report.PmdReporter
+import ru.vyarus.gradle.plugin.quality.util.SourceSetUtils
 
 /**
  * Pmd support.
@@ -79,7 +80,7 @@ class PmdTool implements QualityTool {
                 ignoreFailures = !extension.strict.get()
                 ruleSets = []
                 ruleSetFiles = files(context.resolveConfigFile(pmd_config).absolutePath)
-                sourceSets = extension.sourceSets.get()
+                sourceSets = SourceSetUtils.getSourceSets(project, extension.sourceSets.get())
             }
             if (GradleVersion.current() < GradleVersion.version('8.3')) {
                 // have to override dependencies declaration due to split in pmd 7

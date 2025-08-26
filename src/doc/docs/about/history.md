@@ -48,6 +48,8 @@
 * Add `quality.animalsniffer` option to be able to disable animalsniffer plugin configuration
 * quality.checkstyle and quality.spotbugs by default analyze configured tool versions
   and, if version is compatible with current jvm, enable tool (no need to manually enable tool, just set version)
+* (BREAKING) `quality.sourceSets` option now accept strings to simplify configuration
+  Legacy way with source set objects is available with method: `quality.sourceSet(project.sourceSets.main)`
 * Fix quality tasks up-to-date check
 * Fix build cache for checkstyle tasks
 * Configuration cache support
