@@ -1400,17 +1400,23 @@
 <li>Configuration cache support</li>
 <li><code>quality.sourceSets</code> configuration use source set names (instead of objects)</li>
 <li>"UP-TO-DATE"-related fixes for quality tasks (proper build cache support)</li>
-<li>New default tools side effects:</li>
+<li>New default tools side effects:<ul>
 <li>Checkstyle 11 requires java 17  (not enabled on java &lt; 17)</li>
 <li>Spotbugs 4.9.4 requires java 11 (not enabled on java &lt; 11)</li>
+</ul>
+</li>
 <li>Spotbugs plugin dependency is not auto-applied anymore (plugin must be declared manually now)</li>
-<li>New tasks:</li>
+<li>New tasks:<ul>
 <li><code>copyQualityConfigs</code> (used to prepare default quality configs)</li>
 <li><code>qualityToolVersions</code> (used to show active tool versions)</li>
-<li>New options:</li>
+</ul>
+</li>
+<li>New options:<ul>
 <li><code>quality.fallbackToCompatibleToolVersion</code>  - auto downgrade spotbugs and checkstyle versions based on current java (for tests)</li>
 <li><code>quality.animalsniffer</code> - ability to disable animalsniffer plugin configuration</li>
 <li><code>quality.spotbugsQuiet</code> - disable spotbugs warnings (for annoying warnings)</li>
+</ul>
+</li>
 <li>Gradle 7.1 as minimal requirement</li>
 </ul>
 <p><a href="#migration-guide">Migration guide</a></p>
