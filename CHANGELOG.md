@@ -1,3 +1,4 @@
+### 6.0.0 (2025-08-26)
 * (BREAKING) Drop gradle 7.0 support (7.1 min requirement due to spotbugs plugin)
 * Update checkstyle 10.12.7 -> 11.0.0 (java 21 records support)
     - Add [PatternVariableAssignment](https://checkstyle.sourceforge.io/checks/coding/patternvariableassignment.html)
