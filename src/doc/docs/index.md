@@ -1,19 +1,21 @@
 # Welcome to gradle quality plugin
 
 !!! summary ""
-    Plugin activates and configures quality tools for java and groovy projects using 
-    [Checkstyle](tool/checkstyle.md), 
+    Plugin configures quality tools for java and groovy projects.
+
+    * Auto enabled plugins: [Checkstyle](tool/checkstyle.md), 
     [PMD](tool/pmd.md),
-    [CPD](tool/cpd.md),
-    [SpotBugs](tool/spotbugs.md),     
-    [CodeNarc](tool/codenarc.md). 
-    Plugin unifies console output for all quality plugins, which greatly simplifies developer workflow: 
-    only console required for working with violations and makes it feel the same as java compiler errors.
-    
-!!! note
-    Google's [error-prone](http://errorprone.info/) is not included because checkstyle and pmd cover all
-    error-prone checks and quality plugin makes all tools behave the same way as error-prone, but without java compiler modifications
-    and [environment specific setup](https://github.com/tbroyer/gradle-errorprone-plugin#requirements).          
+    [CodeNarc](tool/codenarc.md).
+    * External plugins (configured when manually applied):
+    [SpotBugs](tool/spotbugs.md),
+    [CPD](tool/cpd.md), 
+    [AnimalSniffer](tool/animalsniffer.md),
+
+Plugin unifies console output for all quality plugins, which greatly simplifies developer workflow: 
+only console required for working with violations and makes it feel the same as java compiler errors.
+
+Also, plugin provides default (opinionated) configurations for quality tools, so you 
+can use them with zero configuration.
 
 **[Release Notes](about/release-notes.md)** - [History](about/history.md)  - [License](about/license.md)
 
@@ -27,7 +29,7 @@
 * Grouping tasks to run registered quality plugins for exact source set (e.g. checkQualityMain)
 
 !!! note
-    The plugin is **not compatible** with the gradle [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html)
+    The plugin is **compatible** with the gradle [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html)
 
 ## How to use docs
 

@@ -6,14 +6,7 @@
 
 **DOCUMENTATION** http://xvik.github.io/gradle-quality-plugin
 
-**JAVA 8 CHECKSTYLE PROBLEM**   
-I don't know why but java 8 checkstyle backport *disappeared
-from the maven central* (and github) and so your java 8 build might fail now.
-Use this workaround to disable checkstyle for java 8 (fixed plugin version would be released later):
-```java
-    tasks.withType(Checkstyle)
-            .configureEach { enabled = JavaVersion.current() > JavaVersion.VERSION_1_8 }
-```
+**Version 6.0 brings a few breaking changes**: [see migration guide](https://xvik.github.io/gradle-quality-plugin/latest/about/release-notes#migration-guide)
 
 ### About
 
@@ -34,19 +27,24 @@ Features:
 * Html and xml reports for all plugins (custom xsl used for findbugs html report because it can't generate both xml and html reports)
 * Grouping tasks to run registered quality plugins for exact source set (e.g. checkQualityMain)
 
-NOTE: the plugin is **not compatible** with the gradle [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html)
+NOTE: the plugin is **compatible** with the gradle [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html)
+
 
 ##### Summary
 
 * Configuration: `quality`
 * Tasks:
     - `initQualityConfig` - copy default configs for customization 
-    - `checkQuality[Main]` - run quality tasks for main (or any other) source set       
+    - `checkQuality[Main]` - run quality tasks for main (or any other) source set
+    - `qualityToolVersions` - print versions of used quality tools
+    - `copyQualityConfigs` - internal task used to prepare default config files for quality tools (required for proper caching)
 * Enable plugins: [Checkstyle](https://docs.gradle.org/current/userguide/checkstyle_plugin.html),
 [PMD](https://docs.gradle.org/current/userguide/pmd_plugin.html),
-[SpotBugs](http://spotbugs.readthedocs.io/en/latest/gradle.html),
-[CodeNarc](https://docs.gradle.org/current/userguide/codenarc_plugin.html)
-
+[CodeNarc](https://docs.gradle.org/current/userguide/codenarc_plugin.html) 
+* Configure external plugins (when applied):
+[SpotBugs](http://spotbugs.readthedocs.io/en/latest/gradle.html), 
+[CPD](https://github.com/aaschmid/gradle-cpd-plugin),
+[AnimalSniffer](https://github.com/xvik/gradle-animalsniffer-plugin)
 
 ### Setup
 
@@ -57,7 +55,7 @@ NOTE: when updating plugin version in your project don't forget to call `clean` 
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '5.0.0'
+    id 'ru.vyarus.quality' version '6.0.0'
 }
 ```
 
@@ -70,29 +68,46 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:5.0.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:6.0.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
 ```
 
-Minimal requirements: java 8, gradle 7
+Minimal requirements: java 8, gradle 7.1
+
+NOTE: if spotbugs is required, spotbugs plugin must be applied manually: 
+```
+plugins {
+    id 'com.github.spotbugs' version '6.2.5'
+}
+```
 
 #### Compatibility
 
-Plugin compiled for java 8, compatible with java 11 (and above)
+Plugin compiled for java 8, compatible with java 11 and above
 
-Gradle | Version
---------|-------
-7-8     | 5.0.0
-5.6-6   | [4.9.0](https://xvik.github.io/gradle-quality-plugin/4.9.0/)
-5.1     | [4.2.2](http://xvik.github.io/gradle-quality-plugin/4.2.2)
-4.1     | [3.4.0](http://xvik.github.io/gradle-quality-plugin/3.4.0)
-older   | [2.4.0](http://xvik.github.io/gradle-quality-plugin/2.4.0)
 
-Java tools require `sourceCompatibility=1.8` (or above).
- 
-Version [3.3.0](http://xvik.github.io/gradle-quality-plugin/3.3.0) is the latest supporting `sourceCompatibility=1.6`  
+| Gradle | Version                                                      |
+|--------|--------------------------------------------------------------|
+| 7.1-8  | 6.0.0                                                        |
+| 7.0    | [5.0.0](https://xvik.github.io/gradle-quality-plugin/5.0.0/) |
+| 5.6-6  | [4.9.0](https://xvik.github.io/gradle-quality-plugin/4.9.0/) |
+| 5.1    | [4.2.2](http://xvik.github.io/gradle-quality-plugin/4.2.2)   |
+| 4.1    | [3.4.0](http://xvik.github.io/gradle-quality-plugin/3.4.0)   |
+| older  | [2.4.0](http://xvik.github.io/gradle-quality-plugin/2.4.0)   |
+
+
+Java requirements for quality tools:
+
+| Tool       | Default version | Java version |
+|------------|-----------------|--------------|
+| Checkstyle | 11.0.0          | 17           |
+| PMD        | 7.16.0          | 8            |
+| SpotBugs   | 4.9.4           | 11           |
+| CodeNarc   | 3.6.0           | 8            |
+
+Incompatible tools will not be enabled: for example, on java 11 Checkstyle will not be enabled. 
 
 #### Snapshots
 

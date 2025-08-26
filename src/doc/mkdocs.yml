@@ -110,6 +110,7 @@ nav:
   - Tasks:
       - Copy configs: task/config.md
       - Group: task/group.md
+      - Versions: task/versions.md
       - Default configs: task/copy.md
   - About:
       - Release notes: about/release-notes.md
