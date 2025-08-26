@@ -142,6 +142,12 @@ class SpotbugsTool implements QualityTool {
                             : context.resolveRegularConfigFile(spotbugs_exclude)
                 })
 
+                // hide all spotbug warnings in order to hide messages like
+                // "The following classes needed for analysis were missing" - it's just annoying
+                if (extension.spotbugsQuiet.get()) {
+                    extraArgs.add('-quiet')
+                }
+
                 reports {
                     xml {
                         required.set(true)

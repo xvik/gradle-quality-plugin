@@ -72,6 +72,7 @@ quality {
     spotbugsLevel = 'medium' // low, medium, high
     spotbugsMaxRank = 20 // 1-4 scariest, 5-9 scary, 10-14 troubling, 15-20 of concern  
     spotbugsMaxHeapSize = '1g'
+    spotbugsQuiet = false
     spotbugsAnnotations = true // false to not register spotbugs-annotations
 }
 ```
@@ -85,6 +86,25 @@ quality {
     
     Note that quality pligin setting is applied only if sotbugs task was not configured manually, for example, with
     `spotbugsMain.maxHeapSize = '2g'`.
+
+### Quiet mode
+
+Sometimes spotbugs produce nasty warnings like:
+
+```
+The following classes needed for analysis were missing:
+  org.junit.Before
+  org.junit.After
+```
+
+Moreover, you will see it 2 times (for each generated report).
+
+There is nothing you could do about it, so using spotbugs [-quiet option](https://spotbugs.readthedocs.io/en/stable/running.html#output-options)
+is a good choice. To automatically apply quiet for all spotbugs tasks:
+
+```groovy
+quality.spotbugsQuiet = true
+```
 
 ## Suppress
 

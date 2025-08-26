@@ -15,6 +15,7 @@ Summary:
 * New options:
   - `quality.fallbackToCompatibleToolVersion`  - auto downgrade spotbugs and checkstyle versions based on current java (for tests)
   - `quality.animalsniffer` - ability to disable animalsniffer plugin configuration
+  - `quality.spotbugsQuiet` - disable spotbugs warnings (for annoying warnings)
 * Gradle 7.1 as minimal requirement
 
 [Migration guide](#migration-guide)
@@ -92,6 +93,25 @@ Spotbugs plugin 5.x could be used **if java 8 compatibility is required**:
 plugins {
     id 'com.github.spotbugs' version '5.2.5'
 }
+```
+
+#### Quiet mode
+
+Sometimes spotbugs produce nasty warnings like:
+
+```
+The following classes needed for analysis were missing:
+  org.junit.Before
+  org.junit.After
+```
+
+Moreover, you will see it 2 times (for each generated report).
+
+There is nothing you could do about it, so using spotbugs [-quiet option](https://spotbugs.readthedocs.io/en/stable/running.html#output-options)
+is a good choice. To automatically apply quiet for all spotbugs tasks:
+
+```groovy
+quality.spotbugsQuiet = true
 ```
  
 ### Java 11 support

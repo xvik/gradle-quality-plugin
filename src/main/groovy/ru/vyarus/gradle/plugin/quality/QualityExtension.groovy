@@ -67,6 +67,7 @@ abstract class QualityExtension {
         spotbugsLevel.convention('medium')
         spotbugsMaxRank.convention(20)
         spotbugsMaxHeapSize.convention('1g')
+        spotbugsQuiet.convention(false)
         spotbugsAnnotations.convention(true)
 
         lintOptions.convention(['deprecation', 'unchecked'])
@@ -226,6 +227,13 @@ abstract class QualityExtension {
      * workers).
      */
     abstract Property<String> getSpotbugsMaxHeapSize()
+
+    /**
+     * Hide spotbugs warnings by applying '-quiet' option. Disabled by default. Use it to get rid of possible
+     * "The following classes needed for analysis were missing:" warning message (which is printed for each report
+     * (2 times) and there is nothing you could do with it).
+     */
+    abstract Property<Boolean> getSpotbugsQuiet()
 
     /**
      * Shortcut for spotbugs plugins declaration without using afterEvaluate block. All registered plugins will

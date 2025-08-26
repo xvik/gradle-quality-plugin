@@ -12,6 +12,8 @@
 * Update spotbugs 4.8.3 -> 4.9.4 (requires java 11)
     - On java 8 you can manually configure 4.8.6 to enable spotbugs
       (or new option fallbackToCompatibleToolVersion to downgrade automatically)
+    - Add `quality.spotbugsQuiet = true` option which could be used to remove spotbugs warnings
+      like "The following classes needed for analysis were missing:"
 * Update pmd 6.55 -> 7.16.0 (java 25 support)
     - Fix gradle plugin for pmd 7 (pmd 7 split jar so plugin classpath must be overridden )
     - Pmd config:
