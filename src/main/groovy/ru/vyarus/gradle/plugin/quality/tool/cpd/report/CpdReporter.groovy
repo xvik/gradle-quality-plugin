@@ -35,6 +35,7 @@ class CpdReporter implements Reporter<CpdTaskDesc>, HtmlReportGenerator<CpdTaskD
 
     // for tests
     CpdReporter(Project project) {
+        // in prod service created per project (with custom name), for tests simple service name is ok
         this(project.gradle.sharedServices.registerIfAbsent(QualityPlugin.CONFIGS_SERVICE, ConfigsService))
     }
 
