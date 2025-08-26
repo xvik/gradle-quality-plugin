@@ -6,16 +6,16 @@ Summary:
 * `quality.sourceSets` configuration use source set names (instead of objects)
 * "UP-TO-DATE"-related fixes for quality tasks (proper build cache support)
 * New default tools side effects:
-  - Checkstyle 11 requires java 17  (not enabled on java < 17)
-  - Spotbugs 4.9.4 requires java 11 (not enabled on java < 11)
+    - Checkstyle 11 requires java 17  (not enabled on java < 17)
+    - Spotbugs 4.9.4 requires java 11 (not enabled on java < 11)
 * Spotbugs plugin dependency is not auto-applied anymore (plugin must be declared manually now)
 * New tasks:
-  - `copyQualityConfigs` (used to prepare default quality configs)
-  - `qualityToolVersions` (used to show active tool versions)
+    - `copyQualityConfigs` (used to prepare default quality configs)
+    - `qualityToolVersions` (used to show active tool versions)
 * New options:
-  - `quality.fallbackToCompatibleToolVersion`  - auto downgrade spotbugs and checkstyle versions based on current java (for tests)
-  - `quality.animalsniffer` - ability to disable animalsniffer plugin configuration
-  - `quality.spotbugsQuiet` - disable spotbugs warnings (for annoying warnings)
+    - `quality.fallbackToCompatibleToolVersion`  - auto downgrade spotbugs and checkstyle versions based on current java (for tests)
+    - `quality.animalsniffer` - ability to disable animalsniffer plugin configuration
+    - `quality.spotbugsQuiet` - disable spotbugs warnings (for annoying warnings)
 * Gradle 7.1 as minimal requirement
 
 [Migration guide](#migration-guide)
@@ -29,9 +29,8 @@ Summary:
 For groovy builds, you'll have to use `=` to assign values: `quality.key = value`.
 For kotlin builds, it _might_ be required to use `quality.key.set(value)` (in some cases).
 
-`quality.sourceSets` option not accept strings instead of source set objects.
+`quality.sourceSets` option now accept strings instead of source set objects.
 This was done to simplify configuration (especially for kotlin):
-
 instead of `sourceSets = [project.sourceSets.main]` now use `sourceSets = ['main']`
 
 Legacy configuration with object is available with method:
@@ -223,7 +222,7 @@ Updated tool versions:
 | PMD           | 6.55        | 7.16.0      | java 25 support                           |
 | CodeNarc      | 3.4.0       | 3.6.0       |                                           |
 
- ### Checkstyle
+### Checkstyle
 
 Default value for `quality.checkstyle` now depends on configured `checkstyleVersion`:
 
@@ -370,7 +369,7 @@ plugins {
     plugins {
         id 'java'
         id 'ru.vyarus.quality' version '6.0.0'
-        id 'com.github.spotbugs' version '6.2.5'
+        id 'com.github.spotbugs' version '6.2.5' apply false
     }
     ```
     This way, gradle would apply spotbugs plugin 6.x on java 8, but the quality plugin will not

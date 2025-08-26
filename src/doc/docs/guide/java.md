@@ -61,7 +61,7 @@ enable spotbugs on java 8 (because recent spotbugs itself require java 11).
     plugins {
         id 'java'
         id 'ru.vyarus.quality' version '6.0.0'
-        id 'com.github.spotbugs' version '6.2.5'
+        id 'com.github.spotbugs' version '6.2.5' apply false
     }
     ```
     This way, gradle would apply spotbugs plugin 6.x on java 8, but the quality plugin will not
