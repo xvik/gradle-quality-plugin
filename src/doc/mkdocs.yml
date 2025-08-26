@@ -94,6 +94,7 @@ nav:
   - Home: index.md
   - Getting started: getting-started.md
   - User guide:
+      - Java version: guide/java.md
       - Automatic mode: guide/automatic.md
       - Configuration: guide/config.md
       - Exclusion: guide/exclusion.md
@@ -107,8 +108,9 @@ nav:
       - CodeNarc: tool/codenarc.md
       - Animalsniffer: tool/animalsniffer.md
   - Tasks:
-      - Copy config: task/config.md
+      - Copy configs: task/config.md
       - Group: task/group.md
+      - Default configs: task/copy.md
   - About:
       - Release notes: about/release-notes.md
       - Version history: about/history.md

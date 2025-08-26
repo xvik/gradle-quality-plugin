@@ -28,8 +28,7 @@ gradle\
         pmd\
             pmd.xml	
         spotbugs\
-            exclude.xml			
-            html-report-style.xsl	    		
+            exclude.xml  		
 ```
 
 Task copies all configs, but you may remove all files you don't want to customize (plugin will use default versions for them).

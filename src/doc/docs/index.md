@@ -11,7 +11,7 @@
     only console required for working with violations and makes it feel the same as java compiler errors.
     
 !!! note
-    Google's [error-prone](http://errorprone.info/) is not included because checkstyle and pmd covers all
+    Google's [error-prone](http://errorprone.info/) is not included because checkstyle and pmd cover all
     error-prone checks and quality plugin makes all tools behave the same way as error-prone, but without java compiler modifications
     and [environment specific setup](https://github.com/tbroyer/gradle-errorprone-plugin#requirements).          
 

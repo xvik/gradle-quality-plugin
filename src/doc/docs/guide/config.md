@@ -1,6 +1,12 @@
 # Configuration
 
 Use `quality` closure to configure plugin.
+
+!!! note
+    All configuration options are optional.  
+    All properties use gradle `Property`, except `excludeSources`, which means kotlin configs _might_ 
+    require `property.set(value)` syntax
+
 Defaults:
 
 ```groovy
@@ -24,35 +30,12 @@ quality {
 
     // Enable/disable tools (when auto registration disabled control configuration appliance)
      
-    checkstyle = true
+    checkstyle = true // would be false if checkstyle tool is not compatible with current java
     pmd = true
     cpd = true
-    spotbugs = true
-    codenarc = true     
-
-    /**
-     * Enable PMD incremental analysis (cache results between builds to speed up processing).
-     * This is a shortcut for pmd plugin's {@code pmd.incrementalAnalysis } configuration option.
-     * Option is disabled by default due to possible side effects with build gradle cache or incremental builds.
-     * @deprecated from gradle 6.4 incremental analysis is enabled by default in pmd plugin! This option will not
-     * disable it (property is useful only for enabling it in gradle 5.6 - 6.3).
-     */
-    pmdIncremental = false
-
-    /**
-     * Since checkstyle 10, minimum required java is 11. Community (not checkstyle core team!) started a
-     * backport (https://checkstyle.org/#Backport) project - maintaining java 8 compatibility.
-     * Backport releases would be delayed relative to main checkstyle releases (see
-     * https://rnveach.github.io/checkstyle-backport-jre8)
-     * 
-     * NOTE: additional repository would be configured to download backport (only when backport required). But the
-     * repository would be limited to checkstyle group only!
-     * 
-     * This property switches between backport and normal checkstyle versions. By default backport would be enabled
-     * on java 8-10, but you can manually enable it for all java versions if required. Or you can use false value
-     * to prevent backport behaviour and preventing new  repository registration.
-     */
-    checkstyleBackport = !JavaVersion.current().java11Compatible
+    spotbugs = true // would be false if spotbugs tool is not compatible with current java
+    codenarc = true  
+    animalsniffer = true
 
     /**
      * Since codenarc 3.1.0 there is a separate artifact for groovy 4 (CodeNarc-Groovy4). Gradle runs codenarc
@@ -180,24 +163,37 @@ quality {
      */
     exclude = []
         
-     /**
-      * Direct sources to exclude from checks (except animalsniffer).
-      * This is useful as last resort, when extension or package is not enough for filtering.
-      * Use {@link Project#files(java.lang.Object)} or {@link Project#fileTree(java.lang.Object)}
-      * to create initial collections and apply filter on it (using
-      * {@link org.gradle.api.file.FileTree#matching(groovy.lang.Closure)}).
-      * 
-      * Plugin will include files into spotbugs exclusion filter xml (default one or provided by user).
-      * 
-      * Note: this must be used when excluded classes can't be extracted to different source set and
-      * filter by package and filename is not sufficient.
-      */
+    /**
+     * Direct sources to exclude from checks (except animalsniffer).
+     * This is useful as last resort, when extension or package is not enough for filtering.
+     * Use {@link Project#files(java.lang.Object)} or {@link Project#fileTree(java.lang.Object)}
+     * to create initial collections and apply filter on it (using
+     * {@link org.gradle.api.file.FileTree#matching(groovy.lang.Closure)}).
+     * 
+     * Plugin will include files into spotbugs exclusion filter xml (default one or provided by user).
+     * 
+     * Note: this must be used when excluded classes can't be extracted to different source set and
+     * filter by package and filename is not sufficient.
+     */
      FileCollection excludeSources   
 
     /**
      * User configuration files directory. Files in this directory will be used instead of default (bundled) configs.
      */
     configDir = 'gradle/config/'
+
+    /**
+     * Checkstyle 11 requires java 17, but checkstyle 10 could work on java 11.
+     * Spotbugs 4.9 requires java 11, but 4.8 could work on java 8.
+     * 
+     * When enabled, plugin will automatically reduce checkstyle and spotbugs version according to current java.
+     * 
+     * WARNING: not recommended to use because you will use DIFFERENT tools on different JDK which could lead
+     * to different quality warnings.
+     * 
+     * Option exists for plugin internal use - to check compatibility with java 8 and 11 in plugin tests.
+     */
+    fallbackToCompatibleToolVersion = false
 }
 ```
 

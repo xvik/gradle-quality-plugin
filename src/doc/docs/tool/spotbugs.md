@@ -12,10 +12,25 @@
     findbugs config before then rename its folder to `spotbugs`.
     
 !!! warning
-    In contrast to other plugins, [spotbugs plugin](http://spotbugs.readthedocs.io/en/latest/gradle.html) is not bundled with gradle,
-    but quality plugin will bring it as a dependency (v {{ gradle.spotbugsPlugin }}) and activate automatically.    
-    If you will activate newer spotbugs plugin manually [behaviour may change](#spotbugs-plugin-specifics).
+    In contrast to other plugins, [spotbugs plugin](http://spotbugs.readthedocs.io/en/latest/gradle.html) is not bundled with gradle
+    and must be applied manually:
     
+    ```groovy
+    plugins {
+        id 'com.github.spotbugs' version '6.2.5'
+    }
+    ```
+
+    Before, spotbugs plugin was bundled as a transitive dependency, and so direct plugin
+    declaration was not required. But the actual spotbugs plugin requires java 11, and
+    keeping it as a transitive dependency would mean java 8 compatibility loose,
+    even for groovy projects (not requiring spotbugs at all).
+
+!!! warning
+    **Spotbugs plugin 6.x requires java 11** (same as spotbugs 4.9.x itself)
+    Spotbugs support will be disabled on lower java version, but spotbugs plugin itself might
+    break your project on a lower java version ([see java compatibility notes](../guide/java.md)).    
+
 By default, plugin activates if java sources available (`src/main/java`).    
 
 SpotBugs configuration differ from other tools (checkstyle, pmd): instead of exact rules configuration

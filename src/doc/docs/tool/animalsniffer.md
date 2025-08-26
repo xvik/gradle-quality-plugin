@@ -36,3 +36,9 @@ animalsniffer {
     sourceSets = extension.sourceSets    
 }
 ```
+
+To disable animalsniffer plugin configuration:
+
+```groovy
+quality.animalsniffer = false
+```

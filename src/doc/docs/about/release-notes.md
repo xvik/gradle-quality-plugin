@@ -5,8 +5,8 @@ Summary:
 * Configuration cache support
 * "UP-TO-DATE"-related fixes for quality tasks (proper build cache support)
 * New default tools side effects:
-  - Checkstyle 11 requires java 17
-  - Spotbugs 4.9.4 requires java 11
+  - Checkstyle 11 requires java 17  (not enabled on java < 17)
+  - Spotbugs 4.9.4 requires java 11 (not enabled on java < 11)
 * Spotbugs plugin dependency is not auto-applied anymore (plugin must be declared manually now)
 * New tasks:
   - `copyQualityConfigs` (used to prepare default quality configs)
@@ -77,13 +77,15 @@ plugins {
  
 ### Java 11 support
 
-If your project runs on java 11 and requires checkstyle run on it: by default, **plugin will disable checkstyle on java 11**
+If your project runs on java 11 - 16 and requires checkstyle run on it: by default, **plugin will disable checkstyle on java 11**
 (it is completely ok to run quality tools only on java 17).
 
-If you **need to run checkstyle on java 11** then specify checkstyle 10.x: `quality.checkstyleVersion = '10.26.1'` and plugin will
+If you **need to run checkstyle on java 11 (16)** then specify checkstyle 10.x: `quality.checkstyleVersion = '10.26.1'` and plugin will
 **enable checkstyle automatically** (recognize a compatible version).
 
 No changes for projects not using checkstyle.
+
+See [migration guide](#migration-guide) for more details.
 
 ### Java 8 support
 
@@ -112,7 +114,7 @@ No changes for projects not using spotbugs.
 
 Gradle 7.0 is not supported anymore. **Minimal supported version is 7.1**.
 
-This is due to minimal requirement od spotbugs plugin 6.x (gradle 7.0 simply not tested now 
+This is due to minimal requirement of spotbugs plugin 6.x (gradle 7.0 simply not tested now 
 for compatibility)
 
 ## Gradle caches
@@ -123,7 +125,7 @@ It was causing problems with configuration and even build cache (quality tasks U
 Plugin is now **fully compatible with configuration cache**
 
 To solve cache problems, plugin now use a separate task: `copyQualityConfigs`, which
-preapres all requiered config files (default configs) for quality tasks.
+prepares all required config files (default configs) for quality tasks.
 
 As the task prepares config files before quality tasks execution, quality tasks UP-TO-DATE
 check (**build cache**) **is correct now** (you'll see fewer executions)
@@ -249,7 +251,7 @@ quality.fallbackToCompatibleToolVersion = true
 !!! warning
     This option was added to simplify plugin testing. It is not recommended to use it in production
     because, if you run project on different java versions (on CI), then different
-    tool vesions would be used, which may cause different results. Better restrict quality tasks to 
+    tool versions would be used, which may cause different results. Better restrict quality tasks to 
     upper-most compatible java version.
 
 ## Migration guide

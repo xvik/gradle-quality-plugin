@@ -9,6 +9,9 @@ Java quality tool plugins will be activated if java sources are present (`src/ma
 [PMD](../tool/pmd.md) and 
 [SpotBugs](../tool/spotbugs.md).
 
+!!! note
+    Only SpotBugs plugin must be explicitly registered (quality plugin only configures it)
+
 Groovy quality plugins will be activated if groovy sources are present (`src/main/groovy`):
 [CodeNarc](../tool/codenarc.md)
 
@@ -18,7 +21,7 @@ If [animalsniffer](../tool/animalsniffer.md) plugin was manually registered then
 configured the same way as other quality plugins (quality configuration unification).
 
 If [cpd](../tool/cpd.md) plugin was manually registered then it would be configured (but note 
-that cpd plugin differ from other plugins in behaviour)
+that cpd plugin differ from other plugins in behavior)
 
 ## Scope
 
