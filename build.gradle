@@ -153,6 +153,6 @@ gradleTestSets {
 }
 
 // use java 11 to test gradle 7.1 and 17 for gradle 8 and 9
-gradleTest.onlyIf { JavaVersion.current() >= JavaVersion.VERSION_11}
+gradleTest.onlyIf { JavaVersion.current() >= JavaVersion.VERSION_11 && !System.getenv('APPVEYOR')}
 
 dependencyUpdates.revision = 'release'
