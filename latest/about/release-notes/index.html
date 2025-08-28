@@ -1485,9 +1485,10 @@ When spotbugs plugin is detected in classpath, it would be configured automatica
 <p>And quality plugin would enable it in submodules <strong>automatically</strong>.</p>
 <p>Spotbugs plugin 5.x could be used <strong>if java 8 compatibility is required</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;5.2.5&#39;</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;5.2.5&#39;</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="kc">false</span>
 <span class="o">}</span>
 </code></pre></div>
+<p>"apply false" is required because otherwise spotbugs plugin would be active on java 8</p>
 <h4 id="quiet-mode">Quiet mode<a class="headerlink" href="#quiet-mode" title="Permanent link">&para;</a></h4>
 <p>Sometimes spotbugs produce nasty warnings like:</p>
 <div class="highlight"><pre><span></span><code>The following classes needed for analysis were missing:
@@ -1513,7 +1514,7 @@ is a good choice. To automatically apply quiet for all spotbugs tasks:</p>
 <div class="highlight"><pre><span></span><code><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;java&#39;</span>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;ru.vyarus.quality&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;6.0.0&#39;</span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;5.2.5&#39;</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;5.2.5&#39;</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="kc">false</span>
 <span class="o">}</span>
 
 <span class="n">quality</span><span class="w"> </span><span class="o">{</span>
@@ -1695,9 +1696,10 @@ plugin will not try to enable checkstyle on java 8. </p>
 there is no way to use spotbugs plugin 6.x only on java 11 and 17 (not possible to apply plugin conditionally).</p>
 <p>You can only downgrade spotbugs plugin to 5.x (compatible with java 8):</p>
 <div class="highlight"><pre><span></span><code><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;5.2.5&#39;</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;5.2.5&#39;</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="kc">false</span>
 <span class="o">}</span>
 </code></pre></div>
+<p>"apply false" is required because otherwise spotbugs plugin would be active on java 8</p>
 <div class="admonition note">
 <p class="admonition-title">Alternative (not recommended)</p>
 <p>The problem with spotbugs plugin 6.x on java 8 would be that gradle would not be able to
