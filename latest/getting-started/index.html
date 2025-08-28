@@ -1167,12 +1167,8 @@ manually apply it:</p>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;6.2.5&#39;</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="kc">false</span>
 <span class="o">}</span>
 </code></pre></div>
-<p>For multi-module projects, add it in the root module:</p>
-<div class="highlight"><pre><span></span><code><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;6.2.5&#39;</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="kc">false</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>Quality plugin will apply it automatically in submodules (it must be present in the build classpath so plugin could apply it).</p>
+<p>For multi-module projects, it would be enough to declare spotbugs plugin in the root project:
+quality plugin will apply it automatically in submodules (it must be present in the build classpath so plugin could apply it).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Before, spotbugs plugin was bundled as a transitive dependency, and so direct plugin

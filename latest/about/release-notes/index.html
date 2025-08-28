@@ -1477,12 +1477,8 @@ plugin <strong>will not automatically apply spotbugs dependency</strong> anymore
 </code></pre></div>
 When spotbugs plugin is detected in classpath, it would be configured automatically.</p>
 </div>
-<p>Note that for multi-module builds, you can apply spotbugs plugin only in root module:</p>
-<div class="highlight"><pre><span></span><code><span class="n">plugins</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="na">github</span><span class="p">.</span><span class="na">spotbugs</span><span class="err">&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="err">&#39;</span><span class="mf">6.2.5</span><span class="err">&#39;</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="kc">false</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>And quality plugin would enable it in submodules <strong>automatically</strong>.</p>
+<p>Note that for multi-module builds, it would be enough to apply spotbugs plugin only in root module:
+quality plugin will detect it and apply in submodules <strong>automatically</strong>.</p>
 <p>Spotbugs plugin 5.x could be used <strong>if java 8 compatibility is required</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;5.2.5&#39;</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="kc">false</span>
