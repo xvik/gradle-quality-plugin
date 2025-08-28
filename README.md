@@ -82,14 +82,8 @@ plugins {
 }
 ```
 
-On multi-module projects it would be enough to declare spotbugs in the root project 
-(quality plugin will detect its presence in build classpath and apply in modules):
-
-```
-plugins {
-    id 'com.github.spotbugs' version '6.2.5' apply false
-}
-```
+On multi-module projects it would be enough to declare spotbugs in the root project: 
+quality plugin will detect its presence in build classpath and apply in modules automatically.
 
 #### Compatibility
 

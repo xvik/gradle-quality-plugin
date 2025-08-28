@@ -75,15 +75,8 @@ plugin **will not automatically apply spotbugs dependency** anymore.
     ```
     When spotbugs plugin is detected in classpath, it would be configured automatically.
 
-Note that for multi-module builds, you can apply spotbugs plugin only in root module:
-
-```java
-plugins {
-    id 'com.github.spotbugs' version '6.2.5' apply false
-}
-```
-
-And quality plugin would enable it in submodules **automatically**.
+Note that for multi-module builds, it would be enough to apply spotbugs plugin only in root module:
+quality plugin will detect it and apply in submodules **automatically**.
 
 Spotbugs plugin 5.x could be used **if java 8 compatibility is required**:
 

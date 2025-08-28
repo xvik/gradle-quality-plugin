@@ -82,15 +82,8 @@ plugins {
 }
 ```
 
-For multi-module projects, add it in the root module:
-
-```groovy
-plugins {
-    id 'com.github.spotbugs' version '6.2.5' apply false
-}
-```
-
-Quality plugin will apply it automatically in submodules (it must be present in the build classpath so plugin could apply it).
+For multi-module projects, it would be enough to declare spotbugs plugin in the root project:
+quality plugin will apply it automatically in submodules (it must be present in the build classpath so plugin could apply it).
 
 !!! note
     Before, spotbugs plugin was bundled as a transitive dependency, and so direct plugin
