@@ -90,9 +90,11 @@ Spotbugs plugin 5.x could be used **if java 8 compatibility is required**:
 
 ```groovy
 plugins {
-    id 'com.github.spotbugs' version '5.2.5'
+    id 'com.github.spotbugs' version '5.2.5' apply false
 }
 ```
+
+"apply false" is required because otherwise spotbugs plugin would be active on java 8
 
 #### Quiet mode
 
@@ -136,7 +138,7 @@ You'll have to use spotbugs plugin 5.x (it is compatible with java 8) and reduce
 plugins {
     id 'java'
     id 'ru.vyarus.quality' version '6.0.0'
-    id 'com.github.spotbugs' version '5.2.5'
+    id 'com.github.spotbugs' version '5.2.5' apply false
 }
 
 quality {
@@ -350,9 +352,11 @@ You can only downgrade spotbugs plugin to 5.x (compatible with java 8):
 
 ```groovy
 plugins {
-    id 'com.github.spotbugs' version '5.2.5'
+    id 'com.github.spotbugs' version '5.2.5' apply false
 }
 ```
+
+"apply false" is required because otherwise spotbugs plugin would be active on java 8
 
 !!! note "Alternative (not recommended)"
     The problem with spotbugs plugin 6.x on java 8 would be that gradle would not be able to

@@ -216,7 +216,7 @@ afterEvaluate {
 
 ```groovy   
 quality {
-    spotbugsPlugin 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.0'
+    spotbugsPlugin 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.14.0'
 }
 ```
 
@@ -224,7 +224,7 @@ quality {
 
 ```groovy         
 qualtiy {
-    spotbugsPlugin 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
+    spotbugsPlugin 'com.mebigfatguy.fb-contrib:fb-contrib:7.6.13'
 }
 ```
 
