@@ -17,7 +17,7 @@
     
     ```groovy
     plugins {
-        id 'com.github.spotbugs' version '6.2.5'
+        id 'com.github.spotbugs' version '6.2.5' apply false
     }
     ```
 

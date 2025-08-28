@@ -70,7 +70,7 @@ plugin **will not automatically apply spotbugs dependency** anymore.
     plugins {
         id 'java'
         id 'ru.vyarus.quality' version '6.0.0'
-        id 'com.github.spotbugs' version '6.2.5'
+        id 'com.github.spotbugs' version '6.2.5' apply false
     }
     ```
     When spotbugs plugin is detected in classpath, it would be configured automatically.
@@ -316,7 +316,7 @@ If you want to use spotbugs, apply plugin manually:
  plugins {
     id 'java'
     id 'ru.vyarus.quality' version '6.0.0'
-    id 'com.github.spotbugs' version '6.2.5'
+    id 'com.github.spotbugs' version '6.2.5' apply false
 }
 ```
 

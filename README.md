@@ -78,7 +78,7 @@ IMPORTANT: if spotbugs is required, spotbugs plugin must be [applied manually](h
 
 ```
 plugins {
-    id 'com.github.spotbugs' version '6.2.5'
+    id 'com.github.spotbugs' version '6.2.5' apply false
 }
 ```
 
