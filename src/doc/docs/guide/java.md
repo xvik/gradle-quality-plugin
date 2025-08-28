@@ -24,6 +24,21 @@ quality.checkstyleVersion = '10.26.1'
 
 (plugin enables checkstyle based on a configured version, so there is no need to manually specify `quality.checkstyle=true`)
 
+!!! note
+    There is an issue with spotbugs plugin 6.x on **windows** java 11:
+
+    ```
+    java.io.IOException: No files to analyze could be opened
+        at edu.umd.cs.findbugs.FindBugs2.execute(FindBugs2.java:302)
+        at edu.umd.cs.findbugs.FindBugs.runMain(FindBugs.java:390)
+        at edu.umd.cs.findbugs.FindBugs2.main(FindBugs2.java:1223)
+    ```
+    
+    It is because of empty "onlyAnalyze" cli parameter (jdk arguments parsing bug). 
+    There is nothing you can do about it, except using spotbugs plugin 5.x (not affected by this problem).
+    Problem [reported](https://github.com/spotbugs/spotbugs-gradle-plugin/issues/1432), waiting for a fixed version.
+
+
 ## Java 8 support
 
 There is no way to enable checkstyle on java 8. But it would not be a problem:
@@ -41,12 +56,22 @@ You can only downgrade spotbugs plugin to 5.x (compatible with java 8):
 
 ```groovy
 plugins {
-    id 'com.github.spotbugs' version '5.2.5'
+    id 'com.github.spotbugs' version '5.2.5' apply false
 }
 ```
 
 In this case gradle would be able to resolve the build classpath on java 8, but the quality plugin would not 
 enable spotbugs on java 8 (because recent spotbugs itself require java 11).
+
+"apply false" is important because otherwise gradle would apply spotbugs plugin 6.x on java 8.
+
+!!! warning
+    There is a side effect: as quality plugin is not configuring spotbugs plugin, it will not
+    apply annotations dependency. So, if you use spotbugs annotations, you will need to add them manually:
+
+    ```groovy
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.6'
+    ```
 
 !!! note "Alternative (not recommended)"
     You can cheat gradle to ignore java version checks for resolved plugin dependencies:

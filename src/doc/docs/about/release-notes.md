@@ -84,7 +84,6 @@ plugins {
 ```
 
 And quality plugin would enable it in submodules **automatically**.
-          
 
 Spotbugs plugin 5.x could be used **if java 8 compatibility is required**:
 
@@ -340,6 +339,21 @@ If you **only use java 11** then checkstyle could be enabled by downgrading its 
 quality.checkstyleVersion = '10.26.1'
 ```
 
+!!! note
+    There is an issue with spotbugs plugin 6.x on **windows** java 11:
+
+    ```
+    java.io.IOException: No files to analyze could be opened
+        at edu.umd.cs.findbugs.FindBugs2.execute(FindBugs2.java:302)
+        at edu.umd.cs.findbugs.FindBugs.runMain(FindBugs.java:390)
+        at edu.umd.cs.findbugs.FindBugs2.main(FindBugs2.java:1223)
+    ```
+    
+    It is because of empty "onlyAnalyze" cli parameter (jdk arguments parsing bug). 
+    There is nothing you can do about it, except using spotbugs plugin 5.x (not affected by this problem).
+    Problem [reported](https://github.com/spotbugs/spotbugs-gradle-plugin/issues/1432), waiting for a fixed version.
+
+
 ## Java 8 support
 
 There is no way to enable checkstyle on java 8. But it would not be a problem: 
@@ -357,6 +371,14 @@ plugins {
 ```
 
 "apply false" is required because otherwise spotbugs plugin would be active on java 8
+
+!!! warning
+    There is a side effect: as quality plugin is not configuring spotbugs plugin, it will not
+    apply annotations dependency. So, if you use spotbugs annotations, you will need to add them manually:
+
+    ```groovy
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.6'
+    ```
 
 !!! note "Alternative (not recommended)"
     The problem with spotbugs plugin 6.x on java 8 would be that gradle would not be able to
