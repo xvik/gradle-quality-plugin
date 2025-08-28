@@ -1041,6 +1041,18 @@ no need to run it on each supported java on CI.</p>
 <div class="highlight"><pre><span></span><code><span class="n">quality</span><span class="o">.</span><span class="na">checkstyleVersion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;10.26.1&#39;</span>
 </code></pre></div>
 <p>(plugin enables checkstyle based on a configured version, so there is no need to manually specify <code>quality.checkstyle=true</code>)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is an issue with spotbugs plugin 6.x on <strong>windows</strong> java 11:</p>
+<div class="highlight"><pre><span></span><code>java.io.IOException: No files to analyze could be opened
+    at edu.umd.cs.findbugs.FindBugs2.execute(FindBugs2.java:302)
+    at edu.umd.cs.findbugs.FindBugs.runMain(FindBugs.java:390)
+    at edu.umd.cs.findbugs.FindBugs2.main(FindBugs2.java:1223)
+</code></pre></div>
+<p>It is because of empty "onlyAnalyze" cli parameter (jdk arguments parsing bug). 
+There is nothing you can do about it, except using spotbugs plugin 5.x (not affected by this problem).
+Problem <a href="https://github.com/spotbugs/spotbugs-gradle-plugin/issues/1432">reported</a>, waiting for a fixed version.</p>
+</div>
 <h2 id="java-8-support">Java 8 support<a class="headerlink" href="#java-8-support" title="Permanent link">&para;</a></h2>
 <p>There is no way to enable checkstyle on java 8. But it would not be a problem:
 plugin will not try to enable checkstyle on java 8.</p>
@@ -1054,11 +1066,19 @@ gradle would <strong>fail to start</strong> because there is compatible plugin v
 </div>
 <p>You can only downgrade spotbugs plugin to 5.x (compatible with java 8):</p>
 <div class="highlight"><pre><span></span><code><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;5.2.5&#39;</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;5.2.5&#39;</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="kc">false</span>
 <span class="o">}</span>
 </code></pre></div>
 <p>In this case gradle would be able to resolve the build classpath on java 8, but the quality plugin would not 
 enable spotbugs on java 8 (because recent spotbugs itself require java 11).</p>
+<p>"apply false" is important because otherwise gradle would apply spotbugs plugin 6.x on java 8.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>There is a side effect: as quality plugin is not configuring spotbugs plugin, it will not
+apply annotations dependency. So, if you use spotbugs annotations, you will need to add them manually:</p>
+<div class="highlight"><pre><span></span><code><span class="n">compileOnly</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs:spotbugs-annotations:4.8.6&#39;</span>
+</code></pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Alternative (not recommended)</p>
 <p>You can cheat gradle to ignore java version checks for resolved plugin dependencies:</p>
