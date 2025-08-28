@@ -290,6 +290,19 @@ Spotbugs plugin always throws an exception when violations found, so even in non
 (`quality.strict = false`) you will see an exception in logs when violations found (build will not be failed).
 Not critical, just confusing.
 
+Spotbugs plugin 6.x may not work correctly on windows java 11. If you see this error:
+
+```
+java.io.IOException: No files to analyze could be opened
+	at edu.umd.cs.findbugs.FindBugs2.execute(FindBugs2.java:302)
+	at edu.umd.cs.findbugs.FindBugs.runMain(FindBugs.java:390)
+	at edu.umd.cs.findbugs.FindBugs2.main(FindBugs2.java:1223)
+```
+
+It is because of empty "onlyAnalyze" cli parameter (jdk arguments parsing bug). 
+There is nothing you can do about it, except using spotbugs plugin 5.x (not affected by this problem).
+Problem [reported](https://github.com/spotbugs/spotbugs-gradle-plugin/issues/1432), waiting for a fixed version.
+
 ## Problems resolution
 
 Most problems appear with `spotbugs` configuration. Plugin by default configures only default dependencies for it,
