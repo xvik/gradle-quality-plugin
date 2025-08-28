@@ -1472,7 +1472,7 @@ plugin <strong>will not automatically apply spotbugs dependency</strong> anymore
 <div class="highlight"><pre><span></span><code><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;java&#39;</span>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;ru.vyarus.quality&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;6.0.0&#39;</span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;6.2.5&#39;</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;6.2.5&#39;</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="kc">false</span>
 <span class="o">}</span>
 </code></pre></div>
 When spotbugs plugin is detected in classpath, it would be configured automatically.</p>
@@ -1675,7 +1675,7 @@ Legacy configuration is available with method: <code>quality.sourceSets(project.
 <div class="highlight"><pre><span></span><code><span class="w"> </span><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;java&#39;</span>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;ru.vyarus.quality&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;6.0.0&#39;</span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;6.2.5&#39;</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;6.2.5&#39;</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="kc">false</span>
 <span class="o">}</span>
 </code></pre></div>
 <p>In multi-module projects, it would be enough to apply spotbugs plugin only in root module:</p>
