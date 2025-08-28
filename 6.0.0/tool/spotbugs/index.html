@@ -1514,6 +1514,15 @@ even if you not set annotation on your own function or predicate it will still b
 <p>Spotbugs plugin always throws an exception when violations found, so even in non strict mode
 (<code>quality.strict = false</code>) you will see an exception in logs when violations found (build will not be failed).
 Not critical, just confusing.</p>
+<p>Spotbugs plugin 6.x may not work correctly on windows java 11. If you see this error:</p>
+<div class="highlight"><pre><span></span><code>java.io.IOException: No files to analyze could be opened
+    at edu.umd.cs.findbugs.FindBugs2.execute(FindBugs2.java:302)
+    at edu.umd.cs.findbugs.FindBugs.runMain(FindBugs.java:390)
+    at edu.umd.cs.findbugs.FindBugs2.main(FindBugs2.java:1223)
+</code></pre></div>
+<p>It is because of empty "onlyAnalyze" cli parameter (jdk arguments parsing bug). 
+There is nothing you can do about it, except using spotbugs plugin 5.x (not affected by this problem).
+Problem <a href="https://github.com/spotbugs/spotbugs-gradle-plugin/issues/1432">reported</a>, waiting for a fixed version.</p>
 <h2 id="problems-resolution">Problems resolution<a class="headerlink" href="#problems-resolution" title="Permanent link">&para;</a></h2>
 <p>Most problems appear with <code>spotbugs</code> configuration. Plugin by default configures only default dependencies for it,
 so if you modify this configuration you will have to specify dependencies explicitly:</p>
