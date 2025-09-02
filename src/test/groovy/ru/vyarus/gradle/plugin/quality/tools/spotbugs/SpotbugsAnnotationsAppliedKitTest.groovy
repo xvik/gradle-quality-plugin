@@ -43,6 +43,34 @@ class SpotbugsAnnotationsAppliedKitTest extends AbstractKitTest {
         result.output.contains('URF_UNREAD_FIELD')
     }
 
+    def "Check spotbugs annotations applied with disabled support"() {
+        setup:
+        build("""
+            plugins {
+                id 'java'
+                id 'ru.vyarus.quality'
+                id 'com.github.spotbugs' version '$SPOTBUGS_PLUGIN'
+            }
+
+            quality {
+                checkstyle = false
+                pmd = false
+                spotbugs = false
+                strict = false
+            }
+
+            repositories { mavenCentral() }
+        """)
+
+        fileFromClasspath('src/main/java/sample/SBSuppressSample.java', '/ru/vyarus/gradle/plugin/quality/java/sample/SBSuppressSample.java')
+
+        when: "run check task with java sources"
+        BuildResult result = run('compileJava')
+
+        then: "all plugins detect violations"
+        result.task(":compileJava").outcome == TaskOutcome.SUCCESS
+    }
+
     def "Check spotbugs annotations not applied"() {
         setup:
         build("""

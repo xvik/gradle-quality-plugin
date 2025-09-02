@@ -370,7 +370,7 @@ plugins {
     apply annotations dependency. So, if you use spotbugs annotations, you will need to add them manually:
 
     ```groovy
-    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.6'
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:{{ gradle.spotbugs }}'
     ```
 
 If it is required to use spotbugs plugin 6.x on java >= 11, then you'll have to apply it like this

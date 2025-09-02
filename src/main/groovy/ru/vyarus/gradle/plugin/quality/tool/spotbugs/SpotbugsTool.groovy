@@ -85,6 +85,10 @@ class SpotbugsTool implements QualityTool {
         Class<? extends Task> spotbugsTaskType = plugin.classLoader
                 .loadClass('com.github.spotbugs.snom.SpotBugsTask') as Class<? extends Task>
 
+        // always apply annotations, when spotbugs plugin is detected in classpath to avoid problem
+        // with missed annotations on CI (on not supported java version)
+        applyAnnotations(context.project, context.extension)
+
         if (!context.extension.spotbugs.get()) {
             // do not configure even if manually registered
             return
@@ -110,14 +114,6 @@ class SpotbugsTool implements QualityTool {
 
             // override spotbugs plugin configuration: by default, it would apply ALL tasks
             SpotbugsUtils.fixCheckDependencies(project, extension, spotbugsTaskType)
-
-            // spotbugs annotations to simplify access to @SuppressFBWarnings
-            // (applied according to plugin recommendation)
-            if (extension.spotbugsAnnotations.get()) {
-                dependencies {
-                    compileOnly "com.github.spotbugs:spotbugs-annotations:${extension.spotbugsVersion.get()}"
-                }
-            }
 
             // plugins shortcut
             extension.spotbugsPlugins.get()?.each {
@@ -194,5 +190,17 @@ class SpotbugsTool implements QualityTool {
 
         context.applyEnabledState(spotbugsTaskType)
         context.groupQualityTasks(toolName)
+    }
+
+    private void applyAnnotations(Project project, QualityExtension extension) {
+        project.configure(project) {
+            // spotbugs annotations to simplify access to @SuppressFBWarnings
+            // (applied according to plugin recommendation)
+            if (extension.spotbugsAnnotations.get()) {
+                dependencies {
+                    compileOnly "com.github.spotbugs:spotbugs-annotations:${extension.spotbugsVersion.get()}"
+                }
+            }
+        }
     }
 }
