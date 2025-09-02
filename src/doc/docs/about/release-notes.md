@@ -70,7 +70,7 @@ plugin **will not automatically apply spotbugs dependency** anymore.
     plugins {
         id 'java'
         id 'ru.vyarus.quality' version '6.0.0'
-        id 'com.github.spotbugs' version '6.2.5' apply false
+        id 'com.github.spotbugs' version '{{ gradle.spotbugsPlugin }}' apply false
     }
     ```
     When spotbugs plugin is detected in classpath, it would be configured automatically.
@@ -309,7 +309,7 @@ If you want to use spotbugs, apply plugin manually:
  plugins {
     id 'java'
     id 'ru.vyarus.quality' version '6.0.0'
-    id 'com.github.spotbugs' version '6.2.5' apply false
+    id 'com.github.spotbugs' version '{{ gradle.spotbugsPlugin }}' apply false
 }
 ```
 
@@ -317,7 +317,7 @@ In multi-module projects, it would be enough to apply spotbugs plugin only in ro
 
 ```groovy
 plugins {
-    id 'com.github.spotbugs' version '6.2.5' apply false
+    id 'com.github.spotbugs' version '{{ gradle.spotbugsPlugin }}' apply false
 }
 ```
 
@@ -373,6 +373,20 @@ plugins {
     compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.6'
     ```
 
+If it is required to use spotbugs plugin 6.x on java >= 11, then you'll have to apply it like this
+(the only way for conditional application):
+
+```groovy
+buildscript {
+    repositories { mavenCentral() }
+    dependencies {
+        if (JavaVersion.current() >= JavaVersion.VERSION_11) {
+            classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:{{ gradle.spotbugsPlugin }}'
+        }
+    }
+}
+```
+
 !!! note "Alternative (not recommended)"
     The problem with spotbugs plugin 6.x on java 8 would be that gradle would not be able to
     find a compatible version (thanks to gradle metadata). But you can cheat gradle to ignore 
@@ -388,7 +402,7 @@ plugins {
     plugins {
         id 'java'
         id 'ru.vyarus.quality' version '6.0.0'
-        id 'com.github.spotbugs' version '6.2.5' apply false
+        id 'com.github.spotbugs' version '{{ gradle.spotbugsPlugin }}' apply false
     }
     ```
     This way, gradle would apply spotbugs plugin 6.x on java 8, but the quality plugin will not

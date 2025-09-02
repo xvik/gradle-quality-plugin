@@ -73,6 +73,20 @@ enable spotbugs on java 8 (because recent spotbugs itself require java 11).
     compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.6'
     ```
 
+If it is required to use spotbugs plugin 6.x on java >= 11, then you'll have to apply it like this
+(the only way for conditional application):
+
+```groovy
+buildscript {
+    repositories { mavenCentral() }
+    dependencies {
+        if (JavaVersion.current() >= JavaVersion.VERSION_11) {
+            classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:{{ gradle.spotbugsPlugin }}'
+        }
+    }
+}
+```
+
 !!! note "Alternative (not recommended)"
     You can cheat gradle to ignore java version checks for resolved plugin dependencies:
 
@@ -86,7 +100,7 @@ enable spotbugs on java 8 (because recent spotbugs itself require java 11).
     plugins {
         id 'java'
         id 'ru.vyarus.quality' version '6.0.0'
-        id 'com.github.spotbugs' version '6.2.5' apply false
+        id 'com.github.spotbugs' version '{{ gradle.spotbugsPlugin }}' apply false
     }
     ```
     This way, gradle would apply spotbugs plugin 6.x on java 8, but the quality plugin will not
