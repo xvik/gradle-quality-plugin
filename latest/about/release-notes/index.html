@@ -1715,6 +1715,17 @@ apply annotations dependency. So, if you use spotbugs annotations, you will need
 <div class="highlight"><pre><span></span><code><span class="n">compileOnly</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs:spotbugs-annotations:4.8.6&#39;</span>
 </code></pre></div>
 </div>
+<p>If it is required to use spotbugs plugin 6.x on java &gt;= 11, then you'll have to apply it like this
+(the only way for conditional application):</p>
+<div class="highlight"><pre><span></span><code><span class="n">buildscript</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="n">repositories</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">mavenCentral</span><span class="o">()</span><span class="w"> </span><span class="o">}</span>
+<span class="w">    </span><span class="n">dependencies</span><span class="w"> </span><span class="o">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="o">(</span><span class="n">JavaVersion</span><span class="o">.</span><span class="na">current</span><span class="o">()</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">JavaVersion</span><span class="o">.</span><span class="na">VERSION_11</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<span class="w">            </span><span class="n">classpath</span><span class="w"> </span><span class="s1">&#39;com.github.spotbugs.snom:spotbugs-gradle-plugin:6.2.5&#39;</span>
+<span class="w">        </span><span class="o">}</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Alternative (not recommended)</p>
 <p>The problem with spotbugs plugin 6.x on java 8 would be that gradle would not be able to
