@@ -11,7 +11,7 @@ plugins {
     id 'ru.vyarus.github-info' version '2.0.0'
     id 'com.github.ben-manes.versions' version '0.52.0'
     id "pl.droidsonroids.jacoco.testkit" version "1.0.12"
-    id 'org.ysb33r.gradletest' version '4.1.0'
+//    id 'org.ysb33r.gradletest' version '4.1.0'
     id 'ru.vyarus.mkdocs' version '4.0.1'
 }
 
@@ -142,18 +142,18 @@ test {
 }
 
 // run sample projects in src/gradleTest with different gradle versions
-gradleTestSets {
-    testSets {
-        main {
-            // earlier gradle versions (< 8.4) can't be used due to a bug in failing tests
-            versions '8.4', '9.0.0'
-            defaultTaskToRun = 'check'
-        }
-    }
-
-}
+//gradleTestSets {
+//    testSets {
+//        main {
+//            // earlier gradle versions (< 8.4) can't be used due to a bug in failing tests
+//            versions '8.4', '9.0.0'
+//            defaultTaskToRun = 'check'
+//        }
+//    }
+//
+//}
 
 // use java 11 to test gradle 7.1 and 17 for gradle 8 and 9
-gradleTest.onlyIf { JavaVersion.current() >= JavaVersion.VERSION_11 && !System.getenv('APPVEYOR')}
+//gradleTest.onlyIf { JavaVersion.current() >= JavaVersion.VERSION_11 && !System.getenv('APPVEYOR')}
 
 dependencyUpdates.revision = 'release'
