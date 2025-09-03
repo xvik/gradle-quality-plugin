@@ -1,3 +1,8 @@
+### [6.0.1](http://xvik.github.io/gradle-quality-plugin/6.0.1) (2025-09-03)
+* Always add spotbugs-annotations dependency when plugin is available in classpath to
+  not break compilation on non-compatible java versions (java 8) or with disabled spotbugs
+* Update checkstyle 11.0.0 -> 11.0.1
+
 ### [6.0.0](http://xvik.github.io/gradle-quality-plugin/6.0.0) (2025-08-26)
 * (BREAKING) Drop gradle 7.0 support (7.1 min requirement due to spotbugs plugin)
 * Update checkstyle 10.12.7 -> 11.0.0 (java 21 records support)

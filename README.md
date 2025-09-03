@@ -55,7 +55,7 @@ NOTE: when updating plugin version in your project don't forget to call `clean` 
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '6.0.0'
+    id 'ru.vyarus.quality' version '6.0.1'
 }
 ```
 
@@ -68,7 +68,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:6.0.0'
+        classpath 'ru.vyarus:gradle-quality-plugin:6.0.1'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -78,7 +78,7 @@ IMPORTANT: if spotbugs is required, spotbugs plugin must be [applied manually](h
 
 ```
 plugins {
-    id 'com.github.spotbugs' version '6.2.5' apply false
+    id 'com.github.spotbugs' version '6.2.6' apply false
 }
 ```
 
@@ -94,7 +94,7 @@ Supported gradle 7.1 - 9.
 
 | Gradle | Version                                                      |
 |--------|--------------------------------------------------------------|
-| 7.1-9  | 6.0.0                                                        |
+| 7.1-9  | 6.0.1                                                        |
 | 7.0    | [5.0.0](https://xvik.github.io/gradle-quality-plugin/5.0.0/) |
 | 5.6-6  | [4.9.0](https://xvik.github.io/gradle-quality-plugin/4.9.0/) |
 | 5.1    | [4.2.2](http://xvik.github.io/gradle-quality-plugin/4.2.2)   |
@@ -106,7 +106,7 @@ Java requirements for quality tools:
 
 | Tool       | Default version | Java version |
 |------------|-----------------|--------------|
-| Checkstyle | 11.0.0          | 17           |
+| Checkstyle | 11.0.1          | 17           |
 | PMD        | 7.16.0          | 8            |
 | SpotBugs   | 4.9.4           | 11           |
 | CodeNarc   | 3.6.0           | 8            |

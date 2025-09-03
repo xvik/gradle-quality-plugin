@@ -130,6 +130,10 @@ in `compileOnly` scope in order to use special suppressing annotation:
     quality.spotbugsAnnotations = false
     ```
 
+Note that annotations dependency will be applied even if spotbugs support is disabled (`quality.spotbugs = false`)
+to not break builds on lower java versions (where spotbugs plugin is disabled due to incompatibility)
+
+
 ## Excludes
 
 Spotbugs is the only quality tool which works on classes rather than on sources. By default,

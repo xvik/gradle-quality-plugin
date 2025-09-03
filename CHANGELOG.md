@@ -1,3 +1,4 @@
+### 6.0.1 (2025-09-03)
 * Always add spotbugs-annotations dependency when plugin is available in classpath to
   not break compilation on non-compatible java versions (java 8) or with disabled spotbugs
 * Update checkstyle 11.0.0 -> 11.0.1

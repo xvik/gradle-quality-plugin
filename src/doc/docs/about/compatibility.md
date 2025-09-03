@@ -4,7 +4,7 @@ Plugin compiled for java 8, compatible with java 11 and above
 
 | Gradle | Version                                                      |
 |--------|--------------------------------------------------------------|
-| 7.1-9  | 6.0.0                                                        |
+| 7.1-9  | 6.0.1                                                        |
 | 7.0    | [5.0.0](https://xvik.github.io/gradle-quality-plugin/5.0.0/) |
 | 5.6-6  | [4.9.0](https://xvik.github.io/gradle-quality-plugin/4.9.0/) |
 | 5.1    | [4.2.2](http://xvik.github.io/gradle-quality-plugin/4.2.2)   |
@@ -15,7 +15,7 @@ Java requirements for quality tools:
 
 | Tool       | Default version | Java version |
 |------------|-----------------|--------------|
-| Checkstyle | 11.0.0          | 17           |
+| Checkstyle | 11.0.1          | 17           |
 | PMD        | 7.16.0          | 8            |
 | SpotBugs   | 4.9.4           | 11           |
 | CodeNarc   | 3.6.0           | 8            |

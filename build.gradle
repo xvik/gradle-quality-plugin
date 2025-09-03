@@ -27,8 +27,8 @@ wrapper {
 ext {
     animalsnifferVersion = '2.0.1'
     cpdVersion = '3.5'
-    spotbugsPluginVersion = '6.2.5'
-    docVersion = '6.0.0'
+    spotbugsPluginVersion = '6.2.6'
+    docVersion = '6.0.1'
 }
 
 repositories { mavenLocal(); mavenCentral(); gradlePluginPortal() }
@@ -58,6 +58,7 @@ mkdocs {
         rootRedirect = true
         rootRedirectTo = 'latest'
         versionAliases = ['latest']
+        hideOldBugfixVersions = true
     }
     extras = [
             'version': project.docVersion,

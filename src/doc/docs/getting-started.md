@@ -77,8 +77,8 @@ manually apply it:
 ```groovy
 plugins {
     id 'java'
-    id 'ru.vyarus.quality' version '6.0.0'
-    id 'com.github.spotbugs' version '6.2.5' apply false
+    id 'ru.vyarus.quality' version '{{ gradle.version }}'
+    id 'com.github.spotbugs' version '{{ gradle.spotbugsPlugin }}' apply false
 }
 ```
 

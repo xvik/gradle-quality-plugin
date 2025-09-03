@@ -65,14 +65,6 @@ enable spotbugs on java 8 (because recent spotbugs itself require java 11).
 
 "apply false" is important because otherwise gradle would apply spotbugs plugin 6.x on java 8.
 
-!!! warning
-    There is a side effect: as quality plugin is not configuring spotbugs plugin, it will not
-    apply annotations dependency. So, if you use spotbugs annotations, you will need to add them manually:
-
-    ```groovy
-    compileOnly 'com.github.spotbugs:spotbugs-annotations:{{ gradle.spotbugs }}'
-    ```
-
 If it is required to use spotbugs plugin 6.x on java >= 11, then you'll have to apply it like this
 (the only way for conditional application):
 
