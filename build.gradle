@@ -9,7 +9,7 @@ plugins {
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
     id 'ru.vyarus.java-lib' version '3.0.0'
     id 'ru.vyarus.github-info' version '2.0.0'
-    id 'com.github.ben-manes.versions' version '0.52.0'
+    id 'com.github.ben-manes.versions' version '0.53.0'
     id "pl.droidsonroids.jacoco.testkit" version "1.0.12"
     id 'org.ysb33r.gradletest' version '4.1.0'
     id 'ru.vyarus.mkdocs' version '4.0.1'
