@@ -78,7 +78,7 @@ class GroupingTasksTest extends AbstractTest {
             apply plugin: 'ru.vyarus.quality'
 
             sourceSets {
-                tata {}
+                taTa {}
             }
 
             quality {
@@ -93,12 +93,12 @@ class GroupingTasksTest extends AbstractTest {
         then: "grouping tasks registered"
         project.tasks.checkQualityMain
         project.tasks.checkQualityTest
-        project.tasks.checkQualityTata
+        project.tasks.checkQualityTaTa
 
         then: "correct tasks grouped"
         dependsOn(project.tasks.checkQualityMain) == ['codenarcMain'] as Set
         dependsOn(project.tasks.checkQualityTest) == ['codenarcTest'] as Set
-        dependsOn(project.tasks.checkQualityTata) == ['codenarcTata'] as Set
+        dependsOn(project.tasks.checkQualityTaTa) == ['codenarcTaTa'] as Set
     }
 
 

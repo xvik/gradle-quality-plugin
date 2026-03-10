@@ -1,3 +1,5 @@
+* Fix source sets with a capital letter in the name (like integrationTest) support (#134)
+
 ### 6.0.1 (2025-09-03)
 * Always add spotbugs-annotations dependency when plugin is available in classpath to
   not break compilation on non-compatible java versions (java 8) or with disabled spotbugs

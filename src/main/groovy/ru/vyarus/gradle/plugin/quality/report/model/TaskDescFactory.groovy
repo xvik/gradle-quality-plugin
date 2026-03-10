@@ -34,7 +34,7 @@ class TaskDescFactory {
         desc.path = task.path
         desc.projectPath = task.project.projectDir.absoluteFile.canonicalPath
         if (desc.sourceSet == null) {
-            desc.sourceSet = task.name[desc.tool.length()..-1].toLowerCase()
+            desc.sourceSet = task.name[desc.tool.length()..-1].uncapitalize()
         }
         desc.xmlReportPath = ((task.reports.findByName('xml')) as Report).outputLocation.get()
                 .asFile.absoluteFile.canonicalPath
