@@ -2,11 +2,13 @@ package ru.vyarus.gradle.plugin.quality
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
+import spock.lang.IgnoreIf
 
 /**
  * @author Vyacheslav Rusakov
  * @since 10.03.2026
  */
+@IgnoreIf({jvm.java8})
 class TestSuitesCompatibilityTest extends AbstractKitTest {
 
     def "Check test suites source sets compatibility"() {
