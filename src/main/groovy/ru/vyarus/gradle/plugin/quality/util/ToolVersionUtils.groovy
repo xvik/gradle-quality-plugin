@@ -11,6 +11,9 @@ import org.gradle.api.JavaVersion
  */
 @CompileStatic
 class ToolVersionUtils {
+    // checkstyle 13 requires java 21 - 12.3.1 the latest compatible version
+    static final String CHECKSTYLE_JAVA17 = '12.3.1'
+    // checkstyle 11 requires java 17 = 10.26.1 the latest compatible version
     static final String CHECKSTYLE_JAVA11 = '10.26.1'
     static final String SPOTBUGS_JAVA8 = '4.8.6'
 
@@ -22,14 +25,18 @@ class ToolVersionUtils {
      * @return true if version is compatible with current jdk
      */
     static boolean isCheckstyleCompatible(String version) {
-        JavaVersion current = JavaVersion.current()
-        if (current.isCompatibleWith(JavaVersion.VERSION_17)) {
-            return true
-        }
-        if (current.isCompatibleWith(JavaVersion.VERSION_11)) {
-            return version.startsWith('10')
-        }
-        return false
+        return isCheckstyleCompatible(version, JavaVersion.current())
+    }
+
+    static boolean isCheckstyleCompatible(String version, JavaVersion current) {
+        int ver = version[0..version.indexOf('.') - 1] as int
+
+        // checkstyle 13 require java 21
+        return (ver >= 13 && current.isCompatibleWith(JavaVersion.VERSION_21))
+                // checkstyle 11 - 12 require java 17
+                || (ver <= 12 && current.isCompatibleWith(JavaVersion.VERSION_17))
+                // checkstyle 10 requires java 11
+                || (ver == 10 && current.isCompatibleWith(JavaVersion.VERSION_11))
     }
 
     /**
@@ -40,9 +47,12 @@ class ToolVersionUtils {
      * @return version compatible with jdk or provided version as is (if fallback disabled)
      */
     static String getCompatibleCheckstyleVersion(boolean fallback, String version) {
-        JavaVersion current = JavaVersion.current()
-        if (fallback && !current.isCompatibleWith(JavaVersion.VERSION_17)) {
-            return CHECKSTYLE_JAVA11
+        return getCompatibleCheckstyleVersion(fallback, version, JavaVersion.current())
+    }
+
+    static String getCompatibleCheckstyleVersion(boolean fallback, String version, JavaVersion current) {
+        if (fallback && !isCheckstyleCompatible(version, current)) {
+            return current.isCompatibleWith(JavaVersion.VERSION_17) ? CHECKSTYLE_JAVA17 : CHECKSTYLE_JAVA11
         }
         return version
     }
@@ -55,7 +65,10 @@ class ToolVersionUtils {
      * @return true if version is compatible with current jdk
      */
     static boolean isSpotbugsCompatible(String version) {
-        JavaVersion current = JavaVersion.current()
+        return isSpotbugsCompatible(version, JavaVersion.current())
+    }
+
+    static boolean isSpotbugsCompatible(String version, JavaVersion current) {
         if (current.isCompatibleWith(JavaVersion.VERSION_11)) {
             return true
         }
@@ -70,7 +83,10 @@ class ToolVersionUtils {
      * @return version compatible with jdk or provided version as is (if fallback disabled)
      */
     static String getCompatibleSpotbugsVersion(boolean fallback, String version) {
-        JavaVersion current = JavaVersion.current()
+        return getCompatibleSpotbugsVersion(fallback, version, JavaVersion.current())
+    }
+
+    static String getCompatibleSpotbugsVersion(boolean fallback, String version, JavaVersion current) {
         if (fallback && !current.isCompatibleWith(JavaVersion.VERSION_11)) {
             return SPOTBUGS_JAVA8
         }
