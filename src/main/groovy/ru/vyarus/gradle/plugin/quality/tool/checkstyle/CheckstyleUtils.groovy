@@ -17,10 +17,22 @@ import javax.xml.parsers.SAXParserFactory
 @CompileStatic(TypeCheckingMode.SKIP)
 class CheckstyleUtils {
 
-    // checkstyle 13 requires java 21 - 12.3.1 the latest compatible version
+    // checkstyle 13 requires java 21 - 12.3.1 the latest version compatible with java 17
     static final String CHECKSTYLE_JAVA17 = '12.3.1'
-    // checkstyle 11 requires java 17 = 10.26.1 the latest compatible version
+    // rules, incompatible with 12.3.1
+    static final List<String> CHECKSTYLE_JAVA17_INCOMPATIBLE_RULES = [
+            'MissingOverrideOnRecordAccessor',
+            'NumericalPrefixesInfixesSuffixesCharacterCase',
+            'LineEnding',
+            'GoogleNonConstantFieldName',
+            'UseEnhancedSwitch',
+    ]
+    // checkstyle 11 requires java 17 = 10.26.1 the latest version compatible with java 11
     static final String CHECKSTYLE_JAVA11 = '10.26.1'
+    // rules, incompatible with 10.26.1
+    static final List<String> CHECKSTYLE_JAVA11_INCOMPATIBLE_RULES = [
+            'HexLiteralCase',
+            'TextBlockGoogleStyleFormatting',]
 
     /**
      * Detects if configured version is compatible with current jdk. This is required for case when user manually
@@ -60,6 +72,33 @@ class CheckstyleUtils {
             return current.isCompatibleWith(JavaVersion.VERSION_17) ? CHECKSTYLE_JAVA17 : CHECKSTYLE_JAVA11
         }
         return version
+    }
+
+    /**
+     * Method returns incompatible rules with current checkstyle version according to current jdk
+     * (and only if fallback enabled).
+     * <p>
+     * This is useful only for plugin testing to avoid maintaining multiple configs!
+     *
+     * @param fallback true if fallback enabled
+     * @param version current default version
+     * @return version compatible with jdk or provided version as is (if fallback disabled)
+     */
+    static List<String> getIncompatibleRules(boolean fallback, String version) {
+        return getIncompatibleRules(fallback, version, JavaVersion.current())
+    }
+
+    static List<String> getIncompatibleRules(boolean fallback, String version, JavaVersion current) {
+        if (fallback && !isCheckstyleCompatible(version, current)) {
+            if (current.isCompatibleWith(JavaVersion.VERSION_17)) {
+                return CHECKSTYLE_JAVA17_INCOMPATIBLE_RULES
+            }
+            List<String> res = []
+            res.addAll(CHECKSTYLE_JAVA17_INCOMPATIBLE_RULES)
+            res.addAll(CHECKSTYLE_JAVA11_INCOMPATIBLE_RULES)
+            return res
+        }
+        return []
     }
 
     /**

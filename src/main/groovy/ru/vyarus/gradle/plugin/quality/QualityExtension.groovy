@@ -62,6 +62,11 @@ abstract class QualityExtension {
         codenarc.convention(true)
         codenarcGroovy4.convention(true)
 
+        // automatically add incompatible checkstyle rules if fallback enabled
+        suppressCheckstyleRules.convention(project.provider {
+            CheckstyleUtils.getIncompatibleRules(fallbackToCompatibleToolVersion.get(), checkstyleVersion.get())
+        })
+
         cpdUnifySources.convention(true)
 
         spotbugsEffort.convention('max')
