@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.XmlNodePrinter
 import groovy.xml.XmlParser
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -25,8 +26,46 @@ import ru.vyarus.gradle.plugin.quality.util.SourceSetUtils
 @CompileStatic
 class SpotbugsUtils {
 
+    static final String SPOTBUGS_JAVA8 = '4.8.6'
+
     private static final int MAX_RANK = 20
     private static final String MATCH = 'Match'
+
+    /**
+     * Detects if configured version is compatible with current jdk. This is required for case when user manually
+     * configures lower spotbugs version so plugin must not be disabled (if provided version is compatible).
+     *
+     * @param version version to check
+     * @return true if version is compatible with current jdk
+     */
+    static boolean isSpotbugsCompatible(String version) {
+        return isSpotbugsCompatible(version, JavaVersion.current())
+    }
+
+    static boolean isSpotbugsCompatible(String version, JavaVersion current) {
+        if (current.isCompatibleWith(JavaVersion.VERSION_11)) {
+            return true
+        }
+        return version.startsWith('4.8')
+    }
+
+    /**
+     * Method returns DEFAULT spotbugs version according to current jdk (and only if fallback enabled).
+     *
+     * @param fallback true if fallback enabled
+     * @param version current default version
+     * @return version compatible with jdk or provided version as is (if fallback disabled)
+     */
+    static String getCompatibleSpotbugsVersion(boolean fallback, String version) {
+        return getCompatibleSpotbugsVersion(fallback, version, JavaVersion.current())
+    }
+
+    static String getCompatibleSpotbugsVersion(boolean fallback, String version, JavaVersion current) {
+        if (fallback && !current.isCompatibleWith(JavaVersion.VERSION_11)) {
+            return SPOTBUGS_JAVA8
+        }
+        return version
+    }
 
     /**
      * Searches for applied spotbugs plugin (plugin must be present in buildscript classpath and may not be applied).

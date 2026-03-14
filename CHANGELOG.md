@@ -1,5 +1,7 @@
 * Fix source sets with a capital letter in the name (like integrationTest) support (#134)
-* Add support for checkstyle 13 (requiring java 21): checkstyle plugin will be disabled on lower java versions.
+* Checkstyle:
+  - Add support for checkstyle 13 (requiring java 21): checkstyle plugin will be disabled on lower java versions.
+  - Add quality.suppressCheckstyleRules option to be able to remove rules from the default xml config (automatic config modification)   
 
 ### 6.0.1 (2025-09-03)
 * Always add spotbugs-annotations dependency when plugin is available in classpath to

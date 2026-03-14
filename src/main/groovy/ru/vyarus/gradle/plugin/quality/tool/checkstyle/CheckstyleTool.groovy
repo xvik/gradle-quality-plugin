@@ -84,6 +84,7 @@ class CheckstyleTool implements QualityTool {
         }
     }
 
+    @SuppressWarnings('MethodSize')
     private void configureCheckstyle(Project project, QualityExtension extension, ToolContext context) {
         project.configure(project) {
             // required due to checkstyle update of gradle metadata causing now collision with google collections
@@ -99,13 +100,20 @@ class CheckstyleTool implements QualityTool {
                 }
             }
 
+            // if rules exclusion configured, then main config file must be updated dynamically
+            // (and so user config copied inside tmp)
+            boolean modificationRequired = !extension.suppressCheckstyleRules.get().empty
+
             checkstyle {
                 showViolations = false
                 toolVersion = extension.checkstyleVersion.get()
                 ignoreFailures = !extension.strict.get()
+
                 // this may be custom user file (gradle/config/checkstyle/checkstyle.xml) or default one
                 // (in different location)
-                configFile = context.resolveConfigFile(checkstyle_config)
+                configFile = modificationRequired ?
+                        context.tempConfigFile(checkstyle_config)
+                        : context.resolveConfigFile(checkstyle_config)
                 // this is required for ${config_loc} variable, but this will ALWAYS point to
                 // gradle/config/checkstyle/ (or other configured config location dir) because custom
                 // configuration files may be only there
@@ -121,6 +129,24 @@ class CheckstyleTool implements QualityTool {
 
                 context.registerTaskForReport(task, factory.buildDesc(task, toolName))
                 context.applyExcludes(task as SourceTask, extension.excludeSources, extension.exclude.get())
+            }
+
+            // dynamic checkstyle config file update (remove some modules)
+            // It's ok to update file in the scope of configs copying - output directory should be cached after
+            context.configsTask.configure {
+                if (!modificationRequired) {
+                    return
+                }
+                // request user file copying (for modification)
+                modifiableFiles.add(checkstyle_config)
+
+                // default or user file, copied into temp dir (for modification)
+                File config = context.tempConfigFile(checkstyle_config)
+
+                it.doLast {
+                    // modify (already copied) config file to apply configured exclusions
+                    CheckstyleUtils.mergeExcludes(config, extension.suppressCheckstyleRules.get())
+                }
             }
         }
         context.applyEnabledState(Checkstyle)

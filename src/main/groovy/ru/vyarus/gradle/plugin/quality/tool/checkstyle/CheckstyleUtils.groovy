@@ -1,21 +1,26 @@
-package ru.vyarus.gradle.plugin.quality.util
+package ru.vyarus.gradle.plugin.quality.tool.checkstyle
 
 import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
+import groovy.xml.XmlNodePrinter
+import groovy.xml.XmlParser
 import org.gradle.api.JavaVersion
 
+import javax.xml.parsers.SAXParserFactory
+
 /**
- * Utility searches for compatible tool version for the current jdk.
+ * Checkstyle helper utilities.
  *
  * @author Vyacheslav Rusakov
- * @since 07.08.2025
+ * @since 14.03.2026
  */
-@CompileStatic
-class ToolVersionUtils {
+@CompileStatic(TypeCheckingMode.SKIP)
+class CheckstyleUtils {
+
     // checkstyle 13 requires java 21 - 12.3.1 the latest compatible version
     static final String CHECKSTYLE_JAVA17 = '12.3.1'
     // checkstyle 11 requires java 17 = 10.26.1 the latest compatible version
     static final String CHECKSTYLE_JAVA11 = '10.26.1'
-    static final String SPOTBUGS_JAVA8 = '4.8.6'
 
     /**
      * Detects if configured version is compatible with current jdk. This is required for case when user manually
@@ -58,38 +63,48 @@ class ToolVersionUtils {
     }
 
     /**
-     * Detects if configured version is compatible with current jdk. This is required for case when user manually
-     * configures lower spotbugs version so plugin must not be disabled (if provided version is compatible).
+     * Remove declared modules from checkstyle file (overwrite config xml).
      *
-     * @param version version to check
-     * @return true if version is compatible with current jdk
+     * @param src config file
+     * @param excluded excluded rules
      */
-    static boolean isSpotbugsCompatible(String version) {
-        return isSpotbugsCompatible(version, JavaVersion.current())
+    @SuppressWarnings('UnnecessaryGetter')
+    static void mergeExcludes(File src, List<String> excluded) {
+        // checkstyle config use doctype which must be ignored
+        SAXParserFactory factory = SAXParserFactory.newInstance()
+        factory.setFeature('http://apache.org/xml/features/disallow-doctype-decl', false)
+
+        // modules declared in the root module and inside TreeWalker so check two times
+        Node xml = new XmlParser(factory.newSAXParser().getXMLReader()).parse(src)
+        processNode(xml, excluded)
+
+        Node walker = xml.module.find { it.@name == 'TreeWalker' }
+        processNode(walker, excluded)
+
+        Writer writer = src.newWriter(false)
+        writer.writeLine('''<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">''')
+
+        Writer sw = new StringWriter()
+        XmlNodePrinter printer = new XmlNodePrinter(new PrintWriter(sw))
+        printer.print(xml)
+        writer.write(sw.toString())
+
+        // not direct serialization to avoid blank lines
+//        XmlUtil.serialize(xml, writer)
+        writer.flush()
     }
 
-    static boolean isSpotbugsCompatible(String version, JavaVersion current) {
-        if (current.isCompatibleWith(JavaVersion.VERSION_11)) {
-            return true
+    @SuppressWarnings(['Println', 'SpaceAfterOpeningBrace', 'SpaceBeforeClosingBrace'])
+    private static void processNode(Node node, List<String> excluded) {
+        excluded.each { remove ->
+            Node toremove = node.find { it.@name == remove }
+            if (toremove) {
+                println "[quality] suppressed checkstyle rule: $remove"
+                toremove.replaceNode {}
+            }
         }
-        return version.startsWith('4.8')
-    }
-
-    /**
-     * Method returns DEFAULT spotbugs version according to current jdk (and only if fallback enabled).
-     *
-     * @param fallback true if fallback enabled
-     * @param version current default version
-     * @return version compatible with jdk or provided version as is (if fallback disabled)
-     */
-    static String getCompatibleSpotbugsVersion(boolean fallback, String version) {
-        return getCompatibleSpotbugsVersion(fallback, version, JavaVersion.current())
-    }
-
-    static String getCompatibleSpotbugsVersion(boolean fallback, String version, JavaVersion current) {
-        if (fallback && !current.isCompatibleWith(JavaVersion.VERSION_11)) {
-            return SPOTBUGS_JAVA8
-        }
-        return version
     }
 }

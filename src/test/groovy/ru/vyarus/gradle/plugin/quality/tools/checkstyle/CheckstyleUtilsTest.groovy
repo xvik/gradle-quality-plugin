@@ -1,22 +1,25 @@
-package ru.vyarus.gradle.plugin.quality.util
+package ru.vyarus.gradle.plugin.quality.tools.checkstyle
 
 import org.gradle.api.JavaVersion
+import ru.vyarus.gradle.plugin.quality.tool.checkstyle.CheckstyleUtils
 import spock.lang.Specification
+
+import java.nio.file.Files
 
 /**
  * @author Vyacheslav Rusakov
  * @since 14.03.2026
  */
-class ToolVersionUtilsTest extends Specification {
+class CheckstyleUtilsTest extends Specification {
 
     def "Check checkstyle compatibility"() {
 
         expect:
-        ToolVersionUtils.isCheckstyleCompatible(ver, java) == res
+        CheckstyleUtils.isCheckstyleCompatible(ver, java) == res
 
         where:
         ver       | java                    | res
-        '13.3.0'  | JavaVersion.VERSION_22  | true
+        '13.3.0'  | JavaVersion.VERSION_22 | true
         '13.3.0'  | JavaVersion.VERSION_21  | true
         '13.3.0'  | JavaVersion.VERSION_20  | false
         '13.3.0'  | JavaVersion.VERSION_17  | false
@@ -47,7 +50,7 @@ class ToolVersionUtilsTest extends Specification {
 
     def "Check fallback checkstyle version"() {
         expect:
-        ToolVersionUtils.getCompatibleCheckstyleVersion(true, ver, java) == res
+        CheckstyleUtils.getCompatibleCheckstyleVersion(true, ver, java) == res
 
         where:
         ver       | java                    | res
@@ -80,37 +83,35 @@ class ToolVersionUtilsTest extends Specification {
         '10.26.0' | JavaVersion.VERSION_1_8 | '10.26.1' // checkstyle not compatible with java 8, but method returns the lowest version
     }
 
-    def "Check spotbugs compatibility"() {
 
-        expect:
-        ToolVersionUtils.isSpotbugsCompatible(ver, java) == res
+    def "Check excludes"() {
 
-        where:
-        ver     | java                    | res
-        '4.9.4' | JavaVersion.VERSION_22  | true
-        '4.9.4' | JavaVersion.VERSION_21  | true
-        '4.9.4' | JavaVersion.VERSION_17  | true
-        '4.9.4' | JavaVersion.VERSION_11  | true
-        '4.9.4' | JavaVersion.VERSION_1_8 | false
-
-        '4.8.3' | JavaVersion.VERSION_22  | true
-        '4.8.3' | JavaVersion.VERSION_21  | true
-        '4.8.3' | JavaVersion.VERSION_17  | true
-        '4.8.3' | JavaVersion.VERSION_11  | true
-        '4.8.3' | JavaVersion.VERSION_1_8 | true
-
+        expect: "conversion"
+        merge(['SuppressionCommentFilter', 'MissingOverride', 'SuppressWarnings', 'SuppressWarnings2']) ==
+                """<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+  <module name="TreeWalker">
+    <module name="AnnotationUseStyle"/>
+    <module name="MissingDeprecated"/>
+    <module name="PackageAnnotation"/>
+    <module name="SuppressWarningsHolder"/>
+  </module>
+</module>
+""" as String
     }
 
-    def "Check fallback spotbugs version"() {
-        expect:
-        ToolVersionUtils.getCompatibleSpotbugsVersion(true, ver, java) == res
+    private String merge(List<String> excludes) {
+        File tmp = Files.createTempFile("test", "checkstyle").toFile()
+        tmp.text = new File(getClass().getResource('/ru/vyarus/gradle/plugin/quality/config/checkstyle/checkstyle.xml').toURI()).text
+        CheckstyleUtils.mergeExcludes(tmp, excludes)
 
-        where:
-        ver     | java                    | res
-        '4.9.4' | JavaVersion.VERSION_22  | '4.9.4'
-        '4.9.4' | JavaVersion.VERSION_21  | '4.9.4'
-        '4.9.4' | JavaVersion.VERSION_17  | '4.9.4'
-        '4.9.4' | JavaVersion.VERSION_11  | '4.9.4'
-        '4.9.4' | JavaVersion.VERSION_1_8 | '4.8.6'
+        def res = tmp.text.replace('\r', '')
+        // on java 11 groovy inserts blank lines between tags
+                .replaceAll('\n {1,}\n', '\n')
+        tmp.delete()
+        return res
     }
 }

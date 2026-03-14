@@ -7,7 +7,8 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.SourceSet
-import ru.vyarus.gradle.plugin.quality.util.ToolVersionUtils
+import ru.vyarus.gradle.plugin.quality.tool.checkstyle.CheckstyleUtils
+import ru.vyarus.gradle.plugin.quality.tool.spotbugs.SpotbugsUtils
 
 /**
  * Quality plugin configuration. Available as 'quality' closure.
@@ -37,11 +38,11 @@ abstract class QualityExtension {
 
         // use 10.x for java 11 (if fallbackToCompatibleToolVersion = true)
         checkstyleVersion.convention(project.provider {
-            ToolVersionUtils.getCompatibleCheckstyleVersion(fallbackToCompatibleToolVersion.get(), CHECKSTYLE) })
+            CheckstyleUtils.getCompatibleCheckstyleVersion(fallbackToCompatibleToolVersion.get(), CHECKSTYLE) })
         pmdVersion.convention(PMD)
         // use 4.8.x for java 8 (if fallbackToCompatibleToolVersion = true)
         spotbugsVersion.convention(project.provider {
-            ToolVersionUtils.getCompatibleSpotbugsVersion(fallbackToCompatibleToolVersion.get(), SPOTBUGS)
+            SpotbugsUtils.getCompatibleSpotbugsVersion(fallbackToCompatibleToolVersion.get(), SPOTBUGS)
         })
         codenarcVersion.convention(CODENARC)
 
@@ -50,12 +51,12 @@ abstract class QualityExtension {
 
         // auto check compatibility by configured version (if not declared manually would trigger auto selection)
         checkstyle.convention(
-                project.provider { ToolVersionUtils.isCheckstyleCompatible(checkstyleVersion.get()) })
+                project.provider { CheckstyleUtils.isCheckstyleCompatible(checkstyleVersion.get()) })
         pmd.convention(true)
         cpd.convention(true)
         // auto check compatibility by configured version (if not declared manually would trigger auto selection)
         spotbugs.convention(
-                project.provider { ToolVersionUtils.isSpotbugsCompatible(spotbugsVersion.get()) }
+                project.provider { SpotbugsUtils.isSpotbugsCompatible(spotbugsVersion.get()) }
         )
         animalsniffer.convention(true)
         codenarc.convention(true)
@@ -164,6 +165,17 @@ abstract class QualityExtension {
      * If plugin enabled manually then disabling this option will prevent applying plugin configuration.
      */
     abstract Property<Boolean> getCodenarc()
+
+    /**
+     * By default, rules could be disabled by manual checkstyle xml config modification. But, often, people don't
+     * want to "own" the entire config management. In this case, just specify unwanted rule names and plugin will
+     * automatically remove them from xml config.
+     * Note: this will work even with custom configuration file.
+     * <p>
+     * One of potential usages is the {@link #getFallbackToCompatibleToolVersion()} mode because config might
+     * include rule, not present in the older checkstyle version.
+     */
+    abstract ListProperty<String> getSuppressCheckstyleRules()
 
     /**
      * Since codenarc 3.1.0 there is a separate artifact for groovy 4 (CodeNarc-x.x-groovy-4.0). Gradle runs codenarc

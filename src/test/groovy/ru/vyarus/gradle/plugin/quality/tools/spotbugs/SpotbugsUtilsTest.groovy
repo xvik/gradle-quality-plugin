@@ -1,7 +1,8 @@
-package ru.vyarus.gradle.plugin.quality.util
+package ru.vyarus.gradle.plugin.quality.tools.spotbugs
 
-
+import org.gradle.api.JavaVersion
 import ru.vyarus.gradle.plugin.quality.AbstractTest
+import ru.vyarus.gradle.plugin.quality.tool.spotbugs.SpotbugsUtils
 
 import java.nio.file.Files
 
@@ -12,6 +13,40 @@ import static ru.vyarus.gradle.plugin.quality.tool.spotbugs.SpotbugsUtils.mergeE
  * @since 21.02.2018
  */
 class SpotbugsUtilsTest extends AbstractTest {
+
+    def "Check spotbugs compatibility"() {
+
+        expect:
+        SpotbugsUtils.isSpotbugsCompatible(ver, java) == res
+
+        where:
+        ver     | java                    | res
+        '4.9.4' | JavaVersion.VERSION_22 | true
+        '4.9.4' | JavaVersion.VERSION_21  | true
+        '4.9.4' | JavaVersion.VERSION_17  | true
+        '4.9.4' | JavaVersion.VERSION_11  | true
+        '4.9.4' | JavaVersion.VERSION_1_8 | false
+
+        '4.8.3' | JavaVersion.VERSION_22  | true
+        '4.8.3' | JavaVersion.VERSION_21  | true
+        '4.8.3' | JavaVersion.VERSION_17  | true
+        '4.8.3' | JavaVersion.VERSION_11  | true
+        '4.8.3' | JavaVersion.VERSION_1_8 | true
+
+    }
+
+    def "Check fallback spotbugs version"() {
+        expect:
+        SpotbugsUtils.getCompatibleSpotbugsVersion(true, ver, java) == res
+
+        where:
+        ver     | java                    | res
+        '4.9.4' | JavaVersion.VERSION_22  | '4.9.4'
+        '4.9.4' | JavaVersion.VERSION_21  | '4.9.4'
+        '4.9.4' | JavaVersion.VERSION_17  | '4.9.4'
+        '4.9.4' | JavaVersion.VERSION_11  | '4.9.4'
+        '4.9.4' | JavaVersion.VERSION_1_8 | '4.8.6'
+    }
 
     def "Check exclude xml modification"() {
 
