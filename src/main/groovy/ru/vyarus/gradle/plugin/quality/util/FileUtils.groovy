@@ -122,7 +122,7 @@ class FileUtils {
      */
     @SuppressWarnings(['CyclomaticComplexity', 'NestedBlockDepth'])
     static void loadFilesFromJar(File jar, String path, BiConsumer<Path, InputStream> action) {
-        try (FileSystem zipFs = FileSystems.newFileSystem(jar.toPath())) {
+        try (FileSystem zipFs = FileSystems.newFileSystem(jar.toPath(), null as ClassLoader)) {
             Path root = zipFs.getPath(path)
 
             try (Stream<Path> pathStream = Files.walk(root, 1)) {
