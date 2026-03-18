@@ -6,6 +6,12 @@ import org.gradle.api.Project
 import org.gradle.api.file.FileTree
 import org.gradle.api.tasks.SourceSet
 
+import java.nio.file.FileSystem
+import java.nio.file.FileSystems
+import java.nio.file.Files
+import java.nio.file.Path
+import java.util.function.BiConsumer
+import java.util.stream.Stream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
@@ -104,6 +110,32 @@ class FileUtils {
         } finally {
             // close all related zip streams
             file.close()
+        }
+    }
+
+    /**
+     * Process all xml files in directory inside jar.
+     *
+     * @param jar jar file
+     * @param path directory path inside jar
+     * @param action file action
+     */
+    @SuppressWarnings(['CyclomaticComplexity', 'NestedBlockDepth'])
+    static void loadFilesFromJar(File jar, String path, BiConsumer<Path, InputStream> action) {
+        try (FileSystem zipFs = FileSystems.newFileSystem(jar.toPath())) {
+            Path root = zipFs.getPath(path)
+
+            try (Stream<Path> pathStream = Files.walk(root, 1)) {
+                pathStream.forEach(file -> {
+                    if (!Files.isDirectory(file) && file.fileName.toString().endsWith('.xml')) {
+                        try (InputStream stream = Files.newInputStream(file)) {
+                            action.accept(file, stream)
+                        }
+                    }
+                })
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to read files inside jar file path $jar.name: $path", e)
         }
     }
 }

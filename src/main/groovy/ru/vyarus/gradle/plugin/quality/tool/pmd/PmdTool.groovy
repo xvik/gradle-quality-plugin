@@ -73,13 +73,24 @@ class PmdTool implements QualityTool {
         }
     }
 
+    @SuppressWarnings('MethodSize')
     private void configurePmd(Project project, QualityExtension extension, ToolContext context) {
         project.configure(project) {
+            // if rules exclusion configured, then main config file must be updated dynamically
+            // (and so user config copied inside tmp)
+            boolean modificationRequired = !extension.suppressPmdRules.get().empty
+            // in order to apply additional exclusions, we need to know the exact rule source path
+            Map<String, String> rules = modificationRequired ? PmdUtils.readExistingRules(project) : [:]
+
             pmd {
                 toolVersion = extension.pmdVersion.get()
                 ignoreFailures = !extension.strict.get()
                 ruleSets = []
-                ruleSetFiles = files(context.resolveConfigFile(pmd_config).absolutePath)
+                // this may be custom user file (gradle/config/pmd/pmd.xml) or default one
+                // (in different location)
+                ruleSetFiles = files((modificationRequired ?
+                        context.tempConfigFile(pmd_config)
+                        : context.resolveConfigFile(pmd_config)).absolutePath)
                 sourceSets = SourceSetUtils.getSourceSets(project, extension.sourceSets.get())
             }
             if (GradleVersion.current() < GradleVersion.version('8.3')) {
@@ -98,6 +109,23 @@ class PmdTool implements QualityTool {
 
                 context.registerTaskForReport(task, factory.buildDesc(task, toolName))
                 context.applyExcludes(task as SourceTask, extension.excludeSources, extension.exclude.get())
+            }
+            // dynamic pmd config file update (remove some modules)
+            // It's ok to update file in the scope of configs copying - output directory should be cached after
+            context.configsTask.configure {
+                if (!modificationRequired) {
+                    return
+                }
+                // request user file copying (for modification)
+                modifiableFiles.add(pmd_config)
+
+                // default or user file, copied into temp dir (for modification)
+                File config = context.tempConfigFile(pmd_config)
+
+                it.doLast {
+                    // modify (already copied) config file to apply configured exclusions
+                    PmdUtils.mergeExcludes(config, rules, extension.suppressPmdRules.get())
+                }
             }
         }
         context.applyEnabledState(Pmd)

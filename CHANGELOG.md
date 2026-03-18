@@ -3,6 +3,8 @@
   - Add support for checkstyle 13 (requiring java 21): checkstyle plugin will be disabled on lower java versions.
   - Add quality.suppressCheckstyleRules option to be able to remove rules from the default xml config (automatic config modification)
   - When auto fallback is enabled, incompatible rules disabled automatically (using new suppression option)
+* Pmd
+  - Add quality.suppressPmdRules option to be able to remove rules from the default xml config (automatic config modification)
 
 ### 6.0.1 (2025-09-03)
 * Always add spotbugs-annotations dependency when plugin is available in classpath to
