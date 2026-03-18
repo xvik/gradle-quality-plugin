@@ -79,8 +79,6 @@ class PmdTool implements QualityTool {
             // if rules exclusion configured, then main config file must be updated dynamically
             // (and so user config copied inside tmp)
             boolean modificationRequired = !extension.suppressPmdRules.get().empty
-            // in order to apply additional exclusions, we need to know the exact rule source path
-            Map<String, String> rules = modificationRequired ? PmdUtils.readExistingRules(project) : [:]
 
             pmd {
                 toolVersion = extension.pmdVersion.get()
@@ -121,6 +119,9 @@ class PmdTool implements QualityTool {
 
                 // default or user file, copied into temp dir (for modification)
                 File config = context.tempConfigFile(pmd_config)
+
+                // in order to apply additional exclusions, we need to know the exact rule source path
+                Map<String, String> rules = PmdUtils.readExistingRules(project)
 
                 it.doLast {
                     // modify (already copied) config file to apply configured exclusions
