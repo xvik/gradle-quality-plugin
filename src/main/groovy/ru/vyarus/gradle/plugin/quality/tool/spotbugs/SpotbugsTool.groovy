@@ -126,7 +126,9 @@ class SpotbugsTool implements QualityTool {
             Integer rank = extension.spotbugsMaxRank.get()
             List<String> excludes = extension.exclude.get()
             FileCollection excludeSources = extension.excludeSources
+            List<String> suppress = extension.suppressSpotbugsRules.get()
             boolean filterModificationRequired = rank != null || excludes || excludeSources
+                || !suppress.empty
 
             tasks.withType(spotbugsTaskType).configureEach { Task task ->
                 task.dependsOn(context.configsTask)
@@ -183,7 +185,7 @@ class SpotbugsTool implements QualityTool {
                 it.doLast {
                     // modify (already copied) excludes file to apply configured exclusions
                     SpotbugsUtils.replaceExcludeFilter(config,
-                            aptGenerated, sourceDirs, rank, excludes, excludeSources, objectFactory)
+                            aptGenerated, sourceDirs, rank, excludes, excludeSources, suppress, objectFactory)
                 }
             }
         }

@@ -7,6 +7,8 @@
   - Add quality.suppressPmdRules option to be able to remove rules from the default xml config (automatic config modification)
 * Codenarc
   - Add quality.suppressCodenarcRules option to be able to remove rules from the default xml config (automatic config modification)
+* Spotbugs
+  - Add quality.suppressSpotbugsRules option to be able to remove rules without exclusions xml config modification (automatic config modification)
 
 ### 6.0.1 (2025-09-03)
 * Always add spotbugs-annotations dependency when plugin is available in classpath to

@@ -164,7 +164,7 @@ class SpotbugsUtils {
     @SuppressWarnings('ParameterCount')
     static void replaceExcludeFilter(File file, Set<File> aptGenerated, Set<File> sourceDirs,
                                      Integer configuredRank, List<String> excludes, FileCollection excludeSources,
-                                     ObjectFactory factory) {
+                                     List<String> suppress, ObjectFactory factory) {
         // setting means max allowed rank, but filter evicts all ranks >= specified (so +1)
         Integer rank = configuredRank < MAX_RANK ? configuredRank + 1 : null
 
@@ -185,7 +185,7 @@ class SpotbugsUtils {
             // add directly excluded files
             ignored.addAll(excludeSources.asFileTree.matching { include '**/*.java' }.files)
         }
-        if (!ignored && !rank) {
+        if (!ignored && !rank && suppress.empty) {
             // no custom excludes required
             return
         }
@@ -194,7 +194,7 @@ class SpotbugsUtils {
         sources.addAll(sourceDirs)
         sources.addAll(aptGenerated)
 
-        mergeExcludes(file, ignored, sources, rank)
+        mergeExcludes(file, ignored, sources, suppress, rank)
     }
 
     /**
@@ -208,7 +208,9 @@ class SpotbugsUtils {
      * @param roots source directories (to resolve class files)
      * @param rank custom rank value (optional)
      */
-    static void mergeExcludes(File src, Collection<File> exclude, Collection<File> roots, Integer rank = null) {
+    @SuppressWarnings('Println')
+    static void mergeExcludes(File src, Collection<File> exclude, Collection<File> roots,
+                              List<String> suppress, Integer rank = null) {
         Node xml = new XmlParser().parse(src)
         exclude.each {
             String clazz = FileUtils.extractJavaClass(roots, it)
@@ -220,6 +222,13 @@ class SpotbugsUtils {
 
         if (rank) {
             xml.appendNode(MATCH).appendNode('Rank', ['value': rank])
+        }
+
+        // exact rules suppression
+        if (!suppress.empty) {
+            Node or = xml.appendNode(MATCH).appendNode('Or')
+            suppress.each { or.appendNode('Bug', ['pattern': it]) }
+            println "[quality] suppressed spotbugs rules: ${suppress.join(', ')}"
         }
 
         Writer writer = src.newWriter(false)

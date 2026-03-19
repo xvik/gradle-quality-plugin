@@ -52,7 +52,7 @@ class SpotbugsUtilsTest extends AbstractTest {
 
         expect: "conversion"
         merge([file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
-                [file('/src/main/java')] ) ==
+                [file('/src/main/java')], []) ==
                 """<?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
   <Match>
@@ -83,7 +83,7 @@ class SpotbugsUtilsTest extends AbstractTest {
     def "Check no excludes"() {
 
         expect: "no modification"
-        merge([], [file('/src/main/java')]) ==
+        merge([], [file('/src/main/java')], []) ==
                 """<?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
   <Match>
@@ -109,7 +109,7 @@ class SpotbugsUtilsTest extends AbstractTest {
 
         expect: "no changes"
         merge([file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
-                [file('/src/main/bad')]) ==
+                [file('/src/main/bad')], []) ==
                 """<?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
   <Match>
@@ -134,7 +134,7 @@ class SpotbugsUtilsTest extends AbstractTest {
     def "Check custom rank"() {
 
         expect: "no changes"
-        merge([], [], 15) ==
+        merge([], [], [], 15) ==
                 """<?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
   <Match>
@@ -163,7 +163,7 @@ class SpotbugsUtilsTest extends AbstractTest {
 
         expect: "conversion"
         merge([file('src/main/java/sample/Sample.java'), file('src/main/java/other/Sample2.java')],
-                [file('/src/main/java')],
+                [file('/src/main/java')], [],
                 15) ==
                 """<?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
@@ -195,11 +195,42 @@ class SpotbugsUtilsTest extends AbstractTest {
 """ as String
     }
 
-    private String merge(Collection<File> exclude, Collection<File> roots, Integer rank = null) {
+    def "Check suppressions"() {
+
+        expect: "no changes"
+        merge([], [], ['RULE1', 'RULE2']) ==
+                """<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <Match>
+    <Source name="~.*\\.groovy"/>
+  </Match>
+  <Match>
+    <Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/>
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+    </Or>
+  </Match>
+  <Match>
+    <Or>
+      <Bug pattern="RULE1"/>
+      <Bug pattern="RULE2"/>
+    </Or>
+  </Match>
+</FindBugsFilter>
+""" as String
+    }
+
+    private String merge(Collection<File> exclude, Collection<File> roots, List<String> suppress, Integer rank = null) {
         File tmp = Files.createTempFile("test", "spotbugs").toFile()
         tmp.text = new File(getClass().getResource('/ru/vyarus/quality/config/spotbugs/exclude.xml').toURI()).text
         mergeExcludes(tmp,
-                exclude,  roots, rank)
+                exclude,  roots, suppress, rank)
 
         def res = tmp.text.replace('\r', '')
                 // on java 11 groovy inserts blank lines between tags
