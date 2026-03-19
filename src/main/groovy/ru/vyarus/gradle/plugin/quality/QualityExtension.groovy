@@ -22,7 +22,7 @@ import ru.vyarus.gradle.plugin.quality.tool.spotbugs.SpotbugsUtils
 abstract class QualityExtension {
 
     public static final String CHECKSTYLE = '11.0.1'
-    public static final String PMD = '7.16.0'
+    public static final String PMD = '7.22.0'
     public static final String SPOTBUGS = '4.9.8'
     public static final String CODENARC = '3.7.0'
 

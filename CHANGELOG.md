@@ -5,6 +5,7 @@
   - When auto fallback is enabled, incompatible rules disabled automatically (using new suppression option)
 * Pmd
   - Add quality.suppressPmdRules option to be able to remove rules from the default xml config (automatic config modification)
+  - Update version 7.16 -> 7.22
 * Codenarc
   - Add quality.suppressCodenarcRules option to be able to remove rules from the default xml config (automatic config modification)
   - Update version 3.6.0 -> 3.7.0
