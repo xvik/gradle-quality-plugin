@@ -104,8 +104,9 @@ class PmdUtils {
         toExclude.each {
             String group = rules[it]
             targetGroups[group].appendNode('exclude', ['name': it])
-            println "[quality] suppressed pmd rule: ($group) $it"
         }
+
+        println "[quality] suppressed pmd rules: ${toExclude.join(', ')}"
 
         Writer writer = src.newWriter(false)
         writer.writeLine('<?xml version="1.0" encoding="UTF-8"?>')

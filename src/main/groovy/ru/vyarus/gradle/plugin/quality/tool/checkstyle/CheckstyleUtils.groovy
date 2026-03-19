@@ -138,12 +138,16 @@ class CheckstyleUtils {
 
     @SuppressWarnings(['Println', 'SpaceAfterOpeningBrace', 'SpaceBeforeClosingBrace'])
     private static void processNode(Node node, List<String> excluded) {
+        List<String> found = []
         excluded.each { remove ->
             Node toremove = node.find { it.@name == remove }
             if (toremove) {
-                println "[quality] suppressed checkstyle rule: $remove"
+                found.add(remove)
                 toremove.replaceNode {}
             }
+        }
+        if (found) {
+            println "[quality] suppressed checkstyle rules: ${found.join(', ')}"
         }
     }
 }

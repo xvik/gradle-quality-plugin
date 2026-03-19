@@ -44,7 +44,7 @@ class PmdRulesSuppressionKitTest extends AbstractKitTest {
         result.output.contains('PMD rule violations were found')
 
         then: "suppressions applied"
-        result.output.contains('[quality] suppressed pmd rule: (category/java/bestpractices.xml) UnusedPrivateField')
+        result.output.contains('[quality] suppressed pmd rules: UnusedPrivateField, AvoidFieldNameMatchingTypeName, SingularField')
         !result.output.contains('[Best Practices | UnusedPrivateField]')
 
         then: "all html reports generated"

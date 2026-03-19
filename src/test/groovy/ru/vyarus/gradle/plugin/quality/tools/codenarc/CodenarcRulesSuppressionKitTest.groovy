@@ -46,7 +46,7 @@ class CodenarcRulesSuppressionKitTest extends AbstractKitTest {
         result.output.contains('CodeNarc rule violations were found')
 
         then: "suppressions applied"
-        result.output.contains('[quality] suppressed codenarc rule: (rulesets/dry.xml) DuplicateStringLiteral')
+        result.output.contains('[quality] suppressed codenarc rules: DuplicateStringLiteral, UnnecessaryGString')
         !result.output.contains('[Dry | DuplicateStringLiteral]')
 
         then: "html report generated"

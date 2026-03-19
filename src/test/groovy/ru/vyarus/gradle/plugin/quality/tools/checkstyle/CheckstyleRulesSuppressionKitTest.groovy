@@ -43,7 +43,7 @@ class CheckstyleRulesSuppressionKitTest extends AbstractKitTest {
         !result.output.contains('Checkstyle rule violations were found')
 
         then: "suppressions applied"
-        result.output.contains('[quality] suppressed checkstyle rule: NewlineAtEndOfFile')
+        result.output.contains('[quality] suppressed checkstyle rules')
         !result.output.contains('[Misc | NewlineAtEndOfFile]')
 
         then: "all html reports generated"

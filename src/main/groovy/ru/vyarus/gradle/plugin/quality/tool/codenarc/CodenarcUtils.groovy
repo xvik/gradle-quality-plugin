@@ -121,8 +121,9 @@ class CodenarcUtils {
         toExclude.each {
             String group = rules[it]
             targetGroups[group].appendNode('exclude', ['name': it])
-            println "[quality] suppressed codenarc rule: ($group) $it"
         }
+
+        println "[quality] suppressed codenarc rules: ${toExclude.join(', ')}"
 
         Writer writer = src.newWriter(false)
         Writer sw = new StringWriter()
