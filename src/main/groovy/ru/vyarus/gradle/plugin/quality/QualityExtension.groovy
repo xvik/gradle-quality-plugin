@@ -21,7 +21,7 @@ import ru.vyarus.gradle.plugin.quality.tool.spotbugs.SpotbugsUtils
 @SuppressWarnings('MethodCount')
 abstract class QualityExtension {
 
-    public static final String CHECKSTYLE = '11.0.1'
+    public static final String CHECKSTYLE = '12.3.1'
     public static final String PMD = '7.22.0'
     public static final String SPOTBUGS = '4.9.8'
     public static final String CODENARC = '3.7.0'
@@ -64,7 +64,7 @@ abstract class QualityExtension {
 
         // automatically add incompatible checkstyle rules if fallback enabled
         suppressCheckstyleRules.convention(project.provider {
-            CheckstyleUtils.getIncompatibleRules(fallbackToCompatibleToolVersion.get(), checkstyleVersion.get())
+            CheckstyleUtils.getIncompatibleRules(fallbackToCompatibleToolVersion.get())
         })
 
         cpdUnifySources.convention(true)

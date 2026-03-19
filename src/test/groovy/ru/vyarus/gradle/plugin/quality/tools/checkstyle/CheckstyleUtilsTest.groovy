@@ -83,6 +83,19 @@ class CheckstyleUtilsTest extends Specification {
         '10.26.0' | JavaVersion.VERSION_1_8 | '10.26.1' // checkstyle not compatible with java 8, but method returns the lowest version
     }
 
+    def "Check incompatible rules selection"() {
+        expect:
+        CheckstyleUtils.getIncompatibleRules(true, java).size() == res
+
+        where:
+        java                    | res
+        JavaVersion.VERSION_22  | 0
+        JavaVersion.VERSION_21  | 0
+        JavaVersion.VERSION_20  | 5
+        JavaVersion.VERSION_17  | 5
+        JavaVersion.VERSION_11  | 7
+        JavaVersion.VERSION_1_8 | 7
+    }
 
     def "Check excludes"() {
 

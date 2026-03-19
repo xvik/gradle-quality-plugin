@@ -132,6 +132,7 @@
         <module name="StringLiteralEquality"/>
         <!--<module name="SuperClone"/>-->
         <!--<module name="SuperFinalize"/>-->
+        <module name="TextBlockGoogleStyleFormatting"/>
         <module name="UnnecessaryNullCheckWithInstanceOf"/>
         <!--<module name="UnnecessaryParentheses"/>--> <!-- disabled due to often false complains inside if -->
         <module name="UnnecessarySemicolonAfterOuterTypeDeclaration"/>
@@ -198,6 +199,7 @@
         <module name="CommentsIndentation"/>
         <module name="DescendantToken"/>
         <!--<module name="FinalParameters"/>-->  <!-- DISABLED in favor of less restricted ParameterAssignment -->
+        <module name="HexLiteralCase"/>
         <!--<module name="Indentation"/>-->  <!-- DISABLED due to many problems (breaks often), regression since 8.40 -->
         <module name="NoCodeInFile"/>
         <module name="OuterTypeFilename"/>

@@ -81,15 +81,15 @@ class CheckstyleUtils {
      * This is useful only for plugin testing to avoid maintaining multiple configs!
      *
      * @param fallback true if fallback enabled
-     * @param version current default version
      * @return version compatible with jdk or provided version as is (if fallback disabled)
      */
-    static List<String> getIncompatibleRules(boolean fallback, String version) {
-        return getIncompatibleRules(fallback, version, JavaVersion.current())
+    static List<String> getIncompatibleRules(boolean fallback) {
+        return getIncompatibleRules(fallback, JavaVersion.current())
     }
 
-    static List<String> getIncompatibleRules(boolean fallback, String version, JavaVersion current) {
-        if (fallback && !isCheckstyleCompatible(version, current)) {
+    static List<String> getIncompatibleRules(boolean fallback, JavaVersion current) {
+        // can't rely on tool version here because fallback would already change it, so look only java
+        if (fallback && !current.isCompatibleWith(JavaVersion.VERSION_21)) {
             if (current.isCompatibleWith(JavaVersion.VERSION_17)) {
                 return CHECKSTYLE_JAVA17_INCOMPATIBLE_RULES
             }

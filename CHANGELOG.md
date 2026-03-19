@@ -3,6 +3,9 @@
   - Add support for checkstyle 13 (requiring java 21): checkstyle plugin will be disabled on lower java versions.
   - Add quality.suppressCheckstyleRules option to be able to remove rules from the default xml config (automatic config modification)
   - When auto fallback is enabled, incompatible rules disabled automatically (using new suppression option)
+  - Update version 11.0.1 -> 12.3.1 (not 13 to avoid java 21 requirement in this release, next version will update it)
+  - Add [HexLiteralCase](https://checkstyle.org/checks/misc/hexliteralcase.html#HexLiteralCase)
+  - Add [TextBlockGoogleStyleFormatting](https://checkstyle.org/checks/coding/textblockgooglestyleformatting.html#TextBlockGoogleStyleFormatting)
 * Pmd
   - Add quality.suppressPmdRules option to be able to remove rules from the default xml config (automatic config modification)
   - Update version 7.16 -> 7.22
