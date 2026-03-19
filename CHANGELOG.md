@@ -7,6 +7,7 @@
   - Add quality.suppressPmdRules option to be able to remove rules from the default xml config (automatic config modification)
 * Codenarc
   - Add quality.suppressCodenarcRules option to be able to remove rules from the default xml config (automatic config modification)
+  - Update version 3.6.0 -> 3.7.0
 * Spotbugs
   - Add quality.suppressSpotbugsRules option to be able to remove rules without exclusions xml config modification (automatic config modification)
 
