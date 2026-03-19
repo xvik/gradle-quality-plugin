@@ -89,7 +89,7 @@ class CheckstyleUtils {
 
     static List<String> getIncompatibleRules(boolean fallback, JavaVersion current) {
         // can't rely on tool version here because fallback would already change it, so look only java
-        if (fallback && !current.isCompatibleWith(JavaVersion.VERSION_20)) { //use 20 for gradle 7 support
+        if (fallback && !current.isCompatibleWith(JavaVersion.VERSION_20)) { // use 20 for gradle 7 support
             if (current.isCompatibleWith(JavaVersion.VERSION_17)) {
                 return CHECKSTYLE_JAVA17_INCOMPATIBLE_RULES
             }
@@ -107,7 +107,7 @@ class CheckstyleUtils {
      * @param src config file
      * @param excluded excluded rules
      */
-    @SuppressWarnings('UnnecessaryGetter')
+    @SuppressWarnings(['UnnecessaryGetter', 'Println'])
     static void mergeExcludes(File src, List<String> excluded) {
         // checkstyle config use doctype which must be ignored
         SAXParserFactory factory = SAXParserFactory.newInstance()
@@ -115,10 +115,14 @@ class CheckstyleUtils {
 
         // modules declared in the root module and inside TreeWalker so check two times
         Node xml = new XmlParser(factory.newSAXParser().getXMLReader()).parse(src)
-        processNode(xml, excluded)
+        List<String> found = processNode(xml, excluded)
 
         Node walker = xml.module.find { it.@name == 'TreeWalker' }
-        processNode(walker, excluded)
+        found.addAll(processNode(walker, excluded))
+
+        if (found) {
+            println "[quality] suppressed checkstyle rules: ${found.join(', ')}"
+        }
 
         Writer writer = src.newWriter(false)
         writer.writeLine('''<?xml version="1.0" encoding="UTF-8"?>
@@ -136,8 +140,8 @@ class CheckstyleUtils {
         writer.flush()
     }
 
-    @SuppressWarnings(['Println', 'SpaceAfterOpeningBrace', 'SpaceBeforeClosingBrace'])
-    private static void processNode(Node node, List<String> excluded) {
+    @SuppressWarnings(['SpaceAfterOpeningBrace', 'SpaceBeforeClosingBrace'])
+    private static List<String> processNode(Node node, List<String> excluded) {
         List<String> found = []
         excluded.each { remove ->
             Node toremove = node.find { it.@name == remove }
@@ -146,8 +150,6 @@ class CheckstyleUtils {
                 toremove.replaceNode {}
             }
         }
-        if (found) {
-            println "[quality] suppressed checkstyle rules: ${found.join(', ')}"
-        }
+        return found
     }
 }
