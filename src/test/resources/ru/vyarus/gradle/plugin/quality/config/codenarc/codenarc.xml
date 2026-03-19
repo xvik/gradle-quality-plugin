@@ -1,0 +1,20 @@
+<ruleset xmlns="http://codenarc.org/ruleset/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://codenarc.org/ruleset/1.0 http://codenarc.org/ruleset-schema.xsd"
+         xsi:noNamespaceSchemaLocation="http://codenarc.org/ruleset-schema.xsd">
+
+    <ruleset-ref path='rulesets/basic.xml'>
+        <exclude name="CommentRequired"/>
+    </ruleset-ref>
+
+    <ruleset-ref path='rulesets/formatting.xml'>
+        <rule-config name="SpaceAroundMapEntryColon">
+            <property name="characterAfterColonRegex" value="\s"/>
+        </rule-config>
+        <rule-config name="SpaceAroundMapEntryColon2">
+            <property name="characterAfterColonRegex" value="\s"/>
+        </rule-config>
+    </ruleset-ref>
+
+    <ruleset-ref path='rulesets/comments.xml'/>
+
+</ruleset>

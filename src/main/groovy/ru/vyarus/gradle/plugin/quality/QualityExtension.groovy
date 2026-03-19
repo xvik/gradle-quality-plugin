@@ -191,6 +191,14 @@ abstract class QualityExtension {
     abstract ListProperty<String> getSuppressPmdRules()
 
     /**
+     * By default, rules could be disabled by manual codenarc xml config modification. But, often, people don't
+     * want to "own" the entire config management. In this case, just specify unwanted rule names and plugin will
+     * automatically remove them from xml config.
+     * Note: this will work even with custom configuration file.
+     */
+    abstract ListProperty<String> getSuppressCodenarcRules()
+
+    /**
      * Since codenarc 3.1.0 there is a separate artifact for groovy 4 (CodeNarc-x.x-groovy-4.0). Gradle runs codenarc
      * task with it's own groovy so by default groovy4 artifact is active. If you need to use earlier codenarc version
      * then switch this option to false.

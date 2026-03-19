@@ -75,12 +75,19 @@ class CodenarcTool implements QualityTool {
         }
     }
 
+    @SuppressWarnings('MethodSize')
     private void configureCodenarc(Project project, QualityExtension extension, ToolContext context) {
         project.configure(project) {
+            // if rules exclusion configured, then main config file must be updated dynamically
+            // (and so user config copied inside tmp)
+            boolean modificationRequired = !extension.suppressCodenarcRules.get().empty
+
             codenarc {
                 toolVersion = extension.codenarcVersion.get()
                 ignoreFailures = !extension.strict.get()
-                configFile = context.resolveConfigFile(codenarc_config)
+                configFile = modificationRequired ?
+                        context.tempConfigFile(codenarc_config)
+                        : context.resolveConfigFile(codenarc_config)
                 sourceSets = SourceSetUtils.getSourceSets(project, extension.sourceSets.get())
             }
             if (extension.codenarcGroovy4.get() && !extension.codenarcVersion.get().endsWith(CODENARC_GROOVY4)) {
@@ -97,8 +104,30 @@ class CodenarcTool implements QualityTool {
 
                 context.registerTaskForReport(task, factory.buildDesc(task, toolName))
                 context.applyExcludes(task as SourceTask, extension.excludeSources, extension.exclude.get())
+            }
+            // dynamic codenarc config file update (remove some modules)
+            // It's ok to update file in the scope of configs copying - output directory should be cached after
+            context.configsTask.configure {
                 // read codenarc properties under configuration phase
-                context.storeReporterData(toolName) { CodeNarcReporter.loadCodenarcProperties(project) }
+                Properties ruleClasses = CodeNarcReporter.loadCodenarcProperties(project)
+                context.storeReporterData(toolName) { ruleClasses }
+
+                if (!modificationRequired) {
+                    return
+                }
+                // request user file copying (for modification)
+                modifiableFiles.add(codenarc_config)
+
+                // default or user file, copied into temp dir (for modification)
+                File config = context.tempConfigFile(codenarc_config)
+
+                // in order to apply additional exclusions, we need to know the exact rule source path
+                Map<String, String> rules = CodenarcUtils.readExistingRules(project, ruleClasses)
+
+                it.doLast {
+                    // modify (already copied) config file to apply configured exclusions
+                    CodenarcUtils.mergeExcludes(config, rules, extension.suppressCodenarcRules.get())
+                }
             }
         }
         context.applyEnabledState(CodeNarc)
