@@ -10,6 +10,7 @@
   - Update version 3.6.0 -> 3.7.0
 * Spotbugs
   - Add quality.suppressSpotbugsRules option to be able to remove rules without exclusions xml config modification (automatic config modification)
+  - Update version 4.9.4 -> 4.9.8
 
 ### 6.0.1 (2025-09-03)
 * Always add spotbugs-annotations dependency when plugin is available in classpath to

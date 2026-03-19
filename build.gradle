@@ -64,7 +64,7 @@ mkdocs {
             'version': project.docVersion,
             'checkstyle': '11.0.1',
             'pmd': '7.16.0',
-            'spotbugs': '4.9.4',
+            'spotbugs': '4.9.8',
             'codenarc': '3.7.0',
             'spotbugsPlugin': project.spotbugsPluginVersion,
             'cpd': project.cpdVersion,
