@@ -60,6 +60,7 @@
         <exclude name="DataClass"/>
         <exclude name="LawOfDemeter"/>
         <exclude name="LoosePackageCoupling"/>
+        <exclude name="PublicMemberInNonPublicType"/>
         <exclude name="SignatureDeclareThrowsException"/>
     </rule>
     <rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts">
@@ -113,6 +114,7 @@
     <rule ref="category/java/errorprone.xml">
         <exclude name="AssignmentInOperand"/>
         <exclude name="AvoidAccessibilityAlteration"/>
+        <exclude name="AvoidCatchingGenericException"/>
         <exclude name="AvoidCatchingThrowable"/>
         <exclude name="AvoidLiteralsInIfCondition"/>
         <exclude name="DoNotTerminateVM"/> <!-- earlier j2ee group; before 6.29 DoNotCallSystemExit-->

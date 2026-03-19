@@ -9,6 +9,8 @@
 * Pmd
   - Add quality.suppressPmdRules option to be able to remove rules from the default xml config (automatic config modification)
   - Update version 7.16 -> 7.22
+  - Disable [PublicMemberInNonPublicType](https://docs.pmd-code.org/pmd-doc-7.22.0/pmd_rules_java_design.html#publicmemberinnonpublictype)
+  - Disable [AvoidCatchingGenericException](https://docs.pmd-code.org/pmd-doc-7.22.0/pmd_rules_java_errorprone.html#avoidcatchinggenericexception)
 * Codenarc
   - Add quality.suppressCodenarcRules option to be able to remove rules from the default xml config (automatic config modification)
   - Update version 3.6.0 -> 3.7.0
