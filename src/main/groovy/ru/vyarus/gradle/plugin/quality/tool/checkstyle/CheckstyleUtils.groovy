@@ -89,7 +89,7 @@ class CheckstyleUtils {
 
     static List<String> getIncompatibleRules(boolean fallback, JavaVersion current) {
         // can't rely on tool version here because fallback would already change it, so look only java
-        if (fallback && !current.isCompatibleWith(JavaVersion.VERSION_21)) {
+        if (fallback && !current.isCompatibleWith(JavaVersion.VERSION_20)) { //use 20 for gradle 7 support
             if (current.isCompatibleWith(JavaVersion.VERSION_17)) {
                 return CHECKSTYLE_JAVA17_INCOMPATIBLE_RULES
             }

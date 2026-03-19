@@ -23,7 +23,8 @@ class CheckstyleRulesSuppressionKitTest extends AbstractKitTest {
             quality {
                 strict = false
                 fallbackToCompatibleToolVersion = true
-                suppressCheckstyleRules = ['NewlineAtEndOfFile', 'MissingJavadocType']
+                // add to not override auto fallback rules
+                suppressCheckstyleRules.addAll(['NewlineAtEndOfFile', 'MissingJavadocType'])
             }
 
             repositories {
