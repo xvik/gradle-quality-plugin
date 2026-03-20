@@ -1,3 +1,4 @@
+### 6.1.0 (2026-03-20)
 * Fix source sets with a capital letter in the name (like integrationTest) support (#134)
 * Checkstyle:
   - Add support for checkstyle 13 (requiring java 21): checkstyle plugin will be disabled on lower java versions.

@@ -45,6 +45,10 @@ Anyway, all disabled checks are commented in config files, so it would be clear 
 
 You can modify one or more configs with [initConfigsTask](../task/config.md).  
 
+!!! tip
+    If you want to suppress some rules globally, plugin could modify xml files automatically to simplify
+    default configs usage: see `quality.suppress*` options
+
 
 ## Manually registered plugins configuration 
 

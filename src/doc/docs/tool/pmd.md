@@ -35,6 +35,7 @@ Tool config options with defaults:
 quality {
     pmdVersion = '{{ gradle.pmd }}'
     pmd = true // false to disable automatic plugin activation
+    suppressPmdRules = []
 }
 ```
 
@@ -58,3 +59,20 @@ Single line could be suppressed with comment:
 if (x > 5) { // NOPMD
 }
 ```
+
+### Global suppressions
+
+Plugin could automatically disable rules in the xml file:
+
+```groovy
+quality {
+    suppressPmdRules = ['ANNOYING_RULE', 'ANNOYING_RULE2']
+}
+```
+
+When suppression declared, plugin would modify default or custom xml file and exclude specified rules.
+
+!!! note
+    Pmd require you only to declare "modules" (blocks of rules) and manually exclude some rules within
+    module, if required. But, to do it, plugin have to read all rules declaration xmls from pmd jar and
+    this might slightly slow down initialization. 

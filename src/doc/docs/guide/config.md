@@ -38,6 +38,17 @@ quality {
     animalsniffer = true
 
     /**
+     * By default, rules could be disabled by manual checkstyle xml config modification. But, often, people don't
+     * want to "own" the entire config management. In this case, just specify unwanted rule names and plugin will
+     * automatically remove them from xml config (this is an automatic xml configs modification).
+     * Note: this will work even with custom configuration file.
+     */
+    suppressCheckstyleRules = []
+    suppressPmdRules = []
+    suppressCodenarcRules = []
+    suppressSpotbugsRules = []
+
+    /**
      * Since codenarc 3.1.0 there is a separate artifact for groovy 4 (CodeNarc-Groovy4). Gradle runs codenarc
      * task with it's own groovy so by default groovy4 artifact is active. If you need to use earlier codenarc version
      * then switch this option to false.
@@ -230,6 +241,8 @@ or with list
 ```groovy
 quality.sourceSets([project.sourceSets.main, project.sourceSets.test])
 ```
+
+By default, only `'main'` source set checks are attached to global `check` task (and so executed during the `build`).
 
 ## Manual mode
 

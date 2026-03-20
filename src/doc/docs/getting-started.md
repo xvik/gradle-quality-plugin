@@ -121,6 +121,34 @@ Note that check name is always printed in square braces:
 ```
 Use it for suppression (e.g. `@SuppressWarnings("PMD.CommentRequired")` in case of PMD.
 
+## Disabling rules
+
+Normally, you need to modify xml configs in order to suppress some rule globally. But plugin provides 
+auto suppression feature: just declare rules you don't want to be active and plugin will update
+default xml configs automatically.
+
+This could be useful if you don't want to "own" configs maintenance and want to rely on default configs,
+provided by the plugin.
+
+For example, disabling checkstyle rules would look like:
+
+```groovy
+quality {
+    suppressCheckstyleRules = ['ANNOYING_RULE', 'ANNOYING_RULE2']
+}
+```
+
+For other plugins see similar configurations:
+
+```groovy
+quality {
+    suppressCheckstyleRules = [...]
+    suppressPmdRules = [...]
+    suppressCodenarcRules = [...]
+    suppressSpotbugsRules = [...]
+}
+```
+
 ## Java projects
 
 !!! note

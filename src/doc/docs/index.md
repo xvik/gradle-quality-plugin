@@ -27,6 +27,7 @@ can use them with zero configuration.
 * Complete console output for all quality plugins
 * Html and xml reports for all plugins (custom xsl used for findbugs html report because it can't generate both xml and html reports)
 * Grouping tasks to run registered quality plugins for exact source set (e.g. checkQualityMain)
+* Rules suppression without xml modifications
 
 !!! note
     The plugin is **compatible** with the gradle [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html)

@@ -41,6 +41,7 @@ quality {
     codenarc = true // false to disable automatic plugin activation
     // use groovy4-based codenarc version; set to false to use groovy3-based version
     codenarcGroovy4 = true
+    suppressCodenarcRules = []
 }
 ```
 
@@ -66,3 +67,19 @@ To suppress all violations use:
 
 Also, [comments may be used](https://codenarc.org/codenarc-configuring-rules.html#disabling-rules-from-comments) for disabling blocks of file.
 
+### Global suppressions
+
+Plugin could automatically disable rules in the xml file:
+
+```groovy
+quality {
+    suppressCodenarcRules = ['ANNOYING_RULE', 'ANNOYING_RULE2']
+}
+```
+
+When suppression declared, plugin would modify default or custom xml file and exclude specified rules.
+
+!!! note
+    Codenarc require you only to declare "modules" (blocks of rules) and manually exclude some rules within
+    module, if required. But, to do it, plugin have to read all rules declaration xmls from codenarc jar and
+    this might slightly slow down initialization. 

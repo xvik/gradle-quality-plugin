@@ -1,3 +1,24 @@
+### [6.1.0](http://xvik.github.io/gradle-quality-plugin/6.1.0) (2026-03-20)
+* Fix source sets with a capital letter in the name (like integrationTest) support (#134)
+* Checkstyle:
+    - Add support for checkstyle 13 (requiring java 21): checkstyle plugin will be disabled on lower java versions.
+    - Add quality.suppressCheckstyleRules option to be able to remove rules from the default xml config (automatic config modification)
+    - When auto fallback is enabled, incompatible rules disabled automatically (using new suppression option)
+    - Update version 11.0.1 -> 12.3.1 (not 13 to avoid java 21 requirement in this release, next version will update it)
+    - Add [HexLiteralCase](https://checkstyle.org/checks/misc/hexliteralcase.html#HexLiteralCase)
+    - Add [TextBlockGoogleStyleFormatting](https://checkstyle.org/checks/coding/textblockgooglestyleformatting.html#TextBlockGoogleStyleFormatting)
+* Pmd
+    - Add quality.suppressPmdRules option to be able to remove rules from the default xml config (automatic config modification)
+    - Update version 7.16 -> 7.22
+    - Disable [PublicMemberInNonPublicType](https://docs.pmd-code.org/pmd-doc-7.22.0/pmd_rules_java_design.html#publicmemberinnonpublictype)
+    - Disable [AvoidCatchingGenericException](https://docs.pmd-code.org/pmd-doc-7.22.0/pmd_rules_java_errorprone.html#avoidcatchinggenericexception)
+* Codenarc
+    - Add quality.suppressCodenarcRules option to be able to remove rules from the default xml config (automatic config modification)
+    - Update version 3.6.0 -> 3.7.0
+* Spotbugs
+    - Add quality.suppressSpotbugsRules option to be able to remove rules without exclusions xml config modification (automatic config modification)
+    - Update version 4.9.4 -> 4.9.8
+
 ### [6.0.1](http://xvik.github.io/gradle-quality-plugin/6.0.1) (2025-09-03)
 * Always add spotbugs-annotations dependency when plugin is available in classpath to
   not break compilation on non-compatible java versions (java 8) or with disabled spotbugs

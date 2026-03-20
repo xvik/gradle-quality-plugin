@@ -6,7 +6,7 @@
 
 **DOCUMENTATION** http://xvik.github.io/gradle-quality-plugin
 
-**Version 6.0 brings a few breaking changes**: [see migration guide](https://xvik.github.io/gradle-quality-plugin/latest/about/release-notes#migration-guide)
+**Version 6.0 brings a few breaking changes**: [see migration guide](https://xvik.github.io/gradle-quality-plugin/6.0.1/about/release-notes#migration-guide)
 
 ### About
 
@@ -26,6 +26,7 @@ Features:
 * Complete console output for all quality plugins
 * Html and xml reports for all plugins (custom xsl used for findbugs html report because it can't generate both xml and html reports)
 * Grouping tasks to run registered quality plugins for exact source set (e.g. checkQualityMain)
+* Rules suppression without xml modifications
 
 NOTE: the plugin is **compatible** with the gradle [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html)
 
@@ -55,7 +56,7 @@ NOTE: when updating plugin version in your project don't forget to call `clean` 
 
 ```groovy
 plugins {
-    id 'ru.vyarus.quality' version '6.0.1'
+    id 'ru.vyarus.quality' version '6.1.0'
 }
 ```
 
@@ -68,7 +69,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'ru.vyarus:gradle-quality-plugin:6.0.1'
+        classpath 'ru.vyarus:gradle-quality-plugin:6.1.0'
     }
 }
 apply plugin: 'ru.vyarus.quality'
@@ -94,7 +95,7 @@ Supported gradle 7.1 - 9.
 
 | Gradle | Version                                                      |
 |--------|--------------------------------------------------------------|
-| 7.1-9  | 6.0.1                                                        |
+| 7.1-9  | 6.1.0                                                        |
 | 7.0    | [5.0.0](https://xvik.github.io/gradle-quality-plugin/5.0.0/) |
 | 5.6-6  | [4.9.0](https://xvik.github.io/gradle-quality-plugin/4.9.0/) |
 | 5.1    | [4.2.2](http://xvik.github.io/gradle-quality-plugin/4.2.2)   |
@@ -106,10 +107,10 @@ Java requirements for quality tools:
 
 | Tool       | Default version | Java version |
 |------------|-----------------|--------------|
-| Checkstyle | 11.0.1          | 17           |
-| PMD        | 7.16.0          | 8            |
-| SpotBugs   | 4.9.4           | 11           |
-| CodeNarc   | 3.6.0           | 8            |
+| Checkstyle | 12.3.1          | 17           |
+| PMD        | 7.22.0          | 8            |
+| SpotBugs   | 4.9.8           | 11           |
+| CodeNarc   | 3.7.0           | 8            |
 
 Incompatible tools will not be enabled: for example, on java 11 Checkstyle will not be enabled.
 

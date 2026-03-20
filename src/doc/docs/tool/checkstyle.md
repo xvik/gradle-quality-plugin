@@ -13,7 +13,9 @@ contains all possible checks, but some of them are disabled (note that some chec
 never intended to be used together). Uncomment check to enable it.
 
 !!! warning
-    **Checkstyle 11 requires java 17** or above. Checkstyle support will be disabled on lower java version.
+    **Checkstyle 13 requires java 21**, **checkstyle 11-12 requires java 17** or above. 
+    Checkstyle support will be disabled on lower java version (so on CI checkstyle will work only on compatible java 
+    version and ignored on others).
     To enable checkstyle on java 11, use checkstyle 10 `quality.checkstyleVersion = '10.26.1'`
     (see [java compatibility notes](../guide/java.md))
 
@@ -42,6 +44,7 @@ Tool config options with defaults:
 quality {
     checkstyleVersion = '{{ gradle.checkstyle }}'
     checkstyle = true // false to disable automatic plugin activation
+    suppressCheckstyleRules = []
 }
 ```
 
@@ -76,6 +79,18 @@ Or using [comments](http://checkstyle.sourceforge.net/config_filters.html#Suppre
 // CHECKSTYLE:ON
 ```
 
+### Global suppressions
+
+Plugin could automatically disable rules in the xml file:
+
+```groovy
+quality {
+    suppressCheckstyleRules = ['ANNOYING_RULE', 'ANNOYING_RULE2']
+}
+```
+
+When suppression declared, plugin would modify default or custom xml file and remove specified rules. 
+
 ### Suppressions file
 
 You can also use external [suppressions file](https://checkstyle.sourceforge.io/config_filters.html#SuppressionFilter).
@@ -108,9 +123,5 @@ Alternatively, you can use [configs init task](../task/config.md) which will bri
 
 </suppressions>
 ```
-
-!!! warning
-    Pay attention that check names in the file are all have postfix 'Check', 
-    whereas violations in the console omit this postfix.
 
 There are many configuration examples in [the checkstyle documentation](https://checkstyle.sourceforge.io/config_filters.html#SuppressionFilter_Examples)

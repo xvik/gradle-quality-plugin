@@ -70,6 +70,7 @@ Tool config options with defaults:
 quality {
     spotbugsVersion = '{{ gradle.spotbugs }}'
     spotbugs = true // false to disable automatic plugin activation
+    suppressSpotbugsRules = []
     spotbugsEffort = 'max'  // min, less, more or max
     spotbugsLevel = 'medium' // low, medium, high
     spotbugsMaxRank = 20 // 1-4 scariest, 5-9 scary, 10-14 troubling, 15-20 of concern  
@@ -132,6 +133,18 @@ in `compileOnly` scope in order to use special suppressing annotation:
 
 Note that annotations dependency will be applied even if spotbugs support is disabled (`quality.spotbugs = false`)
 to not break builds on lower java versions (where spotbugs plugin is disabled due to incompatibility)
+
+### Global suppressions
+
+Plugin could automatically disable rules in the xml file:
+
+```groovy
+quality {
+    suppressSpotbugsRules = ['ANNOYING_RULE', 'ANNOYING_RULE2']
+}
+```
+
+When suppression declared, plugin would modify default or custom xml file (exclude.xml) and add exclusions for specified rules.
 
 
 ## Excludes
