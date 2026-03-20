@@ -91,7 +91,7 @@ class CheckstyleUtilsTest extends Specification {
         java                    | res
         JavaVersion.VERSION_22  | 0
         JavaVersion.VERSION_21  | 0
-        JavaVersion.VERSION_20  | 5
+        JavaVersion.VERSION_20  | 0 // verification by java 20, not 21 for gradle 7 compatibility (assuming none would use it)
         JavaVersion.VERSION_17  | 5
         JavaVersion.VERSION_11  | 7
         JavaVersion.VERSION_1_8 | 7
